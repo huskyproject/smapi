@@ -40,7 +40,9 @@ static char rcs_id[]="$Id$";
 #include <share.h>
 #endif
 
+#if defined(UNIX) || defined(__EMX__)
 #include <unistd.h>
+#endif
 #include <assert.h>
 
 #include "prog.h"
@@ -94,9 +96,9 @@ static unsigned near _SquishReadXmsg(HMSG hmsg, PXMSG pxm, dword *pdwOfs)
        */
   }
 
-/* Og: It's not the idea of the MsgApi to check all Data on every read. 
+/* Og: It's not the idea of the MsgApi to check all Data on every read.
 */
-/* 
+/*
   if (pxm->date_written.date.yr == 0 ||
       pxm->__ftsc_date[0] == 0)
   {
@@ -201,7 +203,7 @@ static dword near _SquishReadTxt(HMSG hmsg, byte  *szTxt, dword dwTxtLen,
   return (dword)uMaxLen;
 }
 
- 
+
 /* Read a message from the Squish base */
 
 dword EXPENTRY apiSquishReadMsg(HMSG hmsg, PXMSG pxm, dword dwOfs,

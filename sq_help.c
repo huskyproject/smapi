@@ -41,7 +41,9 @@ static char rcs_id[]="$Id$";
 #endif
 
 #include <errno.h>
+#if defined(UNIX) || defined(__EMX__)
 #include <unistd.h>
+#endif
 #include <assert.h>
 #include <malloc.h>
 

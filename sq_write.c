@@ -41,7 +41,9 @@ static char rcs_id[]="$Id$";
 #endif
 
 #include <assert.h>
+#if defined(UNIX) || defined(__EMX__)
 #include <unistd.h>
+#endif
 
 #include "prog.h"
 #include "alc.h"
@@ -445,7 +447,7 @@ static unsigned near _SquishWriteXmsg(HMSG hmsg, PXMSG pxm, dword *pdwOfs)
     /* XMSG xmsg; */
 
 #define xmsg (*pxm)
-    
+
     long ofs=hmsg->foWrite + HSqd->cbSqhdr;
 
   /* If we don't know our UMSGID, retrieve it from the index file */
@@ -463,8 +465,8 @@ static unsigned near _SquishWriteXmsg(HMSG hmsg, PXMSG pxm, dword *pdwOfs)
   /* OG: Wozu ? */
   /* xmsg=*pxm; */
 
-  /* OG: Changes to make Squish 1.11 Y2K  - experimental 
-         Some stupid programs don't fill out the 'FTSC-Date' Field 
+  /* OG: Changes to make Squish 1.11 Y2K  - experimental
+         Some stupid programs don't fill out the 'FTSC-Date' Field
   */
   if (xmsg.date_written.date.yr > 19 ||
       xmsg.__ftsc_date[0] == 0)
@@ -726,7 +728,7 @@ sword EXPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
       _SquishBaseThreadUnlock(hmsg->ha);
 
       return -1;
-    }  
+    }
 
   hmsg->fWritten=TRUE;
 

@@ -41,7 +41,9 @@ static char rcs_id[]="$Id$";
 #endif
 
 #include <malloc.h>
+#if defined(UNIX) || defined(__EMX__)
 #include <unistd.h>
+#endif
 #include <assert.h>
 #include <string.h>
 #include <limits.h>
@@ -157,7 +159,7 @@ int _SquishBeginBuffer(HIDX hix)
 
   /* Read from head of index file */
 
-  (void)lseek(HixSqd->ifd, 0L, SEEK_SET); 
+  (void)lseek(HixSqd->ifd, 0L, SEEK_SET);
 
   /* Repeat for each segment in the index file */
 

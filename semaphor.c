@@ -17,7 +17,9 @@
  *  author.
  */
 
+#if defined(UNIX) || defined(__EMX__)
 #include <unistd.h>
+#endif
 #include <stdlib.h> /* NULL */
 
 #include "semaphor.h"

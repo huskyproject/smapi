@@ -50,7 +50,7 @@ static char rcs_id[]="$Id$";
 #include "apidebug.h"
 #include "unused.h"
 
-dword apiSquishGetHash(HAREA ha, dword dwMsg)
+dword EXPENTRY apiSquishGetHash(HAREA ha, dword dwMsg)
 {
   SQIDX sqi;
 
