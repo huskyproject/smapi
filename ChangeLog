@@ -1,3 +1,12 @@
+2003-02-16 Sunday 12:43  stas_degteff
+
+	* INSTALL (1.9): Rewrite installation instructions
+
+2003-02-16 Sunday 12:02  stas_degteff
+
+	* makefile.bsd (1.33), readme.txt (1.9): Change BSD makefile for
+	using BSD version of make utility
+
 2003-02-14 Friday 13:10  stas_degteff
 
 	* VERSION (1.6), msgapi.h (1.67), readme.txt (1.8): Change version
