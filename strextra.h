@@ -12,6 +12,9 @@
 #define __STREXTRA_H__
 
 int stricmp(const char *s, const char *t);
+
+#if !defined(__IBMPC__) && !defined(__linux__)
 char *strdup(const char *s);
+#endif
 
 #endif

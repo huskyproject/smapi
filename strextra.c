@@ -39,7 +39,7 @@ int stricmp(const char *s, const char *t)
 
 #endif
 
-#ifndef __IBMC__
+#if !defined(__IBMC__) && !defined(__linux__)
 
 char *strdup(const char *s)
 {
