@@ -1057,6 +1057,7 @@ int qq(void)
 
 /* older mingw headers are too lazy ... */
 #  include <share.h>
+#include <process.h>
 #  ifndef SH_DENYRW
 #    define SH_DENYRW 0x10
 #  endif
