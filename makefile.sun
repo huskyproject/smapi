@@ -57,7 +57,7 @@ $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
 clean:
-	-rm *.o *~
+	-rm *.o
 
 distclean: clean
 	-rm $(TARGET)

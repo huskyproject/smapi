@@ -66,5 +66,7 @@ $(TARGET): $(OBJS)
 
 clean:
 	-DEL *.obj
+
+distclean: clean
 	-DEL $(TARGET)
 
