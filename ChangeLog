@@ -1,3 +1,15 @@
+2001-12-26 Wednesday 09:41  pavel.gulchouck
+
+	* api_jam.c (1.72): Create jdt-file if not exists
+
+2001-12-26 Wednesday 00:11  pavel.gulchouck
+
+	* api_jam.c (1.71): Write correct ReplyCRC in JAM
+
+2001-12-26 Wednesday 00:02  pavel.gulchouck
+
+	* api_jam.c (1.70): minor fix (code cleanup)
+
 2001-12-24 Monday 08:55  mche
 
 	* compiler.h (1.72), msgapi.c (1.20), msgapi.h (1.36), patmat.c
