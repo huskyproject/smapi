@@ -896,24 +896,25 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
 //   msgh->Idx.UserCRC   = 0xffffffff;
 
 
-
-   if (lseek(Jmd->IdxHandle, Jmd->actmsg[msgnum-1].IdxOffset, SEEK_SET) != -1) {
-      msgh->seek_idx = tell(Jmd->IdxHandle);
-      if (read_idx(Jmd->IdxHandle, &(msgh->Idx))) {
-         if (msgh->Idx.HdrOffset != 0xffffffff) {
-            msgh->seek_hdr = msgh->Idx.HdrOffset;
-            lseek(Jmd->HdrHandle, msgh->Idx.HdrOffset, SEEK_SET);
-            read_hdr(Jmd->HdrHandle, &(msgh->Hdr));
-            if (stricmp((char*)&msgh->Hdr, "JAM") != 0) {
-               pfree(msgh);
-               return NULL;
-            } else {
-            } /* endif */
-            if(mode == MOPEN_CREATE) return (MSGH *)msgh;
-            msgh->SubFieldPtr = (JAMSUBFIELDptr)palloc(msgh->Hdr.SubfieldLen);
-            read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), msgh->Hdr.SubfieldLen);
-            DecodeSubf(msgh);
-            return (MSGH *) msgh;
+   if (Jmd->actmsg) {
+      if (lseek(Jmd->IdxHandle, Jmd->actmsg[msgnum-1].IdxOffset, SEEK_SET) != -1) {
+         msgh->seek_idx = tell(Jmd->IdxHandle);
+         if (read_idx(Jmd->IdxHandle, &(msgh->Idx))) {
+            if (msgh->Idx.HdrOffset != 0xffffffff) {
+               msgh->seek_hdr = msgh->Idx.HdrOffset;
+               lseek(Jmd->HdrHandle, msgh->Idx.HdrOffset, SEEK_SET);
+               read_hdr(Jmd->HdrHandle, &(msgh->Hdr));
+               if (stricmp((char*)&msgh->Hdr, "JAM") != 0) {
+                  pfree(msgh);
+                  return NULL;
+               } else {
+               } /* endif */
+               if(mode == MOPEN_CREATE) return (MSGH *)msgh;
+               msgh->SubFieldPtr = (JAMSUBFIELDptr)palloc(msgh->Hdr.SubfieldLen);
+               read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), msgh->Hdr.SubfieldLen);
+               DecodeSubf(msgh);
+               return (MSGH *) msgh;
+            }
          }
       }
    }
