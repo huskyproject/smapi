@@ -1,30 +1,44 @@
+# $Id$
 # Makefile for Building SMAPI with Watcom C for OS/2
 # No support for Husky build environment.
+#
+# Predefines: __WATCOMC__,
+# __OS2V2__ (-bt=os2)
 
-CC=	wcl386
-CFLAGS=	-zq -wx -bt=os2v2
-CDEFS=  -DOS2
-COPT=	-oneatx -5
-LIB=	wlib
+CC	= wcl386
+CFLAGS	= -zq -wx -bt=os2v2 -l=os2v2
+CDEFS	= -DOS2 -D__OS2__
+COPT	= -oneatx -5
+AR	= wlib
+AROPT	= -b -q
+OBJ	= .obj
+LIB	= .lib
 
-TARGET=	smapiwco.lib
+TARGET	= smapiwco$(LIB)
 
-OBJS=	1stchar.obj api_sdm.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj patmat.obj sq_area.obj sq_hash.obj sq_help.obj sq_idx.obj sq_kill.obj sq_lock.obj sq_misc.obj sq_msg.obj sq_read.obj sq_uid.obj sq_write.obj setfsize.obj tdelay.obj genmsgid.obj
+#OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) sq_help$(OBJ) sq_idx$(OBJ) sq_kill$(OBJ) sq_lock$(OBJ) sq_misc$(OBJ) sq_msg$(OBJ) sq_read$(OBJ) sq_uid$(OBJ) sq_write$(OBJ) api_jam$(OBJ) cvtdate$(OBJ) date2bin$(OBJ) dosdate$(OBJ) fexist$(OBJ) ffind$(OBJ) flush$(OBJ) flushasm$(OBJ) locking$(OBJ) months$(OBJ) msgapi$(OBJ) parsenn$(OBJ) patmat$(OBJ) qksort$(OBJ) sqasm$(OBJ) strftim$(OBJ) strocpy$(OBJ) structrw$(OBJ) trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
 
+!include makefile.inc
 
 # Thunderbirds are go!
 
-.c.obj:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) -b -q $(TARGET) -+$@
+.DEFAULT
+	@%null
 
-$(TARGET): $(OBJS)
+default : all .SYMBOLIC
+
+all : $(TARGET) .SYMBOLIC
+
+.c$(OBJ) :
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $<
+	$(AR) $(AROPT) $(TARGET) -+$@
+
+$(TARGET) : 	$(OBJS) .SYMBOLIC
 
 .IGNORE
 
-clean:
-	-DEL *.OBJ
+clean :
+	-del *$(OBJ)
 
-distclean:
-	-DEL $(TARGET)
-
+distclean :	clean
+	-del $(TARGET)
