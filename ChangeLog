@@ -1,3 +1,19 @@
+2003-02-20 Thursday 12:07  stas_degteff
+
+	* HISTORY (smapi-2_4-stable.1): Change version number to 2.4-stable
+
+2003-02-20 Thursday 12:01  stas_degteff
+
+	* HISTORY (1.2): Update bugfixes list
+
+2003-02-20 Thursday 09:52  sfpavel
+
+	* HISTORY (1.1): Add HISTORY file
+
+2003-02-19 Wednesday 13:53  stas_degteff
+
+	* compiler.h (1.167): Bugfix in defines
+
 2003-02-19 Wednesday 08:58  stas_degteff
 
 	* compiler.h (1.166): Update DJGPP macroses: undef __UNIX__  UNIX
