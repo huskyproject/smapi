@@ -1,0 +1,48 @@
+# Legacy makefile for building on FreeBSD. Tested on 4.1-RELEASE
+# No support for the Husky build environment.
+
+# Uncoment this if we are to create .a only (don't create .so)
+#NOPIC=	1
+
+prefix= 	/usr/local
+LIBDIR= 	$(prefix)/lib
+NOMAN= 	1
+CFLAGS= 	-Wall -DUNIX -O3
+
+LIB=		smapibsd
+SHLIB_MAJOR=	1
+SHLIB_MINOR=	6.2
+
+# FreeBSD/i386 addition
+#
+.if ${MACHINE_ARCH} == "i386"
+   CFLAGS+= -fomit-frame-pointer -fstrength-reduce -m486
+.endif
+
+
+OBJS=	1stchar.o  \
+	api_sdm.o  \
+	api_sq.o   \
+	api_jam.o  \
+	cvtdate.o  \
+	date2bin.o \
+	dosdate.o  \
+	fexist.o   \
+	ffind.o    \
+	flush.o    \
+	locking.o  \
+	months.o   \
+	msgapi.o   \
+	parsenn.o  \
+	patmat.o   \
+	qksort.o   \
+	strextra.o \
+	strftim.o  \
+	strocpy.o  \
+	structrw.o \
+	trail.o    \
+	weekday.o
+
+
+.include <bsd.lib.mk>
+
