@@ -492,3 +492,24 @@ word _XPENTRY NumKludges(char *txt)
 
     return nk;
 }
+
+char *_XPENTRY strmerr(int msgapierr)
+{
+    switch (msgapierr) {
+	case MERR_NONE:   return "No error";
+	case MERR_BADH:   return "Invalid handle passed to function";
+	case MERR_BADF:   return "Invalid or corrupted file";
+	case MERR_NOMEM:  return "Not enough memory for specified operation";
+	case MERR_NODS:   return "Maybe not enough disk space for operation";
+	case MERR_NOENT:  return "File/message does not exist";
+	case MERR_BADA:   return "Bad argument passed to msgapi function";
+	case MERR_EOPEN:  return "Couldn't close - messages still open";
+	case MERR_NOLOCK: return "Base needs to be locked to perform operation";
+	case MERR_SHARE:  return "Resource in use by other process";
+	case MERR_EACCES: return "Access denied (can't write to read-only, etc)";
+	case MERR_BADMSG: return "Bad message frame (Squish)";
+	case MERR_TOOBIG: return "Too much text/ctrlinfo to fit in frame (Squish)";
+	case MERR_BADNAME:return "Bad area name or file name";
+    }
+    return "Unknown error";
+}
