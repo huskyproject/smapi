@@ -1,8 +1,13 @@
 development version
 -------------------
 
-Fri Feb  4 15:24:13 MSK 2000
 ----- cvs ci ------
+Tue Feb  8 00:07:06 NOVT 2000
+max (patch from Alex Bronin 2:5049/36):
+* ffind: added _dos_findclose() for watcom
+
+----- cvs ci ------
+Fri Feb  4 15:24:13 MSK 2000
 Fedor:
 + New MSGTYPE_NOTH for Jam base (need for used ftrack).
 

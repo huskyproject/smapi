@@ -380,6 +380,10 @@ void _fast FFindClose(FFIND * ff)
     if (ff != NULL)
     {
 
+#ifdef __WATCOMC__
+        _dos_findclose((struct find_t *)ff);
+#endif
+
 #ifdef OS2
         if (ff->hdir)
         {
