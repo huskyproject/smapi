@@ -14,8 +14,14 @@ AR_R	= -b -q
 RM	= del
 OBJ	= .obj
 LIB	= .lib
+EXE	= .exe
 
 TARGET	= smapiwcx$(LIB)
+
+EXENAMEFLAG = -fe=
+
+NULL     = @%null
+SYMBOLIC = .SYMBOLIC
 
 # OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) &
 #	  sq_help$(OBJ) sq_idx$(OBJ) sq_kill$(OBJ) sq_lock$(OBJ) &
@@ -24,20 +30,33 @@ TARGET	= smapiwcx$(LIB)
 #	  dosdate$(OBJ) fexist$(OBJ) ffind$(OBJ) flush$(OBJ) flushasm$(OBJ) &
 #	  locking$(OBJ) months$(OBJ) msgapi$(OBJ) parsenn$(OBJ) patmat$(OBJ) &
 #	  qksort$(OBJ) sqasm$(OBJ) strftim$(OBJ) strocpy$(OBJ) structrw$(OBJ) &
-#         trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
+#	  trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
+				    
+.DEFAULT
+	$(NULL)
+
+default: all $(SYMBOLIC)
 
 !include makefile.inc
 
 # Thunderbirds are go!
 
 .c$(OBJ):
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(AR) $(AR_R) $(TARGET) -+$@
+        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+        $(AR) $(AR_R) $(TARGET) -+$@
 	
+all: $(TARGET) gnmsgid$(EXE)
+
 $(TARGET): $(OBJS)
+
+gnmsgid$(EXE): gnmsgid$(OBJ)
+	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG)gnmsgid$(EXE) gnmsgid$(OBJ) $(LOPT) $(TARGET)
+
+.IGNORE
 
 clean:
 	-$(RM) *$(OBJ)
-		
-distclean:
+
+distclean: clean
 	-$(RM) $(TARGET)
+        -$(RM) gnmsgid$(EXE)

@@ -8,12 +8,16 @@ CDEFS=	-D__FLAT__
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -mcpu=i486
 LIB=	ar
 RANLIB= ranlib
+RM=del
 OBJ=	.o
+EXE=	.exe
+
 
 TARGET= smapidjg.a
 
-include makefile.inc
+EXENAMEFLAG=-o 
 
+include makefile.inc
 
 # Thunderbirds are go!
 
@@ -21,13 +25,17 @@ include makefile.inc
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
-all: $(TARGET)
+all: $(TARGET) gnmsgid$(EXE)
 
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
+gnmsgid$(EXE): gnmsgid$(OBJ)
+	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG)gnmsgid$(EXE) gnmsgid$(OBJ) $(LOPT) $(TARGET)
+
 clean:
-	-DEL *.o
+	-$(RM) *$(OBJ)
 
 distclean: clean
-	-DEL $(TARGET)
+	-$(RM) $(TARGET)
+	-$(RM) gnmsgid$(EXE)
