@@ -155,6 +155,8 @@ int SdmDeleteBase(char *name)
     FFIND *ff;
     char *temp;
 
+    if(!name){ msgapierr=MERR_BADNAME; return FALSE; }
+
     temp = malloc(strlen(name)+6);
     sprintf(temp, "%s*.msg", name);
 
