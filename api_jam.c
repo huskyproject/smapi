@@ -1531,6 +1531,8 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield, unsigned
    
    if (textlen)
    {
+       if (text[textlen-1] != '\r')
+           textlen++;
        onlytext = curtext = (unsigned char*)palloc(textlen + 1);
        *onlytext = '\0';
        
