@@ -69,10 +69,6 @@ struct _msgh;
 struct _xmsg;
 struct _netaddr;
 
-#if  defined(__MINGW32__) || defined(__NT__)
-#define MSGA MSGAPIMSG
-#endif
-
 typedef struct _msgapi MSGA;
 typedef struct _msgapi *HAREA;
 typedef struct _msgh MSGH;
