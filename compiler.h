@@ -505,9 +505,29 @@ int qq(void)
 #  endif
 #endif
 
+#ifdef PROCESSOR_ARCHITECTURE
+#  if PROCESSOR_ARCHITECTURE == "ALPHA"
+#    define __ALPHA__
+#  elif
+#  if PROCESSOR_ARCHITECTURE == "x86"
+#    define __386__
+#  endif
+#else
+#pragma message( PROCESSOR_ARCHITECTURE )
+#endif
+
 #ifdef __ALPHA__
 #  ifndef __BIG_ENDIAN__
 #    define __BIG_ENDIAN__
+#  endif
+#  ifndef __FLAT__
+#    define __FLAT__
+#  endif
+#endif
+
+#ifdef __386__
+#  ifndef __LITTLE_ENDIAN__
+#    define __LITTLE_ENDIAN__
 #  endif
 #  ifndef __FLAT__
 #    define __FLAT__
