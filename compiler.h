@@ -635,12 +635,15 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define NO_STRFTIME
 
  /* waitlock works like lock, but blocks until the lock can be
-    performed. */
+  * performed. 
+  * waitlock2 works like a timed waitlock.
+  */
 #ifndef mysleep
 #define mysleep(x)
 #endif
 
 extern int waitlock(int, long, long);
+extern int waitlock2(int, long, long, long);
 
 #endif
 

@@ -89,17 +89,34 @@ int _squnlock(HAREA ha)
   return 1;
 }
 
-int _sqlock(HAREA ha)
+int _sqlock(HAREA ha, int t)
 {
-   return _alt_lock(ha) == 0;
+   int forever = 0;
+   
+   if (t == -1)
+     return _alt_lock(ha) == 0;
+     
+   if (t == 0)
+     forever = 1;
+     
+   while( (rc=_alt_lock(ha)) && (t>0 || forever))
+   {
+     tdelay(1000);
+     t--;
+   }
+   
+   return rc == 0;
 }
 
 #else
 
-int _sqlock(HAREA ha)
+int _sqlock(HAREA ha, int t)
 {
-  // lock return 0 on success
-  return lock(Sqd->sfd, 0, 1) == 0;
+  if (t==-1)
+    // lock return 0 on success
+    return lock(Sqd->sfd, 0, 1) == 0;
+    
+  return waitlock2(Sqd->sfd, 0, 1, t) == 0;
 }
 
 int _squnlock(HAREA ha)
@@ -126,17 +143,7 @@ static unsigned near _SquishLockBase(HAREA ha)
    * process may be attempting to do the same thing, so we retry a couple   *
    * of times just in case.                                                 */
   trys = SQUISH_LOCK_RETRY;
-  while (_sqlock(ha) == 0)
-  {
-     if (trys <= 0)
-     {
-       Sqd->fLocked--;
-       return 0;
-     }
-     trys --;
-     tdelay(1000);
-  }
-  return 1;
+  return _sqlock(ha, SQUISH_LOCK_RETRY);
 }
 
 /* Unlock the first byte of the Squish file */

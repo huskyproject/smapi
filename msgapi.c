@@ -19,6 +19,9 @@
 
 #include <string.h>
 #include <stdlib.h>
+#ifdef UNIX
+#include <signal.h>
+#endif
 #include "alc.h"
 #include "prog.h"
 #include "msgapi.h"
@@ -52,8 +55,18 @@ void _MsgCloseApi(void)
     _SquishDeInit();
 }
 
+#ifdef UNIX
+/* Just a dummy alarm-fnct */
+static void alrm(int x)
+{}     
+#endif
+
 sword EXPENTRY MsgOpenApi(struct _minf *minf)
 {
+#ifdef UNIX
+    struct sigaction alrmact;
+#endif
+    
     unused(copyright);
     mi = *minf;
     mi.haveshare = shareloaded();
@@ -61,6 +74,15 @@ sword EXPENTRY MsgOpenApi(struct _minf *minf)
     _SquishInit();
 
     atexit(_MsgCloseApi);
+    
+    /*
+     * Set the dummy alarm-fcnt to supress stupid messages.
+     */
+#ifdef UNIX    
+    memset(&alrmact, 0, sizeof(alrmact));
+    alrmact.sa_handler = alrm;
+    sigaction(SIGALRM, &alrmact, 0);
+#endif 
 
     return 0;
 }

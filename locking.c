@@ -96,6 +96,19 @@ int waitlock(int handle, long ofs, long length)
     return 0;
 }
 
+int waitlock2(int handle, long ofs, long length)
+{
+    FILELOCK urange, lrange;
+    APIRET apiret;
+
+    lrange.lOffset = ofs;
+    lrange.lRange = length;
+    urange.lRange = urange.lOffset = 0;
+
+    return DosSetFileLocks((HFILE)handle, &urange, &lrange, t*1000l, 0);
+}
+
+
 #elif defined(__RSXNT__)
 
 #include <windows.h>
@@ -120,6 +133,27 @@ int waitlock(int handle, long ofs, long length)
     }
 
     return 0;
+}
+
+/*
+ *  THERE SHOULD BE A BETTER WAY TO MAKE A TIMED LOCK.
+ */
+
+int waitlock2(int handle, long ofs, long length, long t)
+{
+    int forever = 0;
+    int rc;
+    
+    if (t==0) 
+      forever = 1;
+      
+    while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
+    {
+        mysleep(1);
+        t--;
+    }
+    
+    return rc;
 }
 
 int lock(int handle, long ofs, long length)
@@ -169,6 +203,27 @@ int waitlock(int handle, long ofs, long length)
     return 0;
 }
 
+/*
+ * THERE SHOULD BE A BETTER WAY TO MAKE A TIMED LOCK !!!!
+ */
+int waitlock2(int handle, long ofs, long length, long t)
+{
+    int forever = 0;
+    int rc;
+    
+    if (t==0) 
+      forever = 1;
+      
+    while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
+    {
+        mysleep(1);
+        t--;
+    }
+    
+    return rc;
+}
+
+
 int lock(int handle, long ofs, long length)
 {
     long offset = tell(handle);
@@ -214,6 +269,23 @@ int waitlock(int handle, long ofs, long length)
         mysleep(1);
     }
     return 0;
+}
+
+int waitlock2(int handle, long ofs, long length, long t)
+{
+    int forever = 0;
+    int rc;
+    
+    if (t==0) 
+      forever = 1;
+      
+    while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
+    {
+        mysleep(1);
+        t--;
+    }
+    
+    return rc;
 }
 
 int lock(int handle, long ofs, long length)
@@ -287,6 +359,26 @@ int waitlock(int handle, long ofs, long length)
 #endif
 }
 
+/*
+ * waitlock2() wait <t> seconds for a lock
+ */
+
+int waitlock2(int handle, long ofs, long length, long t)
+{
+#ifndef __BEOS__
+	int rc;
+	
+	alarm(t);
+	rc = fcntl(handle, F_SETLKW, file_lock(F_WRLCK, ofs, length));
+	alarm(0);
+	
+	return rc;
+#else
+  	return 0;
+#endif
+}
+
+
 int unlock(int handle, long ofs, long length)
 {
 #ifndef __BEOS__
@@ -346,4 +438,23 @@ int waitlock(int handle, long ofs, long length)
     }
     return 0;
 }
+
+int waitlock2(int handle, long ofs, long length, long t)
+{
+    int forever = 0;
+    int rc;
+    
+    if (t==0) 
+      forever = 1;
+      
+    while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
+    {
+        mysleep(1);
+        t--;
+    }
+    
+    return rc;
+}
+
+
 #endif
