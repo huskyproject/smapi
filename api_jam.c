@@ -530,20 +530,11 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             msgh->seek_idx = tell(Jmd->IdxHandle);
             msgh->seek_hdr = jamidxNew.HdrOffset = tell(Jmd->HdrHandle);
             jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen(msg->to));
-            jamidxNew.HdrOffset = msgh->seek_hdr;
-            if (!write_idx(Jmd->IdxHandle, &jamidxNew))
-            {
-               setfsize(Jmd->IdxHandle, msgh->seek_idx);
-               freejamsubfield(subfieldNew);
-               msgapierr = MERR_NODS;
-               return -1;
-            }
             jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
             jamhdrNew.TxtLen = strlen(onlytext);
             msgh->bytes_written = (dword) farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
             if (msgh->bytes_written != jamhdrNew.TxtLen)
             {
-               setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
                msgapierr = MERR_NODS;
@@ -553,7 +544,6 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             if (!write_hdr(Jmd->HdrHandle, &jamhdrNew))
             {
                setfsize(Jmd->HdrHandle, msgh->seek_hdr);
-               setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
                msgapierr = MERR_NODS;
@@ -562,7 +552,15 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             if (!write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen))
             {
                setfsize(Jmd->HdrHandle, msgh->seek_hdr);
+               setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
+               freejamsubfield(subfieldNew);
+               msgapierr = MERR_NODS;
+               return -1;
+            }
+            if (!write_idx(Jmd->IdxHandle, &jamidxNew))
+            {
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
+               setfsize(Jmd->HdrHandle, msgh->seek_hdr);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
                msgapierr = MERR_NODS;
@@ -603,15 +601,10 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             /* new message instead of old message position */
             msgh->Hdr.TxtLen = 0;
             msgh->Hdr.Attribute |= JMSG_DELETED;
-            lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
-            write_hdr(Jmd->HdrHandle, &(msgh->Hdr));
             lseek(Jmd->HdrHandle, 0, SEEK_END);
-            msgh->seek_hdr = tell(Jmd->HdrHandle);
+            jamidxNew.HdrOffset = tell(Jmd->HdrHandle);
             jamhdrNew.MsgNum = msgh->Hdr.MsgNum;
             jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen(msg->to));
-            jamidxNew.HdrOffset = msgh->seek_hdr;
-            lseek(Jmd->IdxHandle, msgh->seek_idx, SEEK_SET);
-            write_idx(Jmd->IdxHandle, &jamidxNew);
             lseek(Jmd->TxtHandle, 0, SEEK_END);
             jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
             jamhdrNew.TxtLen = strlen(onlytext);
@@ -621,6 +614,11 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             farwrite(Jmd->TxtHandle, &ch, 1);
             write_hdr(Jmd->HdrHandle, &jamhdrNew);
             write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
+            lseek(Jmd->IdxHandle, msgh->seek_idx, SEEK_SET);
+            write_idx(Jmd->IdxHandle, &jamidxNew);
+            lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
+            write_hdr(Jmd->HdrHandle, &(msgh->Hdr));
+            msgh->seek_hdr = jamidxNew.HdrOffset;
 #ifdef HARD_WRITE_HDR
             Jmd->HdrInfo.ModCounter++;
             Jam_WriteHdrInfo(Jmd);
@@ -651,6 +649,14 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
       else
          jamidxNew.UserCRC = msgh->Idx.UserCRC;
 
+      if (text && textlen) {
+         if (Jmd->TxtHandle == 0) Jam_OpenTxtFile(Jmd);
+         lseek(Jmd->TxtHandle, 0, SEEK_END);
+         jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
+         jamhdrNew.TxtLen = strlen(onlytext);
+         farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
+      } /* endif */
+
       if (jamhdrNew.SubfieldLen > msgh->Hdr.SubfieldLen)
       {
          msgh->Hdr.TxtLen = 0;
@@ -664,6 +670,10 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
       jamhdrNew.MsgNum = msgh->Hdr.MsgNum;
       jamidxNew.HdrOffset = msgh->seek_hdr;
 
+      lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
+      write_hdr(Jmd->HdrHandle, &jamhdrNew);
+      write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
+
       if (Jmd->actmsg_read &&
           Jmd->actmsg[msgh->msgnum - 1].TrueMsg == msgh->seek_hdr &&
           Jmd->actmsg[msgh->msgnum - 1].UserCRC == jamidxNew.UserCRC) {
@@ -673,17 +683,6 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
          write_idx(Jmd->IdxHandle, &jamidxNew);
       }
 
-      if (text && textlen) {
-         if (Jmd->TxtHandle == 0) Jam_OpenTxtFile(Jmd);
-         lseek(Jmd->TxtHandle, 0, SEEK_END);
-         jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
-         jamhdrNew.TxtLen = strlen(onlytext);
-         farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
-      } /* endif */
-
-      lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
-      write_hdr(Jmd->HdrHandle, &jamhdrNew);
-      write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
 #ifdef HARD_WRITE_HDR
       Jmd->HdrInfo.ModCounter++;
       Jam_WriteHdrInfo(Jmd);
