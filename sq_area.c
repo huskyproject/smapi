@@ -25,35 +25,35 @@
 static char rcs_id[]="$Id$";
 #pragma on(unreferenced)
 */
-#include "compiler.h"
-#define MSGAPI_HANDLERS
-#define MSGAPI_NO_OLD_TYPES
-
-#if !defined(__UNIX__) && !defined(SASC)
-#include <io.h>
-#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <string.h>
+#include <stdlib.h>
+#include <errno.h>
 
-#if !defined(__UNIX__) && !defined(SASC)
+#include "compiler.h"
+#define MSGAPI_HANDLERS
+#define MSGAPI_NO_OLD_TYPES
+
+#if defined(HAS_IO_H)
+#include <io.h>
+#endif
+
+#if defined(HAS_SHARE_H)
 #include <share.h>
 #endif
 
-#include <string.h>
-#include <stdlib.h>
-
-#ifdef __UNIX__
+#ifdef HAS_UNISTD_H
 #include <unistd.h>
 #endif
 
-#include <errno.h>
-#include "prog.h"
 #ifdef HAS_MALLOC_H
 #include <malloc.h>
 #endif
 
+#include "prog.h"
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"

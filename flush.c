@@ -24,15 +24,15 @@
 #include "unused.h"
 
 
-#if !defined(__UNIX__) && !defined(SASC)
+#if defined(HAS_IO_H)
 #include <io.h>
 #endif
 
-#if defined(__UNIX__) || defined(__DJGPP__)
+#if defined(HAS_UNISTD_H)
 #include <unistd.h>
 #endif
 
-#if !defined(__IBMC__) && !defined(__DOS__) && !defined(__UNIX__) && !defined(__MINGW32__) && !defined(__MSVC__)
+#if defined(HAS_DOS_H)
 #include <dos.h>
 #endif
 

@@ -20,7 +20,7 @@
 #ifndef __APIDEBUG_H__
 #define __APIDEBUG_H__
 
-/* Change the following #ifdef 1 to enable debugging */
+/* Change the following #if 1 to enable debugging */
 
 #if 0
 

@@ -257,7 +257,7 @@ FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
         }
 
 #else
-#error Unknown compiler!
+#error Unable to determine compiler and target operating system!
 #endif
 
     }

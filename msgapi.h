@@ -293,11 +293,7 @@ struct _msgh
  *  This variable is modified whenever an error occurs with the MsgXxx()
  *  functions.  If msgapierr == 0, then no error occurred.
  */
-#if defined(_MAKE_DLL_MVC_) || defined (DO_PERL)
-SMAPI_EXT word msgapierr;
-#else
-extern word _stdc msgapierr;
-#endif
+SMAPI_EXT word _stdc msgapierr;
 
 extern struct _minf _stdc mi;
 
@@ -435,7 +431,7 @@ SMAPI_EXT int _XPENTRY CheckSmapiVersion( int need_major, int need_minor,
 SMAPI_EXT char * _XPENTRY  strmerr(int msgapierr);
 
 
-#if !defined(__OS2__) && !defined(__FLAT__) && !defined(__UNIX__) && !defined(__NT__)
+#if !defined(__FLAT__)
 #ifndef farread
 sword far pascal farread(sword handle, byte far * buf, word len);
 #endif

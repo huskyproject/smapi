@@ -20,15 +20,22 @@
 #ifndef __FFIND_H__
 #define __FFIND_H__
 
+#include <stdio.h>
+#include <stdio.h>
+
 #include "compiler.h"
 
-#ifdef SASC
-#  include <stdio.h>
+#ifdef HAS_DOS_H
 #  include <dos.h>
-#elif defined(__UNIX__)
-#  include <stdio.h>
+#endif
+#if defined(HAS_UNISTD_H)
 #  include <unistd.h>
+#endif
+#if defined(HAS_DIRENT_H)
 #  include <dirent.h>
+#endif
+#if defined(HAS_DIR_H)
+#include <dir.h>
 #endif
 
 #if defined(__RSXNT__) || defined(__MINGW32__) || defined(__MSVC__)
@@ -53,15 +60,6 @@
 
 #define FFIND struct ffind
 
-#if defined(__DJGPP__) || defined(__TURBOC__)
-#include <dir.h>
-#endif
-
-#if defined(__WATCOMC__) || defined(__MSC__)
-#include <dos.h>
-#endif
-
-
 struct ffind
 {
     /* this is the public area of the struct */
@@ -81,7 +79,7 @@ struct ffind
     unsigned long hdir;   /* directory handle from DosFindFirst */
 
 #elif defined(__OS2__)
-#if defined(__386__) || defined(__FLAT__)
+#if defined(__FLAT__)
     unsigned long hdir;   /* directory handle from DosFindFirst */
 #else
     unsigned short hdir;  /* directory handle from DosFindFirst */
@@ -103,7 +101,7 @@ struct ffind
     char attrib_srch;
 
 #else
-#error Unknown compiler!
+#error Unable to determine compiler and target operating system!
 #endif
 };
 
