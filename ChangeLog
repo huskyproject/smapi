@@ -1,3 +1,16 @@
+2002-12-17 Tuesday 12:44  stas_degteff
+
+	* makefile.mvcdll (1.13): Fix dll makefile: distclean & etc. Thanks
+	to Alexander Reznikov 2:4600/220.
+
+2002-12-06 Friday 14:55  stas_degteff
+
+	* makefile.bsd4 (1.11): Fix .include
+
+2002-12-06 Friday 08:44  mche
+
+	* compiler.h (1.111): define some useful constants for msvc
+
 2002-12-05 Thursday 07:53  stas_degteff
 
 	* makefile.wcd (1.20), makefile.wco (1.16), makefile.wcw (1.22),
