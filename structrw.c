@@ -384,9 +384,9 @@ int write_sqhdr(sword handle, SQHDR *psqhdr)
 
 int read_sqidx(sword handle, SQIDX *psqidx, dword n)
 {
-    byte buf[SQIDX_SIZE], *pbuf;
+    byte buf[SQIDX_SIZE], *pbuf = NULL;
     byte *accel_buffer = NULL;
-    dword i, maxbuf, rd;
+    dword i, maxbuf = 0, rd;
 
     if (n > 1)
     {
@@ -451,9 +451,9 @@ int read_sqidx(sword handle, SQIDX *psqidx, dword n)
 
 int write_sqidx(sword handle, SQIDX *psqidx, dword n)
 {
-    byte buf[SQIDX_SIZE], *pbuf;
+    byte buf[SQIDX_SIZE], *pbuf = NULL;
     byte *accel_buffer = NULL;
-    dword i, maxbuf, wr;
+    dword i, maxbuf = 0, wr;
 
     if (n > 1)
     {
