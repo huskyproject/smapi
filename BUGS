@@ -2,7 +2,3 @@ Serguei Revtov (sir@cb.tver.ru):
 
 Jam api doesn't work on SUNs. There may be references to odd address
 in some messages.
-
-Max Levenkov (sackett@mail.ru):
-
-Time in JAM areas is not correct. Maybe this is a Golded bug? Hmm...

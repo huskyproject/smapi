@@ -39,6 +39,14 @@ struct tm *_fast DosDate_to_TmDate(union stamp_combo *dosdate, struct tm *tmdate
     {
         InitCvt();
     }
+    
+    if (dosdate->ldate == 0)
+    {	time_t t=0;
+	struct tm *tm;
+	tm = gmtime(&t);
+	memcpy(tmdate, tm, sizeof(*tm));
+	return tmdate;
+    }
 
     tmdate->tm_mday = dosdate->msg_st.date.da;
     tmdate->tm_mon = dosdate->msg_st.date.mo - 1;

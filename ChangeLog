@@ -1,3 +1,33 @@
+----- cvs ci ------
+Mon Sep 04 12:54:10 NOVST 2000
+max (patches from Pavel Gulchouk):
+* jam update for "hpt link" & "hptlink"
+
+----- cvs ci ------
+Sun Sep 03 19:54:10 NOVST 2000
+max (patches from Pavel Gulchouk):
+* ReplyTo/Reply1st/ReplyNext support ("hpt link" links jam areas now)
+
+----- cvs ci ------
+Tue Aug 29 22:54:10 NOVST 2000
+max (patches from Pavel Gulchouk):
+* great JAM bugfix! (ex: netmail looks good after packing)
+
+----- cvs ci ------
+Mon Jul 31 12:18:23 NOVST 2000
+max (patches from Pavel Gulchouk):
+* MsgDeleteBase() functions
+
+----- cvs ci ------
+Tue Jul 25 22:09:07 NOVST 2000
+max (patches from Pavel Gulchouk):
+* jam @Via fixes
+
+----- cvs ci ------
+Thu Jul 13 19:22:30 NOVST 2000
+max (patches from Pavel Gulchouk):
+* jam readsubfiled() fixes
+
 smapi 1.6.4
 -----------
 (released on Tue Jul 18 21:01:54 MEST 2000)

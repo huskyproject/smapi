@@ -31,6 +31,7 @@
 #include "api_jamp.h"
 #include "apidebug.h"
 #include "unused.h"
+#include "progprot.h"
 
 #define Jmd ((JAMBASE *)(jm->apidata))
 #define MsghJm ((JAMBASE *)(((struct _msgh *)msgh)->sq->apidata))
@@ -62,7 +63,7 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
    {
       jm->isecho = TRUE;
    }
-   
+
    if (type & MSGTYPE_NOTH) jm->isecho = NOTH;
 
    jm->api = (struct _apifuncs *)palloc(sizeof(struct _apifuncs));
@@ -287,9 +288,18 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       /* ftsdate = msg->__ftsc_date; */
       ftsdate = (unsigned char *)sc_time(scombo, (char *)(msg->__ftsc_date));
 
-      s_time = gmtime((time_t *)(&(msgh->Hdr.DateProcessed)));
-      scombo = (SCOMBO*)(&(msg->date_arrived));
-      scombo = TmDate_to_DosDate(s_time, scombo);
+      if (msgh->Hdr.DateProcessed) {
+         s_time = gmtime((time_t *)(&(msgh->Hdr.DateProcessed)));
+         scombo = (SCOMBO*)(&(msg->date_arrived));
+         scombo = TmDate_to_DosDate(s_time, scombo);
+      }
+      else
+         ((SCOMBO*)(&(msg->date_arrived)))->ldate = 0;
+
+      msg->replyto = msgh->Hdr.ReplyTo;
+      msg->replies[0] = msgh->Hdr.Reply1st;
+      msg->replies[1] = 0;
+      msg->replynext  = msgh->Hdr.ReplyNext;
 
    } /* endif */
 
@@ -319,14 +329,14 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
             bytes -= (msgh->Hdr.TxtLen-offset);
             bytes -= offset;
             if (bytes > msgh->lclen) bytes = msgh->lclen;
-            strncat(text, msgh->lctrl, bytes);
+            strncpy(text+bytesread, msgh->lctrl, bytes);
             bytesread += bytes;
          } else {
             bytesread = farread(MsghJm->TxtHandle, text, bytes);
          } /* endif */
          msgh->cur_pos += bytesread;
       } /* endif */
-      text[bytes] = '\0';
+      text[bytesread] = '\0';
    }
 
    if (clen && ctxt) {
@@ -390,7 +400,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       if (ctxt) ctxt = NULL;
    }
 
-   
+
    if (clen && ctxt) {
        x = strlen((char*)ctxt);
        if (clen < x) clen = x+1;
@@ -664,6 +674,10 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    }
 
    msgnum = umsgid - Jmd->HdrInfo.BaseMsgNum + 1;
+   if (msgnum <= 0)
+      return 0;
+   if (msgnum > jm->high_msg)
+      return jm->high_msg;
 
    while (1) {
       if (!Jam_PosHdrMsg(jm, msgnum-1, &idxmsg, &hdrmsg)) {
@@ -947,7 +961,7 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
                } /* endif */
                if(mode == MOPEN_CREATE) return (MSGH *)msgh;
                msgh->SubFieldPtr = (JAMSUBFIELDptr)palloc(msgh->Hdr.SubfieldLen);
-               read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), msgh->Hdr.SubfieldLen);
+               read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), &(msgh->Hdr.SubfieldLen));
                DecodeSubf(msgh);
                return (MSGH *) msgh;
             }
@@ -1105,6 +1119,14 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
       kludge = str+5;
       subtypes = JAMSFLD_PID;
    }
+   else if (strstr(str, "Via ")) {
+      kludge = str+4;
+      subtypes = JAMSFLD_TRACE;
+   }
+   else if (strstr(str, "FLAGS ")) {
+      kludge = str+6;
+      subtypes = JAMSFLD_FLAGS;
+   }
    else {
       kludge = str;
       subtypes = JAMSFLD_FTSKLUDGE;
@@ -1191,7 +1213,14 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    }
    strcpy(jamhdr->Signature, HEADERSIGNATURE);
    jamhdr->Revision = CURRENTREVLEV;
-   jamhdr->DateProcessed = time(NULL) + gettz();
+   if (((SCOMBO*)&(msg->date_arrived))->ldate) {
+      /* save arrived date for sqpack */
+      ptm = &stm;
+      ptm = DosDate_to_TmDate((SCOMBO*)(&(msg->date_arrived)), ptm);
+      jamhdr->DateProcessed = mktime(ptm) + gettz();
+   }
+   else
+      jamhdr->DateProcessed = time(NULL) + gettz();
    ptm = &stm;
    ptm = DosDate_to_TmDate((SCOMBO*)(&(msg->date_written)), ptm);
    jamhdr->DateWritten = mktime(ptm) + gettz();
@@ -1230,7 +1259,7 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 
    /* Orig Address */
 
-   if ((SubFieldCur = NETADDRtoSubf(msg->orig, &clen, 0))) {
+   if (!msgh->sq->isecho && (SubFieldCur = NETADDRtoSubf(msg->orig, &clen, 0))) {
       SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
       memmove((char*)SubField+sublen, SubFieldCur, clen);
       free(SubFieldCur);
@@ -1248,6 +1277,10 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 
    jamhdr->SubfieldLen = sublen;
    jamhdr->PasswordCRC = 0xFFFFFFFFUL;
+
+   jamhdr->ReplyTo = msg->replyto;
+   jamhdr->Reply1st = msg->replies[0];
+   jamhdr->ReplyNext = msg->replynext;
 
    *subfield = SubField;
 }
@@ -1481,6 +1514,9 @@ void DecodeSubf(MSGH *msgh)
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_PID))) {
          makeKludge(&pid, "\x01PID: ", SubField->Buffer, "", SubField->DatLen);
       }
+      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_TRACE));) {
+         makeKludge(&via, "\001Via ", SubField->Buffer, "\r", SubField->DatLen);
+      }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FTSKLUDGE));) {
          if (strncasecmp(SubField->Buffer, "VIA", 3) == 0) {
             makeKludge(&via, "\x01", SubField->Buffer, "\r", SubField->DatLen);
@@ -1489,16 +1525,13 @@ void DecodeSubf(MSGH *msgh)
          }
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FLAGS));) {
-         makeKludge(&flags, "\x01", SubField->Buffer, "", SubField->DatLen);
+         makeKludge(&flags, "\001FLAGS ", SubField->Buffer, "", SubField->DatLen);
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SEENBY2D));) {
          makeKludge(&seenby, "SEEN-BY: ", SubField->Buffer, "\r", SubField->DatLen);
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_PATH2D));) {
-         makeKludge(&seenby, "\x01PATH: ", SubField->Buffer, "\r", SubField->DatLen);
-      }
-      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FLAGS));) {
-         makeKludge(&path, "\x01", SubField->Buffer, "\r", SubField->DatLen);
+         makeKludge(&path, "\001PATH: ", SubField->Buffer, "\r", SubField->DatLen);
       }
       msgh->ctrl = (unsigned char*)palloc(1);
       msgh->lctrl = (unsigned char*)palloc(1);
