@@ -1,5 +1,5 @@
-# Legacy makefile for building on FreeBSD (old versions)
-# Run 'make hinstall' to install C header files.
+# Legacy makefile for building on FreeBSD using GNU make
+# Run 'gmake hinstall' to install C header files.
 # No support for the Husky build environment.
 
 prefix=	/usr/local
@@ -20,9 +20,9 @@ DIROPT=	-d -m 755
 
 # FreeBSD/i386 addition
 #
-.if ${MACHINE_ARCH} == "i386"
+ifeq ( ${MACHINE_ARCH} , "i386" )
    CFLAGS+= -fomit-frame-pointer -fstrength-reduce -m486
-.endif
+endif
 
 OBJS=	1stchar.o  \
 	api_sdm.o  \
