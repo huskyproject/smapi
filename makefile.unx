@@ -10,6 +10,7 @@ LIB=	ar
 RANLIB=	ranlib
 VERH =  1
 VER  =  1.6.2
+INCDIR=/usr/local/include
 
 
 
@@ -50,6 +51,18 @@ $(TARGET): $(OBJS)
 
 libsmapiunix.so: $(OBJS)
 	$(LD) -shared -o libsmapiunix.so $(OBJS) -lc
+
+install:
+	install alc.h $(INCDIR)/smapi
+	install api_brow.h $(INCDIR)/smapi
+	install compiler.h $(INCDIR)/smapi
+	install ffind.h $(INCDIR)/smapi
+	install msgapi.h $(INCDIR)/smapi
+	install patmat.h $(INCDIR)/smapi
+	install prog.h $(INCDIR)/smapi
+	install progprot.h $(INCDIR)/smapi
+	install stamp.h $(INCDIR)/smapi
+	install typedefs.h $(INCDIR)/smapi
 
 clean:
 	-rm *.o

@@ -7,6 +7,7 @@ CDEFS=	-DUNIX
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -fPIC
 LIB=	ar
 LIBDIR= /usr/local/lib
+INCDIR= /usr/local/include
 ILOPT=  -c -m644
 LDCONFIG = /sbin/ldconfig
 VERH =  1
@@ -55,6 +56,16 @@ install: libsmapilnx.so.$(VER)
 	ln -sf $(LIBDIR)/libsmapilnx.so.$(VER) $(LIBDIR)/libsmapilnx.so.$(VERH)
 	ln -sf $(LIBDIR)/libsmapilnx.so.$(VERH) $(LIBDIR)/libsmapilnx.so
 	$(LDCONFIG)
+	install alc.h $(INCDIR)/smapi
+	install api_brow.h $(INCDIR)/smapi
+	install compiler.h $(INCDIR)/smapi
+	install ffind.h $(INCDIR)/smapi
+	install msgapi.h $(INCDIR)/smapi
+	install patmat.h $(INCDIR)/smapi
+	install prog.h $(INCDIR)/smapi
+	install progprot.h $(INCDIR)/smapi
+	install stamp.h $(INCDIR)/smapi
+	install typedefs.h $(INCDIR)/smapi
 
 clean:
 	-rm *.o
