@@ -60,7 +60,6 @@ $(TARGET): $(OBJS)
 
 clean:
 	-rm *.o
-	-rm $(TARGET)
 
 distclean:
-	-rm libsmapiunix.so
+	-rm $(TARGET)
