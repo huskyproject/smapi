@@ -1088,7 +1088,6 @@ int qq(void)
 #  define HAS_DIRECT_H
 #  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
 #  define HAS_DIRECT_H     /* #include <direct.h> */
-#  define HAS_SYS_WAIT_H   /* #include <sys/wait.h> */
 
    SMAPI_EXT int unlock(int handle, long ofs, long length);
    SMAPI_EXT int lock(int handle, long ofs, long length);
