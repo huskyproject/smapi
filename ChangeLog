@@ -1,3 +1,27 @@
+2003-02-18 Tuesday 12:14  sfpavel
+
+	* debian/: README.Debian, changelog, control, copyright, rules
+	(smapi-2_4-stable.[1,3,2,1,1]): New debian version - change section
+	to main
+
+2003-02-18 Tuesday 11:48  sfpavel
+
+	* readme.txt (smapi-2_4-stable.3): Update readme.txt
+
+2003-02-18 Tuesday 11:36  sfpavel
+
+	* COPYING, LICENSE, licence.txt (smapi-2_4-stable.[1,1,1]): Changed
+	license terms to LGPL in agreement with Scott Dudley
+
+2003-02-18 Tuesday 11:06  os2tobi
+
+	* LICENSE (1.1): Changed license terms to LGPL in agreement with
+	Scott Dudley.
+
+2003-02-18 Tuesday 04:54  stas_degteff
+
+	* compiler.h (1.165), makefile.djg (1.23): Fix djgpp build
+
 2003-02-16 Sunday 12:44  stas_degteff
 
 	* makefile.bsd, readme.txt (smapi-2_4-stable.[1,2]): Change BSD
