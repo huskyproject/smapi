@@ -97,7 +97,7 @@ install: install-h instdyn
 	$(INSTALL) $(ISLOPT) $(TARGET) $(LIBDIR)
 
 uninstall:
-	cd $(INCDIR)$(DIRSEP)smapi$(DIRSEP)
+	-cd $(INCDIR)$(DIRSEP)smapi$(DIRSEP) ;\
 	$(RM) $(RMOPT) $(HEADERS)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
