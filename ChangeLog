@@ -1,3 +1,12 @@
+2003-03-13 Thursday 16:03  stas_degteff
+
+	* Makefile (smapi-2_4-stable.2): Fix previous
+
+2003-03-13 Thursday 08:59  stas_degteff
+
+	* Makefile, makefile.inc (smapi-2_4-stable.[1,3]): Fix
+	install/uninstall library
+
 2003-03-12 Wednesday 21:41  d_sergienko
 
 	* prog.h (smapi-2_4-stable.2): fix warnings on MSVC
