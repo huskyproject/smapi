@@ -1,3 +1,7 @@
+2002-02-11 Monday 00:27  pavel.gulchouck
+
+	* fexist.c (1.20): MSVC compiling
+
 2002-02-10 Sunday 18:33  pavel.gulchouck
 
 	* compiler.h (1.79), fexist.c (1.19): Fixed mingw32 warnings
