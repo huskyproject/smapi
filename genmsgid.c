@@ -10,6 +10,7 @@
 #   include <io.h>
 #endif
 
+#include "msgapi.h"
 #include "prog.h"
 #include "ffind.h"
 
