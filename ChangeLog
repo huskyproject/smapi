@@ -1,3 +1,13 @@
+2001-12-20 Thursday 20:37  pavel.gulchouck
+
+	* api_jam.c (1.67), fexist.c (1.17), tdelay.c (1.9): Fixes for
+	compile under mingw32
+
+2001-12-20 Thursday 18:27  pavel.gulchouck
+
+	* api_jam.c (1.66), api_jam.h (1.9), api_jamp.h (1.14), structrw.c
+	(1.24): Jam link (and others) speedup
+
 2001-12-18 Tuesday 17:40  ml
 
 	* api_jam.c (1.65): set msgapierr = MERR_NODS
