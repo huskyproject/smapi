@@ -1244,6 +1244,7 @@ int qq(void)
 #  define S_IFDIR     _S_IFDIR
 #endif
 
+/*
 #ifndef mymkdir
 #warning mkdir() call set to default value. Please check your compiler documentation for it and write define into compiler.h
 #  define mymkdir mkdir
@@ -1267,9 +1268,11 @@ int qq(void)
 #ifndef _stdc
 #warning Please check your compiler to standard C code modifyer and define _stdc in compiler.h
 #endif
+
 #ifndef _intr
 #warning Please check your compiler to interrupt handler modifyer and define _intr in compiler.h
 #endif
+
 #ifndef _intcast
 #warning Please check your compiler to int. cast modifyer and define _intcast in compiler.h
 #endif
@@ -1300,7 +1303,7 @@ int qq(void)
 #ifndef farwrite
 #warning Please check your compiler to far calling implementation of write() function and define farwrite in compiler.h
 #endif
-
+*/
 
  /* waitlock works like lock, but blocks until the lock can be
   * performed.
