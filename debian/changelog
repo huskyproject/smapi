@@ -1,3 +1,9 @@
+smapi (2.2.0-20020815-2) stable; urgency=low
+
+  * Correct debian/shlibs
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Fri, 23 Aug 2002 17:11:06 +0600
+
 smapi (2.2.0-20020815-1) stable; urgency=low
 
   * Take sources from new CVS at sourceforge.net (nothing changes from
