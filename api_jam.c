@@ -429,6 +429,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
 
    memset(&jamidxNew, '\0', sizeof(JAMIDXREC));
    memset(&jamhdrNew, '\0', sizeof(JAMHDR));
+   jamhdrNew.ReplyCRC = jamhdrNew.MsgIdCRC = 0xFFFFFFFFUL;
 
    if (!ctxt) 
      clen = 0L;
@@ -521,7 +522,6 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
                return -1;
             }
             msgh->cur_pos = tell(Jmd->TxtHandle);
-            jamhdrNew.ReplyCRC = 0xFFFFFFFFUL;
             if (!write_hdr(Jmd->HdrHandle, &jamhdrNew))
             {
                setfsize(Jmd->HdrHandle, msgh->seek_hdr);
@@ -586,7 +586,6 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             msgh->cur_pos = tell(Jmd->TxtHandle);
             lseek(Jmd->TxtHandle, jamhdrNew.TxtOffset+totlen-1, SEEK_SET);
             farwrite(Jmd->TxtHandle, &ch, 1);
-            jamhdrNew.ReplyCRC = 0xFFFFFFFFUL;
             write_hdr(Jmd->HdrHandle, &jamhdrNew);
             write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
 #ifndef LAZY_WRITE_HDR
@@ -626,7 +625,6 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
 
       jamhdrNew.MsgNum = msgh->Hdr.MsgNum;
       jamidxNew.HdrOffset = msgh->seek_hdr;
-      jamhdrNew.ReplyCRC = 0xFFFFFFFFUL;
 
       if (Jmd->actmsg_read &&
           Jmd->actmsg[msgh->msgnum - 1].TrueMsg == msgh->seek_hdr &&
@@ -1582,6 +1580,10 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,
                   SubField[1].Buffer = SubField->Buffer+SubField->DatLen+1;
                   jamhdr->SubfieldLen += clen;
                   subfield[0]->subfieldCount++;
+                  if (SubField->LoID==JAMSFLD_MSGID)
+                     jamhdr->MsgIdCRC=Jam_Crc32(SubField->Buffer, SubField->DatLen);
+                  else if (SubField->LoID==JAMSFLD_REPLYID)
+                     jamhdr->ReplyCRC=Jam_Crc32(SubField->Buffer, SubField->DatLen);
                   SubField++;
                }
            } else {
