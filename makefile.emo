@@ -33,7 +33,7 @@ OBJS=   1stchar.obj  \
 # Thunderbirds are go!
 
 .c.obj:
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-        $(LIB) r $(TARGET) $@
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)

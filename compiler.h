@@ -366,7 +366,7 @@ int lock(int handle, long ofs, long length);
 #define farwrite write
 
 #define EXPENTRY _syscall
-#define mysleep(x) DosSleep(1000L*(x))
+#define mysleep(x) _sleep(x);
 
 #elif defined(__IBMC__)
 
