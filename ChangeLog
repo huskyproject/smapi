@@ -1,3 +1,21 @@
+2004-05-25 Tuesday 21:24  pgul
+
+	* src/api_sdm.c (1.9): Inhibit compilation warning
+
+2004-05-25 Tuesday 21:07  pgul
+
+	* src/api_jam.c (1.14): Fix previous patch
+
+2004-05-25 Tuesday 12:49  pgul
+
+	* src/api_jam.c (1.13): Don't lose messages on sqpack if jam header
+	is incorrect
+
+2004-05-23 Sunday 08:17  mche
+
+	* src/api_jam.c (1.12), src/structrw.c (1.5), smapi/api_jam.h
+	(1.4): fix writing jam headers [patch by Nick Voronin]
+
 2004-04-13 Tuesday 09:37  sfpavel
 
 	* debian/compat (1.1): file compat was initially added on branch
