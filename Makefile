@@ -50,7 +50,8 @@ OBJS=	1stchar$(OBJ)  \
 	strocpy$(OBJ)  \
 	structrw$(OBJ) \
 	trail$(OBJ)    \
-	weekday$(OBJ)
+	weekday$(OBJ) \
+	semaphor$(OBJ)
 
 all: $(TARGET)
 
