@@ -113,6 +113,7 @@ typedef struct _xmsg
 #define MSGARQ     0x4000
 #define MSGURQ     0x8000
 #define MSGSCANNED 0x00010000L
+#define MSGLOCKED  0x40000000L  // this seems to be a feature of golded
 
     dword attr;
 
