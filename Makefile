@@ -52,6 +52,8 @@ OBJS=	1stchar$(OBJ)  \
 	trail$(OBJ)    \
 	weekday$(OBJ)
 
+all: $(TARGET)
+
 .c$(OBJ):
 	$(CC) $(CFLAGS) $(CDEFS)  $<
 	$(AR) $(AR_R) $(TARGET) $@
