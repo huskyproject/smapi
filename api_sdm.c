@@ -251,7 +251,8 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
 {
     byte msgname[PATHLEN];
     int handle, filemode;
-    word mn, owrite = FALSE;
+    int owrite = FALSE;
+    dword msguid;
 
     MSGH *msgh;
 
@@ -266,41 +267,21 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
     }
     else if (msgnum == MSGNUM_PREV)
     {
-        for (mn = (word) (mh->num_msg - 1); (sdword) mn < (sdword) mh->high_msg; mn--)
-        {
-            if ((dword) Mhd->msgnum[mn] < mh->cur_msg)
-            {
-                msgnum = mh->cur_msg = Mhd->msgnum[mn];
-                break;
-            }
-        }
-
-        /* if mn == -1, no message to go to */
-
-        if (mn == (word) - 1)
-        {
-            msgapierr = MERR_NOENT;
-            return NULL;
-        }
+	msgnum = mh->cur_msg - 1;
+	if (msgnum == 0)
+	{
+	    msgapierr = MERR_NOENT;
+	    return NULL;
+	}
     }
     else if (msgnum == MSGNUM_NEXT)
     {
-        for (mn = 0; mn < (word) mh->num_msg; mn++)
-        {
-            if ((dword) Mhd->msgnum[mn] > mh->cur_msg)
-            {
-                msgnum = mh->cur_msg = Mhd->msgnum[mn];
-                break;
-            }
-        }
-
-        /* if mn == Mhd->msgnum_len, we can't go to any message */
-
-        if ((dword) mn == mh->num_msg)
-        {
-            msgapierr = MERR_NOENT;
-            return NULL;
-        }
+	msgnum = mh->num_msg + 1;
+	if (msgnum > mh->num_msg)
+	{
+	    msgapierr = MERR_NOENT;
+	    return NULL;
+	}
     }
     else if (mode != MOPEN_CREATE)
     {
@@ -308,21 +289,14 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
          *  If we're not creating, make sure that the specified msg# can
          *  be found.
          */
-
-        for (mn = 0; mn < (word) mh->num_msg; mn++)
-        {
-            if (msgnum == Mhd->msgnum[mn])
-            {
-                break;
-            }
-        }
-
-        if ((dword) mn == mh->num_msg)
-        {
-            msgapierr = MERR_NOENT;
-            return NULL;
-        }
+	if (msgnum <= 0 || msgnum > mh->num_msg)
+	{
+	    msgapierr = MERR_NOENT;
+	    return NULL;
+	}
     }
+    if (msgnum <= mh->num_msg && msgnum > 0)
+	msguid = SdmMsgnToUid(mh, msgnum);
 
     if (mode == MOPEN_CREATE)
     {
@@ -357,7 +331,8 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
                 }
             }
 
-            msgnum = ++mh->high_msg;
+            msgnum = ++mh->num_msg;
+	    msguid = ++mh->high_msg;
 
             /*
              *  Make sure that we don't overwrite the high-water mark,
@@ -390,7 +365,7 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
         filemode = O_RDWR;
     }
 
-    sprintf((char *) msgname, (char *) sd_msg, Mhd->base, (int)msgnum);
+    sprintf((char *) msgname, (char *) sd_msg, Mhd->base, (int)msguid);
     handle = sopen((char *) msgname, filemode | O_BINARY, SH_DENYNONE,
                    FILEMODE(mh->isecho));
     if (handle == -1)
@@ -442,19 +417,11 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
 
         if (!owrite)
         {
-	    Mhd->msgnum[(size_t) (mh->num_msg)] = (word) msgnum;
+	    Mhd->msgnum[(size_t) (mh->num_msg)] = (word) msguid;
 	    mh->num_msg++;
         }
         else
         {
-            for (mn = 0; (dword) mn < mh->num_msg; mn++)
-            {
-                if ((dword) Mhd->msgnum[mn] >= msgnum)
-                {
-                    break;
-                }
-            }
-
             /*
              *  If this message is already in the list then do nothing --
              *  simply overwrite it, keeping the same message number, so
@@ -463,11 +430,11 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
              *  in between two others.
              */
 
-            if ((dword) Mhd->msgnum[mn] != msgnum)
+            if ((dword) Mhd->msgnum[msgnum-1] != msguid)
             {
-                memmove(Mhd->msgnum + mn + 1, Mhd->msgnum + mn,
-                  ((size_t) mh->num_msg - mn) * sizeof(word));
-                Mhd->msgnum[mn] = (word) msgnum;
+                memmove(Mhd->msgnum + msgnum, Mhd->msgnum + msgnum - 1,
+                  ((size_t) mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
+                Mhd->msgnum[msgnum-1] = (word) msguid;
                 mh->num_msg++;
             }
         }
@@ -811,34 +778,29 @@ static sword EXPENTRY SdmKillMsg(MSG * mh, dword msgnum)
 {
     dword hwm;
     byte temp[PATHLEN];
-    word mn;
+    UMSGID msguid;
 
     if (InvalidMh(mh))
     {
         return -1;
     }
 
+    if (msgnum > mh->num_msg || msgnum <= 0)
+    {
+	msgapierr = MERR_NOENT;
+	return -1;
+    }
+
+    msguid = SdmMsgnToUid(mh, msgnum);
+
     /* Remove the message number from our private index */
 
-    for (mn = 0; (dword) mn < mh->num_msg; mn++)
-    {
-        if ((dword) Mhd->msgnum[mn] == msgnum)
-        {
-            memmove(Mhd->msgnum + mn, Mhd->msgnum + mn + 1,
-              (int)(mh->num_msg - mn - 1) * sizeof(int));
-            break;
-        }
-    }
+    memmove(Mhd->msgnum + msgnum - 1, Mhd->msgnum + msgnum,
+            (int)(mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
 
     /* If we couldn't find it, return an error message */
 
-    if (mn == (word) mh->num_msg)
-    {
-        msgapierr = MERR_NOENT;
-        return -1;
-    }
-
-    sprintf((char *) temp, (char *) sd_msg, Mhd->base, (unsigned int)msgnum);
+    sprintf((char *) temp, (char *) sd_msg, Mhd->base, (unsigned int)msguid);
 
     if (unlink((char *) temp) == -1)
     {
@@ -850,11 +812,11 @@ static sword EXPENTRY SdmKillMsg(MSG * mh, dword msgnum)
 
     /* Adjust the high message number */
 
-    if (msgnum == mh->high_msg)
+    if (msguid == mh->high_msg)
     {
         if (mh->num_msg)
         {
-            mh->high_msg = (dword) Mhd->msgnum[(int)mh->num_msg - 1];
+            mh->high_msg = SdmMsgnToUid(mh, mh->num_msg);
         }
         else
         {
@@ -866,10 +828,13 @@ static sword EXPENTRY SdmKillMsg(MSG * mh, dword msgnum)
 
     hwm = SdmGetHighWater(mh);
 
-    if (hwm != (dword) - 1 && hwm > 0 && hwm >= msgnum)
+    if (hwm != (dword) -1 && hwm > 0 && hwm >= msgnum)
     {
         SdmSetHighWater(mh, msgnum - 1);
     }
+
+    if (mh->cur_msg >= msgnum)
+	mh->cur_msg--;
 
     msgapierr = MERR_NONE;
     return 0;
@@ -934,35 +899,39 @@ static UMSGID EXPENTRY SdmMsgnToUid(MSG * mh, dword msgnum)
     }
 
     msgapierr = MERR_NONE;
-    return (UMSGID) msgnum;
+    if (msgnum > mh->num_msg) return -1;
+    if (msgnum <= 0) return 0;
+    return (UMSGID) Mhd->msgnum[msgnum - 1];
 }
 
 static dword EXPENTRY SdmUidToMsgn(MSG * mh, UMSGID umsgid, word type)
 {
-    word wmsgid, mn;
+    dword  left, right, new;
+    UMSGID umsg;
 
     if (InvalidMh(mh))
-    {
         return -1L;
-    }
-
-    msgapierr = MERR_NONE;
-    wmsgid = (word) umsgid;
-
-    for (mn = 0; (dword) mn < mh->num_msg; mn++)
+    if (umsgid <= 0)
+	return 0;
+    left = 1;
+    right = mh->num_msg;
+    while (left <= right)
     {
-        if (Mhd->msgnum[mn] == wmsgid ||
-          (type == UID_NEXT && Mhd->msgnum[mn] >= wmsgid) ||
-          (type == UID_PREV && Mhd->msgnum[mn] <= wmsgid &&
-          ((dword) (mn + 1) >= mh->num_msg ||
-          Mhd->msgnum[mn + 1] > wmsgid)))
-        {
-            return ((dword) Mhd->msgnum[mn]);
-        }
+	new = (right + left) / 2;
+	umsg = SdmMsgnToUid(mh, new);
+	if (umsg == -1)
+	    return 0;
+	if (umsg < umsgid)
+	    left = new + 1;
+	else if (umsg > umsgid)
+	    right = new - 1;
+	else
+	    return new;
     }
-
-    msgapierr = MERR_NOENT;
-    return 0L;
+    if (type == UID_EXACT) return 0;
+    if (type == UID_PREV)
+	return (right < 0) ? 0 : right;
+    return (left > mh->num_msg) ? mh->num_msg : left;
 }
 
 static dword EXPENTRY SdmGetHighWater(MSG * mh)
@@ -979,7 +948,7 @@ static dword EXPENTRY SdmGetHighWater(MSG * mh)
 
     if (mh->high_water != (dword) - 1L)
     {
-        return mh->high_water;
+        return SdmUidToMsgn(mh, mh->high_water, UID_PREV);
     }
 
     msgh = SdmOpenMsg(mh, MOPEN_READ, 1L);
@@ -1000,7 +969,7 @@ static dword EXPENTRY SdmGetHighWater(MSG * mh)
 
     SdmCloseMsg(msgh);
 
-    return mh->high_water;
+    return SdmUidToMsgn(mh, mh->high_water, UID_PREV);
 }
 
 static sword EXPENTRY SdmSetHighWater(MSG * mh, dword hwm)
