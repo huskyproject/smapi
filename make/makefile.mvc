@@ -66,7 +66,7 @@ DLLPREFIX=
 # Suffix to construct library name
 LIBSUFFIX=mvc
 # Suffix to construct dll name
-DLLSUFFIX=mvc-$(VERH)
+DLLSUFFIX=mvc
 
 ## make directives ##
 
@@ -104,17 +104,19 @@ dllprograms: dll $(PROGRAMS)
 
 
 {$(SRC_DIR)}$(_C)$(_OBJ):
-	$(CC) $(CFLAGS) $(CDEFS) $(OBJOPT) $(OBJNAMEOPT)$@ $<
+	@$(CC) $(CFLAGS) $(CDEFS) $(OBJOPT) $(OBJNAMEOPT)$@ $<
 
 {$(SRC_DIR)}$(_C)$(_EXE):
-	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(EXENAMEOPT)$@ $< $(LFLAGS) $(LIBS) $(TARGETLIB)
+	@echo Create $@...
+	@$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(EXENAMEOPT)$@ $< $(LFLAGS) $(LIBS) $(TARGETLIB)
 
 $(TARGETLIB):	$(OBJS)
-	$(AR) $(ARFLAGS) $(LIBNAMEOPT)$@ $**
+	@$(AR) $(ARFLAGS) $(LIBNAMEOPT)$@ $**
 
 dll:
-	!$(MAKE) -f makefile.mvc CFLAGS="$(CFLAGS) $(DLCFLAGS)" $(OBJS)
-	$(LINK) $(LINKFLAGS) $(LIBNAMEOPT)$(TARGETDLL) $(DLLS) $(OBJS)
+	@!$(MAKE) -f makefile.mvc CFLAGS="$(CFLAGS) $(DLCFLAGS)" $(OBJS)
+	@echo Create $(TARGETDLL)...
+	@$(LINK) $(LINKFLAGS) $(LIBNAMEOPT)$(TARGETDLL) $(DLLS) $(OBJS)
 
 clean:
 	-$(RM) $(RMOPT) *$(_OBJ)
