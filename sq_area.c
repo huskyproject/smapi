@@ -61,6 +61,7 @@ static char rcs_id[]="$Id$";
 #include "api_sqp.h"
 #include "apidebug.h"
 #include "unused.h"
+#include "semaphor.h"
 
 /* Linked list of open Squish areas */
 
@@ -70,88 +71,36 @@ static HAREA haOpen=NULL;
 static short lock_sem = 0;
 #elif defined(__BEOS__)
 #include <OS.h>
-sem_id lock_sem;
+static sem_id lock_sem;
 #elif defined(UNIX)
-int lock_sem;
+static int lock_sem;
 #endif
 
 static char dot_sqd[]=".sqd";
 static char dot_sqi[]=".sqi";
 static char dot_sql[]=".sql";
 
-void _SquishInitSem()
+short _SquishInitSem()
 {
-#ifdef __BEOS__
-  lock_sem = create_sem(0,0);
-  release_sem(lock_sem);
-#elif defined(UNIX)
-/*  lock_sem = semget(IPC_PRIVATE, 1, 0); */
-#endif
+  create_semaphore(&lock_sem);
+  return 1;
 }
 
-void _SquishFreeSem()
+short _SquishFreeSem()
 {
-#ifdef __BEOS__
-  delete_sem(lock_sem);
-#elif defined(UNIX)
-/*  struct sembuf sops;
-
-#ifdef HAS_SEMUN
-  union semun fl;
-  fl.val = 0;
-#else
-  int fl = 0;
-#endif
-  
-  semctl(lock_sem, 0, IPC_RMID, fl);
-  
-  sops.sem_num = 0;
-  sops.sem_op  = 1;
-  sops.sem_flg = 0;
-
-  semop(lock_sem, &sops, 1);
-*/
-#endif
+  delete_semaphore(&lock_sem);
+  return 1;
 }
 
 short _SquishThreadLock(void)
 {
-#ifdef __IBMC__
-  while (__sxchg(&lock_sem,1) )
-    tdelay(10);
-#elif defined(__BEOS__)
-  if (acquire_sem(lock_sem) != B_NO_ERROR)
-    tdelay(10);
-#elif defined(UNIX)
-/*  struct sembuf sops;
-  
-  sops.sem_num = 0;
-  sops.sem_op  = -1;
-  sops.sem_flg = 0;
-
-  while (semop(lock_sem, &sops, 1))
-    usleep(10);
-*/
-#endif
+  lock_semaphore(&lock_sem);
   return 1;
 }
 
 short _SquishThreadUnlock(void)
 {
-#ifdef __IBMC__
-  __sxchg(&lock_sem,0);
-#elif defined(__BEOS__)
-  release_sem(lock_sem);
-#elif defined(UNIX)
-/*  struct sembuf sops;
-  
-  sops.sem_num = 0;
-  sops.sem_op  = 1;
-  sops.sem_flg = 0;
-
-  semop(lock_sem, &sops, 1);
-*/
-#endif
+  unlock_semaphore(&lock_sem);
   return 1;
 }
 
@@ -565,14 +514,7 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
     ha=NULL;
   }
 
-#ifdef __BEOS__
-  ha->sem = create_sem(0, 0);
-  release_sem(ha->sem);
-#elif defined(UNIX)
-/*  ha->sem = semget(IPC_PRIVATE, 1, 0);
-  _SquishBaseThreadUnlock(ha);
-  */
-#endif
+  create_semaphore(&(ha->sem));
 
   /* Return the handle to this area */
   return ha;
@@ -692,20 +634,7 @@ sword EXPENTRY SquishCloseArea(HAREA ha)
 
   ha->id=0;
 
-#ifdef __BEOS__
-  delete_sem(ha->sem);
-#elif defined (UNIX)
-/*  {
-#ifdef HAS_SEMUN
-    union semun fl;
-    fl.val = 0;
-#else
-    int fl = 0;
-#endif
-    semctl(ha->sem, 0, IPC_RMID, fl);
-  }
-*/
-#endif
+  delete_semaphore(&(ha->sem));
 
   pfree(ha->api);
   pfree(ha->apidata);

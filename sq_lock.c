@@ -58,47 +58,19 @@ static char rcs_id[]="$Id$";
 #include "api_sqp.h"
 #include "apidebug.h"
 #include "unused.h"
+#include "semaphor.h"
 
 /* Base is locked for other processes */
 
 short _fast _SquishBaseThreadLock(HAREA ha)
 {
-#ifdef __IBMC__
-  while (__sxchg(&ha->sem,1) )
-    tdelay(10);
-#elif defined(__BEOS__)
-  while (acquire_sem(ha->sem) != B_NO_ERROR)
-    tdelay(10);
-#elif defined(UNIX)
-/*  struct sembuf sops;
-  
-  sops.sem_num = 0;
-  sops.sem_op  = -1;
-  sops.sem_flg = 0;
-
-  while (semop(ha->sem, &sops, 1))
-    usleep(10);
-    */
-#endif
+  lock_semaphore(&(ha->sem));
   return 1;
 }
 
 short _fast _SquishBaseThreadUnlock(HAREA ha)
 {
-#ifdef __IBMC__
-  __sxchg(&(ha->sem),0);
-#elif defined(__BEOS__)
-  release_sem(ha->sem);
-#elif defined(UNIX)
-/*  struct sembuf sops;
-  
-  sops.sem_num = 0;
-  sops.sem_op  = 1;
-  sops.sem_flg = 0;
-
-  semop(ha->sem, &sops, 1);
-  */
-#endif
+  unlock_semaphore(&(ha->sem));
   return 1;
 }
 
