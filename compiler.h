@@ -677,7 +677,9 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #ifndef S_ISDIR
 #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 #endif
+#ifndef S_ISREG
 #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+#endif
 #define mode_t int
 
 SMAPI_EXT int unlock(int handle, long ofs, long length);
