@@ -69,6 +69,17 @@ instdyn: $(TARGET)
 endif
 
 install: instdyn
+	-$(MKDIR) $(MKDIROPT) $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) alc.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) api_brow.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) compiler.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) ffind.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) msgapi.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) patmat.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) prog.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) progprot.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) stamp.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)/smapi
 
 clean:
 	-$(RM) *$(OBJ) *~
