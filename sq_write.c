@@ -439,11 +439,8 @@ static unsigned near _SquishGetWriteFrame(HMSG hmsg, dword dwTxtTotal,
 
 /* Write the XMSG header to the Squish file */
 
-/* Žnderung OG: die Lokale Kopie der XMSG-Struktur ist unn”tig */
-
 static unsigned near _SquishWriteXmsg(HMSG hmsg, PXMSG pxm, dword *pdwOfs)
 {
-    /* OG: xmsg ist jetzt ein #define */
     /* XMSG xmsg; */
 
 #define xmsg (*pxm)
