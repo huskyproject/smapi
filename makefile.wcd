@@ -17,7 +17,7 @@ CFLAGS	= -zq -wx -oneas -bt=dos -ml -l=dos
 CDEFS	= -DMSDOS
 COPT	= -c
 AR	= wlib
-AROPT	= -b -q
+AR_R	= -b -q
 ASM	= wasm
 AFLAGS	= -ml -zq -bt=dos
 OBJ	= .obj
@@ -25,33 +25,22 @@ LIB	= .lib
 
 TARGET	= smapiwcd$(LIB)
 
-#OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) sq_help$(OBJ) sq_idx$(OBJ) sq_kill$(OBJ) sq_lock$(OBJ) sq_misc$(OBJ) sq_msg$(OBJ) sq_read$(OBJ) sq_uid$(OBJ) sq_write$(OBJ) api_jam$(OBJ) cvtdate$(OBJ) date2bin$(OBJ) dosdate$(OBJ) fexist$(OBJ) ffind$(OBJ) flush$(OBJ) flushasm$(OBJ) locking$(OBJ) months$(OBJ) msgapi$(OBJ) parsenn$(OBJ) patmat$(OBJ) qksort$(OBJ) sqasm$(OBJ) strftim$(OBJ) strocpy$(OBJ) structrw$(OBJ) trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
+OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) sq_help$(OBJ) sq_idx$(OBJ) sq_kill$(OBJ) sq_lock$(OBJ) sq_misc$(OBJ) sq_msg$(OBJ) sq_read$(OBJ) sq_uid$(OBJ) sq_write$(OBJ) api_jam$(OBJ) cvtdate$(OBJ) date2bin$(OBJ) dosdate$(OBJ) fexist$(OBJ) ffind$(OBJ) flush$(OBJ) flushasm$(OBJ) locking$(OBJ) months$(OBJ) msgapi$(OBJ) parsenn$(OBJ) patmat$(OBJ) qksort$(OBJ) sqasm$(OBJ) strftim$(OBJ) strocpy$(OBJ) structrw$(OBJ) trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
 
-!include makefile.inc
 
 # Thunderbirds are go!
 
-.DEFAULT
-	@%null
-
-default : all .SYMBOLIC
-
-all : $(TARGET) .SYMBOLIC
-
-.c$(OBJ) :
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $<
-	$(AR) $(AROPT) $(TARGET) -+$@
-
-.asm.obj:
-	$(ASM) $(AFLAGS) $(ADEFS) $<
-	$(AR) $(AROPT) $(TARGET) -+$@
-
-$(TARGET) : $(OBJS) .SYMBOLIC
-
+.c$(OBJ):
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(AR) $(AR_R) $(TARGET) -+$@
+	
+$(TARGET): $(OBJS)
+	
 .IGNORE
-
-clean :
-	-del *$(OBJ)
-
-distclean : clean
-	-del $(TARGET)
+	
+clean:
+	-DEL *$(OBJ)
+		
+distclean:
+	-DEL $(TARGET)
+    
