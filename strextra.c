@@ -13,7 +13,7 @@
 #include <ctype.h>
 #include "strextra.h"
 
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__linux__)
 
 int stricmp(const char *s, const char *t)
 {
@@ -39,7 +39,7 @@ int stricmp(const char *s, const char *t)
 
 #endif
 
-#if !defined(__IBMC__) && !defined(__linux__)
+#if !defined(__IBMC__) && !defined(__linux__) && !defined(__sun__) && !defined(__WATCOMC__)
 
 char *strdup(const char *s)
 {

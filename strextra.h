@@ -13,7 +13,7 @@
 
 int stricmp(const char *s, const char *t);
 
-#if !defined(__IBMPC__) && !defined(__linux__)
+#if !defined(__IBMPC__) && !defined(__linux__) && !defined(__sun__) && !defined(__WATCOMC__)
 char *strdup(const char *s);
 #endif
 
