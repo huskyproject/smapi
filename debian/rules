@@ -10,7 +10,7 @@
 # This is the debhelper compatability version to use.
 export DH_COMPAT=4
 export DEBIAN=1
-export PACKAGE=libsmapi2
+export PACKAGE=libsmapi2cur
 # Next Line to build debug-versions !
 # export DEB_BUILD_OPTIONS=nostrip
 
@@ -56,7 +56,7 @@ binary-arch: build install
 	dh_installman
 	dh_installinfo
 	dh_installchangelogs ChangeLog
-	rm -rf $(CURDIR)/debian/$(PACKAGE)-dev/usr/share/doc/$(PACKAGE)-dev
+	rm -rf debian/$(PACKAGE)-dev/usr/share/doc/$(PACKAGE)-dev
 	dh_link
 	dh_strip
 	dh_compress
@@ -65,7 +65,7 @@ binary-arch: build install
 	dh_installdeb
 #	dh_perl
 	dh_shlibdeps
-	cp debian/overrides debian/libsmapi2/usr/share/lintian/overrides/libsmapi2
+	cp debian/overrides debian/$(PACKAGE)/usr/share/lintian/overrides/$(PACKAGE)
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

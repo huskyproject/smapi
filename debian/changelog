@@ -1,3 +1,14 @@
+smapi-cur (2.5-20030319-1) unstable; urgency=low
+
+  * New cvs version
+  * Change source name for current smapi branch
+  * Rename package names: libsmapi2 -> libsmapi2cur, libsmapi2-dev ->
+    libsmapi2cur-dev. From now you may use stable and current smapi
+    together
+  * libsmapi2cur-dev conflicts & replaces libsmapi2-dev
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Wed, 19 Mar 2003 17:08:09 +0500
+
 smapi (2.5-20030311-1) unstable; urgency=low
 
   * New cvs version
