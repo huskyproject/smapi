@@ -189,6 +189,11 @@ typedef struct
     }
     JAMLREAD, *JAMLREADptr;
 
+typedef struct {
+   dword     IdxOffset;         /* Offset Idx file */
+   dword     TrueMsg;           /* JAMIDXREC.HdrOffset */
+   } JAMACTMSG, *JAMACTMSGptr;
+
 /* struct jam base */
 
 typedef struct {
@@ -198,6 +203,7 @@ typedef struct {
    int             IdxHandle;      /* File handle for .JDX file */
    int             LrdHandle;      /* File handle for .JLR file */
    JAMHDRINFO      HdrInfo;        /* Message header info */
+   JAMACTMSGptr    actmsg;
    word            msgs_open;
    } JAMBASE, *JAMBASEptr;
 

@@ -992,6 +992,53 @@ int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword SubfieldLen)
    return 1;
 }
 
+int read_allidx(JAMBASEptr jmb)
+{
+   byte  *buf, *pbuf;
+   byte  hbuf[HDR_SIZE], *phbuf = hbuf;
+   int   len, i;
+   dword offset, attr;
+
+   lseek(jmb->IdxHandle, 0, SEEK_END);
+   len = tell(jmb->IdxHandle);
+   lseek(jmb->IdxHandle, 0, SEEK_SET);
+
+   buf = (char*)palloc(len);
+   pbuf = buf;
+
+   if (farread(jmb->IdxHandle, (byte far *)buf, len) != len) {
+      pfree(buf);
+      return 0;
+   } /* endif */
+
+
+   for (i = 0; (pbuf - buf) < len;) {
+      offset = get_dword(pbuf+4);
+      if (offset != 0xFFFFFFFF) {
+         lseek(jmb->HdrHandle, offset, SEEK_SET);
+         if (farread(jmb->HdrHandle, (byte far *)hbuf, HDR_SIZE) == HDR_SIZE) {
+            attr = get_dword(phbuf+52);
+            if (!(attr & JMSG_DELETED)) {
+               jmb->actmsg = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*(i+1));
+               jmb->actmsg[i].IdxOffset = pbuf - buf;
+               jmb->actmsg[i].TrueMsg = offset;
+               i++;
+            } /* endif */
+         } /* endif */
+      } /* endif */
+      pbuf += 8;
+   } /* endfor */
+
+   if (i != jmb->HdrInfo.ActiveMsgs) {
+      jmb->HdrInfo.ActiveMsgs = i;
+   } else {
+   } /* endif */
+
+   pfree(buf);
+
+   return 1;
+}
+
 int write_hdrinfo(sword handle, JAMHDRINFO *HdrInfo)
 {
    byte buf[HDRINFO_SIZE], *pbuf = buf;

@@ -31,6 +31,7 @@ void Jam_CloseFile(JAMBASE *jambase);
 static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum);
 JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, dword what);
 dword Jam_HighMsg(JAMBASEptr jambase);
+void Jam_ActiveMsgs(JAMBASEptr jambase);
 static int near Jam_Lock(MSG *jm, int force);
 static void near Jam_Unlock(MSG * jm);
 dword Jam_PosHdrMsg(MSG * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr);
@@ -95,6 +96,8 @@ int read_hdrinfo(sword handle, JAMHDRINFO *HdrInfo);
 int read_idx(sword handle, JAMIDXREC *Idx);
 int read_hdr(sword handle, JAMHDR *Hdr);
 int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword SubfieldLen);
+
+int read_allidx(JAMBASEptr jmb);
 
 int write_hdrinfo(sword handle, JAMHDRINFO *HdrInfo);
 int write_idx(sword handle, JAMIDXREC *Idx);

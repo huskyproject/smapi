@@ -87,8 +87,11 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
       return NULL;
    }
 
+   Jam_ActiveMsgs(Jmd);
+
    jm->high_water = Jmd->HdrInfo.highwater;
    jm->high_msg = Jam_HighMsg(Jmd);
+   jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
 
    jm->type = MSGTYPE_JAM;
 
@@ -121,6 +124,7 @@ static sword EXPENTRY JamCloseArea(MSG * jm)
    Jam_CloseFile(Jmd);
 
    pfree(Jmd->BaseName);
+   pfree(Jmd->actmsg);
    pfree(jm->api);
    pfree((char *)jm->apidata);
    jm->id = 0L;
@@ -150,11 +154,11 @@ static MSGH *EXPENTRY JamOpenMsg(MSG * jm, word mode, dword msgnum)
           return NULL;
          }
       } else {
-	 msgh = palloc(sizeof(struct _msgh));
-	 if (msgh == NULL) {
-	    msgapierr = MERR_NOMEM;
-	    return NULL;
-	 }
+         msgh = palloc(sizeof(struct _msgh));
+         if (msgh == NULL) {
+            msgapierr = MERR_NOMEM;
+            return NULL;
+         }
 
          memset(msgh, '\0', sizeof(struct _msgh));
 
@@ -163,7 +167,7 @@ static MSGH *EXPENTRY JamOpenMsg(MSG * jm, word mode, dword msgnum)
          msgh->cur_pos = 0L;
          msgh->msgnum = msgnum;
          msgh->Hdr.TxtLen = 0;
-	 
+
       } /* endif */
 
    } 
@@ -393,11 +397,11 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       /* no logic if msg not present */
       if (msg) {
          if (msgh->msgnum == 0) {
-	    /* new message in end of position */
+            /* new message in end of position */
             lseek(Jmd->IdxHandle, 0, SEEK_END);
             lseek(Jmd->HdrHandle, 0, SEEK_END);
             lseek(Jmd->TxtHandle, 0, SEEK_END);
-            jamhdrNew.MsgNum = Jmd->HdrInfo.BaseMsgNum+Jmd->HdrInfo.ActiveMsgs;
+            jamhdrNew.MsgNum = Jmd->HdrInfo.BaseMsgNum+(tell(Jmd->IdxHandle)/sizeof(JAMIDXREC));
             msgh->seek_idx = tell(Jmd->IdxHandle);
             msgh->seek_hdr = jamidxNew.HdrOffset = tell(Jmd->HdrHandle);
             jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen(msg->to));
@@ -408,13 +412,13 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             farwrite(Jmd->TxtHandle, onlytext, strlen(onlytext));
             msgh->cur_pos = tell(Jmd->TxtHandle);
             msgh->bytes_written = strlen(onlytext);
+            jamhdrNew.ReplyCRC = 0xFFFFFFFF;
             write_hdr(Jmd->HdrHandle, &jamhdrNew);
             write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
             Jmd->HdrInfo.ActiveMsgs++;
             Jmd->HdrInfo.ModCounter++;
             Jam_WriteHdrInfo(Jmd);
             jm->high_msg++;
-            jm->num_msg++;
          } else {
             /* new messgae instead of old message position */
             msgh->Hdr.TxtLen = 0;
@@ -436,6 +440,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             msgh->bytes_written = strlen(onlytext);
             lseek(Jmd->TxtHandle, jamhdrNew.TxtOffset+totlen-1, SEEK_SET);
             farwrite(Jmd->TxtHandle, &ch, 1);
+            jamhdrNew.ReplyCRC = 0xFFFFFFFF;
             write_hdr(Jmd->HdrHandle, &jamhdrNew);
             write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
             Jmd->HdrInfo.ModCounter++;
@@ -470,6 +475,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 
       jamhdrNew.MsgNum = msgh->Hdr.MsgNum;
       jamidxNew.HdrOffset = msgh->seek_hdr;
+      jamhdrNew.ReplyCRC = 0xFFFFFFFF;
 
 
       lseek(Jmd->IdxHandle, msgh->seek_idx, SEEK_SET);
@@ -501,6 +507,10 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
    } /* endif */
 
    pfree(onlytext);
+
+   Jam_ActiveMsgs(Jmd);
+   jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
+
    return 0;
 }
 
@@ -515,11 +525,16 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
 
    if (jm->locked) return -1L;
 
-   if (JamLock(jm) == -1) return -1L;
+   if (msgnum == 0 || msgnum > jm->num_msg) {
+      return -1L;
+   } /* endif */
 
    if (!Jam_PosHdrMsg(jm, msgnum-1, &jamidx, &jamhdr)) {
       return -1L;
    } /* endif */
+
+   if (JamLock(jm) == -1) return -1L;
+
 
    Jmd->HdrInfo.ActiveMsgs--;
    Jmd->HdrInfo.ModCounter++;
@@ -532,6 +547,9 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
    write_idx(Jmd->IdxHandle, &jamidx);
    write_hdr(Jmd->HdrHandle, &jamhdr);
    Jam_WriteHdrInfo(Jmd);
+
+   Jam_ActiveMsgs(Jmd);
+   jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
 
    JamUnlock(jm);
    return 0;
@@ -826,38 +844,28 @@ static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, char *basename)
    lseek(Jmd->HdrHandle, 0, SEEK_SET);
    read_hdrinfo(Jmd->HdrHandle, &(Jmd->HdrInfo));
 
-   jm->num_msg = Jam_HighMsg(Jmd);
-
    return 1;
 }
 
 static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
 {
    struct _msgh *msgh;
-   JAMIDXREC    idx;
-   JAMHDR       hdr;
+//   JAMIDXREC    idx;
+//   JAMHDR       hdr;
 
    unused(mode);
 
    if (msgnum == MSGNUM_CUR) {
       msgnum = jm->cur_msg;
    } else if (msgnum == MSGNUM_NEXT) {
-      for (msgnum = jm->cur_msg+1; msgnum <= jm->high_msg; msgnum++) {
-         if (Jam_PosHdrMsg(jm, msgnum-1, &idx, &hdr)) {
-            break;
-         } /* endif */
-      } /* endfor */
-      if (msgnum > jm->high_msg) {
-        msgapierr = MERR_NOENT;
-        return NULL;
+      msgnum = jm->cur_msg+1;
+      if (msgnum > jm->num_msg) {
+         msgapierr = MERR_NOENT;
+         return NULL;
       } /* endif */
       jm->cur_msg = msgnum;
    } else if (msgnum == MSGNUM_PREV) {
-      for (msgnum = jm->cur_msg-1; msgnum != 0; msgnum--) {
-         if (Jam_PosHdrMsg(jm, msgnum-1, &idx, &hdr)) {
-            break;
-         } /* endif */
-      } /* endfor */
+      msgnum = jm->cur_msg-1;
       if (msgnum == 0) {
         msgapierr = MERR_NOENT;
         return NULL;
@@ -882,7 +890,9 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
 //   msgh->Idx.HdrOffset = 0xffffffff;
 //   msgh->Idx.UserCRC   = 0xffffffff;
 
-   if (lseek(Jmd->IdxHandle, (msgnum-1) * sizeof(JAMIDXREC), SEEK_SET) != -1) {
+
+
+   if (lseek(Jmd->IdxHandle, Jmd->actmsg[msgnum-1].IdxOffset, SEEK_SET) != -1) {
       msgh->seek_idx = tell(Jmd->IdxHandle);
       if (read_idx(Jmd->IdxHandle, &(msgh->Idx))) {
          if (msgh->Idx.HdrOffset != 0xffffffff) {
@@ -929,9 +939,14 @@ dword Jam_HighMsg(JAMBASEptr jambase)
    return (highmsg / sizeof(JAMIDXREC));
 }
 
+void Jam_ActiveMsgs(JAMBASEptr jambase)
+{
+   read_allidx(jambase);
+}
+
 dword Jam_PosHdrMsg(MSG * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr)
 {
-   if (lseek(Jmd->IdxHandle, msgnum * sizeof(JAMIDXREC), SEEK_SET) == -1) return 0;
+   if (lseek(Jmd->IdxHandle, Jmd->actmsg[msgnum].IdxOffset, SEEK_SET) == -1) return 0;
 
    if (read_idx(Jmd->IdxHandle, jamidx) == 0) return 0;
 
