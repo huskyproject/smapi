@@ -671,6 +671,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 
 #define HAS_SNPRINTF  1
 #define HAS_VSNPRINTF 1
+#define USE_SYSTEM_COPY
 
 SMAPI_EXT int unlock(int handle, long ofs, long length);
 SMAPI_EXT int lock(int handle, long ofs, long length);
