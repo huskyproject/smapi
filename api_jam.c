@@ -912,18 +912,22 @@ void Jam_CloseFile(JAMBASE *jambase)
 {
    if (jambase->HdrHandle != 0 && jambase->HdrHandle != -1) {
       close(jambase->HdrHandle);
+      jambase->HdrHandle = 0;
    } /* endif */
 
    if (jambase->TxtHandle != 0 && jambase->TxtHandle != -1) {
       close(jambase->TxtHandle);
+      jambase->TxtHandle = 0;
    } /* endif */
 
    if (jambase->IdxHandle != 0 && jambase->IdxHandle != -1) {
       close(jambase->IdxHandle);
+      jambase->IdxHandle = 0;
    } /* endif */
 
    if (jambase->LrdHandle != 0 && jambase->LrdHandle != -1) {
       close(jambase->LrdHandle);
+      jambase->LrdHandle = 0;
    } /* endif */
 }
 
@@ -1055,7 +1059,6 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
    pfree(idx);
    pfree(lrd);
 
-   jambase->TxtHandle = 0;
    jambase->mode = *mode;
    jambase->permissions = permissions;
    jambase->modified = 0;
