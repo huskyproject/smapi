@@ -924,13 +924,14 @@ static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type)
 	if (umsg < umsgid)
 	    left = new + 1;
 	else if (umsg > umsgid)
-	    right = new - 1;
+	    if(new>0) right = new - 1;
+	    else right=0;
 	else
 	    return new;
     }
     if (type == UID_EXACT) return 0;
     if (type == UID_PREV)
-	return (right < 0) ? 0 : right;
+	return right;
     return (left > mh->num_msg) ? mh->num_msg : left;
 }
 
