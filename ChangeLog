@@ -1,3 +1,8 @@
+2002-11-21 Thursday 07:49  stas_degteff
+
+	* compiler.h (1.108): Prevent constants redefinitions (O_BINARY
+	O_RDWR S_IFMT S_IFDIR)
+
 2002-11-18 Monday 15:40  stas_degteff
 
 	* compiler.h (1.107): Allow spawnvp() for DJGPP
