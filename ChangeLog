@@ -2,6 +2,11 @@ development version
 -------------------
 
 ----- cvs ci ------
+Thu Jan  6 19:51:30 NOVT 2000                                                   
+max (patch from Kolya Nesterov):
+- fsize() now  works correct on *NIX systems
+
+----- cvs ci ------
 Mi  15 Dez 1999 00:46:37 CET
 tobi:
 - Fixed a structure packing problem with DJGPP.
