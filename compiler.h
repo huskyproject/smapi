@@ -564,7 +564,7 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(__linux__) || defined(__Linux__) || defined(linux) || defined(LINUX)
+#if defined(__linux__) || defined(__Linux__) || defined(linux) || defined(__linux) || defined(LINUX)
 #  if !defined(__LINUX__)
 #    define __LINUX__
 #  endif
@@ -630,7 +630,7 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(_WIN32) || defined(WIN32)
+#if defined(__WIN32) || defined(_WIN32) || defined(WIN32)
 #  if !defined(__WIN32__)
 #    define __WIN32__
 #  endif
@@ -710,7 +710,7 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(UNIX) || defined(_UNIX)
+#if defined(UNIX) || defined(_UNIX) || defined(__unix) || defined(__unix__)
 #  if !defined(__UNIX__)
 #    define __UNIX__
 #  endif
@@ -754,9 +754,27 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(__IX86__)
+#if defined(__IX86__) || defined(_X86_)
 #  ifndef __X86__
 #    define __X86__
+#  endif
+#endif
+
+#if defined(__i386__) || defined(__i386) || defined(i386)
+#  ifndef __X86__
+#    define __X86__
+#  endif
+#  ifndef __386__
+#    define __386__
+#  endif
+#endif
+
+#if defined(__i686__) || defined(__i686) || defined(i686)
+#  ifndef __X86__
+#    define __X86__
+#  endif
+#  ifndef __686__
+#    define __686__
 #  endif
 #endif
 
@@ -787,23 +805,6 @@ int qq(void)
 #  endif
 #endif
 
-#ifdef __386__
-#  ifndef __LITTLE_ENDIAN__
-#    define __LITTLE_ENDIAN__
-#  endif
-#  ifndef __FLAT__
-#    define __FLAT__
-#  endif
-#  ifndef __X86__
-#    define __X86__
-#  endif
-#  ifndef __186__
-#    define __186__
-#  endif
-#  ifndef __286__
-#    define __286__
-#  endif
-#endif
 
 #ifdef __SUN__
 #  ifndef __FLAT__
@@ -836,6 +837,24 @@ int qq(void)
 #if defined(__NT__)
 #  if !defined(__WIN32__)
 #    define __WIN32__
+#  endif
+#endif
+
+#ifdef __386__
+#  ifndef __LITTLE_ENDIAN__
+#    define __LITTLE_ENDIAN__
+#  endif
+#  ifndef __FLAT__
+#    define __FLAT__
+#  endif
+#  ifndef __X86__
+#    define __X86__
+#  endif
+#  ifndef __186__
+#    define __186__
+#  endif
+#  ifndef __286__
+#    define __286__
 #  endif
 #endif
 
