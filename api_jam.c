@@ -1517,11 +1517,15 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2ptr
 unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield, unsigned
                          char *text, size_t textlen)
 {
-   JAMSUBFIELD2ptr SubField, SubFieldCur;
+   JAMSUBFIELD2ptr SubField, SubFieldCur, SubFieldNext;
    dword sublen, clen, x, firstlen;
    unsigned char *onlytext, *first, *ptr, *curtext;
 
-   SubField = *subfield;
+   SubFieldNext = SubField = *subfield;
+   
+   if (SubFieldNext)
+     while (SubFieldNext->next)
+       SubFieldNext = SubFieldNext->next;
 
    sublen = jamhdr->SubfieldLen;
    
@@ -1548,13 +1552,14 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield, unsigned
                        farrealloc(SubField, sublen+clen);
                    memmove((char*)SubField+sublen, SubFieldCur, clen);
                    free(SubFieldCur);*/
- 						 			 if (!SubField)
-			  						 SubField = SubFieldCur;
+                   					 if (!SubField)
+			  						   SubFieldNext = SubField = SubFieldCur;
 									 else
 									 {
-  	      				   SubFieldCur->next = SubField->next;
-										 SubField->next = SubFieldCur;
-									 } 				
+									     SubFieldCur->next = 0;
+									     SubFieldNext->next = SubFieldCur;
+										 SubFieldNext = SubFieldCur;
+									 } 			
                    sublen += clen;
                } else {;}
            } else {
