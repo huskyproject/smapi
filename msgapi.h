@@ -164,6 +164,9 @@ typedef struct _xmsg
 }
 XMSG;
 
+#define xmreply1st replies[0]
+#define xmreplynext replies[MAX_REPLY-1]
+
 #define XMSG_SIZE (94 + XMSG_FROM_SIZE + XMSG_TO_SIZE + XMSG_SUBJ_SIZE)
 
 /*

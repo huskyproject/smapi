@@ -21,6 +21,10 @@ static dword EXPENTRY JamGetHighWater(MSG * jm);
 static sword EXPENTRY JamSetHighWater(MSG * sq, dword hwm);
 static dword EXPENTRY JamGetTextLen(MSGH * msgh);
 static dword EXPENTRY JamGetCtrlLen(MSGH * msgh);
+#if 0
+static UMSGID EXPENTRY JamGetNextUid(HAREA ha);
+static dword  EXPENTRY JamGetHash(HAREA mh, dword msgnum);
+#endif
 
 #define fop_wpb (O_CREAT | O_TRUNC | O_RDWR | O_BINARY)
 #define fop_rpb (O_RDWR | O_BINARY)

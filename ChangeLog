@@ -1,4 +1,13 @@
 ----- cvs ci ------
+Sun Oct 22 00:33:21 MEZ 2000
+tobi:
+* Synchronized JAM api with current branch (api_jam.c 1.42 from 15 Oct 2000)
+  in order to profit from the latest JAM fixes.
+  ATTENTION: IF YOU ARE USING HPT OR HPTLINK AND WANT TO USE JAM LINKING, YOU
+  MUST NOW ALSO UPGRADE HPT TO A 0.9.7-stable VERSION FROM 22 OCT 2000 OR
+  LATER (E.G. HPT 0.9.7c-stable) !!!
+
+----- cvs ci ------
 Sat Oct 21 23:26:54 MEZ 2000
 tobi (patch from max):
 * JAM fix: sqpack don't crashes on areas when msgs deleted from golded

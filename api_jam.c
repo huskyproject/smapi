@@ -44,10 +44,6 @@
 
 #define NOTH 3
 
-/* stable fix to allow to import jam bugfixes without having to change
-   XMSG layout */
-
-#define replynext replies[MAX_REPLY - 1]
 
 MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
 {
@@ -302,9 +298,9 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          ((SCOMBO*)(&(msg->date_arrived)))->ldate = 0;
 
       msg->replyto = msgh->Hdr.ReplyTo;
-      msg->replies[0] = msgh->Hdr.Reply1st;
+      msg->xmreply1st = msgh->Hdr.Reply1st;
       msg->replies[1] = 0;
-      msg->replynext  = msgh->Hdr.ReplyNext;
+      msg->xmreplynext  = msgh->Hdr.ReplyNext;
 
    } /* endif */
 
@@ -441,7 +437,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             lseek(Jmd->IdxHandle, 0, SEEK_END);
             lseek(Jmd->HdrHandle, 0, SEEK_END);
             lseek(Jmd->TxtHandle, 0, SEEK_END);
-            jamhdrNew.MsgNum = Jmd->HdrInfo.BaseMsgNum+(tell(Jmd->IdxHandle)/sizeof(JAMIDXREC));
+            jamhdrNew.MsgNum = Jmd->HdrInfo.BaseMsgNum+(tell(Jmd->IdxHandle)/IDX_SIZE);
             msgh->seek_idx = tell(Jmd->IdxHandle);
             msgh->seek_hdr = jamidxNew.HdrOffset = tell(Jmd->HdrHandle);
             jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen(msg->to));
@@ -582,8 +578,8 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
    jamhdr.Attribute |= JMSG_DELETED;
    jamidx.UserCRC = 0xFFFFFFFFL;
    jamidx.HdrOffset = 0xFFFFFFFFL;
-   lseek(Jmd->HdrHandle, -(sizeof(JAMHDR)), SEEK_CUR);
-   lseek(Jmd->IdxHandle, -(sizeof(JAMIDXREC)), SEEK_CUR);
+   lseek(Jmd->HdrHandle, -(HDR_SIZE), SEEK_CUR);
+   lseek(Jmd->IdxHandle, -(IDX_SIZE), SEEK_CUR);
    write_idx(Jmd->IdxHandle, &jamidx);
    write_hdr(Jmd->HdrHandle, &jamhdr);
    Jam_WriteHdrInfo(Jmd);
@@ -666,12 +662,14 @@ static UMSGID EXPENTRY JamMsgnToUid(MSG * jm, dword msgnum)
 
     msgapierr = MERR_NONE;
     if (msgnum > jm->num_msg) return (UMSGID) -1;
+    if (msgnum <= 0) return (UMSGID) 0;
     return (UMSGID) (Jmd->actmsg[msgnum - 1].IdxOffset / 8 + Jmd->HdrInfo.BaseMsgNum);
 }
 
 static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
 {
    dword  msgnum, left, right, new;
+   UMSGID umsg;
 
    if (InvalidMh(jm)) {
       return -1L;
@@ -685,16 +683,19 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    while (left <= right)
    {
      new = (right + left) / 2;
-     if (JamMsgnToUid(jm, new) > msgnum)
+     umsg = JamMsgnToUid(jm, new);
+     if (umsg == -1)
+       return 0;
+     if (umsg < msgnum)
        left = new + 1;
-     else if (JamMsgnToUid(jm, new) < msgnum)
+     else if (umsg > msgnum)
        right = new - 1;
      else
        return new;
    }
    if (type == UID_EXACT) return 0;
    if (type == UID_PREV)
-     return (right <= 0) ? 1 : right;
+     return (right < 0) ? 0 : right;
    return (left > jm->num_msg) ? jm->num_msg : left;
 }
 
@@ -806,6 +807,35 @@ static int gettz(void)
    tm = localtime (&t);
    tm->tm_isdst = 0;
    return (int)(((long)mktime(tm)-(long)gt));
+}
+
+int JamDeleteBase(char *name)
+{
+   char *hdr, *idx, *txt, *lrd;
+   int x = strlen(name)+5;
+   int rc = 1;
+
+   hdr = (char*) palloc(x);
+   idx = (char*) palloc(x);
+   txt = (char*) palloc(x);
+   lrd = (char*) palloc(x);
+
+   sprintf(hdr, "%s%s", name, EXT_HDRFILE);
+   sprintf(txt, "%s%s", name, EXT_TXTFILE);
+   sprintf(idx, "%s%s", name, EXT_IDXFILE);
+   sprintf(lrd, "%s%s", name, EXT_LRDFILE);
+
+   if (unlink(hdr)) rc = 0;
+   if (unlink(txt)) rc = 0;
+   if (unlink(idx)) rc = 0;
+   if (unlink(lrd)) rc = 0;
+
+   pfree(hdr);
+   pfree(txt);
+   pfree(idx);
+   pfree(lrd);
+
+   return rc;
 }
 
 int Jam_OpenFile(JAMBASE *jambase, word *mode)
@@ -983,6 +1013,8 @@ JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what)
 {
    JAMSUBFIELDptr SubField;
 
+                                /* this crashes on Sparc */
+
    while (*SubPos < msgh->Hdr.SubfieldLen) {
       SubField = (JAMSUBFIELDptr)((char*)(msgh->SubFieldPtr)+(*SubPos));
       *SubPos += (SubField->DatLen+sizeof(JAMBINSUBFIELD));
@@ -999,7 +1031,7 @@ dword Jam_HighMsg(JAMBASEptr jambase)
    dword highmsg;
    lseek(jambase->IdxHandle, 0, SEEK_END);
    highmsg = tell(jambase->IdxHandle);
-   return (highmsg / sizeof(JAMIDXREC));
+   return (highmsg / IDX_SIZE);
 }
 
 void Jam_ActiveMsgs(JAMBASEptr jambase)
@@ -1293,8 +1325,8 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    jamhdr->PasswordCRC = 0xFFFFFFFFUL;
 
    jamhdr->ReplyTo = msg->replyto;
-   jamhdr->Reply1st = msg->replies[0];
-   jamhdr->ReplyNext = msg->replynext;
+   jamhdr->Reply1st = msg->xmreply1st;
+   jamhdr->ReplyNext = msg->xmreplynext;
 
    *subfield = SubField;
 }
@@ -1546,6 +1578,8 @@ void DecodeSubf(MSGH *msgh)
    }
 
    SubPos = 0;
+
+                                /* this crashes on Sparc */
    while (SubPos < msgh->Hdr.SubfieldLen) {
       SubField = (JAMSUBFIELDptr)((char*)(msgh->SubFieldPtr)+SubPos);
       SubPos += (SubField->DatLen+sizeof(JAMBINSUBFIELD));
@@ -1684,3 +1718,44 @@ dword Jam_Crc32(unsigned char* buff, dword len)
         crc=(crc >> 8) ^ crc32tab [(int) ((crc^tolower(*ptr)) & 0xffUL)];
     return crc;
 }
+
+#if 0
+
+/* not used in 1.6.4 stable branch */
+
+static dword EXPENTRY JamGetHash(HAREA mh, dword msgnum)
+{
+  XMSG xmsg;
+  HMSG msgh;
+  dword rc = 0l; 
+
+  if ((msgh=JamOpenMsg(mh, MOPEN_READ, msgnum))==NULL)
+    return (dword) 0l;
+  
+  if (JamReadMsg(msgh, &xmsg, 0L, 0L, NULL, 0L, NULL)!=(dword)-1)
+  {
+    rc = SquishHash(xmsg.to) | (xmsg.attr & MSGREAD) ? 0x80000000l : 0;
+  }
+
+  JamCloseMsg(msgh);
+
+  msgapierr=MERR_NONE;
+  return rc;
+}
+
+static UMSGID EXPENTRY JamGetNextUid(HAREA ha)
+{
+  if (InvalidMh(ha))
+    return 0L;
+
+  if (!ha->locked)
+  {
+    msgapierr=MERR_NOLOCK;
+    return 0L;
+  }
+
+  msgapierr=MERR_NONE;
+  return ha->high_msg+1;
+}
+
+#endif
