@@ -1,11 +1,11 @@
 # Microsoft Visual C++ Makefile
 
 CC=     cl
-CFLAGS= -nologo -Zp1
+CFLAGS= -nologo -MD -Zp1
 CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -DUSE_STAT_MACROS -D_MAKE_DLL -D_SMAPI_EXT
 COPT=   -O2
 LINK=   link
-LINKOPTS = /nologo /dll  /out:"smapimvc.dll" /implib:"smapimvc.lib"
+LINKOPTS = msvcrt.lib Kernel32.lib /nologo /dll  /nodefaultlib /out:"smapimvc.dll" /implib:"smapimvc.lib"
 
 SMAPIL= smapimvc.dll
 

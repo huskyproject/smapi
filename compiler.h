@@ -612,6 +612,16 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define EXPENTRY
 
 #elif defined(_MSC_VER) && (_MSC_VER >= 1200)
+#ifdef _MAKE_DLL
+#	define _MAKE_DLL_MVC_
+#   ifndef _SMAPI_EXT
+#	   define SMAPI_EXT __declspec(dllimport)
+#   else
+#      define SMAPI_EXT __declspec(dllexport)
+#  endif //_SMAPI_EXT
+#else 
+#   define SMAPI_EXT
+#endif
 
 #define _stdc
 #ifdef pascal
@@ -633,7 +643,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define mode_t int
 
 int unlock(int handle, long ofs, long length);
-int lock(int handle, long ofs, long length);
+SMAPI_EXT int lock(int handle, long ofs, long length);
 
 #include <direct.h>
 #define mymkdir _mkdir
@@ -659,21 +669,29 @@ int lock(int handle, long ofs, long length);
 #define mysleep(x)
 #endif
 
-#ifdef _MAKE_DLL
-#   if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#		define _MAKE_DLL_MVC_
-#       ifndef _SMAPI_EXT
-#           define SMAPI_EXT __declspec(dllimport)
-#       else
-#           define SMAPI_EXT __declspec(dllexport)
-#       endif //_SMAPI_EXT
-#   else 
-#       define SMAPI_EXT
-#   endif
-#else 
-#   define SMAPI_EXT
-#endif
 
+#ifdef _MAKE_DLL_MVC_
+#define __STDC__ 1
+#define fileno		_fileno
+#define read		_read
+#define lseek		_lseek
+#define sopen		_sopen
+#define write		_write
+#define tell		_tell
+#define close		_close
+#define unlink		_unlink
+#define tzset		_tzset
+#define stricmp		_stricmp
+#define strnicmp	_strnicmp
+#define rmdir		_rmdir
+#define fstat		_fstat
+#define strdup		_strdup
+#define stat		_stat
+#define getpid		_getpid
+#define chsize		_chsize
+#define open		_open
+
+#endif
 
 extern int waitlock(int, long, long);
 extern int waitlock2(int, long, long, long);
