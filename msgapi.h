@@ -189,6 +189,9 @@ typedef struct _xmsg
 }
 XMSG;
 
+/* XMSG_SIZE is not sizeof(XMSG) but size of squish message header.
+ * This value used for disk i/o operations with squish messagebase.
+ */
 #define XMSG_SIZE (94 + XMSG_FROM_SIZE + XMSG_TO_SIZE + XMSG_SUBJ_SIZE)
 
 #define xmreply1st replies[0]

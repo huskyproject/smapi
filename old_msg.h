@@ -20,6 +20,7 @@
 #ifndef __OLD_MSG_H__
 #define __OLD_MSG_H__
 
+/* OPUS message header structure */
 struct _omsg
 {
     byte from[36];
@@ -51,6 +52,7 @@ struct _omsg
     word up;                     /* Next message in the thread */
 };
 
+/* OPUS message header size (on .MSG file) */
 #define OMSG_SIZE 190
 
 #endif
