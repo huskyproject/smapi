@@ -1,38 +1,16 @@
-# Makefile for Building SMAPI with Watcom C for 16 Bit DOS
+# Makefile for Building SMAPI with Watcom C for 16 bit DOS
 # No support for Husky build environment.
 
 CC=	wcl
 CFLAGS=	-zq -wx -ml
-CDEFS=
-COPT=	-oneatx
+CDEFS=  -DMSDOS
+COPT=	-oneatx -5
 LIB=	wlib
-ASM=	wasm
+ASM=	WASM
 
 TARGET=	smapiwcd.lib
 
-OBJS=	1stchar.obj  \
-	api_sdm.obj  \
-	api_sq.obj   \
-	api_jam.obj  \
-	cvtdate.obj  \
-	date2bin.obj \
-	dosdate.obj  \
-	fexist.obj   \
-	ffind.obj    \
-	flush.obj    \
-	flushasm.obj \
-	locking.obj  \
-	months.obj   \
-	msgapi.obj   \
-	parsenn.obj  \
-	patmat.obj   \
-	qksort.obj   \
-	sqasm.obj    \
-	strftim.obj  \
-	strocpy.obj  \
-	structrw.obj \
-	trail.obj    \
-	weekday.obj
+OBJS=	1stchar.obj api_sdm.obj	api_sq.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj flushasm.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj sqasm.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj patmat.obj
 
 # Thunderbirds are go!
 
@@ -40,14 +18,10 @@ OBJS=	1stchar.obj  \
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) -b -q $(TARGET) -+$@
 
-.asm.obj:
-	$(ASM) -wx -zq $<
-	$(LIB) -b -q $(TARGET) -+$@
-
 $(TARGET): $(OBJS)
 
 clean:
-	-DEL *.OBJ
+        -DEL *.OBJ
 
 distclean:
 	-DEL $(TARGET)
