@@ -87,7 +87,7 @@ static struct _apifuncs sq_funcs =
 
 static byte *ss_sqd = (byte *) "%s.sqd";
 static byte *ss_sqi = (byte *) "%s.sqi";
-//static byte *ss_sql = (byte *) "%s.sql";
+/*static byte *ss_sql = (byte *) "%s.sql";*/
 
 static struct _sqdata *_junksq;
 
