@@ -3,6 +3,12 @@ smapi 1.6.4
 (released on Mon May 22 14:58:56 CEST 2000)
 
 ----- cvs ci ------
+Thu Jun 29 21:39:49 NOVST 2000
+max (patches from Pavel Gulchouk):
+* time fixes in jam area
+* write intl kludges only for netmail areas (jam)
+
+----- cvs ci ------
 Tue Jun 27 22:54:18 NOVST 2000
 max:
 * JAM optimization: removed many strlen()

@@ -281,13 +281,13 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       } /* endif */
 
 
-      s_time = localtime((time_t *)(&(msgh->Hdr.DateWritten)));
+      s_time = gmtime((time_t *)(&(msgh->Hdr.DateWritten)));
       scombo = (SCOMBO*)(&(msg->date_written));
       scombo = TmDate_to_DosDate(s_time, scombo);
       /* ftsdate = msg->__ftsc_date; */
       ftsdate = (unsigned char *)sc_time(scombo, (char *)(msg->__ftsc_date));
 
-      s_time = localtime((time_t *)(&(msgh->Hdr.DateProcessed)));
+      s_time = gmtime((time_t *)(&(msgh->Hdr.DateProcessed)));
       scombo = (SCOMBO*)(&(msg->date_arrived));
       scombo = TmDate_to_DosDate(s_time, scombo);
 
@@ -773,6 +773,21 @@ int openfilejm(char *name, word mode)
    return handle;
 }
 
+static int gettz(void)
+{
+   struct tm *tm;
+   time_t t, gt;
+
+   t = time(NULL);
+   tzset();
+   tm = gmtime (&t);
+   tm->tm_isdst = 0;
+   gt = mktime(tm);
+   tm = localtime (&t);
+   tm->tm_isdst = 0;
+   return (int)(((long)mktime(tm)-(long)gt));
+}
+
 int Jam_OpenFile(JAMBASE *jambase, word *mode)
 {
    char *hdr, *idx, *txt, *lrd;
@@ -797,7 +812,7 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode)
       memset(&(jambase->HdrInfo), '\0', sizeof(JAMHDRINFO));
       strcpy(jambase->HdrInfo.Signature, HEADERSIGNATURE);
 
-      jambase->HdrInfo.DateCreated = time(NULL);
+      jambase->HdrInfo.DateCreated = time(NULL) + gettz();
       jambase->HdrInfo.ModCounter  = 1;
       jambase->HdrInfo.PasswordCRC = 0xffffffffUL;
       jambase->HdrInfo.BaseMsgNum  = 1;
@@ -840,7 +855,7 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode)
 
       memset(&(jambase->HdrInfo), '\0', sizeof(JAMHDRINFO));
       strcpy(jambase->HdrInfo.Signature, HEADERSIGNATURE);
-      jambase->HdrInfo.DateCreated = time(NULL);
+      jambase->HdrInfo.DateCreated = time(NULL) + gettz();
       jambase->HdrInfo.ModCounter  = 1;
       jambase->HdrInfo.PasswordCRC = 0xffffffffUL;
       jambase->HdrInfo.BaseMsgNum  = 1;
@@ -1176,10 +1191,10 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    }
    strcpy(jamhdr->Signature, HEADERSIGNATURE);
    jamhdr->Revision = CURRENTREVLEV;
-   jamhdr->DateProcessed = time(NULL);
+   jamhdr->DateProcessed = time(NULL) + gettz();
    ptm = &stm;
    ptm = DosDate_to_TmDate((SCOMBO*)(&(msg->date_written)), ptm);
-   jamhdr->DateWritten = mktime(ptm);
+   jamhdr->DateWritten = mktime(ptm) + gettz();
 
    sublen = 0;
 
@@ -1224,8 +1239,8 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 
    /* Dest Address */
 
-   if ((SubFieldCur = NETADDRtoSubf(msg->dest, &clen, 1))) {
-      SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
+   if (!msgh->sq->isecho && (SubFieldCur = NETADDRtoSubf(msg->dest, &clen, 1)))
+   {  SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
       memmove((char*)SubField+sublen, SubFieldCur, clen);
       free(SubFieldCur);
       sublen += clen;
