@@ -292,43 +292,32 @@ byte *EXPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length)
     return cbuf;
 }
 
-byte *EXPENTRY GetCtrlToken(byte * where, byte * what)
+byte *EXPENTRY GetCtrlToken(byte *where, byte *what)
 {
-    byte *end, *out, *found=NULL;
+    byte *end, *out;
+    int len;
 
     if (where == NULL || what == NULL) return NULL;
-    
+    len = strlen(what);
+
     do {
-        found = (byte *) strstr((char *) where, (char *) what);
-	if (found != NULL) where = found+1;
-    } while (found != NULL && found[-1] != '\001');
+	where = (byte *)strchr((char *)where, '\001');
+	if (where == NULL) break;
+	where++;
+    } while (strncmp((char *)where, (char *)what, len));
 
-    if (found != NULL)
-    {
-		end = (byte *) strchr((char *) found, '\r');
+    if (where == NULL || strlen(where)<len) return NULL;
+    
+    end = (byte *) strchr((char *) where, '\r') ||
+          (byte *) strchr((char *) where, '\001') ||
+          where + strlen((char *) where);
 
-		if (!end) 
-		{
-			end = (byte *) strchr((char *) found, '\001');
-		}
+    out = palloc((size_t) (end - where) + 1);
+    if (out == NULL) return NULL;
 
-        if (!end)
-        {
-            end = found + strlen((char *) found);
-        }
-
-        out = palloc((size_t) (end - found) + 1);
-        if (out == NULL)
-        {
-            return NULL;
-        }
-
-        memmove(out, found, (size_t) (end - found));
-        out[(size_t) (end - found)] = '\0';
-        return out;
-    }
-
-    return NULL;
+    memmove(out, where, (size_t) (end - where));
+    out[(size_t) (end - where)] = '\0';
+    return out;
 }
 
 void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
@@ -456,32 +445,25 @@ byte *EXPENTRY CvtCtrlToKludge(byte * ctrl)
 
 void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
 {
-    byte *search, *p, *s;
+    byte *p;
+    int len = strlen(what);
 
-    search = palloc(strlen((char *) what) + 2);
-    if (search == NULL)
-    {
-        return;
+    do {
+	ctrl = strchr((char *)ctrl, '\001');
+	if (ctrl == NULL) return;
+	if (strncmp((char *)ctrl+1, (char *)what, len)) {
+	    ctrl++;
+	    continue;
+	}
+	if (strlen((char *)ctrl + 1) < len) return;
+	/* found */
+	p = strchr((char *)ctrl + 1, '\001');
+	if (p == NULL) {
+	    *ctrl = '\0';
+	    return;
+	}
+	strocpy((char *)ctrl, (char *)p);
     }
-
-    strcpy((char *) search, "\001");
-    strcat((char *) search, (char *) what);
-
-    /* Now search for this token in the control buffer, and remove it. */
-
-    p = (byte *) strstr((char *) ctrl, (char *) search);
-    while (p != NULL)
-    {
-        s = p + 1;
-        while (*s && *s != '\001')
-        {
-            s++;
-        }
-        strocpy((char *) p, (char *) s);
-        p = (byte *) strstr((char *) ctrl, (char *) search);
-    }
-
-    pfree(search);
 }
 
 word EXPENTRY NumKludges(char *txt)
