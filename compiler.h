@@ -788,31 +788,31 @@ int qq(void)
 #    define W_OK 02
 #  endif
 
-#  ifndef __LITTLE_ENDIAN__
+#  if !defined(__LITTLE_ENDIAN__) && !defined (_M_ALPHA)
 #    define __LITTLE_ENDIAN__  /* using to select functions/macroses for read & write binary values */
 #  endif
 
 #  define mymkdir       _mkdir
 #  define snprintf      _snprintf
 #  define vsnprintf     _vsnprintf
-#  define HAS_SNPRINTF  1     /* snprintf() presents */
-#  define HAS_VSNPRINTF 1     /* vsnprintf() presents */
-#  define HAS_SPAWNVP   1     /* spawnwp() presents */
-#  define HAS_strftime  1
-#  define HAS_mktime    1
-#  define HAS_sopen     1
-#  define HAS_sleep     1
+#  define HAS_SNPRINTF       /* snprintf() presents */
+#  define HAS_VSNPRINTF      /* vsnprintf() presents */
+#  define HAS_SPAWNVP        /* spawnwp() presents */
+#  define HAS_strftime  
+#  define HAS_mktime    
+#  define HAS_sopen     
+#  define HAS_sleep     
 
 #  define USE_SYSTEM_COPY     /* OS have system call for files copiing */
 #  define USE_SYSTEM_COPY_WIN32
 #  define USE_STAT_MACROS     /* S_ISDIR, S_ISREG and stat() presents */
 
-#  define HAS_IO_H        1 /* may use "#include <io.h> */
-#  define HAS_SHARE_H     1 /* may use "#include <share.h> */
-#  define HAS_MALLOC_H    1 /* use "#include <malloc.h>" for malloc() etc. */
-#  define HAS_SYS_UTIME_H 1 /* #include <sys/utime.h> in alternate to <utime.h> */
-#  define HAS_DIRECT_H
-#  include <direct.h>
+#  define HAS_IO_H         /* may use "#include <io.h> */
+#  define HAS_SHARE_H      /* may use "#include <share.h> */
+#  define HAS_MALLOC_H     /* use "#include <malloc.h>" for malloc() etc. */
+#  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
+#  define HAS_DIRECT_H 
+//#  include <direct.h>
 
    SMAPI_EXT int unlock(int handle, long ofs, long length);
    SMAPI_EXT int lock(int handle, long ofs, long length);
@@ -870,19 +870,19 @@ int qq(void)
 #  define strncasecmp strnicmp
 #  define snprintf    _snprintf
 #  define vsnprintf   _vsnprintf
-#  define HAS_SNPRINTF  1
-#  define HAS_VSNPRINTF 1
-#  define HAS_SPAWNVP   1
-#  define HAS_GETPID    1
-#  define HAS_strftime  1  /* strftime() in time.h  */
-#  define HAS_mktime    1  /* mktime() in time.h */
+#  define HAS_SNPRINTF  
+#  define HAS_VSNPRINTF 
+#  define HAS_SPAWNVP   
+#  define HAS_GETPID    
+#  define HAS_strftime    /* strftime() in time.h  */
+#  define HAS_mktime      /* mktime() in time.h */
 
-#  define HAS_MALLOC_H    1 /* may be used "#include <malloc.h>"  (see alc.h) */
-#  define HAS_IO_H        1 /* may use "#include <io.h> */
-#  define HAS_SHARE_H     1 /* may use "#include <share.h> */
-#  define HAS_DIRECT_H    1
-#  define HAS_SYS_UTIME_H 1 /* #include <sys/utime.h> in alternate to <utime.h> */
-#  define HAS_DOS_H       1
+#  define HAS_MALLOC_H     /* may be used "#include <malloc.h>"  (see alc.h) */
+#  define HAS_IO_H         /* may use "#include <io.h> */
+#  define HAS_SHARE_H      /* may use "#include <share.h> */
+#  define HAS_DIRECT_H    
+#  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
+#  define HAS_DOS_H       
 
 #  define mymkdir(x)    mkdir(x) /*<direct.h>*/
 #  define HAS_mkdir

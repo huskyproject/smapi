@@ -32,7 +32,7 @@
 
 #include "compiler.h"
 
-#if HAS_DIRECT_H
+#ifdef HAS_DIRECT_H
 #  include <direct.h>
 #endif
 
@@ -40,11 +40,11 @@
 #  include <unistd.h>
 #endif
 
-#if HAS_IO_H
+#ifdef HAS_IO_H
 #  include <io.h>
 #endif
 
-#if HAS_DOS_H
+#ifdef HAS_DOS_H
 #  include <dos.h>
 #endif
 
