@@ -1,3 +1,12 @@
+2002-01-02 Wednesday 19:07  mche
+
+	* compiler.h (1.74), makefile.mvcdll (1.2), strextra.c (1.4),
+	strextra.h (1.5): build smapimvc.dll with msvcrt.dll
+
+2002-01-02 Wednesday 13:14  ml
+
+	* ffind.h (1.12): cygwin define
+
 2001-12-27 Thursday 21:11  pavel.gulchouck
 
 	* api_jam.c (1.75): "#ifndef LAZY_WRITE_HDR" changed to "#ifdef
