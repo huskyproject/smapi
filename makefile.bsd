@@ -1,9 +1,12 @@
 CC=	gcc
+LD=	gcc
 CFLAGS=	-Wall -s
 CDEFS=	-DUNIX
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486
+COPT=	-fpic -O2 -fomit-frame-pointer -fstrength-reduce -m486
 LIB=	ar
 RANLIB= ranlib
+ILOPT=	-c -m 444 -o bin -g bin
+LIBDIR=	/usr/local/lib
 
 TARGET=	libsmapibsd.a
 
@@ -33,7 +36,17 @@ OBJS=	1stchar.o  \
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
+
+all: $(TARGET) libsmapibsd.so.2
 
 $(TARGET): $(OBJS)
+	$(LIB) r $(TARGET) $(OBJS)
 	$(RANLIB) $(TARGET)
+
+libsmapibsd.so.2: $(OBJS)
+	$(LD) -shared -o libsmapibsd.so.2 $(OBJS)
+
+install: $(TARGET) libsmapibsd.so.2
+	install $(ILOPT) libsmapibsd.a $(LIBDIR)
+	install $(ILOPT) libsmapibsd.so.2 $(LIBDIR)
+	ln -sf libsmapibsd.so.2 $(LIBDIR)/libsmapibsd.so
