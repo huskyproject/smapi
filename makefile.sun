@@ -1,13 +1,12 @@
-# Legacy Makefile for Solaris.
+# Legacy Makefile for Solaris (i386 or sparc) and gcc.
 # No support for the Husky build environment.
 
 CC=	gcc
 CFLAGS=	-Wall
-CDEFS=	-DUNIX -D_POSIX_C_SOURCE
+CDEFS=	-DUNIX
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
 LIB=	ar
 RANLIB= ranlib
-INCDIR= /usr/local/include
 
 TARGET=	libsmapisun.a
 
@@ -45,4 +44,6 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm *.o *~
+
+distclean:
 	rm $(TARGET)
