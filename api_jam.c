@@ -855,7 +855,7 @@ static dword EXPENTRY JamGetHighWater(MSG * jm)
    if (InvalidMh(jm))
       return -1L;
 
-   return jm->high_water;
+   return JamUidToMsgn(jm, jm->high_water, UID_PREV);
 }
 
 static sword EXPENTRY JamSetHighWater(MSG * jm, dword hwm)
@@ -863,7 +863,8 @@ static sword EXPENTRY JamSetHighWater(MSG * jm, dword hwm)
    if (InvalidMh(jm))
       return -1L;
 
-   if (hwm > jm->high_msg) return -1L;
+   hwm = JamMsgnToUid(jm, hwm);
+   if (hwm > jm->high_msg + Jmd->HdrInfo.BaseMsgNum) return -1L;
 
    jm->high_water = hwm;
 
