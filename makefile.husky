@@ -67,6 +67,7 @@ $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
           -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
 
 instdyn: $(LIBPREFIX)smapi.so.$(VER)
+	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
 	$(LN) $(LNOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
 	$(LN) $(LNOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH) $(LIBDIR)/$(LIBPREFIX)smapi.so
