@@ -493,7 +493,7 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
-#if defined(__FreeBSD__) || defined(_AIX) || defined(__sun__)
+#if defined(__FreeBSD__) || defined(_AIX) || defined(__sun__) || defined(__linux__)
 #define mymkdir(a) mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
 #else
 #define mymkdir(a) __mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
