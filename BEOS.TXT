@@ -1,17 +1,18 @@
-There are some BeOS-Specified changes/extension and after adding Filetyping
-and Attribute support it is time to write a litte readme ! ;)
+There are some BeOS-specific changes/extension and after adding "filetyping"
+and "attribute" support it is time to write a litte readme! ;)
 
-'cause there is no filelocking-support on OS-Level under BeOS it is a 
-problem to use Squish-Style areas under BeOS (you CAN use alternativ locking, 
+Because there is no support for filelocking on OS level under BeOS it is a
+problem to use Squish-style  areas under BeOS (you CAN use alternative locking,
 but is is slow).
-Todays OS's have normaly no problems with directorys with large numer of 
-files - BeOS is such an OS, so you can use SDM-Style Areas without slowing 
-down your filesystem. 
 
-In SDM-Areas each message is written in a seperate file. Each Area is one
+Todays operating systems normally have no problems with directories with
+large numbers of files in them - BeOS is such an OS, so you can use
+SDM-style areas without slowing down your filesystem.
+
+In SDM areas each message is written to a seperate file. Each area is one
 directory with a number of files (=messages).
 
-When you use SDM-Areas under BeOS smapi will use filetyping (message/fmsg) and
+When you use SDM areas under BeOS smapi will use filetyping (message/fmsg) and
 attributes:
 
 XMSG:FROM  - the sender himself
@@ -20,14 +21,15 @@ XMSG:SUBJ  - the subject
 XMSG:DATE  - the date (& time) of submission
 XMSG:DTAR  - the date (& time) of arrival
 
-More attributes (flags, adresses) will be added soon.
+More attributes (flags, addresses) will be added soon.
 
-If you want to use attributes you must add the FileType "message/fmsg" in 
-"Preferences/FileTypes" and add the extra attributes above. (In future there
-will be a script to do this)
-From now you can use this attributs in the Tracker. Try it !
+If you want to use attributes you must add the FileType "message/fmsg" in
+"Preferences/FileTypes" and add the extra attributes above.  In the future
+there will be a script to do this.
 
-If you want to use querys, you can add some indicies:
+From then on you can use this attributs in the tracker. Try it!
+
+If you want to use queries, you can add some indices:
 
 mkindex -t string XMSG:FROM
 mkindex -t string XMSG:TO
@@ -36,12 +38,12 @@ mkindex -t llong  XMSG:DATE
 mkindex -t llong  XMSG:DTAR
 
 You can add all 5 or less indicies. If you don't want to query via the subject,
-don't add the index. If you don't want to query via From-Name or To-Name, 
+don't add the index. If you don't want to query via From-Name or To-Name,
 don't add these indicies, etc.
 
 So, today (11-02-2001) there is no application associated with the filetype
 "message/fmsg", so you can't view the message-text - but this will change
-in the next weeks ! ;)
+in the next weeks! ;)
 
 Now go and make some good apps !
 
