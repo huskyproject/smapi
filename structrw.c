@@ -59,7 +59,7 @@
 #include "old_msg.h"
 #include "api_jam.h"
 
-#define MAXHDRINCORE  (1024*1024*10) /* Maximum jam hdr size for incore, 10M */
+#define MAXHDRINCORE  (1024l*1024*10) /* Maximum jam hdr size for incore, 10M */
 
 #ifndef INTEL
 /*
