@@ -1250,6 +1250,7 @@ int qq(void)
 #  define S_IFDIR     _S_IFDIR
 #endif
 
+#if !defined(__MSVC__) /* remove usless warnings for MSVC */
 
 #ifndef mymkdir
 #  warning mkdir() call set to default value. Please check your compiler documentation for it and write define into compiler.h
@@ -1343,6 +1344,7 @@ int qq(void)
 #warning Please check your compiler to far calling implementation of write() function and define farwrite in compiler.h
 #endif
 
+#endif /* #if !defined(__MSVC__) */
 
  /* waitlock works like lock, but blocks until the lock can be
   * performed.
