@@ -1,3 +1,8 @@
+2002-07-07 Sunday 11:51  pavel.gulchouck
+
+	* api_jam.c (1.83.2.1): Create zero-length jdt-file when creating
+	new jam area
+
 2002-07-01 Monday 13:43  stas
 
 	* Makefile (1.24.2.1), debian/changelog (1.10.2.1), debian/control
