@@ -204,7 +204,7 @@ int _fast direxist(char *directory)
 
 }
 
-#elif defined(OS2) || defined(__NT__)
+#elif defined(OS2) || defined(__NT__) || defined(__MINGW32__)
 
 #ifdef EXPENTRY
 #undef EXPENTRY
@@ -224,7 +224,7 @@ int _fast direxist(char *directory)
 {
     char *tempstr, *p;
     size_t l;
-#ifdef __NT__
+#if defined(__NT__) || defined(__MINGW32__) || defined(__CYGWIN__)
     DWORD attr;
 #else
     FILESTATUS3 s;

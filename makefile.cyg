@@ -13,7 +13,12 @@ RANLIB=ranlib
 #RANLIB=i386-mingw32-ranlib
 RM=rm
 
-CDEFS=-D__NT__ -DWINNT -D__CYG__
+# __CYGWIN__ is predefined macros for GCC/cygwin native mode;
+# __MINGW32__ is predefined macros for `gcc -mno-cygwin` call.
+# Removed macros __NT__ declared in compiler.h
+# Use these macroses for condition compilation, please
+CDEFS=
+
 CFLAGS=-Wall -mno-cygwin
 COPT=-O3
 

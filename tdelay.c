@@ -60,24 +60,26 @@
       ;
   }
 
-#elif defined(NT) || defined(__NT__)
-#if defined(__CYG__) || defined(__MINGW32__)
+#elif defined(__MINGW32__)
+
 #include <stdlib.h>
   void _fast tdelay(int msecs)
   {
     _sleep((dword)msecs);
   }
-#else
-#ifndef _MSC_VER
-  extern void Sleep(dword ms);
-#else
-  extern void __stdcall Sleep(dword ms);
-#endif
-  void _fast tdelay(int msecs)
-  {
+
+#elif defined(NT) || defined(__NT__)
+/* not mingw or `cygwin -mno-cygwin` */
+
+# ifndef _MSC_VER
+   extern void Sleep(dword ms);
+# else
+   extern void __stdcall Sleep(dword ms);
+# endif
+   void _fast tdelay(int msecs)
+   {
     Sleep((dword)msecs);
-  }
-#endif
+   }
 
 #elif defined(__BEOS__)
 

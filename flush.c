@@ -50,7 +50,7 @@
 
 #endif
 
-#if defined(__NT__)
+#if defined(__NT__) || defined(__MINGW32__)
 #define WIN32_LEAN_AND_MEAN
 #define NOGDI
 #define NOUSER
@@ -79,7 +79,7 @@ void pascal far flush_handle2(int fh)
     DosBufReset((HFILE) fh);
 }
 
-#elif defined(__NT__)
+#elif defined(__NT__) || defined(__MINGW32__)
 
 #ifdef __RSXNT__
 #include <emx/syscalls.h>
@@ -124,7 +124,7 @@ void _fast flush_handle(FILE * fp)
 {
     fflush(fp);
 
-#if defined(OS2) || defined(MSDOS) || defined(__NT__) || defined(__TURBOC__) || defined(SASC) || defined(__DJGPP__)
+#if defined(OS2) || defined(MSDOS) || defined(__NT__) || defined(__MINGW32__) || defined(__TURBOC__) || defined(SASC) || defined(__DJGPP__)
     flush_handle2(fileno(fp));
 #else
     {
