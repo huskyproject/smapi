@@ -241,6 +241,8 @@ int qq(void)
 
 #define mode_t int
 
+#define HAS_SPAWNVP 1
+
 #elif (defined(_MSC_VER) && (_MSC_VER < 1200))
 
 /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
@@ -292,6 +294,8 @@ int lock(int handle, long ofs, long length);
 #define snprintf  _snprintf
 #define vsnprintf _vsnprintf
 
+#define HAS_SPAWNVP 1
+
 #elif defined(__WATCOMC__) && defined(__NT__)
 
 /* WATCOM C/C++ for Windows NT */
@@ -310,6 +314,8 @@ int lock(int handle, long ofs, long length);
 
 #define _XPENTRY pascal
 #define mode_t int
+
+#define HAS_SPAWNVP 1
 
 #elif defined(__HIGHC__)
 
@@ -403,6 +409,8 @@ int lock(int handle, long ofs, long length);
 #ifndef _XPENTRY
 #define _XPENTRY
 #endif
+
+#define HAS_SPAWNVP 1
 
 #elif defined(__TURBOC__) && defined(WINNT)
 
@@ -687,6 +695,8 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define HAS_SNPRINTF  1
 #define HAS_VSNPRINTF 1
 #define USE_SYSTEM_COPY
+
+#define HAS_SPAWNVP 1
 
 SMAPI_EXT int unlock(int handle, long ofs, long length);
 SMAPI_EXT int lock(int handle, long ofs, long length);
