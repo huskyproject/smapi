@@ -1,3 +1,8 @@
+2002-09-08 Sunday 18:39  pgul
+
+	* compiler.h (1.91): Added HAS_SNPRINTF and HAS_VSNPRINTF for
+	os2/emx, os2/watcom, cygwin, mingw32, unix
+
 2002-09-05 Thursday 08:26  mche
 
 	* msgapi.h (1.43): fix MSGAPI function usage
