@@ -1,3 +1,15 @@
+Tue Mar 6 20:45:00 MET 2001
+og:
+* JAM should be now platform independed (works now on SPARC)
+* fixed a JAM mem-alloc bug
+* modified filelocking for squishbases (added waitlock2()) - seem's to be working !!!!!!!!!!
+* fixed tdelay.c for NT/Win32
+* mysleep() is no more used (will be removed in the future)
+* added alternativ method of Filelocking (via lockfile *.lck - use -DALTLOCKING)
+* filelocking is now os-aware under *ix & OS/2 !
+* filelocking for other-os's (non *ix & no OS/2) now tries to lock every 1/10 sec.
+* some minor changes
+
 Sun Mar  4 17:20:39 NOVT 2001
 max:
 * fixed GetCtrlToken() - when gets "STR" kludge and
