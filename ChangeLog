@@ -1,3 +1,12 @@
+2003-02-19 Wednesday 13:53  stas_degteff
+
+	* compiler.h (1.167): Bugfix in defines
+
+2003-02-19 Wednesday 08:58  stas_degteff
+
+	* compiler.h (1.166): Update DJGPP macroses: undef __UNIX__  UNIX
+	_UNIX __unix__ unix
+
 2003-02-18 Tuesday 11:06  os2tobi
 
 	* COPYING (1.3), LICENSE (1.1), licence.txt (1.2): Changed license
