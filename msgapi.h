@@ -145,7 +145,7 @@ typedef struct _xmsg
 
 #define MAX_REPLY 10            /* Max number of stored replies to one msg */
 
-    UMSGID replyto;
+    UMSGID replyto, replynext;
     UMSGID replies[MAX_REPLY];
 
     byte __ftsc_date[20];       /* Obsolete date information.  If it weren't

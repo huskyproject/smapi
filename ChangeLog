@@ -1,4 +1,10 @@
 ----- cvs ci ------
+Mon Sep 11 10:56:46 NOVST 2000
+max:
+* api_jam.c from development branch (patches from PG now really works)
+* SDM bugfixes
+
+----- cvs ci ------
 Mon Sep 04 12:54:10 NOVST 2000
 max (patches from Pavel Gulchouk):
 * jam update for "hpt link" & "hptlink"
