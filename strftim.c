@@ -160,11 +160,7 @@ size_t cdecl strftim(char *string, size_t maxsize, const char *format, const str
                           todo2: implement full parsing TZ env.var */
                     strncpy(out, scrptr, 3);
                     out[3] = '\0';
-#ifndef __UNIX__
                     strupr(out);
-#else               /*   function not available under Linux / FreeBSD */
-                    for(scrptr=out;*scrptr;scrptr++) *scrptr = toupper(*scrptr);
-#endif
                 }
                 else
                 {

@@ -53,3 +53,16 @@ char *strdup(const char *s)
 }
 
 #endif
+
+#if defined(__UNIX__)
+char *strupr(char *str)
+{
+    char *temp = str;
+    
+    while(*str != 0) {
+	*str = (char)toupper(*str);
+	str++;
+    }
+    return temp;
+}
+#endif

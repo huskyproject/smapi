@@ -73,6 +73,7 @@
    * HAS_sleep           - sleep() presents or defined here
    * HAS_dos_read        - dos_read() presents or defined here
    * HAS_popen_close     - popen(); pclose() ("pipe open" and "pipe close")
+   * HAS_strupr		 - strupr() presents
    *
    * HAS_MALLOC_H        - may be used "#include <malloc.h>" for malloc() etc.
    * HAS_DOS_H           - may be used "#include <dos.h>"
@@ -1079,6 +1080,7 @@ int qq(void)
 #  define HAS_mktime
 #  define HAS_sopen
 #  define HAS_sleep
+#  define HAS_strupr
 
 #  define USE_SYSTEM_COPY     /* OS have system call for files copiing */
 #  define USE_SYSTEM_COPY_WIN32
@@ -1898,6 +1900,10 @@ size_t _stdc strftim( char *str, size_t maxsize, const char *fmt,
 
 #endif
 
+
+#if !defined(HAS_strupr)
+char *strupr(char *str);
+#endif
 
 /* Some implementations not include the min() macro or function. Usually C++ */
 #ifndef min

@@ -19,4 +19,8 @@ int stricmp(const char *s, const char *t);
 char *strdup(const char *s);
 #endif
 
+#if defined(__UNIX__)
+char *strupr(char *str);
+#endif
+
 #endif
