@@ -413,8 +413,6 @@ int lock(int handle, long ofs, long length);
 
 #elif defined(__EMX__)
 
-#error !!!
-
 /* EMX for 32-bit OS/2 and RSX for Windows NT */
 
 #define _stdc
