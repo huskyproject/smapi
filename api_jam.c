@@ -320,7 +320,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
             bytes -= (msgh->Hdr.TxtLen-offset);
             bytes -= offset;
             if (bytes > msgh->lclen) bytes = msgh->lclen;
-            strncat(text, msgh->lctrl, bytes);
+            strncpy(text+bytesread, msgh->lctrl, bytes);
             bytesread += bytes;
          } else {
             bytesread = farread(MsghJm->TxtHandle, text, bytes);

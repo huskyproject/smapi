@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Tue Aug 29 22:54:10 NOVST 2000
+max (patches from Pavel Gulchouk):
+* great JAM bugfix! (ex: netmail looks good after packing)
+
+----- cvs ci ------
 Mon Aug 28 12:46:58 UTC 2000
 sms:
 * fixed segfault if area could not be opened
