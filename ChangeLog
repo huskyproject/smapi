@@ -2,6 +2,14 @@ smapi 1.6.1
 -----------
 
 ----- cvs ci ------
+So  12 Dez 1999 09:02:13 CET
+tobi: (patch by Eduard Dulich):
+- Fixed Y2K bug in the SMAPI. It does not affect Squish and Msg, but JAM, 
+  and it does affect any program (no matter what storage type) that 
+  explicitly calls the sc_time routine. The bug results in years 2000 
+  .. 2009 being filled in as "0" .. "9" instead of "00" .. "09".
+
+----- cvs ci ------
 Tue Nov 30 22:11:00 CET 1999
 sms:
 - fixed some misuses of ++ in api_jam.c and api_sdm.c
