@@ -24,7 +24,7 @@
 
 /* At the moment cygwin (ver 1.3.12) doesn't support ipc, this will change *
  * in the future. Then NOSEMAPHORES is not longer needed for cygwin.       */
-#if !defined(NOSEMAPHORES) && (defined(__NT__) || defined(__sun__) || defined(__CYGWIN__))
+#if !defined(NOSEMAPHORES) && (defined(__NT__) || defined(__MINGW32__) || defined(__sun__) || defined(__CYGWIN__))
 #define NOSEMAPHORES
 #endif
 

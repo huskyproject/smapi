@@ -1,10 +1,16 @@
+# Makefile for Building SMAPI with cross-compiler Mingw32
+# No support for the Husky build environment.
+
 CC=gcc
 LIB=ar
 RANLIB=ranlib
 RM=del
 
-CDEFS=-D__NT__ -D__MINGW__ -c
-CFLAGS=-Wall
+# __MINGW32__ is predefined macros, __NT__ defined in compiler.h
+# use __MINGW32__ in source code please (if possible)
+CDEFS=
+
+CFLAGS=-Wall -c
 COPT=-O3
 
 default: all
