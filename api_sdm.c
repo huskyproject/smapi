@@ -355,8 +355,11 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
     }
 
     sprintf((char *) msgname, (char *) sd_msg, Mhd->base, (int)msgnum);
-
+#ifdef UNIX
+    handle = sopen((char *) msgname, filemode | O_BINARY, SH_DENYNONE, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+#else
     handle = sopen((char *) msgname, filemode | O_BINARY, SH_DENYNONE, S_IREAD | S_IWRITE);
+#endif
     if (handle == -1)
     {
         if (filemode & O_CREAT)

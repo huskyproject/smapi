@@ -3,6 +3,9 @@ CFLAGS=	-Wall -s
 CDEFS=	-DUNIX
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486 -g -fPIC
 LIB=	ar
+LIBDIR= /usr/local/lib
+ILOPT= -c -m644
+
 
 ALL: $(TARGET) libsmapilnx.so.2.0
 
@@ -40,3 +43,8 @@ $(TARGET): $(OBJS)
 
 libsmapilnx.so.2.0: $(OBJS)
 	gcc -shared -Wl,-soname,libsmapilnx.so.2 -o libsmapilnx.so.2.0 $(OBJS)
+
+install: libsmapilnx.so.2.0
+	install $(ILOPT) libsmapilnx.so.2.0 $(LIBDIR)
+	ln -sf $(LIBDIR)/libsmapilnx.so.2.0 $(LIBDIR)/libsmapilnx.so.2
+	ln -sf $(LIBDIR)/libsmapilnx.so.2 $(LIBDIR)/libsmapilnx.so

@@ -1224,11 +1224,19 @@ static sword MSGAPI _OpenSquish(MSG * sq, word * mode)
 
     if (*mode == MSGAREA_CREATE)
     {
+#ifdef UNIX
+	Sqd->sfd = sopen((char *) temp, fop_wpb, SH_DENYNONE, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+#else	    
         Sqd->sfd = sopen((char *) temp, fop_wpb, SH_DENYNONE, S_IREAD | S_IWRITE);
+#endif
     }
     else
     {
+#ifdef UNIX
+	Sqd->sfd = sopen((char *) temp, fop_rpb, SH_DENYNONE, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+#else
         Sqd->sfd = sopen((char *) temp, fop_rpb, SH_DENYNONE, S_IREAD | S_IWRITE);
+#endif
     }
     if (Sqd->sfd == -1)
     {
@@ -1239,8 +1247,11 @@ static sword MSGAPI _OpenSquish(MSG * sq, word * mode)
         }
 
         *mode = MSGAREA_CREATE;
-
+#ifdef UNIX
+	Sqd->sfd = sopen((char *) temp, fop_wpb | O_EXCL, SH_DENYNONE, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+#else
         Sqd->sfd = sopen((char *) temp, fop_wpb | O_EXCL, SH_DENYNONE, S_IREAD | S_IWRITE);
+#endif
         if (Sqd->sfd == -1)
         {
             msgapierr = MERR_NOENT;
@@ -1252,11 +1263,19 @@ static sword MSGAPI _OpenSquish(MSG * sq, word * mode)
 
     if (*mode == MSGAREA_CREATE)
     {
+#ifdef UNIX
+	Sqd->ifd = sopen((char *) temp, fop_wpb, SH_DENYNONE, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+#else
         Sqd->ifd = sopen((char *) temp, fop_wpb, SH_DENYNONE, S_IREAD | S_IWRITE);
+#endif
     }
     else
     {
+#ifdef UNIX
+	Sqd->ifd = sopen((char *) temp, fop_rpb, SH_DENYNONE, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+#else
         Sqd->ifd = sopen((char *) temp, fop_rpb, SH_DENYNONE, S_IREAD | S_IWRITE);
+#endif
     }
     if (Sqd->ifd == -1)
     {

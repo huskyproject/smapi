@@ -55,3 +55,6 @@ SMAPI 1.4
   in order to avoid a name clash with the Windows API. I also renamed
   FindOpen and FindNext to FFindOpen and FFindNext.
 
+- y2k fixes and other fixes
+
+- rights patch for created directories and files.
