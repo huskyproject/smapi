@@ -27,7 +27,6 @@ extern "C" {
 #include "compiler.h"
 #include "typedefs.h"
 #include "stamp.h"
-#include "semaphor.h"
 
 #ifdef __BEOS__
 #include <OS.h>
@@ -254,8 +253,7 @@ struct _msgapi
 
     void *apidata;
     
-    SEMAPHORE sem;
-    
+   
 #ifdef ALTLOCKING
     char  *lck_path;
     int    lck_handle;

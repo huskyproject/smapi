@@ -56,18 +56,6 @@ static char rcs_id[]="$Id$";
 
 /* Base is locked for other processes */
 
-short _fast _SquishBaseThreadLock(HAREA ha)
-{
-  lock_semaphore(&(ha->sem));
-  return 1;
-}
-
-short _fast _SquishBaseThreadUnlock(HAREA ha)
-{
-  unlock_semaphore(&(ha->sem));
-  return 1;
-}
-
 
 #ifdef ALTLOCKING
 
@@ -242,14 +230,11 @@ unsigned _SquishExclusiveEnd(HAREA ha)
 
 sword _XPENTRY apiSquishLock(HAREA ha)
 {
-  _SquishBaseThreadLock(ha);
 
   /* Only need to lock once */
 
   if (Sqd->fLockFunc++ != 0)
   {
-    _SquishBaseThreadUnlock(ha);
-
     return 0;
   }
 
@@ -257,8 +242,6 @@ sword _XPENTRY apiSquishLock(HAREA ha)
 
   if (!_SquishLockBase(ha))
   {
-    _SquishBaseThreadUnlock(ha);
-
     return -1;
   }
 
@@ -268,13 +251,9 @@ sword _XPENTRY apiSquishLock(HAREA ha)
   if (!_SquishBeginBuffer(Sqd->hix))
   {
     (void)_SquishUnlockBase(ha);
-    _SquishBaseThreadUnlock(ha);
-
     return -1;
   }
   
-  _SquishBaseThreadUnlock(ha);
-
   return 0;
 }
 
@@ -283,28 +262,22 @@ sword _XPENTRY apiSquishLock(HAREA ha)
 
 sword _XPENTRY apiSquishUnlock(HAREA ha)
 {
-  _SquishBaseThreadLock(ha);
 
   if (Sqd->fLockFunc==0)
   {
     msgapierr=MERR_NOLOCK;
-    _SquishBaseThreadUnlock(ha);
 
     return -1;
   }
 
   if (--Sqd->fLockFunc != 0)
   {
-    _SquishBaseThreadUnlock(ha);
-
     return 0;
   }
   
   (void)_SquishEndBuffer(Sqd->hix);
   (void)_SquishUnlockBase(ha);
   
-  _SquishBaseThreadUnlock(ha);
-
   return 0;
 }
 

@@ -3,7 +3,7 @@
 
 CC=	gcc
 CFLAGS= -Wall -s
-CDEFS=	-D__FLAT__ -DNOSEMAPHORES
+CDEFS=	-D__FLAT__
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -mcpu=i486
 LIB=	ar
 RANLIB= ranlib
@@ -42,7 +42,6 @@ OBJS=	1stchar.o  \
 	structrw.o \
 	trail.o    \
 	weekday.o \
-	semaphor.o \
 	setfsize.o \
 	tdelay.o
 

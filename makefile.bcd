@@ -3,7 +3,7 @@
 
 CC=	bcc
 CFLAGS=	-w -ml
-CDEFS=	-DMSDOS -DNOSEMAPHORES
+CDEFS=	-DMSDOS
 COPT=	-O1
 LIB=	tlib
 ASM=	tasm
@@ -43,7 +43,6 @@ OBJS=	1stchar.obj  \
 	structrw.obj \
 	trail.obj    \
 	weekday.obj \
-	semaphor.obj \
 	setfsize.obj \
 	tdelay.obj
 

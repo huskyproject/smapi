@@ -570,13 +570,11 @@ HMSG _XPENTRY apiSquishOpenMsg(HAREA ha, word wMode, dword dwMsg)
   if (MsgInvalidHarea(ha))
     return NULL;
 
-  _SquishBaseThreadLock(ha);
 
   /* Allocate a handle for this message */
 
   if ((hmsg=NewHmsg(ha, wMode))==NULL)
   {
-    _SquishBaseThreadUnlock(ha);
 
     return NULL;
   }
@@ -606,8 +604,6 @@ HMSG _XPENTRY apiSquishOpenMsg(HAREA ha, word wMode, dword dwMsg)
     pfree(hmsg);
     hmsg=NULL;
   }
-
-  _SquishBaseThreadUnlock(ha);
 
   return hmsg;
 }

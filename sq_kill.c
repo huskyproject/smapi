@@ -99,14 +99,11 @@ sword _XPENTRY apiSquishKillMsg(HAREA ha, dword dwMsg)
     return -1;
 
 
-  _SquishBaseThreadLock(ha);
-
   /* Make sure that the message actually exists */
 
   if (dwMsg==0 || dwMsg > ha->num_msg)
   {
     msgapierr=MERR_NOENT;
-    _SquishBaseThreadUnlock(ha);
     return -1;
   }
 
@@ -114,7 +111,6 @@ sword _XPENTRY apiSquishKillMsg(HAREA ha, dword dwMsg)
 
   if ((fo=_SquishGetFrameOfs(ha, dwMsg))==NULL_FRAME)
   {
-    _SquishBaseThreadUnlock(ha);
     return -1;
   }
 
@@ -123,8 +119,6 @@ sword _XPENTRY apiSquishKillMsg(HAREA ha, dword dwMsg)
 
   if (!_SquishReadHdr(ha, fo, &sqh))
   {
-    _SquishBaseThreadUnlock(ha);
-
     return -1;
   }
 
@@ -133,7 +127,6 @@ sword _XPENTRY apiSquishKillMsg(HAREA ha, dword dwMsg)
 
   if (!_SquishExclusiveBegin(ha))
   {
-    _SquishBaseThreadUnlock(ha);
     return FALSE;
   }
 
@@ -145,8 +138,6 @@ sword _XPENTRY apiSquishKillMsg(HAREA ha, dword dwMsg)
 
   if (!_SquishExclusiveEnd(ha))
     rc=FALSE;
-
-  _SquishBaseThreadUnlock(ha);
 
   return rc ? 0 : -1;
 }

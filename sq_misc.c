@@ -133,17 +133,12 @@ sword _XPENTRY apiSquishSetHighWater(HAREA ha, dword dwMsg)
 
   ha->high_water=apiSquishMsgnToUid(ha, dwMsg);
 
-  _SquishBaseThreadLock(ha);
 
   if (!_SquishExclusiveEnd(ha))
   {
-    _SquishBaseThreadUnlock(ha);
-
     return -1;
   }
   
-  _SquishBaseThreadUnlock(ha);
-
   return 0;
 }
 
@@ -156,8 +151,6 @@ void _XPENTRY apiSquishSetMaxMsg(HAREA ha, dword dwMaxMsgs, dword dwSkipMsgs, dw
   if (MsgInvalidHarea(ha))
     return;
 
-  _SquishBaseThreadLock(ha);
-
   /* Update base only if max msg settings have changed */
 
   if ((dwMaxMsgs  != (dword)-1L && dwMaxMsgs  != Sqd->dwMaxMsg) ||
@@ -166,8 +159,6 @@ void _XPENTRY apiSquishSetMaxMsg(HAREA ha, dword dwMaxMsgs, dword dwSkipMsgs, dw
   {
     if (!_SquishExclusiveBegin(ha))
     {
-      _SquishBaseThreadUnlock(ha);
-
       return;
     }
 
@@ -183,7 +174,6 @@ void _XPENTRY apiSquishSetMaxMsg(HAREA ha, dword dwMaxMsgs, dword dwSkipMsgs, dw
     (void)_SquishExclusiveEnd(ha);
   }
 
-  _SquishBaseThreadUnlock(ha);
 }
 
 void _XPENTRY apiSquishGetMaxMsg(HAREA ha, dword *dwMaxMsgs, dword *dwSkipMsgs, dword *dwMaxDays)

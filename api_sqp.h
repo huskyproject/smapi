@@ -48,8 +48,6 @@ dword _XPENTRY apiSquishGetCtrlLen(HMSG msgh);
 UMSGID _XPENTRY apiSquishGetNextUid(HAREA ha);
 
 /* Private functions */
-short _fast _SquishBaseThreadLock(HAREA ha);
-short _fast _SquishBaseThreadUnlock(HAREA ha);
 unsigned _SquishReadMode(HMSG hmsg);
 unsigned _SquishWriteMode(HMSG hmsg);
 unsigned _SquishCopyBaseToData(HAREA ha, SQBASE *psqb);

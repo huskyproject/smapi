@@ -4,7 +4,6 @@
 CC=	gcc
 CFLAGS=	-Wall
 CDEFS=	-DUNIX
-# There's NOSEMAPHORES defined in semaphor.h
 #CDEFS=	-DUNIX -DHAS_SEMUN_UNDECL
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
 LIB=	ar
@@ -44,7 +43,6 @@ OBJS=	1stchar.o  \
 	structrw.o \
 	trail.o    \
 	weekday.o \
-	semaphor.o \
 	setfsize.o \
 	tdelay.o
 

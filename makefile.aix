@@ -11,7 +11,7 @@
 # This will allow "//" style comments in ANSI C # source code. 
 
 CC=cc
-CFLAGS=-qcpluscmt -DUNIX -D_AIX -DNOSEMAPHORES
+CFLAGS=-qcpluscmt -DUNIX -D_AIX
 
 LIB=	ar
 RANLIB= ranlib
@@ -52,7 +52,6 @@ OBJS=	1stchar.o  \
 	structrw.o \
 	trail.o    \
 	weekday.o \
-	semaphor.o \
 	setfsize.o \
 	tdelay.o
 

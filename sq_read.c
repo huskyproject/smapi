@@ -219,8 +219,6 @@ dword _XPENTRY apiSquishReadMsg(HMSG hmsg, PXMSG pxm, dword dwOfs,
   if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
     return (dword)-1L;
 
-  _SquishBaseThreadLock(hmsg->ha);
-
   /* Make sure that we can use szTxt and szCtrl as flags controlling what   *
    * to read.                                                               */
 
@@ -250,8 +248,6 @@ dword _XPENTRY apiSquishReadMsg(HMSG hmsg, PXMSG pxm, dword dwOfs,
 
   /* If everything worked okay, return the number bytes that we read        *
    * from the message body.                                                 */
-
-  _SquishBaseThreadUnlock(hmsg->ha);
 
   return fOkay ? dwGot : (dword)-1L;
 }

@@ -10,7 +10,7 @@ VER  =  2.3.0
 prefix=	/usr/local
 CC=	gcc
 CFLAGS=	-Wall
-CDEFS=	-DUNIX -DNOSEMAPHORES
+CDEFS=	-DUNIX
 COPT=	-O3 
 LIB=	ar
 RANLIB= ranlib
@@ -63,7 +63,6 @@ OBJS=	1stchar.o  \
 	structrw.o \
 	trail.o    \
 	weekday.o \
-	semaphor.o \
 	setfsize.o \
 	tdelay.o
 

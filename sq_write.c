@@ -656,7 +656,6 @@ sword _XPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
   if (MsgInvalidHmsg(hmsg) || !_SquishWriteMode(hmsg))
     return -1;
 
-  _SquishBaseThreadLock(hmsg->ha);
 
   /* Make sure that szTxt and szCtrl are consistent */
 
@@ -677,15 +676,12 @@ sword _XPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
     if (!pxm)
     {
       msgapierr=MERR_BADA;
-      _SquishBaseThreadUnlock(hmsg->ha);
-      
+     
       return -1;
     }
 
     if (! _SquishExclusiveBegin(hmsg->ha))
     {
-      _SquishBaseThreadUnlock(hmsg->ha);
-
       return -1;
     }
 
@@ -693,8 +689,6 @@ sword _XPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
 
     if (! _SquishExclusiveEnd(hmsg->ha) || !rc)
     {
-      _SquishBaseThreadUnlock(hmsg->ha);
-
       return -1;
     }
   }
@@ -706,24 +700,18 @@ sword _XPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
   if (pxm)
     if (!_SquishWriteXmsg(hmsg, pxm, &dwOfs))
     {
-      _SquishBaseThreadUnlock(hmsg->ha);
-
       return -1;
     }
 
   if (szCtrl)
     if (!_SquishWriteCtrl(hmsg, szCtrl, dwCtrlLen, &dwOfs))
     {
-      _SquishBaseThreadUnlock(hmsg->ha);
-
       return -1;
     }
 
   if (szTxt)
     if (!_SquishWriteTxt(hmsg, fAppend, szTxt, dwTxtLen, &dwOfs))
     {
-      _SquishBaseThreadUnlock(hmsg->ha);
-
       return -1;
     }
 
@@ -735,12 +723,8 @@ sword _XPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
   if (pxm)
     if (! _SquishUpdateIndex(hmsg, pxm))
     {
-      _SquishBaseThreadUnlock(hmsg->ha);
-
       return -1;
     }
-
-  _SquishBaseThreadUnlock(hmsg->ha);
 
   return 0;
 }

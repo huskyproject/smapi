@@ -7,7 +7,7 @@ CC=	qcl
 CC=cl
 
 CFLAGS=	-nologo -W4 -AL
-CDEFS=	-DMSDOS -DNOSEMAPHORES
+CDEFS=	-DMSDOS
 COPT=	-Ox
 LIB=	lib
 # you may also use tasm
@@ -48,7 +48,6 @@ OBJS=	1stchar.obj  \
 	structrw.obj \
 	trail.obj    \
 	weekday.obj \
-	semaphor.obj \
 	setfsize.obj \
 	tdelay.obj
 

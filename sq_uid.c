@@ -72,14 +72,12 @@ UMSGID _XPENTRY apiSquishMsgnToUid(HAREA ha, dword dwMsg)
   if (MsgInvalidHarea(ha))
     return (UMSGID)0L;
 
-  _SquishBaseThreadLock(ha);
 
   /* Make sure that it's a valid message number */
 
   if (dwMsg==0 || dwMsg > ha->num_msg)
   {
     msgapierr=MERR_NOENT;
-    _SquishBaseThreadUnlock(ha);
 
     return (UMSGID)0L;
   }
@@ -87,12 +85,8 @@ UMSGID _XPENTRY apiSquishMsgnToUid(HAREA ha, dword dwMsg)
 
   if (!SidxGet(Sqd->hix, dwMsg, &sqi))
   {
-    _SquishBaseThreadUnlock(ha);
-
     return (UMSGID)0L;
   }
-
-  _SquishBaseThreadUnlock(ha);
 
   return sqi.umsgid;
 }
@@ -118,13 +112,10 @@ dword _XPENTRY apiSquishUidToMsgn(HAREA ha, UMSGID uid, word wType)
     return 0L;
   }
 
-  _SquishBaseThreadLock(ha);
-
 /* OG: Exlusive access is required when caching the index */
 /*
   if (!_SquishExclusiveBegin(ha))
   {
-    _SquishBaseThreadUnlock(ha);
     return 0;
   } 
 */
@@ -133,8 +124,6 @@ dword _XPENTRY apiSquishUidToMsgn(HAREA ha, UMSGID uid, word wType)
 
   if (! _SquishBeginBuffer(Sqd->hix))
   {
-    _SquishBaseThreadUnlock(ha);
-
     return (dword)0;
   }
 
@@ -206,8 +195,6 @@ dword _XPENTRY apiSquishUidToMsgn(HAREA ha, UMSGID uid, word wType)
 
   if (! _SquishFreeBuffer(Sqd->hix))
     rc=(dword)0;
-
-  _SquishBaseThreadUnlock(ha);
 
   return rc;
 }

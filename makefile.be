@@ -47,7 +47,6 @@ OBJS=	1stchar.o  \
 	structrw.o \
 	trail.o    \
 	weekday.o \
-	semaphor.o \
 	setfsize.o \
 	tdelay.o
 

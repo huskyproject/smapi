@@ -61,38 +61,12 @@ static char rcs_id[]="$Id$";
 
 static HAREA haOpen=NULL;
 
-#ifndef NOSEMAPHORES
-static SEMAPHORE lock_sem;
-#endif
 
 static char dot_sqd[]=".sqd";
 static char dot_sqi[]=".sqi";
 static char dot_sql[]=".sql";
 static char dot_lck[]=".lck";
 
-short _SquishInitSem()
-{
-  create_semaphore(&lock_sem);
-  return 1;
-}
-
-short _SquishFreeSem()
-{
-  delete_semaphore(&lock_sem);
-  return 1;
-}
-
-short _SquishThreadLock(void)
-{
-  lock_semaphore(&lock_sem);
-  return 1;
-}
-
-short _SquishThreadUnlock(void)
-{
-  unlock_semaphore(&lock_sem);
-  return 1;
-}
 
 
 static unsigned near _SquishUnlinkBaseFiles(byte *);
@@ -518,12 +492,10 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
   if (fOpened)
   {
     /* Add us to the linked list of open areas */
-    _SquishThreadLock();
 
     Sqd->haNext=haOpen;
     haOpen=ha;
     
-    _SquishThreadUnlock();
   }
   else
   {
@@ -534,8 +506,7 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
     return NULL;
   }
 
-  create_semaphore(&(ha->sem));
-  
+ 
 #ifdef ALTLOCKING
    ha->lck_handle = 0;
 #endif
@@ -579,13 +550,11 @@ static unsigned near _SquishRemoveAreaList(HAREA haThis)
 
   /* If we were at the head of the list, adjust the main pointer only */
 
-  _SquishThreadLock();
 
   if (haOpen==haThis)
   {
     ha=haThis;
     haOpen=Sqd->haNext;
-    _SquishThreadUnlock();
     return TRUE;
   }
 
@@ -598,12 +567,9 @@ static unsigned near _SquishRemoveAreaList(HAREA haThis)
     if (haNext==haThis)
     {
       Sqd->haNext=((SQDATA *)(haThis->apidata))->haNext;
-      _SquishThreadUnlock();
       return TRUE;
     }
   }
-
-  _SquishThreadUnlock();
 
   msgapierr=MERR_BADA;
   return FALSE;
@@ -658,8 +624,6 @@ sword _XPENTRY apiSquishCloseArea(HAREA ha)
 
   ha->id=0;
 
-  delete_semaphore(&(ha->sem));
-
 #ifdef ALTLOCKING
   if (ha->lck_path)
     pfree(ha->lck_path);
@@ -693,12 +657,10 @@ sword MSGAPI SquishValidate(byte  *szName)
 
 void _SquishInit()
 {
-  _SquishInitSem();
 }
 
 void _SquishDeInit()
 {
   _SquishCloseOpenAreas();
-  _SquishFreeSem();
 }
 

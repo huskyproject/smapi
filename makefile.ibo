@@ -41,7 +41,6 @@ OBJS=	1stchar.obj  \
 	structrw.obj \
 	trail.obj    \
 	weekday.obj \
-	semaphor.obj \
 	setfsize.obj \
 	tdelday.obj
 

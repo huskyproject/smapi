@@ -67,8 +67,7 @@ OBJS=	1stchar$(OBJ)  \
 	trail$(OBJ)    \
 	weekday$(OBJ)  \
 	tdelay$(OBJ)   \
-	setfsize$(OBJ) \
-	semaphor$(OBJ)
+	setfsize$(OBJ) 
 
 
 ifeq ($(DYNLIBS), 1)
@@ -131,7 +130,6 @@ install: instdyn
 	$(INSTALL) $(IIOPT) stamp.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) unused.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) semaphor.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) api_jam.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
 	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
@@ -148,7 +146,6 @@ uninstall:
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)stamp.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)typedefs.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)unused.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)semaphor.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_jam.h
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)patmat$(OBJ)

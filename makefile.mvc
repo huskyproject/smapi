@@ -2,7 +2,7 @@
 
 CC=     cl
 CFLAGS= -nologo -Zp1
-CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -DINTEL -DNOSEMAPHORES
+CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -DINTEL
 COPT=   -O2
 LIB=    lib -nologo
 
@@ -39,7 +39,6 @@ OBJS=   1stchar.obj  \
 	structrw.obj \
 	trail.obj    \
 	weekday.obj \
-	semaphor.obj \
 	setfsize.obj \
 	tdelay.obj
 
