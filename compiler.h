@@ -81,6 +81,7 @@
    * HAS_DIRENT_H        - may be used "#include <dirent.h>" for opendir() etc.
    * HAS_IO_H            - may be used "#include <io.h>"
    * HAS_UNISTD_H        - may be used "#include <unistd.h>"
+   * HAS_PROCESS_H       - may be used "#include <process.h>"
    * HAS_SHARE_H         - may be used "#include <share.h>" for sopen() etc.
    * HAS_PWD_H           - may be used "#include <pwd.h>"
    * HAS_GRP_H           - may be used "#include <grp.h>"
@@ -1089,6 +1090,7 @@ int qq(void)
 #  define HAS_DIRECT_H
 #  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
 #  define HAS_DIRECT_H     /* #include <direct.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
    SMAPI_EXT int unlock(int handle, long ofs, long length);
    SMAPI_EXT int lock(int handle, long ofs, long length);
@@ -1131,6 +1133,7 @@ int qq(void)
 #  define HAS_MALLOC_H        /* use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_IO_H     1  /* may use "#include <io.h> */
 #  define HAS_SHARE_H  1  /* may use "#include <share.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1160,6 +1163,7 @@ int qq(void)
 #  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
 #  define HAS_DOS_H
 #  define HAS_SIGNAL_H  1  /* <signal.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 #  define mymkdir(x)    mkdir(x) /*<direct.h>*/
 #  define HAS_mkdir
@@ -1287,6 +1291,7 @@ int qq(void)
 #  define HAS_MALLOC_H 1      /* use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_IO_H     1  /* may use "#include <io.h> */
 #  define HAS_SHARE_H  1  /* may use "#include <share.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 /* End: MetaWare High C/C++ for OS/2 */
 #elif defined(__MINGW32__) /* MinGW32 & cygwin's 'gcc -mno-cygwin' ***********/
@@ -1329,7 +1334,6 @@ int qq(void)
 #  define mysleep(sec) _sleep((sec)*1000l)
 #  define HAS_sleep     1
 
-
 #  define mymkdir mkdir
 
 /*#  define strcasecmp  stricmp*/
@@ -1337,11 +1341,10 @@ int qq(void)
 
   int unlock(int handle, long ofs, long length);
   int lock(int handle, long ofs, long length);
-#  define sopen _sopen
 
 /* older mingw headers are too lazy ... */
 #  include <share.h>
-#include <process.h>
+#  define sopen _sopen
 #  ifndef SH_DENYRW
 #    define SH_DENYRW 0x10
 #  endif
@@ -1366,6 +1369,7 @@ int qq(void)
 #  define HAS_SHARE_H    /* may use "#include <share.h> */
 #  define HAS_DIRENT_H   /* may use "#include <dirent.h> */
 #  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1417,6 +1421,7 @@ int qq(void)
 #  define HAS_SHARE_H   1  /* may use "#include <share.h> */
 #  define HAS_UNISTD_H  1  /* use "#include <unistd.h> */
 #  define HAS_SIGNAL_H  1  /* <signal.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1477,6 +1482,7 @@ int qq(void)
 #  define HAS_SHARE_H   1   /* may use "#include <share.h> */
 #  define HAS_UNISTD_H  1   /* use "#include <unistd.h> */
 #  define HAS_SIGNAL_H  1  /* <signal.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1489,6 +1495,7 @@ int qq(void)
 #  define HAS_DOS_H    1      /* use "#include <dos.h>" for delay(), intr() etc. */
 #  define HAS_IO_H     1      /* access(), open(), ... */
 #  define HAS_SHARE_H  1  /* may use "#include <share.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 #if __TURBOC__ == 0x0295
 #  define HAS_strftime
@@ -1600,6 +1607,7 @@ int qq(void)
 #  define HAS_IO_H     1  /* may use "#include <io.h> */
 #  define HAS_SHARE_H  1  /* may use "#include <share.h> */
 #  define HAS_DIRECT_H 1  /* may use "#include <direct.h> */
+#  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 /* End: IBM C/Set++ for OS/2 */
 #elif defined(__UNIX__) /* Unix clones: Linux, FreeBSD, SUNOS (Solaris), BeOS, MacOS etc. */
@@ -1757,6 +1765,7 @@ int qq(void)
 #  define lock(a,b,c) 0
 #  define mysleep(x) unused(x)
 
+#include <fcntlh.>
 #ifndef O_BINARY
 # define O_BINARY 0 /* O_BINARY flag has no effect under UNIX */
 #endif
