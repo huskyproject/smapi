@@ -447,7 +447,7 @@ void _fast FFindClose(FFIND * ff)
 
 FFIND *_fast FindInfo(const char *filespec)
 {
-#ifndef OS2
+#if !defined(OS2) && !defined(__OS2__)
     return FFindOpen(filespec, 0);
 #else
     FFIND *ff;
