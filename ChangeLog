@@ -1,3 +1,7 @@
+2002-10-14 Monday 06:25  mche
+
+	* compiler.h (1.100): correct HAS_VSNPRINTF defenition for MSVC
+
 2002-10-11 Friday 13:27  stas_degteff
 
 	* api_jam.c (1.89): Fix bug with signed use unsigned var in
