@@ -19,5 +19,9 @@ Unix:
 	ln -s libsmapilnx.so.2.0 libsmapilnx.so.2
 	ln -s libsmapilnx.so.2 libsmapilnx.so
 
+5. Ensure that /usr/local/lib is in /etc/ld.so.conf
+
+6. run ldconfig
+
 You're ready. Now you can install hpt and other software which require smapi
 like fidoconfig and the upcoming KFidoEd.
