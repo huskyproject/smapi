@@ -110,7 +110,7 @@ typedef struct _xmsg
 #define MSGREAD    0x0004
 #define MSGSENT    0x0008
 #define MSGFILE    0x0010
-#define MSGFWD     0x0020     // is also called intransit flag
+#define MSGFWD     0x0020     /* is also called intransit flag */
 #define MSGORPHAN  0x0040
 #define MSGKILL    0x0080
 #define MSGLOCAL   0x0100
@@ -122,7 +122,7 @@ typedef struct _xmsg
 #define MSGARQ     0x4000
 #define MSGURQ     0x8000
 #define MSGSCANNED 0x00010000L
-#define MSGLOCKED  0x40000000L  // this seems to be a feature of golded
+#define MSGLOCKED  0x40000000L /* this seems to be a feature of golded */
 
     dword attr;
 
