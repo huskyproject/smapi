@@ -3,62 +3,58 @@
 # No support for Husky build environment.
 #
 # Predefines: __WATCOMC__,
-# __NT__ (-bt=dos4g)
+# __NT__ (-bt=nt)
 
 CC	= wcl386
-CFLAGS	= -zq -wx -bt=nt -l=nt
+CFLAGS	= -zq -wx -bt=nt -oneatx -5 -fpi87 -c
 CDEFS	=
-COPT	= -oneatx -5
+LFLAGS	= -mf -l=nt -fpi87
+EXENAMEFLAG	= -fe=
 AR	= wlib
-AR_R	= -b -q
+AROPT	= -b -q
+ASMPROG	= wasm
 RM	= del
-OBJ	= .obj
+
 LIB	= .lib
+DLLIB	= .dll
+OBJ	= .obj
 EXE	= .exe
+ASM	= .asm
+ERR	= .err
 
 TARGET	= smapiwcw$(LIB)
-
-EXENAMEFLAG = -fe=
+GNMSGID = gnmsgid$(EXE)
 
 NULL     = @%null
 SYMBOLIC = .SYMBOLIC
 
-# OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) &
-#	  sq_help$(OBJ) sq_idx$(OBJ) sq_kill$(OBJ) sq_lock$(OBJ) &
-#	  sq_misc$(OBJ) sq_msg$(OBJ) sq_read$(OBJ) sq_uid$(OBJ) &
-#	  sq_write$(OBJ) api_jam$(OBJ) cvtdate$(OBJ) date2bin$(OBJ) &
-#	  dosdate$(OBJ) fexist$(OBJ) ffind$(OBJ) flush$(OBJ) flushasm$(OBJ) &
-#	  locking$(OBJ) months$(OBJ) msgapi$(OBJ) parsenn$(OBJ) patmat$(OBJ) &
-#	  qksort$(OBJ) sqasm$(OBJ) strftim$(OBJ) strocpy$(OBJ) structrw$(OBJ) &
-#	  trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
-				    
 .DEFAULT
 	$(NULL)
 
-default: all $(SYMBOLIC)
-
 !include makefile.inc
 
-# Thunderbirds are go!
+default : all $(SYMBOLIC)
 
-.c$(OBJ):
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-        $(AR) $(AR_R) $(TARGET) -+$@
-	
-all: $(TARGET) gnmsgid$(EXE)
+all : $(TARGET)  $(SYMBOLIC)
+#all : $(TARGET) $(GNMSGID)  $(SYMBOLIC)
 
-$(TARGET): $(OBJS)
+.c$(OBJ) :
+	$(CC) $(CFLAGS) $(CDEFS)  $<
+	$(AR) $(AROPT) $(TARGET) -+$@
 
-gnmsgid$(EXE): gnmsgid$(OBJ)
-	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG)gnmsgid$(EXE) gnmsgid$(OBJ) $(LOPT) $(TARGET)
+$(TARGET) : $(OBJS)  $(SYMBOLIC)
+
+$(GNMSGID) : $(GMOBJS)
+	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $(GMOBJS) $(TARGET)
 
 .IGNORE
 
-clean:
+clean :
 	-$(RM) *$(OBJ)
+	-$(RM) *$(ERR)
 
-distclean: clean
+distclean : clean
 	-$(RM) $(TARGET)
-        -$(RM) gnmsgid$(EXE)
-		    
+	-$(RM) $(GENMSGID)
+
 		    

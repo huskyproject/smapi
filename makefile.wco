@@ -3,18 +3,37 @@
 # No support for Husky build environment.
 #
 # Predefines: __WATCOMC__,
-# __OS2V2__ (-bt=os2)
+# __OS2V2__ (-bt=os2v2)
 
 CC	= wcl386
-CFLAGS	= -zq -wx -bt=os2v2 -l=os2v2
-CDEFS	= -DOS2 -D__OS2__
-COPT	= -oneatx -5
+CFLAGS	= -zq -wx -bt=os2v2 -oneatx -5 -mf -fpi87 -c
+CDEFS	= -D__OS2__
+LFLAGS	= -mf -l=os2v2 -fpi87
+
+EXENAMEFLAG	= -fe=
+
 AR	= wlib
-AR_R	= -b -q
+AROPT	= -b -q
+ASMPROG	= wasm
 RM	= del
-OBJ	= .obj
+
 LIB	= .lib
+DLLIB	= .dll
+OBJ	= .obj
 EXE	= .exe
+ASM	= .asm
+ERR	= .err
+
+TARGET	= smapiwco$(LIB)
+GNMSGID = gnmsgid$(EXE)
+
+NULL     = @%null
+SYMBOLIC = .SYMBOLIC
+
+.DEFAULT
+	$(NULL)
+
+!include makefile.inc
 
 TARGET	= smapiwco$(LIB)
 
@@ -23,40 +42,26 @@ EXENAMEFLAG = -fe=
 NULL     = @%null
 SYMBOLIC = .SYMBOLIC
 
-# OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) &
-#	  sq_help$(OBJ) sq_idx$(OBJ) sq_kill$(OBJ) sq_lock$(OBJ) &
-#	  sq_misc$(OBJ) sq_msg$(OBJ) sq_read$(OBJ) sq_uid$(OBJ) &
-#	  sq_write$(OBJ) api_jam$(OBJ) cvtdate$(OBJ) date2bin$(OBJ) &
-#	  dosdate$(OBJ) fexist$(OBJ) ffind$(OBJ) flush$(OBJ) flushasm$(OBJ) &
-#	  locking$(OBJ) months$(OBJ) msgapi$(OBJ) parsenn$(OBJ) patmat$(OBJ) &
-#	  qksort$(OBJ) sqasm$(OBJ) strftim$(OBJ) strocpy$(OBJ) structrw$(OBJ) &
-#	  trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
-				    
-.DEFAULT
-	$(NULL)
+default : all $(SYMBOLIC)
 
-default: all $(SYMBOLIC)
+all : $(TARGET)  $(SYMBOLIC)
+#all : $(TARGET) $(GNMSGID)  $(SYMBOLIC)
 
-!include makefile.inc
+.c$(OBJ) :
+	$(CC) $(CFLAGS) $(CDEFS)  $<
+	$(AR) $(AROPT) $(TARGET) -+$@
 
-# Thunderbirds are go!
+$(TARGET) : $(OBJS)  $(SYMBOLIC)
 
-.c$(OBJ):
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-        $(AR) $(AR_R) $(TARGET) -+$@
-	
-all: $(TARGET) gnmsgid$(EXE)
-
-$(TARGET): $(OBJS)
-
-gnmsgid$(EXE): gnmsgid$(OBJ)
-	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG)gnmsgid$(EXE) gnmsgid$(OBJ) $(LOPT) $(TARGET)
+$(GNMSGID) : $(GMOBJS)
+	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $(GMOBJS) $(TARGET)
 
 .IGNORE
 
-clean:
+clean :
 	-$(RM) *$(OBJ)
+	-$(RM) *$(ERR)
 
-distclean: clean
+distclean : clean
 	-$(RM) $(TARGET)
-        -$(RM) gnmsgid$(EXE)
+	-$(RM) $(GENMSGID)
