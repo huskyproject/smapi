@@ -52,7 +52,7 @@
       ;
   }
 
-#elif defined(NT)
+#elif defined(NT) || defined(__NT__)
 
   void _fast tdelay(int msecs)
   {

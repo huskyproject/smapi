@@ -48,7 +48,8 @@ OBJS=	1stchar.o  \
 	trail.o    \
 	weekday.o \
 	semaphor.o \
-	setfsize.o
+	setfsize.o \
+	tdelay.o
 
 
 # Thunderbirds are go!

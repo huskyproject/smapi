@@ -529,6 +529,14 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 
 #define EXPENTRY
 
+/* Other OS's may sleep with other functions */
+
+#ifdef __BEOS__
+#define mysleep(x) snooze(x*1000000l)
+#elif defined(__linux__) || defined(__sun__)
+#define mysleep(x) usleep(x*1000000l)
+#endif
+
 #elif defined(__DJGPP__)
 
 /* DJGPP for MS-DOS */

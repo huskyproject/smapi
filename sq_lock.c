@@ -91,29 +91,21 @@ int _squnlock(HAREA ha)
 
 int _sqlock(HAREA ha)
 {
-    while (_alt_lock(ha) == -1)
-        tdelay(1);
-   
-    return 1;
+   return _alt_lock(ha) == 0;
 }
 
 #else
 
 int _sqlock(HAREA ha)
 {
-  /* lock returns 0 on success
-   * This is a temporarly solution. Yes, here is a potential deadlock.
-   */
-  while (lock(Sqd->sfd, 0, 1) != 0)
-    tdelay(500);
-    
-  return 1;
+  // lock return 0 on success
+  return lock(Sqd->sfd, 0, 1) == 0;
 }
 
 int _squnlock(HAREA ha)
 {
   // unlock returns 0 on success
-  return !unlock(Sqd->sfd, 0, 1);
+  return unlock(Sqd->sfd, 0, 1) == 0;
 }
 
 #endif
@@ -124,6 +116,7 @@ int _squnlock(HAREA ha)
 
 static unsigned near _SquishLockBase(HAREA ha)
 {
+  int trys;
   /* Only need to lock the area the first time */
 
   if (Sqd->fLocked++ != 0)
@@ -132,10 +125,16 @@ static unsigned near _SquishLockBase(HAREA ha)
   /* The first step is to obtain a lock on the Squish file header.  Another *
    * process may be attempting to do the same thing, so we retry a couple   *
    * of times just in case.                                                 */
-  if (_sqlock(ha) == 0)
+  trys = SQUISH_LOCK_RETRY;
+  while (_sqlock(ha) == 0)
   {
-     Sqd->fLocked--;
-     return 0;
+     if (trys <= 0)
+     {
+       Sqd->fLocked--;
+       return 0;
+     }
+     trys --;
+     tdelay(1000);
   }
   return 1;
 }
@@ -285,7 +284,7 @@ sword EXPENTRY apiSquishUnlock(HAREA ha)
 
     return 0;
   }
-
+  
   (void)_SquishEndBuffer(Sqd->hix);
   (void)_SquishUnlockBase(ha);
   
