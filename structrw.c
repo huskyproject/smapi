@@ -510,6 +510,11 @@ int write_sqidx(sword handle, SQIDX *psqidx, dword n)
         }
     }
 
+    if (accel_buffer != NULL)
+    {
+        free(accel_buffer);
+    }
+
     return 1;
 }
 
