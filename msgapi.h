@@ -191,6 +191,8 @@ XMSG;
 
 #define xmreply1st replies[0]
 #define xmreplynext replies[MAX_REPLY-1]
+#define xmtimesread replies[MAX_REPLY-2]
+#define xmcost replies[MAX_REPLY-3]
 
 /*
  *  This is a 'message area handle', as returned by MsgOpenArea(), and
