@@ -95,10 +95,14 @@ void _SquishFreeSem()
   delete_sem(lock_sem);
 #elif defined(UNIX)
   struct sembuf sops;
+
+#ifdef HAS_SEMUN
   union semun fl;
-
   fl.val = 0;
-
+#else
+  int fl = 0;
+#endif
+  
   semctl(lock_sem, 0, IPC_RMID, fl);
   
   sops.sem_num = 0;
@@ -148,9 +152,12 @@ short _SquishThreadUnlock(void)
   return 1;
 }
 
+
+static unsigned _SquishUnlinkBaseFiles(byte *);
+
 int SquishDeleteBase(char *name)
 {
-  _SquishUnlinkBaseFiles(name);
+  return (int) _SquishUnlinkBaseFiles((byte *) name);
 }   
 
 /* Exitlist routine to make sure that all areas are closed */
@@ -685,8 +692,12 @@ sword EXPENTRY SquishCloseArea(HAREA ha)
   delete_sem(ha->sem);
 #elif defined (UNIX)
   {
+#ifdef HAS_SEMUN
     union semun fl;
     fl.val = 0;
+#else
+    int fl = 0;
+#endif
     semctl(ha->sem, 0, IPC_RMID, fl);
   }
 #endif
