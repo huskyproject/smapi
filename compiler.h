@@ -208,6 +208,13 @@
 
 #define unlock(a,b,c) unused(a)
 #define lock(a,b,c) 0
+#error "Don't know how to implement record locking."
+/* Using an executable that does no support record locking is
+   discouraged in a multitasking environment. If you want to
+   do it anyway, you may uncomment this line. Record lokcing is used
+   to obtain a lock on the very first byte of a SQD file which
+   indicates that no other program should use the message area now.
+*/
 
 #ifdef OS2
 #define farread read
@@ -268,6 +275,15 @@
 #define farwrite write
 #define unlock(a,b,c) unused(a)
 #define lock(a,b,c) 0
+#error "Don't know how to implement record locking."
+/* Using an executable that does no support record locking is
+   discouraged in a multitasking environment. If you want to
+   do it anyway, you may uncomment this line. Record lokcing is used
+   to obtain a lock on the very first byte of a SQD file which
+   indicates that no other program should use the message area now.
+*/
+
+
 
 #define EXPENTRY
 
@@ -291,10 +307,12 @@
 #define farread read
 #define farwrite write
 #define mymkdir __mkdir
-#define unlock(a,b,c) unused(a)
-#define lock(a,b,c) 0
 
 extern int __mkdir (__const__ char *name);
+
+int unlock(int handle, long ofs, long length);
+int lock(int handle, long ofs, long length);
+
 
 #define EXPENTRY
 
@@ -340,6 +358,13 @@ extern int __mkdir (__const__ char *name);
 #define farwrite write
 #define unlock(a,b,c) unused(a)
 #define lock(a,b,c) 0
+#error "Don't know how to implement record locking."
+/* Using an executable that does no support record locking is
+   discouraged in a multitasking environment. If you want to
+   do it anyway, you may uncomment this line. Record lokcing is used
+   to obtain a lock on the very first byte of a SQD file which
+   indicates that no other program should use the message area now.
+*/
 
 #define EXPENTRY pascal far
 
@@ -371,8 +396,10 @@ extern int __mkdir (__const__ char *name);
 #define mymkdir(a) __mkdir((a), 0)
 #endif
 
-#define unlock(a,b,c) unused(a)
-#define lock(a,b,c) 0
+#include <sys/file.h>
+#define lock(a,b,c) flock(a, LOCK_EX | LOCK_NB)
+#define unlock(a,b,c) flock(a, LOCK_UN)
+
 #define tell(a) lseek((a),0,SEEK_CUR)
 #define stricmp strcasecmp
 #define O_BINARY 0
@@ -429,8 +456,18 @@ extern int __mkdir (__const__ char *name);
 #define farread read
 #define farwrite write
 #define mymkdir(a) mkdir((a))
+
 #define unlock(a,b,c) unused(a)
 #define lock(a,b,c) 0
+
+#error "Don't know how to implement record locking."
+/* Using an executable that does no support record locking is
+   discouraged in a multitasking environment. If you want to
+   do it anyway, you may uncomment this line. Record lokcing is used
+   to obtain a lock on the very first byte of a SQD file which
+   indicates that no other program should use the message area now.
+*/
+
 #define SH_DENYNONE 0
 #define sopen(a,b,c,d) open((a),(b),(d))
 
