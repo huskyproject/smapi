@@ -1,3 +1,21 @@
+2002-09-25 Wednesday 10:46  stas_degteff
+
+	* makefile.mgw (1.13), semaphor.h (1.11): Remove unused and
+	duplicate macroses
+
+2002-09-25 Wednesday 09:38  stas_degteff
+
+	* fexist.c (1.21), ffind.h (1.14), flush.c (1.10), makefile.cyg
+	(1.2), msgapi.h (1.44), setfsize.c (1.11), tdelay.c (1.11),
+	typedefs.h (1.5): Remove unused macros WINNT; remove macros __CYG__
+	(use pre-defined __MINGW32__ instead). Remove macros __NT__ from
+	makefile.cyg (use __MINGW32__)
+
+2002-09-25 Wednesday 07:27  mche
+
+	* typedefs.h (1.4): feature: FileFixEchoLimit patch by <Алексей
+	Сухотин <pscorporation@mail.ru>>
+
 2002-09-22 Sunday 14:06  pgul
 
 	* api_jam.c (1.87): Update index after hdr&text, jam msgbase is in
