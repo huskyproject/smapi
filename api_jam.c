@@ -350,6 +350,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
    JAMSUBFIELDptr subfieldNew;
    XMSG           msg_old;
    MSG            *jm;
+   sdword	  x = 0;
 
    char           ch = 0;
    unsigned char *onlytext = NULL;
@@ -389,8 +390,11 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       if (ctxt) ctxt = NULL;
    }
 
-
-   if (clen && ctxt) if (clen < strlen((char*)ctxt)) clen = strlen((char*)ctxt)+1;
+   
+   if (clen && ctxt) {
+       x = strlen((char*)ctxt);
+       if (clen < x) clen = x+1;
+   }
 
    subfieldNew = NULL;
 
@@ -430,9 +434,8 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             write_idx(Jmd->IdxHandle, &jamidxNew);
             jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
             jamhdrNew.TxtLen = strlen(onlytext);
-            farwrite(Jmd->TxtHandle, onlytext, strlen(onlytext));
+            msgh->bytes_written = (dword) farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
             msgh->cur_pos = tell(Jmd->TxtHandle);
-            msgh->bytes_written = strlen(onlytext);
             jamhdrNew.ReplyCRC = 0xFFFFFFFFUL;
             write_hdr(Jmd->HdrHandle, &jamhdrNew);
             write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
@@ -456,9 +459,8 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             lseek(Jmd->TxtHandle, 0, SEEK_END);
             jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
             jamhdrNew.TxtLen = strlen(onlytext);
-            farwrite(Jmd->TxtHandle, onlytext, strlen(onlytext));
+            msgh->bytes_written = (dword) farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
             msgh->cur_pos = tell(Jmd->TxtHandle);
-            msgh->bytes_written = strlen(onlytext);
             lseek(Jmd->TxtHandle, jamhdrNew.TxtOffset+totlen-1, SEEK_SET);
             farwrite(Jmd->TxtHandle, &ch, 1);
             jamhdrNew.ReplyCRC = 0xFFFFFFFFUL;
@@ -506,7 +508,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
          lseek(Jmd->TxtHandle, 0, SEEK_END);
          jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
          jamhdrNew.TxtLen = strlen(onlytext);
-         farwrite(Jmd->TxtHandle, onlytext, strlen(onlytext));
+         farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
       } /* endif */
 
       lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
@@ -774,11 +776,12 @@ int openfilejm(char *name, word mode)
 int Jam_OpenFile(JAMBASE *jambase, word *mode)
 {
    char *hdr, *idx, *txt, *lrd;
+   int x = strlen(jambase->BaseName)+5;
 
-   hdr = (char*)palloc(strlen(jambase->BaseName)+5);
-   idx = (char*)palloc(strlen(jambase->BaseName)+5);
-   txt = (char*)palloc(strlen(jambase->BaseName)+5);
-   lrd = (char*)palloc(strlen(jambase->BaseName)+5);
+   hdr = (char*) palloc(x);
+   idx = (char*) palloc(x);
+   txt = (char*) palloc(x);
+   lrd = (char*) palloc(x);
 
    sprintf(hdr, "%s%s", jambase->BaseName, EXT_HDRFILE);
    sprintf(txt, "%s%s", jambase->BaseName, EXT_TXTFILE);
@@ -941,7 +944,7 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
    return NULL;
 }
 
-JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, dword what)
+JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what)
 {
    JAMSUBFIELDptr SubField;
 
@@ -1057,6 +1060,7 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
    JAMSUBFIELDptr subf;
    unsigned char *kludge;
    dword subtypes;
+   int x;
 
    for (subtypes = strlen(str); subtypes > 0; subtypes--) {
       if (str[subtypes-1] == '\r') str[subtypes-1] = '\0';
@@ -1091,14 +1095,15 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
       subtypes = JAMSFLD_FTSKLUDGE;
    }
 
-   *len = sizeof(JAMBINSUBFIELD)+strlen(kludge);
+   x = strlen(kludge);
+   *len = sizeof(JAMBINSUBFIELD)+x;
    subf = (JAMSUBFIELDptr)palloc(*len);
    if (!subf) return NULL;
    memset(subf, '\0', *len);
 
    subf->LoID = subtypes;
-   subf->DatLen = strlen(kludge);
-   memmove(subf->Buffer, kludge, strlen(kludge));
+   subf->DatLen = x;
+   memmove(subf->Buffer, kludge, x);
 
    return subf;
 }
@@ -1110,6 +1115,7 @@ JAMSUBFIELDptr NETADDRtoSubf(NETADDR addr, dword *len, word opt)
 
    JAMSUBFIELDptr subf;
    char buf[30];
+   int x;
 
 
    if (addr.point) {
@@ -1118,8 +1124,9 @@ JAMSUBFIELDptr NETADDRtoSubf(NETADDR addr, dword *len, word opt)
       sprintf(buf, "%d:%d/%d", addr.zone, addr.net, addr.node);
    } /* endif */
 
-   *len = sizeof(JAMBINSUBFIELD)+strlen(buf);
-   subf = (JAMSUBFIELDptr)palloc(*len);
+   x = strlen(buf);
+   *len = sizeof(JAMBINSUBFIELD) + x;
+   subf = (JAMSUBFIELDptr) palloc(*len);
    if (!subf) return NULL;
    memset(subf, '\0', *len);
    if (opt) {
@@ -1127,8 +1134,8 @@ JAMSUBFIELDptr NETADDRtoSubf(NETADDR addr, dword *len, word opt)
    } else {
       subf->LoID = JAMSFLD_OADDRESS;
    } /* endif */
-   subf->DatLen = strlen(buf);
-   memmove(subf->Buffer, buf, strlen(buf));
+   subf->DatLen = x;
+   memmove(subf->Buffer, buf, x);
 
    return subf;
 }
@@ -1136,14 +1143,15 @@ JAMSUBFIELDptr NETADDRtoSubf(NETADDR addr, dword *len, word opt)
 static JAMSUBFIELDptr FromToSubjTOSubf(dword jamsfld, unsigned char *txt, dword *len)
 {
    JAMSUBFIELDptr subf;
+   int x = strlen(txt);
 
-   *len = sizeof(JAMBINSUBFIELD)+strlen(txt);
+   *len = sizeof(JAMBINSUBFIELD) + x;
    subf = (JAMSUBFIELDptr)palloc(*len);
    if (!subf) return NULL;
    memset(subf, '\0', *len);
    subf->LoID = jamsfld;
-   subf->DatLen = strlen(txt);
-   memmove(subf->Buffer, txt, strlen(txt));
+   subf->DatLen = x;
+   memmove(subf->Buffer, txt, x);
 
    return subf;
 }
@@ -1289,7 +1297,7 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr
 unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned char *text)
 {
    JAMSUBFIELDptr SubField, SubFieldCur;
-   dword sublen, clen;
+   dword sublen, clen, x;
    unsigned char *onlytext, *first, *ptr;
 
    SubField = *subfield;
@@ -1315,8 +1323,9 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned ch
          } else {;}
 
       } else {
-         onlytext = (unsigned char*)farrealloc(onlytext, strlen(onlytext)+strlen(first)+2);
-         sprintf(onlytext+strlen(onlytext), "%s\r", first);
+         x = strlen(onlytext);
+         onlytext = (unsigned char*)farrealloc(onlytext, x+strlen(first)+2);
+         sprintf(onlytext+x, "%s\r", first);
       } /* endif */
       if (ptr) {
          *ptr = '\r';
@@ -1405,6 +1414,7 @@ void DecodeSubf(MSGH *msgh)
    JAMSUBFIELDptr SubField;
    char *msgid, *reply, *via, *pid, *seenby, *path, *flags, *kludges;
    char *orig, *dest, *intl, *ptr, *fmpt, *topt;
+   sdword x;
 
    msgid=reply=via=pid=seenby=path=flags=kludges = NULL;
    orig=dest=intl=fmpt=topt = NULL;
@@ -1483,12 +1493,14 @@ void DecodeSubf(MSGH *msgh)
          strcat(msgh->ctrl, intl);
       }
       if (topt) {
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(topt)+7);
-         sprintf(msgh->ctrl+strlen(msgh->ctrl), "%cTOPT %s", '\x01', topt);
+         x = strlen(msgh->ctrl);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(topt)+7);
+         sprintf(msgh->ctrl+x, "%cTOPT %s", '\x01', topt);
       }
       if (fmpt) {
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(fmpt)+7);
-         sprintf(msgh->ctrl+strlen(msgh->ctrl), "%cFMPT %s", '\x01', fmpt);
+         x = strlen(msgh->ctrl);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(fmpt)+7);
+         sprintf(msgh->ctrl+x, "%cFMPT %s", '\x01', fmpt);
       }
       if (msgid) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(msgid)+1);

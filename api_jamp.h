@@ -29,7 +29,7 @@ static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename);
 int Jam_OpenFile(JAMBASE *jambase, word *mode);
 void Jam_CloseFile(JAMBASE *jambase);
 static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum);
-JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, dword what);
+JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what);
 dword Jam_HighMsg(JAMBASEptr jambase);
 void Jam_ActiveMsgs(JAMBASEptr jambase);
 static int near Jam_Lock(MSG *jm, int force);

@@ -3,6 +3,11 @@ smapi 1.6.4
 (released on Mon May 22 14:58:56 CEST 2000)
 
 ----- cvs ci ------
+Tue Jun 27 22:54:18 NOVST 2000
+max:
+* JAM optimization: removed many strlen()
+
+----- cvs ci ------
 Mon May 22 14:58:56 CEST 2000
 mtt:
 * changed version number to 1.6.4
