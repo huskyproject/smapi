@@ -1042,7 +1042,7 @@ static sword near _SdmRescanArea(MSG * mh)
 
     Mhd->msgnum_len = SDM_BLOCK;
 
-    temp = malloc(strlen(Mhd->base)+6);
+    temp = malloc(strlen((char *)Mhd->base)+6);
     sprintf((char *) temp, "%s*.msg", Mhd->base);
 
     ff = FFindOpen((char *) temp, 0);

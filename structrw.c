@@ -1014,7 +1014,7 @@ int read_allidx(JAMBASEptr jmb)
 
    for (i = 0; (pbuf - buf) < len;) {
       offset = get_dword(pbuf+4);
-      if (offset != 0xFFFFFFFF) {
+      if (offset != 0xFFFFFFFFUL) {
          lseek(jmb->HdrHandle, offset, SEEK_SET);
          if (farread(jmb->HdrHandle, (byte far *)hbuf, HDR_SIZE) == HDR_SIZE) {
             attr = get_dword(phbuf+52);
