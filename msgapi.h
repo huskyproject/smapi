@@ -339,7 +339,7 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
 word EXPENTRY NumKludges(char *txt);
 void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
 
-#if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__DJGPP__) && !defined(__NT__)
+#if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__DJGPP__) && !defined(__NT__) && !defined(NT)
 sword far pascal farread(sword handle, byte far * buf, word len);
 sword far pascal farwrite(sword handle, byte far * buf, word len);
 #endif

@@ -318,6 +318,7 @@
 #define open _open
 #define lseek _lseek
 #define tell _tell
+#define sleep _sleep
 
 #define stricmp _strcmpi
 #define strcmpi _strcmpi
