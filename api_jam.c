@@ -35,7 +35,6 @@
 #include "api_jamp.h"
 #include "apidebug.h"
 #include "unused.h"
-#include "progprot.h"
 
 #define Jmd ((JAMBASE *)(jm->apidata))
 #define MsghJm ((JAMBASE *)(((struct _msgh *)msgh)->sq->apidata))
