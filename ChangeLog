@@ -1,3 +1,8 @@
+2002-06-25 Tuesday 16:04  stas
+
+	* VERSION (1.4), file_id.diz (1.3), readme.txt (1.4): Change
+	version information and documentation.
+
 2002-06-23 Sunday 21:57  stas
 
 	* makefile.bsd4 (1.3): Change smapi version to 2.1
