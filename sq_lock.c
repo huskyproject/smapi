@@ -77,11 +77,7 @@ int _alt_lock(HAREA ha)
 
   ha->lck_handle = open(ha->lck_path, O_RDWR|O_CREAT|O_EXCL, S_IREAD|S_IWRITE);
   if (ha->lck_handle > 0)
-  {
-     printf("Locked.\n");
      return 0;
-  }  
-  printf("Locked failed.\n");
   return -1;
 }
 
@@ -89,11 +85,7 @@ int _squnlock(HAREA ha)
 {
   if (ha->lck_handle > 0) close(ha->lck_handle);
   ha->lck_handle = 0;
-  if (remove(ha->lck_path) == -1)
-    printf("Unlocked failed.\n");
-  else 
-    printf("Unlocked\n");
-    
+  remove(ha->lck_path);
   return 1;
 }
 
