@@ -41,6 +41,10 @@
 
 #define FFIND struct ffind
 
+#if defined (__WATCOMC__)
+#pragma pack(1)
+#endif
+
 struct ffind
 {
 #ifndef OS2
@@ -83,6 +87,11 @@ struct ffind
     char attrib_srch;
 #endif
 };
+
+#if defined (__WATCOMC__)
+#pragma pack(0)
+#endif
+
 
 /*
  * I prefixed the functions below with an additional F in order to
