@@ -1,3 +1,28 @@
+2004-04-13 Tuesday 09:37  sfpavel
+
+	* debian/compat (1.1): file compat was initially added on branch
+	smapi-2_4-stable.
+
+2004-04-13 Tuesday 09:37  sfpavel
+
+	* debian/libsmapi2.install (1.1): file libsmapi2.install was
+	initially added on branch smapi-2_4-stable.
+
+2004-04-13 Tuesday 09:37  sfpavel
+
+	* debian/libsmapi-dev.preinst (1.1): file libsmapi-dev.preinst was
+	initially added on branch smapi-2_4-stable.
+
+2004-04-13 Tuesday 09:37  sfpavel
+
+	* debian/libsmapi-dev.install (1.1): file libsmapi-dev.install was
+	initially added on branch smapi-2_4-stable.
+
+2004-04-13 Tuesday 09:37  sfpavel
+
+	* debian/libsmapi-dev.links (1.1): file libsmapi-dev.links was
+	initially added on branch smapi-2_4-stable.
+
 2004-01-21 Wednesday 03:52  andr_lukyanov
 
 	* make/makefile.mvc (1.3): Fix MSVC compilation
