@@ -297,7 +297,12 @@ byte *EXPENTRY GetCtrlToken(byte * where, byte * what)
 
     if (found != NULL)
     {
-        end = (byte *) strchr((char *) found, '\001');
+		end = (byte *) strchr((char *) found, '\r');
+
+		if (!end) 
+		{
+			end = (byte *) strchr((char *) found, '\001');
+		}
 
         if (!end)
         {

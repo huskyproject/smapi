@@ -1,3 +1,7 @@
+Thu Apr 12 22:01:58 NOVST 2001
+max:
+* fixed GetCtrlToken() (last kludge in msg text)
+
 Fri Mar 16 13:23:55 NOVT 2001
 max:
 * a fix to my yesterday fix :)
