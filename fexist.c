@@ -17,6 +17,7 @@
  *  author.
  */
 
+#include "compiler.h"
 
 #if defined(UNIX) || defined(__MINGW32__) || defined(EMX) || defined(RSXNT) || defined(__DJGPP__) || defined(_MSC_VER)
 /* These are compilers that have both a working stat() and (important!) the

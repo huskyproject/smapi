@@ -17,6 +17,7 @@
  *  author.
  */
 
+#include "compiler.h"
 #include "prog.h"
 #include "unused.h"
 #include "progprot.h"
