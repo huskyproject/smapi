@@ -42,5 +42,6 @@ char *_fast sc_time(union stamp_combo *sc, char *string);
 char *_fast strocpy(char *d, char *s);
 void _fast tdelay(int);
 int _fast setfsize(int fd, long size);
-
+void put_word(byte *ptr, word value);
+void put_dword(byte *ptr, dword value);
 #endif

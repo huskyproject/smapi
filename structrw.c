@@ -93,7 +93,7 @@
  *  system architecture.
  */
 
-static void put_dword(byte *ptr, dword value)
+void put_dword(byte *ptr, dword value)
 {
     ptr[0] = (value & 0xFF);
     ptr[1] = (value >> 8) & 0xFF;
@@ -108,7 +108,7 @@ static void put_dword(byte *ptr, dword value)
  *  system architecture.
  */
 
-static void put_word(byte *ptr, word value)
+void put_word(byte *ptr, word value)
 {
     ptr[0] = (value & 0xFF);
     ptr[1] = (value >> 8) & 0xFF;
