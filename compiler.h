@@ -215,20 +215,8 @@
 int unlock(int handle, long ofs, long length);
 int lock(int handle, long ofs, long length);
 
-
-/*
-#define unlock(a,b,c) unused(a)
-#define lock(a,b,c) 0
-
-   #error "Don't know how to implement record locking."
-   Using an executable that does no support record locking is
-   discouraged in a multitasking environment. If you want to
-   do it anyway, you may uncomment this line. Record lokcing is used
-   to obtain a lock on the very first byte of a SQD file which
-   indicates that no other program should use the message area now.
-*/
-
 #ifdef OS2
+/* just don't use 16 bit OS/2, we doubt that it still works */
 #define farread read
 #define farwrite write
 #define EXPENTRY pascal far
