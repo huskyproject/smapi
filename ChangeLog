@@ -1,3 +1,17 @@
+2002-09-05 Thursday 08:26  mche
+
+	* msgapi.h (1.43): fix MSGAPI function usage
+
+2002-09-05 Thursday 02:51  sfpavel
+
+	* debian/libsmapi2-dev.links (1.1): file libsmapi2-dev.links was
+	initially added on branch smapi-2_2-stable.
+
+2002-09-05 Thursday 02:51  sfpavel
+
+	* debian/libsmapi2-dev.preinst (1.1): file libsmapi2-dev.preinst
+	was initially added on branch smapi-2_2-stable.
+
 2002-09-02 Monday 12:30  stas_degteff
 
 	* msgapi.h (1.42): Update condition compilation: enable shares for
