@@ -22,7 +22,9 @@
 #include <time.h>
 #include "prog.h"
 
+
 static void near StandardDate(union stamp_combo *d_written);
+
 
 void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written)
 {
