@@ -1,3 +1,13 @@
+2002-11-01 Friday 20:24  stas_degteff
+
+	* makefile.bsd (1.27), makefile.bsd4 (1.8): Small fix makefiles for
+	FreeBSD
+
+2002-11-01 Friday 10:42  pgul
+
+	* structrw.c (1.32): Autofix incorrect ActiveMsgs value in jam
+	header
+
 2002-10-31 Thursday 08:30  pgul
 
 	* genmsgid.c (1.8): minor bugfix - errno for non-destructive
