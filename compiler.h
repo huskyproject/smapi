@@ -339,11 +339,12 @@ int lock(int handle, long ofs, long length);
 #define open _open
 #define lseek _lseek
 #define tell _tell
-#define sleep _sleep
+#define sleep(sec) _sleep((sec)*1000l)
 #define write _write
 #define read _read
 #if !defined(__CYG__)
 #define stat _stat
+#define fstat _fstat
 #define chsize _chsize
 
 #define stricmp _strcmpi
