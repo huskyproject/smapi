@@ -69,10 +69,10 @@
  */
 
 #define get_dword(ptr)            \
-   ((dword)((ptr)[0]) |           \
-    (((dword)((ptr)[1])) << 8)  | \
-    (((dword)((ptr)[2])) << 16) | \
-    (((dword)((ptr)[3])) << 24))  \
+   ((dword)((unsigned char)(ptr)[0]) |           \
+    (((dword)((unsigned char)(ptr)[1])) << 8)  | \
+    (((dword)((unsigned char)(ptr)[2])) << 16) | \
+    (((dword)((unsigned char)(ptr)[3])) << 24))  \
 
 /*
  *  get_word
@@ -83,9 +83,8 @@
  */
 
 #define get_word(ptr)         \
-    ((word)(ptr)[0] |         \
-     (((word)(ptr)[1]) << 8 ))
-
+    ((word)((unsigned char)(ptr)[0]) |         \
+     (((word)((unsigned char)(ptr)[1])) << 8 ))
 
 /*
  *  put_dword

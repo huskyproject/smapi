@@ -2,12 +2,15 @@
 # No support for the Husky build environment
 
 CC=	gcc
-CFLAGS=	-Wall
+CFLAGS=	-Wall -funsigned-char
 CDEFS=	-DUNIX
 COPT=	-O3
 
 # on i386, you may add this
 # -fomit-frame-pointer -fstrength-reduce -fPIC -m486
+
+#add this for old linux systems (semaphores)
+CDEFS+=-DHAS_SEMUN
 
 LIB=	ar
 RANLIB= ranlib
