@@ -1,3 +1,7 @@
+2003-01-18 Saturday 19:55  stas_degteff
+
+	* ffind.c (1.23): Fix mingw warning
+
 2003-01-17 Friday 15:58  gerritkuehn
 
 	* compiler.h (1.155): Make CYGWING compiling again.
