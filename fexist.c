@@ -69,7 +69,41 @@ int _fast direxist(char *directory)
     struct stat s;
     int rc;
 
+#if !defined(__WATCOMC__) && !(defined(_MSC_VER) && (_MSC_VER >= 1200))
     rc = stat (directory, &s);
+#else
+    char *tempstr, *p;
+    size_t l;
+    tempstr = strdup(directory);
+    if (tempstr == NULL) {
+        return FALSE;
+    }
+
+    /* Root directory of any drive always exists! */
+
+    if ((isalpha((int)tempstr[0]) && tempstr[1] == ':' && (tempstr[2] == '\\' || tempstr[2] == '/') &&
+      !tempstr[3]) || eqstr(tempstr, "\\")) {
+        free(tempstr);
+        return TRUE;
+    }
+
+    l = strlen(tempstr);
+    if (tempstr[l - 1] == '\\' || tempstr[l - 1] == '/')
+    {
+        /* remove trailing backslash */
+        tempstr[l - 1] = '\0';
+    }
+
+    for (p=tempstr; *p; p++)
+    {
+        if (*p == '/')
+          *p='\\';
+    }
+
+    rc = stat (tempstr, &s);
+
+    free(tempstr);
+#endif
     if (rc)
         return FALSE;
     return S_ISDIR(s.st_mode);
