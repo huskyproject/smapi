@@ -93,6 +93,10 @@ void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written)
         d_written->msg_st.date.mo = mo;
     }
 
+    /* Use sliding window technique to interprete the year number */
+    while (yy <= tim->tm_year - 50) yy -= 100;
+    while (yy >  tim->tm_year + 50) yy += 100;
+
     d_written->msg_st.date.yr = yy - 80;
     d_written->msg_st.date.da = dd;
 
