@@ -1,3 +1,12 @@
+2002-09-18 Wednesday 13:35  sfpavel
+
+	* file_id.diz, debian/changelog (smapi-2_2-stable.[4,9]): Correct
+	release date
+
+2002-09-18 Wednesday 08:35  sfpavel
+
+	* compiler.h (smapi-2_2-stable.3): Fix OS/2 compilation
+
 2002-09-17 Tuesday 08:22  sfpavel
 
 	* Makefile (smapi-2_2-stable.3): Fix previous patch
