@@ -372,6 +372,9 @@ int lock(int handle, long ofs, long length);
 
 /* Linux, FreeBSD, etc. */
 
+/* test it :-) */
+#pragma pack(1)
+
 #define _stdc
 #define _intr
 #define _intcast

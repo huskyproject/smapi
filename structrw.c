@@ -639,10 +639,10 @@ int write_sqbase(sword handle, struct _sqbase *psqbase)
 
 int read_omsg(sword handle, struct _omsg *pomsg)
 {
-    byte buf[SQBASE_SIZE], *pbuf = buf;
+    byte buf[OMSG_SIZE], *pbuf = buf;
     word rawdate, rawtime;
 
-    if (farread(handle, (byte far *)buf, SQBASE_SIZE) != SQBASE_SIZE)
+    if (farread(handle, (byte far *)buf, OMSG_SIZE) != OMSG_SIZE)
     {
         return 0;
     }
@@ -713,7 +713,7 @@ int read_omsg(sword handle, struct _omsg *pomsg)
 
 int write_omsg(sword handle, struct _omsg *pomsg)
 {
-    byte buf[SQBASE_SIZE], *pbuf = buf;
+    byte buf[OMSG_SIZE], *pbuf = buf;
     word rawdate, rawtime;
 
     memmove(pbuf, pomsg->from, 36);
@@ -786,6 +786,6 @@ int write_omsg(sword handle, struct _omsg *pomsg)
 
     assert(pbuf - buf == OMSG_SIZE);
 
-    return (farwrite(handle, (byte far *)buf, SQBASE_SIZE) == SQBASE_SIZE);
+    return (farwrite(handle, (byte far *)buf, OMSG_SIZE) == OMSG_SIZE);
 }
 

@@ -127,7 +127,7 @@ FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
             ff->firstbit[p - filespec] = '\0';
             strcpy(ff->lastbit, p + 1);
         }
-        ff->dir = opendir(filespec);
+        ff->dir = opendir(ff->firstbit);
         if (ff->dir != NULL)
         {
             while (!fin)
@@ -290,8 +290,10 @@ int _fast FFindNext(FFIND * ff)
             de = readdir(ff->dir);
             if (de == NULL)
             {
-                closedir(ff->dir);
-                fin = 1;
+               closedir(ff->dir);
+               free(ff);
+               ff = NULL;
+               fin = 1;
             }
             else
             {
