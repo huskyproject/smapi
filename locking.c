@@ -100,7 +100,7 @@ int waitlock(int handle, long ofs, long length)
 int waitlock2(int handle, long ofs, long length, long t)
 {
     FILELOCK urange, lrange;
-    APIRET apiret;
+/*    APIRET apiret; */
 
     lrange.lOffset = ofs;
     lrange.lRange = length;
