@@ -1,3 +1,11 @@
+2002-02-15 Friday 08:58  ml
+
+	* setfsize.c (1.4.2.5): setfsize() uses chsize() for mingw32
+
+2002-02-15 Friday 08:38  ml
+
+	* compiler.h (1.65.2.4): define chsize	for mingw32
+
 2002-02-13 Wednesday 11:48  ml
 
 	* setfsize.c (1.4.2.4): fixed setfsize() for msvc6 compiler
