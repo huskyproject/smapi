@@ -1,3 +1,5 @@
+# $Id$
+#
 # Legacy makefile for building on FreeBSD using GNU make
 # Run 'gmake hinstall' to install C header files.
 # No support for the Husky build environment.
@@ -18,6 +20,8 @@ INCDIR=	$(prefix)/include/smapi/
 ILOPT=	-m 444 -c
 IIOPT=	-m 444 -c
 DIROPT=	-d -m 755
+INSTALL=install
+RM=     rm -f
 
 # FreeBSD/i386 addition
 #
@@ -72,10 +76,10 @@ $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
 clean:
-	-rm *.o
+	-$(RM) *.o
 
 distclean: clean
-	-rm $(TARGET)
+	-$(RM) $(TARGET)
 
 install: $(TARGET)
 	$(INSTALL) $(DIROPT) $(LIBDIR)
@@ -85,4 +89,9 @@ install: $(TARGET)
 hinstall:
 	$(INSTALL) $(DIROPT) $(INCDIR)
 	$(INSTALL) $(IIOPT) $(TARGET_H) $(INCDIR)
+
+uninstall:
+	$(RM) $(LIBDIR)$(TARGET).1
+	$(RM) $(LIBDIR)$(TARGET)
+	-$(RM) $(LIBDIR)
 
