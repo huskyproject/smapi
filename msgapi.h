@@ -106,6 +106,9 @@ struct _netaddr
  *  and the structure used by the individual message base formats, is done
  *  on-the-fly by the API routines.
  */
+ 
+#define xmreply1st replies[0]
+#define xmreplynext replies[1]
 
 typedef struct _xmsg
 {
@@ -151,7 +154,7 @@ typedef struct _xmsg
 
 #define MAX_REPLY 9            /* Max number of stored replies to one msg */
 
-    UMSGID replyto, replynext;
+    UMSGID replyto;
     UMSGID replies[MAX_REPLY];
     dword umsgid;               /* UMSGID of this message, if (attr&MSGUID) */
                                 /* This field is only stored on disk -- it  *

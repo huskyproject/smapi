@@ -44,6 +44,7 @@
 
 #define NOTH 3
 
+
 MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
 {
    MSG *jm;
@@ -297,9 +298,9 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          ((SCOMBO*)(&(msg->date_arrived)))->ldate = 0;
 
       msg->replyto = msgh->Hdr.ReplyTo;
-      msg->replies[0] = msgh->Hdr.Reply1st;
-      msg->replies[1] = 0;
-      msg->replynext  = msgh->Hdr.ReplyNext;
+      msg->xmreply1st = msgh->Hdr.Reply1st;
+/*      msg->replies[1] = 0; */
+      msg->xmreplynext  = msgh->Hdr.ReplyNext;
 
    } /* endif */
 
@@ -1314,8 +1315,8 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    jamhdr->PasswordCRC = 0xFFFFFFFFUL;
 
    jamhdr->ReplyTo = msg->replyto;
-   jamhdr->Reply1st = msg->replies[0];
-   jamhdr->ReplyNext = msg->replynext;
+   jamhdr->Reply1st = msg->xmreply1st;
+   jamhdr->ReplyNext = msg->xmreplynext;
 
    *subfield = SubField;
 }

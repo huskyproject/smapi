@@ -1,4 +1,10 @@
 ----- cvs ci ------
+Tue Oct  3 17:05:57 MSD 2000
+Fedor:
+* definited xmreply1st and xmreplynext for used jam linker
+- deleted xmsg.replynext
+
+----- cvs ci ------
 Tue Oct  3 00:19:14 MEZ 2000
 tobi:
 * Support Jam Direct flag (JMSG_DIRECT) via MSGXX1 Squish flag, which is
