@@ -102,15 +102,13 @@ instdyn: $(LIBPREFIX)smapi.so.$(VER)
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
 	-$(RM) $(RMOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
 	-$(RM) $(RMOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so
-ifneq ($(DEBIAN), 1)
-# Not for Debian-Pakets ! This builds symlinks with FULL Path, thats bad.
-# Debian-Pakets just need the Link without a path. I made it in debian/rules
-	$(LN) $(LNOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
-	$(LN) $(LNOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH) $(LIBDIR)/$(LIBPREFIX)smapi.so
-# Calling ldconfig while building a .deb is bad. Unneccessary.
+# Changed the symlinks from symlinks with full path to just symlinks.
+# Better so :)
+	cd $(LIBDIR) ;\
+	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so.$(VERH) ;\
+	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VERH) $(LIBPREFIX)smapi.so
 ifneq (~$(LDCONFIG)~, ~~)
 	$(LDCONFIG)
-endif
 endif
 
 else
@@ -159,16 +157,6 @@ uninstall:
 clean:
 	-$(RM) $(RMOPT) *$(OBJ)
 	-$(RM) $(RMOPT) *~
-ifeq ($(DEBIAN), 1)
-	-rm -f configure-stamp
-	-rm -f build-stamp
-	-rm -rf debian/smapi
-	-rm -f debian/postinst.debhelper
-	-rm -f debian/postrm.debhelper
-	-rm -f debian/prerm.debhelper
-	-rm -f debian/substvars
-	-rm -f debian/files
-endif
 
 distclean: clean
 	-$(RM) $(RMOPT) $(TARGET)
