@@ -26,6 +26,7 @@ extern "C" {
 #define __API_JAM_H__
 
 #include <huskylib/compiler.h>
+#include <huskylib/huskyext.h>
 
 /*
 **  File extensions
@@ -233,6 +234,19 @@ typedef struct {
    MSGA            *jm;
    void            *jbNext;
    } JAMBASE, *JAMBASEptr;
+
+HUSKYEXT int read_hdrinfo(int handle, JAMHDRINFO *HdrInfo);
+HUSKYEXT int read_idx(int handle, JAMIDXREC *Idx);
+HUSKYEXT int read_hdr(int handle, JAMHDR *Hdr);
+HUSKYEXT int read_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen);
+HUSKYEXT int copy_subfield(JAMSUBFIELD2LISTptr *to, JAMSUBFIELD2LISTptr from);
+
+HUSKYEXT int read_allidx(JAMBASEptr jmb);
+
+HUSKYEXT int write_hdrinfo(int handle, JAMHDRINFO *HdrInfo);
+HUSKYEXT int write_idx(int handle, JAMIDXREC *Idx);
+HUSKYEXT int write_hdr(int handle, JAMHDR *Hdr);
+HUSKYEXT int write_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLen);
 
 #endif /* __JAM_H__ */
 
