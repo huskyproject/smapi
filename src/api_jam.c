@@ -141,7 +141,12 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
    }
    lseek(Jmd->IdxHandle, 0, SEEK_SET);
 
-   /* Jam_ActiveMsgs(Jmd); */
+   /* If ActiveMsgs is not correct, it will be updated on first OpenMessage  */
+   /* Jam_ActiveMsgs() is not needed for toss, just append new msgs          */
+   /* But if ActiveMsgs==0 read returns immediately without Jam_ActiveMsgs() */
+   /* For prevent losing messages in this case do Jam_ActiveMsgs here        */
+   if (Jmd->HdrInfo.ActiveMsgs == 0 && len > 0)
+      Jam_ActiveMsgs(Jmd);
 
    jm->high_water = Jmd->HdrInfo.highwater;
    /* jm->high_msg = Jam_HighMsg(Jmd); */
