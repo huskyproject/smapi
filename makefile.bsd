@@ -4,13 +4,13 @@
 CC=	gcc
 CFLAGS=	-Wall
 CDEFS=	-DUNIX
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486
+COPT=	-O3 
+# add the following for FreeBSD/i386
+# -fomit-frame-pointer -fstrength-reduce -m486
 LIB=	ar
 RANLIB= ranlib
 VERH =  1
 VER  =  1.6.2
-INCDIR=/usr/local/include
-
 
 TARGET=	libsmapibsd.a
 
@@ -46,25 +46,9 @@ OBJS=	1stchar.o  \
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
-libsmapibsd.so.$(VER): $(OBJS)
-	gcc -shared -Wl,-soname,libsmapibsd.so.$(VERH) -o libsmapibsd.so.$(VER) $(OBJS)
-
-install:
-	install alc.h $(INCDIR)/smapi
-	install api_brow.h $(INCDIR)/smapi
-	install compiler.h $(INCDIR)/smapi
-	install ffind.h $(INCDIR)/smapi
-	install msgapi.h $(INCDIR)/smapi
-	install patmat.h $(INCDIR)/smapi
-	install prog.h $(INCDIR)/smapi
-	install progprot.h $(INCDIR)/smapi
-	install stamp.h $(INCDIR)/smapi
-	install typedefs.h $(INCDIR)/smapi
-
 clean:
 	-rm *.o
-	-rm $(TARGET)
 
 distclean: clean
-	-rm libsmapibsd.$(VER)
+	-rm $(TARGET)
 
