@@ -2,6 +2,9 @@
 # Makefile for Building SMAPI with Mingw32 for NT.
 # No support for the Husky build environment.
 
+# Uncomment this for compile info for gdb
+#DEBUG= -g
+
 #use this line if you are using MINGW32 on a Windows box
 GCC=gcc
 LIB=ar
@@ -34,7 +37,7 @@ include makefile.inc
 all: $(TARGET)
 
 .c.o:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(DEBUG) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
