@@ -22,11 +22,11 @@ $(SMAPIL): $(OBJS)
 	$(TLIB) /out:$@ $(OBJS)
 
 gnmsgid.exe: $(SMAPIL)
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ gnmsgid.c $(GMOBJS) /link /opt:nowin98
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ gnmsgid.c $(GMOBJS) /link /opt:nowin98
 
 clean:
 	-del *.obj
+	-del $(SMAPIL)
 
 distclean: clean
-	-del *.lib
 	-del gnmsgid.exe
