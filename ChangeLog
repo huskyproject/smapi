@@ -1,3 +1,25 @@
+2003-03-19 Wednesday 12:18  sfpavel
+
+	* debian/: changelog (1.23), control (1.11), libsmapi2-dev.files
+	(1.3), libsmapi2-dev.links (1.3), libsmapi2.dirs (1.4),
+	libsmapi2.files (1.6), libsmapi2cur-dev.files (1.1),
+	libsmapi2cur-dev.links (1.1), libsmapi2cur.dirs (1.1),
+	libsmapi2cur.files (1.1), overrides (1.2), rules (1.11): New debian
+	package
+
+2003-03-19 Wednesday 09:39  sfpavel
+
+	* make/makefile.inc (1.2), smapi/msgapi.h (1.4), src/qksort.c
+	(1.2): Move qksort.c to huskylib
+
+2003-03-19 Wednesday 09:10  sfpavel
+
+	* flushasm.asm (1.2), sqasm.asm (1.2), make/makefile.aix (1.2),
+	make/makefile.bcd (1.2), make/makefile.bco (1.2), make/makefile.bcw
+	(1.2), make/makefile.mvc (1.2), make/makefile.mvcdll (1.4),
+	make/makefile.sun (1.2): Unify makefiles; use one makefile for
+	build MS VC static and dll library
+
 2003-03-18 Tuesday 06:08  stas_degteff
 
 	* src/sq_area.c (1.4): Fix _SquishCreateNewBase(): don't rewrite
