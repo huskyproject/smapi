@@ -165,6 +165,10 @@
 
 #pragma option -a-
 
+/* for BC++ 3.1 */
+#define strcasecmp stricmp
+#define strncasecmp strncmpi
+
 #define _stdc cdecl
 #define _intr interrupt far
 #define _intcast void (_intr *)()
