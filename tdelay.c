@@ -61,7 +61,7 @@
   }
 
 #elif defined(NT) || defined(__NT__)
-#if defined(__CYG__)
+#if defined(__CYG__) || defined(__MINGW32__)
   void _fast tdelay(int msecs)
   {
     _sleep((dword)msecs);
