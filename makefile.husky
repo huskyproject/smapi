@@ -93,6 +93,7 @@ install: instdyn
 	$(INSTALL) $(IIOPT) stamp.h $(INCDIR)/smapi
 	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)/smapi
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.a $(LIBDIR)
+	$(INSTALL) $(ILOPT) patmat.o $(LIBDIR)
 
 clean:
 	-$(RM) *$(OBJ) *~
