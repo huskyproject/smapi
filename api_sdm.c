@@ -683,12 +683,12 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             msgapierr = MERR_NODS;
             return -1;
         }
-// comment for pursose to disable double kludges in netmail.
-//        if (!append && msgh->clen <= 0 && msgh->zplen == 0)
-//        {
-//            statfd = msgh->fd;
-//            msgh->zplen = (word) WriteZPInfo(msg, WriteToFd, NULL);
-//        }
+
+        if (!append && msgh->clen <= 0 && msgh->zplen == 0)
+        {
+            statfd = msgh->fd;
+            msgh->zplen = (word) WriteZPInfo(msg, WriteToFd, ctxt);
+        }
     }
     else if (!append || ctxt)
     {
