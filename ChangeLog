@@ -1,3 +1,8 @@
+2004-06-02 Wednesday 17:24  sfpavel
+
+	* debian/: changelog, control (smapi-2_4-stable.[10,7]): New debian
+	version
+
 2004-04-13 Tuesday 09:37  sfpavel
 
 	* debian/compat (1.1): file compat was initially added on branch
