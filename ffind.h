@@ -35,6 +35,14 @@
 
 #if defined(__RSXNT__) || defined(__MINGW32__)
 #define NOUSER
+
+#ifdef __RSXNT__
+                                /* The RSXNT winsock.h conflicts with EMX
+                                   io.h. As we do not need sockets anyway, we
+                                   just prevent their inclusion. */
+#define _WINSOCK_H
+#endif
+
 #include <windows.h>
 #endif
 

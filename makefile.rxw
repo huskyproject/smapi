@@ -42,5 +42,6 @@ $(TARGET): $(OBJS)
 
 clean:
 	-DEL *.o
-	-DEL $(TARGET)
 
+distclean:
+	-DEL $(TARGET)
