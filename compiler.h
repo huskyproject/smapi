@@ -580,7 +580,9 @@ int qq(void)
 #    else
 #      define SMAPI_EXT __declspec(dllexport)
 #    endif /* _SMAPI_EXT */
-
+/*   must be included before function redefenition like '#    define fileno _fileno" */
+#    include <sys/stat.h>
+#    include <stdio.h>
 /* system functions substitutions for DLL build */
 #    define fileno       _fileno
 #    define read         _read

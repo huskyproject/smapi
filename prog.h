@@ -57,9 +57,6 @@ void far *farcalloc(int n, int m);
 
 #endif /* defined(ZREE) */
 
-#define HAS_STRFTIME
-#define HAS_MKTIME
-
 #elif defined(__TURBOC__)
 
 #if __TURBOC__ == 0x0295

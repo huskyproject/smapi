@@ -32,24 +32,22 @@
 #endif
 
 #if defined(__RSXNT__) || defined(__MINGW32__) || defined(__MSVC__)
-#define WIN32_LEAN_AND_MEAN
-#define NOGDI
-#define NOUSER
-#define NOMSG
+#   define WIN32_LEAN_AND_MEAN
+#   define NOGDI
+#   define NOUSER
+#   define NOMSG
 
-#ifdef __RSXNT__
+#   ifdef __RSXNT__
                                 /* The RSXNT winsock.h conflicts with EMX
                                    io.h. As we do not need sockets anyway, we
                                    just prevent their inclusion. */
-#define _WINSOCK_H
-#endif
-
-#if defined(__MINGW32__)
+#       define _WINSOCK_H
+#   endif
+#   if defined(__MINGW32__)
 /* For HTick compatibility */
-#define _WINUSER_H
-#endif
-
-#include <windows.h>
+#       define _WINUSER_H
+#   endif
+#   include <windows.h>
 #endif
 
 
@@ -59,7 +57,7 @@
 #include <dir.h>
 #endif
 
-#if defined(__WATCOMC__) || defined(_MSC_VER)
+#if defined(__WATCOMC__) || defined(__MSC__)
 #include <dos.h>
 #endif
 

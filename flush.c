@@ -20,7 +20,6 @@
 #include "compiler.h"
 #include "prog.h"
 #include "unused.h"
-#include "progprot.h"
 
 
 #if !defined(__UNIX__) && !defined(SASC)
