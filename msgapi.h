@@ -417,7 +417,7 @@ SMAPI_EXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
 SMAPI_EXT dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun);
 SMAPI_EXT dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dword (*altGenMsgId)(void), char **errstr);
 
-/* Check version of fidoconfig library
+/* Check version of smapi library
  * return zero if test passed
  * test cvs need for DLL version only, using #include <smapi/cvsdate.h>
   const char *smapidate(){
