@@ -422,7 +422,11 @@ int unlock(int handle, long ofs, long length);
 int sopen(const char *name, int oflag, int ishared, int mode);
 
 #define tell(a) lseek((a),0,SEEK_CUR)
+
+#ifndef stricmp
 #define stricmp strcasecmp
+#endif
+
 #define O_BINARY 0
 #define SH_DENYNONE 0
 #define SH_DENYNO 0
