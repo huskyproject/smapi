@@ -2,6 +2,12 @@ development version
 -------------------
 
 ----- cvs ci ------
+Thu Jan 13 16:52:46 MET 2000
+tobi:
+- If FTSC date field is empty, it is now calculated from the
+  date_written time stampe before writing a Mail to the Squish base.
+
+----- cvs ci ------
 Tue Jan 11 01:50:40 NOVT 2000
 max (patch from Serguei Revtov):
 - fsize() fix
@@ -25,6 +31,7 @@ tobi:
 smapi 1.6.2
 -----------
 
+>>>>>>> 1.13
 ----- cvs ci ------
 Mi  15 Dez 1999 00:46:37 CET
 tobi:
