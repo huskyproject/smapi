@@ -42,6 +42,7 @@
 /* Swith for build DLL */
 #define DLLEXPORT
 #include <huskylib/huskyext.h>
+#include <huskylib/strext.h>
 
 #include "msgapi.h"
 #include "api_jam.h"
@@ -352,7 +353,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
    struct tm *s_time;
    SCOMBO *scombo;
    unsigned char *ftsdate;
-   char *addrstr;
+   unsigned char *addrstr;
 
    if (InvalidMsgh(msgh))
    {
@@ -410,12 +411,12 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
           SubPos = 0;
           if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID)))
               if (SubField->Buffer && *SubField->Buffer &&
-                  strchr(SubField->Buffer, ' '))
+                  strchr((char*)SubField->Buffer, ' '))
               {
-                  addrstr = strdup(SubField->Buffer);
-                  addrstr[strchr(addrstr, ' ')-addrstr] = '\0';
+                  addrstr = (unsigned char *)sstrdup((char*)SubField->Buffer);
+                  addrstr[strchr((char*)addrstr, ' ')-(char*)addrstr] = '\0';
                   if (!(msg->orig.zone || msg->orig.net || msg->orig.node))
-                      parseAddr(&(msg->orig), addrstr, strlen(addrstr));
+                      parseAddr(&(msg->orig), addrstr, strlen((char*)addrstr));
               } /* endif */
 /*      } */ /* endif */
 
