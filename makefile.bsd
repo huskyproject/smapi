@@ -75,11 +75,11 @@ hinstall:
 uninstall: uninstall-h uninstall-lib uninstall-progs
 
 uninstall-progs:
-        -cd $(BINDIR) ; $(RM) $(PROGRAMS)
+	-cd $(BINDIR) ; $(RM) $(PROGRAMS)
 
 uninstall-lib:
 	-$(RM) $(LIBDIR)$(TARGET).1
 	-$(RM) $(LIBDIR)$(TARGET)
 
 uninstall-h:
-        -cd $(INCDIR) ; $(RM) $(TARGET_H) ; cd .. ; $(RM) $(INCDIR)
+	-cd $(INCDIR) ; $(RM) $(TARGET_H) ; cd .. ; $(RM) $(INCDIR)
