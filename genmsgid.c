@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#(dword)include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
@@ -25,8 +25,7 @@ dword oldGenMsgId(void)
 
 dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 {
-	dword seq, n;
-	time_t curtime;
+	dword seq, n, curtime;
 	FFIND *ff;
 	char *seqpath, max_fname[13], *new_fname, *pname, *p;
 	int  h, try;
@@ -62,7 +61,7 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 		else max_outrun = MAX_OUTRUN;
 	}
 	for (try=0;;try++) {
-		curtime = time(NULL);
+		curtime = (dword)time(NULL);
 		seq = 0;
 		max_fname[0] = '\0';
 		strcpy(pname, "*.*");
