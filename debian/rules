@@ -14,7 +14,7 @@ export PACKAGE=libsmapi2
 # Next Line to build debug-versions !
 # export DEB_BUILD_OPTIONS=nostrip
 # shared library versions, option 1
-version=2.2.0
+version=2.3.0
 major=2
 
 configure: configure-stamp
