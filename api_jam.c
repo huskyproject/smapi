@@ -859,10 +859,10 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
        return 0;
      if (umsg < msgnum)
        left = new + 1;
-     else if (umsg > msgnum)
+     else if (umsg > msgnum){
        if( new>0 ) right = new - 1;
        else right = 0;
-     else
+     }else
        return new;
    }
    if (type == UID_EXACT) return 0;
