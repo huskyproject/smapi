@@ -2,6 +2,8 @@
 # with Borland C++ 4.0 for Win32
 # No support for the Husky build environment
 
+# Predefined macro: __WIN32__ , __TURBOC__
+
 CC=     BCC32
 CFLAGS= -WC
 CDEFS=  -D__NT__ -DWINNT

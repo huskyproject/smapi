@@ -596,7 +596,7 @@ int qq(void)
 #  define _intr interrupt far
 #  define _intcast void (_intr *)()
 #  define _veccast _intcast
-#  define _fast pascal
+#  define _fast _fastcall
 #  define _loadds
 
    /* #include <conio.h> */
@@ -609,14 +609,14 @@ int qq(void)
 #  define mode_t int
 
 /* Borland Turbo C/C++ for MS-DOS */
-#elif defined(__TURBOC__) && defined(WINNT)
+#elif defined(__TURBOC__) && defined(__WIN32__)
 /* Borland C/C++ for Win32 */
 
 #  define _stdc cdecl
 #  define _intr
 #  define _intcast
 #  define _veccast
-#  define _fast pascal
+#  define _fast _fastcall
 #  define _loadds
 #  define near
 #  define far
@@ -637,7 +637,7 @@ int qq(void)
 #  define _intr
 #  define _intcast
 #  define _veccast
-#  define _fast pascal
+#  define _fast _fastcall
 #  define _loadds
 #  define near
 #  define far
