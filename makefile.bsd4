@@ -18,7 +18,7 @@ SHLIB_MINOR=	2.3
 # FreeBSD/i386 addition
 #
 .if ${MACHINE_ARCH} == "i386"
-   CFLAGS+= -fomit-frame-pointer -fstrength-reduce -m486
+   CFLAGS+= -fstrength-reduce -m486
 .endif
 
 OBJS=	 1stchar.o  \

@@ -74,6 +74,8 @@ OBJS=	1stchar.o  \
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
+all: $(TARGET)
+
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
@@ -88,6 +90,7 @@ install: $(TARGET)
 	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
 	ln -sf $(LIBDIR)$(TARGET) $(LIBDIR)$(TARGET).$(VER)
 	ln -sf $(LIBDIR)$(TARGET) $(LIBDIR)$(TARGET).$(VERH)
+	echo " Run 'gmake hinstall' to install C header files into $(INCDIR)"
 
 hinstall:
 	$(INSTALL) $(DIROPT) $(INCDIR)
