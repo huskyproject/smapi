@@ -292,10 +292,8 @@ struct _msgh
 
 extern word _stdc msgapierr;
 
-#ifdef _MAKE_DLL
-#   if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#ifdef _MAKE_DLL_MVC_
 SMAPI_EXT  word GetMsgapiErr();
-#   endif
 #endif
 
 extern struct _minf _stdc mi;
@@ -304,6 +302,22 @@ extern struct _minf _stdc mi;
 #define pfree(s)      free(s)
 #define farpalloc(s)  farmalloc(s)
 #define farpfree(s)   farfree(s)
+
+#ifdef _MAKE_DLL
+
+#undef palloc
+#undef pfree
+#undef farpalloc
+#undef farpfree
+	void  _sfree(void* ptr);
+	void* _salloc(size_t size);
+#define palloc(s)     _salloc(s)
+#define pfree(s)      _sfree(s)
+#define farpalloc(s)  _salloc(s)
+#define farpfree(s)   _sfree(s)
+
+#endif
+
 
 /* Constants for 'type' argument of MsgUidToMsgn() */
 

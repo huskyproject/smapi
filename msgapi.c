@@ -494,8 +494,22 @@ word EXPENTRY NumKludges(char *txt)
     return nk;
 }
 
-#ifdef _MAKE_DLL
-#   if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#ifdef _MAKE_DLL_MVC_
+
 word GetMsgapiErr() { return msgapierr; }
-#   endif
+
+#undef EXPENTRY
+#undef MSG
+#include <Windows.h>
+
+void *_salloc(size_t size)
+{
+    return HeapAlloc(GetProcessHeap(), HEAP_NO_SERIALIZE, size);
+}
+
+void _sfree(void* ptr) 
+{ 
+	if(ptr) HeapFree(GetProcessHeap(), HEAP_NO_SERIALIZE, ptr);
+}
+
 #endif

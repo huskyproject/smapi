@@ -661,6 +661,7 @@ int lock(int handle, long ofs, long length);
 
 #ifdef _MAKE_DLL
 #   if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#		define _MAKE_DLL_MVC_
 #       ifndef _SMAPI_EXT
 #           define SMAPI_EXT __declspec(dllimport)
 #       else
