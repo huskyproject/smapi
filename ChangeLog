@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Thu Aug 24 12:39:45 UTC 2000
+sms:
+* added missing _SquishInit call in MsgOpenApi
+
+----- cvs ci ------
 Thu Aug 24 12:15:35 UTC 2000
 sms:
 * init semaphores for squish routines in MsgOpenApi, destroy them in 

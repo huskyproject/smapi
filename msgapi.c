@@ -58,7 +58,10 @@ sword EXPENTRY MsgOpenApi(struct _minf *minf)
     mi = *minf;
     mi.haveshare = shareloaded();
 
+    _SquishInit();
+
     atexit(_MsgCloseApi);
+
     return 0;
 }
 
