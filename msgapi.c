@@ -308,9 +308,9 @@ byte *EXPENTRY GetCtrlToken(byte *where, byte *what)
 
     if (where == NULL || strlen(where)<len) return NULL;
     
-    end = (byte *) strchr((char *) where, '\r') ||
-          (byte *) strchr((char *) where, '\001') ||
-          where + strlen((char *) where);
+    end = (byte *) strchr((char *) where, '\r');
+    if (end == NULL) end = (byte *) strchr((char *) where, '\001');
+    if (end == NULL) end = where + strlen((char *) where);
 
     out = palloc((size_t) (end - where) + 1);
     if (out == NULL) return NULL;
@@ -448,7 +448,7 @@ void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
     byte *p;
     int len = strlen(what);
 
-    do {
+    while (1) {
 	ctrl = strchr((char *)ctrl, '\001');
 	if (ctrl == NULL) return;
 	if (strncmp((char *)ctrl+1, (char *)what, len)) {
