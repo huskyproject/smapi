@@ -146,7 +146,10 @@ static unsigned near _SquishLockBase(HAREA ha)
    * of times just in case.                                                 */
   rc = _sqlock(ha, SQUISH_LOCK_RETRY);
   if (!rc)
+  {
+    msgapierr = MERR_SHARE;
     Sqd->fLocked--;
+  }
 
   return rc;  
 }

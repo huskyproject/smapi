@@ -681,7 +681,7 @@ sword EXPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
     {
       msgapierr=MERR_BADA;
       _SquishBaseThreadUnlock(hmsg->ha);
-
+      
       return -1;
     }
 

@@ -54,9 +54,11 @@
 
 #elif defined(NT) || defined(__NT__)
 
+  extern void Sleep(dword ms);
+
   void _fast tdelay(int msecs)
   {
-    Sleep((DWORD)msecs);
+    Sleep((dword)msecs);
   }
 
 #elif defined(__BEOS__)

@@ -26,6 +26,7 @@
  *
  */
 
+#include "prog.h"
 #include "compiler.h"
 
 #ifdef __DJGPP__
