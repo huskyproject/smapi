@@ -91,7 +91,7 @@
   {
     return ftruncate(fd, size);
   }
-#elif defined(__NT__) || defined(NT)
+#elif defined(__NT__) || defined(NT) || defined(__WIN32__)
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <winbase.h>

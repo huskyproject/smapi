@@ -60,7 +60,7 @@
       ;
   }
 
-#elif defined(NT) || defined(__NT__)
+#elif defined(NT) || defined(__NT__) || defined(__WIN32__)
 #if defined(__CYG__) || defined(__MINGW32__)
 #include <stdlib.h>
   void _fast tdelay(int msecs)
@@ -68,10 +68,10 @@
     _sleep((dword)msecs);
   }
 #else
-#ifndef _MSC_VER
-  extern void Sleep(dword ms);
-#else
+#if defined(_MSC_VER) || defined(__TURBOC__)
   extern void __stdcall Sleep(dword ms);
+#else
+  extern void Sleep(dword ms);
 #endif
   void _fast tdelay(int msecs)
   {

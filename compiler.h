@@ -201,7 +201,7 @@
 #define _intr interrupt far
 #define _intcast void (_intr *)()
 #define _veccast _intcast
-#define _fast pascal
+#define _fast _fastcall
 #define _loadds
 
 /* #include <conio.h> */
@@ -396,7 +396,7 @@ int lock(int handle, long ofs, long length);
 #define EXPENTRY
 #endif
 
-#elif defined(__TURBOC__) && defined(WINNT)
+#elif defined(__TURBOC__) && (defined(WINNT) || defined(__WIN32))
 
 /* Borland C/C++ for Win32 */
 
@@ -404,7 +404,7 @@ int lock(int handle, long ofs, long length);
 #define _intr
 #define _intcast
 #define _veccast
-#define _fast pascal
+#define _fast _fastcall
 #define _loadds
 #define near
 #define far
@@ -448,7 +448,7 @@ int lock(int handle, long ofs, long length);
 #define HAS_SNPRINTF  1
 #define HAS_VSNPRINTF 1
 
-#elif defined(__TURBOC__) && defined(WINNT)
+#elif defined(__TURBOC__) && (defined(WINNT) || defined(__WIN32__))
 
 /* Borland C/C++ for Win32 */
 
@@ -456,7 +456,7 @@ int lock(int handle, long ofs, long length);
 #define _intr
 #define _intcast
 #define _veccast
-#define _fast pascal
+#define _fast _fastcall
 #define _loadds
 #define near
 #define far
@@ -474,7 +474,7 @@ int lock(int handle, long ofs, long length);
 #define _intr
 #define _intcast
 #define _veccast
-#define _fast pascal
+#define _fast _fastcall
 #define _loadds
 #define near
 #define far
