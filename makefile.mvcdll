@@ -2,7 +2,7 @@
 
 CC=     cl
 CFLAGS= -nologo -MD -Zp1
-CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -DINTEL -D_MAKE_DLL -D_SMAPI_EXT
+CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -DINTEL -D_MAKE_DLL -D_SMAPI_EXT -DNOSEMAPHORES
 COPT=   -Ob2
 LINK=   link
 LINKOPTS = msvcrt.lib Kernel32.lib /nologo /opt:nowin98 /dll /nodefaultlib /out:"smapimvc.dll" /implib:"smapimvc.lib"
