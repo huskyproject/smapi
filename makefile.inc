@@ -17,7 +17,7 @@ VER	= $(VERH).0
 OBJS1	= api_sdm$(_OBJ) sq_area$(_OBJ) sq_hash$(_OBJ) sq_help$(_OBJ)
 OBJS2	= sq_idx$(_OBJ) sq_kill$(_OBJ) sq_lock$(_OBJ) sq_misc$(_OBJ)
 OBJS3	= sq_msg$(_OBJ) sq_read$(_OBJ) sq_uid$(_OBJ) sq_write$(_OBJ)
-OBJS4	= api_jam$(_OBJ) flush$(_OBJ) locking$(_OBJ) msgapi$(_OBJ)
+OBJS4	= api_jam$(_OBJ) flush$(_OBJ) msgapi$(_OBJ)
 OBJS5	= qksort$(_OBJ) structrw$(_OBJ)
 
 OBJS	= $(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4) $(OBJS5)
