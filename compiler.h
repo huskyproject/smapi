@@ -20,7 +20,7 @@
 #ifndef __COMPILER_H__
 #define __COMPILER_H__
 
-#define SMAPI_EXT
+#define SMAPI_EXT extern
 
 /*
   BeOS is NOT Unix, but sometime it seem's to Be ... ;)
@@ -644,7 +644,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #           define SMAPI_EXT __declspec(dllexport)
 #       endif //_SMAPI_EXT
 #   else
-#       define SMAPI_EXT
+#       define SMAPI_EXT extern
 #   endif
 
 #define _stdc
