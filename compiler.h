@@ -16,21 +16,39 @@
  *  archive without having accepted the terms of the MSGAPI0 licensing
  *  agreement, or such other agreement as you are able to reach with the
  *  author.
+ *
+ *  Modifications from MSGAPI are made by HUSKY: http://husky.sf.net
  */
 
   /*
    * Please define this compiler-specific stuff for each new compiler:
    *
-   * _stdc - Standard calling sequence.  This should be the type of function
-   *         required for function pointers for qsort() et al.
+   * _stdc    - Standard calling sequence.  This should be the type of function
+   *            required for function pointers for qsort() et al.
    *
-   * _fast - Fastest calling sequence supported.  If the default calling
-   *         sequence is the fastest, or if your compiler only has one,
-   *         define this to nothing.
+   * _fast    - Fastest calling sequence supported.  If the default calling
+   *            sequence is the fastest, or if your compiler only has one,
+   *            define this to nothing.
    *
-   * _intr - For defining interrupt functions.  For some idiotic reason, MSC
-   *         requires that interrupt routines be declared as "cdecl interrupt",
-   *         instead of just "interrupt".
+   * _intr    - For defining interrupt functions.  For some idiotic reason,
+   *            MSC requires that interrupt routines be declared
+   *            as "cdecl interrupt", instead of just "interrupt".
+   *
+   * _intcast - interrupt cast modifyer
+   *
+   * _veccast - vector cast modifyer
+   *
+   * far      - use pointer with any segment part, actually for x86 16 bit only
+   *            and in other cases must be set to empty value
+   *
+   * near     - (used for x86 16 bit only) use one-segment pointer
+   *
+   * pascal   - pascal style calling conversion code modifyer
+   *
+   * cdecl    - C declarations modifyer (alternate to pascal usually)
+   *            Declare if compiler don't support this.
+   *
+   * _loadds  - (used for x86 16 bit only) 'load data segment' code modifyer
    *
    * SMAPI_EXT - external variables & external functions call modifier
    *             (usualy 'extern' for static linkage)
@@ -42,9 +60,13 @@
    *======================
    * HAS_* please set to 1 for usage: #if HAS_...
    *======================
-   * HAS_SNPRINTF        - snprintf() presents
-   * HAS_VSNPRINTF       - vsnprintf() presents
-   * HAS_SPAWNVP         - spawnwp() presents
+   * HAS_snprintf        - snprintf() presents
+   * HAS_asprintf        - asprintf() presents
+   * HAS_asnprintf       - asnprintf() presents
+   * HAS_vasprintf       - vasprintf() presents
+   * HAS_vsnprintf       - vsnprintf() presents
+   * HAS_spawnvp         - spawnwp() presents
+   * HAS_getpid          - getpid() presents
    * HAS_mktime          - mktime() presents or defined here
    * HAS_strftime        - strftime() presents
    * HAS_sopen           - sopen() presents
@@ -53,6 +75,7 @@
    *
    * HAS_MALLOC_H        - may be used "#include <malloc.h>" for malloc() etc.
    * HAS_DOS_H           - may be used "#include <dos.h>"
+   * HAS_DPMI_H          - may be used "#include <dpmi.h>"
    * HAS_DIR_H           - may be used "#include <dir.h>" for findfirst() etc.
    * HAS_DIRENT_H        - may be used "#include <dirent.h>" for opendir() etc.
    * HAS_IO_H            - may be used "#include <io.h>"
@@ -60,6 +83,7 @@
    * HAS_SHARE_H         - may be used "#include <share.h>" for sopen() etc.
    * HAS_UTIME_H         - may be used "#include <utime.h>"
    * HAS_SYS_UTIME_H     - #include <sys/utime.h> in alternate to <utime.h>
+   * HAS_PWD_H           - may be used "#include <pwd.h>
    *
    * USE_SYSTEM_COPY     - OS have system call for files copiing (see
    *                       copy_file() and move_file() functions)
@@ -120,13 +144,27 @@
    * __WIN32__ - Windows 95/98/Me/NT/2000/XP target
    * __OS2__   - OS/2 target (32 bit or 16 bit), 32bit is __OS2__ && __FLAT__
    * __DOS__   - MS/PC/... DOS target (32 bit or 16 bit), 32bit is __DOS__ && __FLAT__
+   * __DOS16__ - MS/PC/... DOS target 16 bit
    * __DPMI__  - DOS 32 bit (extenders: dos4g, farcall, rsx, ...)
    * __MACOS__ - MacOS (Unix clone)
    * __UNIX__  - All unix-like OS
    * __AMIGA__ - AmigaOS
    * __ALPHA__ - The Alpha CPU
    * __X86__   - Intel's x86 series CPU
-   * __PPC__   - The PowerPC CPU (Mac, ...)
+   * __PPC__   - The PowerPC CPU
+   * __MPPC__  - The PowerPC CPU on Apple Macintosh
+   *
+   *--------------------------------------------------------------------------
+   * CPU
+   *
+   * __186__   - Intel 80186 CPU
+   * __286__   - Intel 80286 CPU
+   * __386__   - Intel 80386 CPU
+   * __486__   - Intel 80486 CPU
+   * __586__   - Intel Pentium CPU
+   * __686__   - Intel Pentium Pro CPU
+   * __786__   - Intel Pentium II CPU
+   *
    */
 
 /**************************************************************************
@@ -162,7 +200,8 @@
     __EMX__
     __GNUC__ __VERSION__ __STDC__
     __CHAR_UNSIGNED__ (or __CHAR_SIGNED__)
-    Some values (EMX rev 61):
+    __32BIT__ - if build 32bit code
+   ---Some values (EMX rev 61):---------------------------------------
     __GNUC__=2 (0x2); __GNUC_MINOR__=8 (0x8)
     __VERSION__=2.8.1
     __STDC__=1 (0x1); __STDC_VERSION__=199409 (0x30AF1);
@@ -345,24 +384,42 @@ int qq(void)
 */
 
 #if defined(__GNUC__)
-#if (__GNUC__==2) && (__GNUC_MINOR__>95)   /* don't place in one line for prevent old compilers warnings */
-#warning Latest GNU C branch 2 is 2.95.*. Your version is not GNU C and not supported. You may use it for your risk.
-#warning Download and install GNU C release from www.gnu.org only, please.
-#endif
+  #if (__GNUC__==2) && (__GNUC_MINOR__>95)   /* don't place in one line for prevent old compilers warnings */
+    #warning Latest GNU C branch 2 is 2.95.*. Your version is not GNU C and not supported. You may use it for your risk.
+    #warning Download and install GNU C release from www.gnu.org only, please.
+  #endif
 #endif
 
 /**** Compiler defines ****/
 
 #if defined(__DJGPP__) /* DJGPP for MS-DOS (DPMI)*/
-/*#ifndef __DOS__
-#  define __DOS__
-#endif*/
-#ifndef __DPMI__
-#  define __DPMI__
+#  ifndef __DPMI__
+#    define __DPMI__
+#  endif
+#  ifndef __FLAT__
+#    define __FLAT__
+#  endif
 #endif
-#ifndef __FLAT__
-#  define __FLAT__
+
+#if defined(__RSXNT__)
+#  ifndef __NT__
+#    define __NT__
+#  endif
 #endif
+
+#if defined(__EMX__) && defined(__NT__)
+#  ifndef __RSXNT__
+#    define __RSXNT__
+#  endif
+#endif
+
+#if defined(__EMX__) && defined(__32BIT__)
+#  ifndef __386__
+#    define __386__
+#  endif
+#  ifndef __X86__
+#    define __X86__
+#  endif
 #endif
 
 #if defined(__MINGW32__) /* MinGW32 & cygwin's 'gcc -mno-cygwin' ***********/
@@ -385,7 +442,8 @@ int qq(void)
 #    endif
 #  endif
 #  if (_MSC_VER < 1200)
-#    define __MSC__  /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
+   /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
+#    define __MSC__
 #    ifdef __OS2__
 #      ifndef __MSC__OS2__
 #        define __MSC__OS2__
@@ -474,11 +532,7 @@ int qq(void)
 #  endif
 #endif
 
-
 #if defined(__DOS4G__) /* DOS4G/W dos-dpmi extender */
-/*#ifndef __DOS__
-#  define __DOS__
-#endif*/
 #ifndef __DPMI__
 #  define __DPMI__
 #endif
@@ -496,6 +550,12 @@ int qq(void)
 #if defined(__MSDOS__) || defined(DOS) || defined(MSDOS)
 #  if !defined(__DOS__)
 #    define __DOS__
+#  endif
+#endif
+
+#if defined(__DOS__)
+#  if !defined(__FLAT__) && !defined(__DPMI__)
+#    define __DOS16__
 #  endif
 #endif
 
@@ -522,12 +582,6 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(__NT__)
-#  if !defined(__WIN32__)
-#    define __WIN32__
-#  endif
-#endif
-
 /* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option  *
  * This is NOT needed for pure Cygwin builds, Cygwin == UNIX !! */
 #if defined(__MINGW32__) && !defined(__NT__)
@@ -549,6 +603,34 @@ int qq(void)
 #    define __UNIX__
 #  endif
 #endif
+
+#if defined(_AIX)
+#  if !defined(__AIX__)
+#    define __AIX__
+#  endif
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
+#endif
+
+#if defined(__osf__)
+#  if !defined(__OSF__)
+#    define __OSF__
+#  endif
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
+#endif
+
+#if defined(__hpux)
+#  if !defined(__HPUX__)
+#    define __HPUX__
+#  endif
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
+#endif
+
 
 /*
   BeOS is NOT Unix, but sometime it seem's to Be ... ;)
@@ -572,7 +654,6 @@ int qq(void)
 #endif
 
 /***** Platforms *************************************************************/
-
 
 #if defined(SASC) && !defined(__AMIGA__) /* SAS C for AmigaDOS ***************/
 #  define __AMIGA__
@@ -650,6 +731,15 @@ int qq(void)
 #  ifndef __FLAT__
 #    define __FLAT__
 #  endif
+#  ifndef __X86__
+#    define __X86__
+#  endif
+#  ifndef __186__
+#    define __186__
+#  endif
+#  ifndef __286__
+#    define __286__
+#  endif
 #endif
 
 #ifdef __SUN__
@@ -677,6 +767,12 @@ int qq(void)
 #if defined(__DOS__) || defined(__DPMI__)
 #  ifndef __LITTLE_ENDIAN__
 #    define __LITTLE_ENDIAN__
+#  endif
+#endif
+
+#if defined(__NT__)
+#  if !defined(__WIN32__)
+#    define __WIN32__
 #  endif
 #endif
 
@@ -901,20 +997,16 @@ int qq(void)
 #    define W_OK 02
 #  endif
 
-#  if !defined(__LITTLE_ENDIAN__) && !defined (_M_ALPHA)
-#    define __LITTLE_ENDIAN__  /* using to select functions/macroses for read & write binary values */
-#  endif
-
 #  define mymkdir       _mkdir
 #  define snprintf      _snprintf
 #  define vsnprintf     _vsnprintf
-#  define HAS_SNPRINTF       /* snprintf() presents */
-#  define HAS_VSNPRINTF      /* vsnprintf() presents */
-#  define HAS_SPAWNVP        /* spawnwp() presents */
-#  define HAS_strftime  
-#  define HAS_mktime    
-#  define HAS_sopen     
-#  define HAS_sleep     
+#  define HAS_snprintf       /* snprintf() presents */
+#  define HAS_vsnprintf      /* vsnprintf() presents */
+#  define HAS_spawnvp        /* spawnwp() presents */
+#  define HAS_strftime
+#  define HAS_mktime
+#  define HAS_sopen
+#  define HAS_sleep
 
 #  define USE_SYSTEM_COPY     /* OS have system call for files copiing */
 #  define USE_SYSTEM_COPY_WIN32
@@ -924,7 +1016,7 @@ int qq(void)
 #  define HAS_SHARE_H      /* may use "#include <share.h> */
 #  define HAS_MALLOC_H     /* use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
-#  define HAS_DIRECT_H 
+#  define HAS_DIRECT_H
 //#  include <direct.h>
 
    SMAPI_EXT int unlock(int handle, long ofs, long length);
@@ -983,19 +1075,20 @@ int qq(void)
 #  define strncasecmp strnicmp
 #  define snprintf    _snprintf
 #  define vsnprintf   _vsnprintf
-#  define HAS_SNPRINTF  
-#  define HAS_VSNPRINTF 
-#  define HAS_SPAWNVP   
-#  define HAS_GETPID    
+#  define HAS_snprintf
+#  define HAS_vsnprintf
+#  define HAS_spawnvp
+#  define HAS_getpid
 #  define HAS_strftime    /* strftime() in time.h  */
 #  define HAS_mktime      /* mktime() in time.h */
 
 #  define HAS_MALLOC_H     /* may be used "#include <malloc.h>"  (see alc.h) */
 #  define HAS_IO_H         /* may use "#include <io.h> */
 #  define HAS_SHARE_H      /* may use "#include <share.h> */
-#  define HAS_DIRECT_H    
+#  define HAS_DIRECT_H
 #  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
-#  define HAS_DOS_H       
+#  define HAS_DOS_H
+#  define HAS_SIGNAL_H  1  /* <signal.h> */
 
 #  define mymkdir(x)    mkdir(x) /*<direct.h>*/
 #  define HAS_mkdir
@@ -1186,11 +1279,11 @@ int qq(void)
 #    define SH_DENYNO 0x40
 #  endif
 
-#  define HAS_SPAWNVP    /* spawnvp() present */
+#  define HAS_spawnvp    /* spawnvp() present */
 #  define HAS_mktime     /* time.h */
 #  define HAS_strftime   /* time.h */
 #  define HAS_ACCESS    /* access() in io.h */
-#  define HAS_sopen    
+#  define HAS_sopen
 
 #  define HAS_MALLOC_H   /* may use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_IO_H       /* may use "#include <io.h> */
@@ -1216,12 +1309,14 @@ int qq(void)
 #  define _loadds
 #  define cdecl
 #  define pascal
-#  define near
-#  undef  far
-#  define far
+#  if defined(__32BIT__)
+#    define near
+#    undef  far
+#    define far
+#    define farread(a,b,c)  read(a,b,c)
+#    define farwrite(a,b,c) write(a,b,c)
+#  endif
 
-#  define farread read
-#  define farwrite write
 #  define mymkdir(a) mkdir((a), 0)
 #  define getpid() _getpid()
 
@@ -1233,10 +1328,10 @@ int qq(void)
 
 #  define _XPENTRY
 
-#  define HAS_SNPRINTF  1
-#  define HAS_VSNPRINTF 1
-#  define HAS_GETPID    1  /* getpid() in process.h */
-#  define HAS_SPAWNVP   1  /* spawnvp() in process.h */
+#  define HAS_snprintf  1
+#  define HAS_vsnprintf 1
+#  define HAS_getpid    1  /* getpid() in process.h */
+#  define HAS_spawnvp   1  /* spawnvp() in process.h */
 #  define HAS_strftime  1  /* strftime() in time.h  */
 #  define HAS_mktime    1  /* mktime() in time.h */
 
@@ -1244,6 +1339,7 @@ int qq(void)
 #  define HAS_IO_H      1  /* use "#include <io.h>" */
 #  define HAS_SHARE_H   1  /* may use "#include <share.h> */
 #  define HAS_UNISTD_H  1  /* use "#include <unistd.h> */
+#  define HAS_SIGNAL_H  1  /* <signal.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1269,8 +1365,10 @@ int qq(void)
 #  define cdecl
 #  define pascal
 #  define near
-#  undef  far
+/*#  undef  far*/
 #  define far
+#  define _XPENTRY
+#  define SMAPI_EXT extern
 
 #  define farread read
 #  define farwrite write
@@ -1288,14 +1386,17 @@ int qq(void)
 #  define mysleep(x) sleep(x)
 #  define HAS_sleep     1
 
-#  define HAS_SPAWNVP   1   /* spawnvp() in process.h */
+#  define HAS_spawnvp   1   /* spawnvp() in process.h */
 #  define HAS_strftime  1   /* strftime() in time.h  */
 #  define HAS_mktime    1   /* mktime() in time.h */
 
 #  define HAS_DIR_H     1   /* use "#include <dir.h>" for findfirst() etc. */
+#  define HAS_DOS_H     1
+#  define HAS_DPMI_H    1
 #  define HAS_IO_H      1   /* use "#include <io.h> */
 #  define HAS_SHARE_H   1   /* may use "#include <share.h> */
 #  define HAS_UNISTD_H  1   /* use "#include <unistd.h> */
+#  define HAS_SIGNAL_H  1  /* <signal.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1439,7 +1540,7 @@ int qq(void)
 #  define farread read
 #  define farwrite write
 
-#  if (defined(__APPLE__) && defined(__MACH__)) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(_AIX) || defined(__sun__) || defined(__linux__) || defined(__osf__) || defined(__hpux) || defined(__BEOS__) || defined(__OpenBSD__) || defined(__CYGWIN__)
+#  if (defined(__APPLE__) && defined(__MACH__)) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(_AIX) || defined(__SUN__) || defined(__LINUX__) || defined(__osf__) || defined(__hpux) || defined(__BEOS__) || defined(__OpenBSD__) || defined(__CYGWIN__)
 #    define mymkdir(a) mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
 #  else
 #    define mymkdir(a) __mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
@@ -1449,7 +1550,7 @@ int qq(void)
   int unlock(int handle, long ofs, long length);
   int sopen(const char *name, int oflag, int ishared, int mode);
 
-#  ifndef __sun__
+#  ifndef __SUN__
 #    define tell(a) lseek((a),0,SEEK_CUR)
 #  endif
 
@@ -1490,18 +1591,29 @@ int qq(void)
 #    define mysleep(x) snooze(x*1000000l)
 #    define sleep(x) snooze(x*1000000l)
 #    define HAS_sleep     1
-#  elif defined(__linux__) || defined(__sun__)
+#  elif defined(__LINUX__) || defined(__SUN__)
 #    define mysleep(x) usleep(x*1000000l)
 #    define sleep(x)   usleep(x*1000000l)
 #    define HAS_sleep     1
 #  endif
-
-#  define HAS_SNPRINTF  1
-#  define HAS_VSNPRINTF 1
+#  ifndef __SUN__ /* SunOs 2.7 not have snprintf() and vsnprintf in libc */
+                  /* If you known test for this - please report to developers */
+#    define HAS_snprintf  1
+#    define HAS_vsnprintf 1
+#  endif
 
 #  define HAS_UNISTD_H  1  /* <unistd.h> */
-
+#  define HAS_PWD_H     1  /* <pwd.h> */
+#  define HAS_SIGNAL_H  1  /* <signal.h> */
 #  define USE_STAT_MACROS
+
+#ifndef O_BINARY
+# define O_BINARY 0 /* O_BINARY flag has no effect under UNIX */
+#endif
+
+#ifndef O_TEXT
+# define O_TEXT   0 /* O_TEXT flag has no effect under UNIX */
+#endif
 
 /* End: Unix clones **********************************************************/
 
@@ -1528,6 +1640,10 @@ int qq(void)
 #  define lock(a,b,c) 0
 #  define mysleep(x) unused(x)
 
+#ifndef O_BINARY
+# define O_BINARY 0 /* O_BINARY flag has no effect under UNIX */
+#endif
+
 #error "Don't know how to implement record locking."
 /* Using an executable that does no support record locking is
    discouraged in a multitasking environment. If you want to
@@ -1549,20 +1665,16 @@ int qq(void)
 /**** Test defines and/or set default values *********************************/
 
 #ifdef SH_DENYNO
-#ifndef SH_DENYNONE
-#define SH_DENYNONE SH_DENYNO
-#endif
-#endif
-
-#ifndef O_BINARY
-# define O_BINARY 0 /* If O_BINARY is not defined - we're under UNIX
-                       where this flag has no effect */
+#  ifndef SH_DENYNONE
+#    define SH_DENYNONE SH_DENYNO
+#  endif
 #endif
 
 /* File open and share modes */
 #if !defined(O_BINARY) && defined(_O_BINARY)
 #  define O_BINARY    _O_BINARY
 #endif
+
 #if !defined(O_RDWR) && defined(_O_RDWR)
 #  define O_RDWR      _O_RDWR
 #endif
@@ -1584,7 +1696,7 @@ int qq(void)
 
 #ifndef mysleep
 #   ifndef __MSVC__
-#       warning sleep() call undefined. Please check your compiler documentation for it and write define into compiler.h
+#       warning sleep() call undefined. Please check your compiler documentation for it and write "#define mysleep" into compiler.h
 #   else
 #       pragma message("sleep() call undefined. Please check your compiler documentation for it and write define into compiler.h")
 #   endif
@@ -1638,20 +1750,12 @@ int qq(void)
 #   error Please check your compiler to 'load data segment' code modifyer and define _loadds in compiler.h
 #endif
 
-#ifndef cdecl
-#   error Please check your compiler to C declarations modifyer and define cdecl in compiler.h
-#endif
-
-#ifndef pascal
-#   error Please check your compiler to pascal style calling conversion code modifyer and define pascal in compiler.h
-#endif
-
 #ifndef near
-#   error Please check your compiler to near functions call modifyer and define near in compiler.h
+#   error Please check your compiler to near modifyer and define near in compiler.h
 #endif
 
 #ifndef far
-#   error Please check your compiler to far functions call modifyer and define far in compiler.h
+#   error Please check your compiler to far modifyer and define far in compiler.h
 #endif
 
 #ifndef farread
@@ -1661,26 +1765,6 @@ int qq(void)
 #ifndef farwrite
 #   error Please check your compiler to far calling implementation of write() function and define farwrite in compiler.h
 #endif
-
-
-#if defined(INTEL) && !defined(__LITTLE_ENDIAN__)
-#   ifdef __MSVC__
-#       pragma message("Define __LITTLE_ENDIAN__ instead INTEL please: INTEL is obsoleted")
-#   else
-#       warning Define __LITTLE_ENDIAN__ instead INTEL please: INTEL is obsoleted
-#   endif
-#   define __LITTLE_ENDIAN__
-#endif
-
-#if defined(__INTEL__) && !defined(__LITTLE_ENDIAN__)
-#   ifdef __MSVC__
-#       pragma message("Define __LITTLE_ENDIAN__ instead __INTEL__ please: __INTEL__ is obsoleted")
-#   else
-#       warning Define __LITTLE_ENDIAN__ instead __INTEL__ please: __INTEL__ is obsoleted
-#   endif
-#define __LITTLE_ENDIAN__
-#endif
-
 
  /* waitlock works like lock, but blocks until the lock can be
   * performed.
