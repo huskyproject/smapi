@@ -20,7 +20,9 @@
 #ifndef __PROGPROT_H__
 #define __PROGPROT_H__
 
+#ifndef __WATCOMC__
 void pascal far flush_handle2(int fd);
+#endif
 void _fast flush_handle(FILE * fp);
 int _fast fexist(char *filename);
 long _fast fsize(char *filename);

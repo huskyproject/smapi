@@ -259,6 +259,7 @@
 #define farwrite write
 
 #define strcasecmp stricmp
+#define strncasecmp strnicmp
 
 #define EXPENTRY pascal
 
