@@ -97,7 +97,7 @@ $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
           -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
   endif
 
-instdyn: $(LIBPREFIX)smapi.so.$(VER)
+instdyn: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
 	-$(RM) $(RMOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
