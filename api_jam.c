@@ -10,8 +10,12 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <fcntl.h>
-#include "compiler.h"
+#include <huskylib/compiler.h>
+#include <huskylib/huskylib.h>
+#include <huskylib/unused.h>
+#include <huskylib/cvtdate.h>
 
 #ifdef HAS_IO_H
 #include <io.h>
@@ -25,16 +29,16 @@
 #include <malloc.h>
 #endif
 
+#ifdef HAS_UNISTD_H
+#include <unistd.h>
+#endif
+
 #define MSGAPI_HANDLERS
 
-#include "dr.h"
-#include "stamp.h"
 #include "msgapi.h"
 #include "api_jam.h"
 #include "api_jamp.h"
 #include "apidebug.h"
-#include "unused.h"
-#include "progprot.h"
 
 #define Jmd ((JAMBASE *)(jm->apidata))
 #define MsghJm ((JAMBASE *)(((struct _msgh *)msgh)->sq->apidata))

@@ -26,7 +26,7 @@
 #ifndef __API_SQ_H_DEFINED
 #define __API_SQ_H_DEFINED
 
-#include "compiler.h"
+#include <huskylib/compiler.h>
 
 struct _sqhdr;
 struct _sqidx;

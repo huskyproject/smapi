@@ -22,7 +22,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#include "compiler.h"
+#include <huskylib/compiler.h>
+#include <huskylib/huskylib.h>
 #include "msgapi.h"
 #include "cvsdate.h"
 
@@ -138,7 +139,7 @@ int main(int argc, char *argv[])
     dword msgid;
     char *msgiderr;
 
-    seqdir = NULL;
+    seqdir = (char *)put_dword(NULL, 1);
     seqoutrun = 0;
     usage = 0;
     version = 0;

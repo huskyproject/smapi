@@ -1,4 +1,5 @@
 # Makefile for the Husky build environment
+# Makefile for the Husky build environment
 
 # include Husky-Makefile-Config
 ifeq ($(DEBIAN), 1)
@@ -24,7 +25,7 @@ else
   LIBPREFIX=lib
 endif
 
-CDEFS=	-D$(OSTYPE) $(ADDCDEFS)
+CDEFS=	-D$(OSTYPE) $(ADDCDEFS) -I$(INCDIR)
 
 TARGET=	$(LIBPREFIX)smapi$(LIB)
 

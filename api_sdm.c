@@ -26,7 +26,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "compiler.h"
+#include <huskylib/compiler.h>
+#include <huskylib/calendar.h>
+#include <huskylib/huskylib.h>
+#include <huskylib/strext.h>
+#include <huskylib/ffind.h>
+#include <huskylib/unused.h>
 
 #ifdef HAS_IO_H
 #include <io.h>
@@ -51,15 +56,12 @@
 
 #define MSGAPI_HANDLERS
 
-#include "prog.h"
 #include "progprot.h"
-#include "dr.h"
-#include "old_msg.h"
 #include "msgapi.h"
+#include "old_msg.h"
 #include "api_sdm.h"
 #include "api_sdmp.h"
 #include "apidebug.h"
-#include "unused.h"
 
 #define SDM_BLOCK 256
 #define Mhd ((struct _sdmdata *)(mh->apidata))

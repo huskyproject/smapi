@@ -50,7 +50,8 @@
 
 #define MSGAPI_HANDLERS
 
-#include "compiler.h"
+#include <huskylib/compiler.h>
+#include <huskylib/huskylib.h>
 
 #ifdef HAS_UNISTD_H
 #include <unistd.h>
@@ -59,43 +60,12 @@
 #  include <io.h>
 #endif
 
-#include "progprot.h"
 #include "msgapi.h"
 #include "api_sq.h"
 #include "old_msg.h"
 #include "api_jam.h"
 
 #define MAXHDRINCORE  (1024l*1024*10) /* Maximum jam hdr size for incore, 10M */
-
-#ifndef __LITTLE_ENDIAN__
-/*
- *  put_dword
- *
- *  Writes a 4 byte word in little endian notation, independent of the local
- *  system architecture.
- */
-
-void put_dword(byte *ptr, dword value)
-{
-    ptr[0] = (value & 0xFF);
-    ptr[1] = (value >> 8) & 0xFF;
-    ptr[2] = (value >> 16) & 0xFF;
-    ptr[3] = (value >> 24) & 0xFF;
-}
-
-/*
- *  put_word
- *
- *  Writes a 4 byte word in little endian notation, independent of the local
- *  system architecture.
- */
-
-void put_word(byte *ptr, word value)
-{
-    ptr[0] = (value & 0xFF);
-    ptr[1] = (value >> 8) & 0xFF;
-}
-#endif
 
 #ifdef NEED_trivial_farread
   #ifdef HAS_dos_read

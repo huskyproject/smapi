@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-#include "compiler.h"
+#include <huskylib/compiler.h>
 
 #ifdef HAS_DIRECT_H
 #  include <direct.h>
@@ -47,8 +47,6 @@
 #ifdef HAS_DOS_H
 #  include <dos.h>
 #endif
-
-#include "progprot.h"
 
 #ifdef __DJGPP__
 

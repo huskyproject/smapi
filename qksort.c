@@ -18,8 +18,7 @@
  */
 
 #include <stdio.h>
-#include "progprot.h"
-
+#include <huskylib/compiler.h>
 
 #define NUM sizeof(array)/sizeof(array[0])
 #define SWAP(a,b,s) s=a; a=b; b=s;

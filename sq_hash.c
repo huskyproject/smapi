@@ -34,7 +34,7 @@ static char rcs_id[]="$Id$";
 #include <fcntl.h>
 
 
-#include "compiler.h"
+#include <huskylib/compiler.h>
 #ifdef HAS_IO_H
 #  include <io.h>
 #endif
@@ -46,7 +46,7 @@ static char rcs_id[]="$Id$";
 #include <malloc.h>
 #endif
 
-#include "progprot.h"
+//#include "progprot.h"
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"

@@ -28,12 +28,13 @@ static char rcs_id[]="$Id$";
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
 
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <assert.h>
 
-#include "compiler.h"
+#include <huskylib/compiler.h>
 
 #ifdef HAS_IO_H
 #  include <io.h>
@@ -46,8 +47,8 @@ static char rcs_id[]="$Id$";
 #include <malloc.h>
 #endif
 
-#include "prog.h"
-#include "progprot.h"
+//#include "prog.h"
+//#include "progprot.h"
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"
