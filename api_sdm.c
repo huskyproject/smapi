@@ -252,7 +252,7 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
     byte msgname[PATHLEN];
     int handle, filemode;
     int owrite = FALSE;
-    dword msguid;
+    dword msguid=0;
 
     MSGH *msgh;
 
