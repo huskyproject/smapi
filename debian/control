@@ -2,15 +2,24 @@ Source: smapi
 Section: libs
 Priority: optional
 Maintainer: Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>
-Build-Depends: debhelper (>> 3.0.0)
+Build-Depends: debhelper (>> 3.0.0), gcc, binutils
 Standards-Version: 3.5.2
 
-Package: smapi
+Package: libsmapi2
 Architecture: any
 Depends: ${shlibs:Depends}
-Description: MsgAPI for the Husky-Packages (unstable)
+Suggests: libsmapi2-dev
+Description: MsgAPI for the Husky-Packages
+ smapi is a modified message api for *.MSG, SQUISH (C) and JAM-Messagebase
+ formats. It is required for all other Husky-Software.
+
+Package: libsmapi2-dev
+Section: devel
+Architecture: any
+Depends: libsmapi2(=${Source-Version}), libc6-dev
+Description: MsgAPI for the Husky-Packages
  smapi is a modified message api for *.MSG, SQUISH (C) and JAM-Messagebase
  formats. It is required for all other Husky-Software.
  .
- This is the UNSTABLE Release.
-
+ This Package holds the Development files. Only needed if you want to compile
+ other Husky-Packages.

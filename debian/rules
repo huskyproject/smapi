@@ -8,38 +8,29 @@
 # This is the debhelper compatability version to use.
 export DH_COMPAT=3
 export DEBIAN=1
-export PACKAGE=smapi
+export PACKAGE=libsmapi2
 # Next Line to build debug-versions !
-export DEB_BUILD_OPTIONS=nostrip
+# export DEB_BUILD_OPTIONS=nostrip
+# shared library versions, option 1
+version=2.1.0
+major=2
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-# No configure-script in Husky !
 	touch configure-stamp
 
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	$(MAKE)
-
+	$(MAKE)	  
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-	# Add here commands to clean up after the build process.
-	-$(MAKE) clean
-	-rm -f configure-stamp
-	-rm -f build-stamp
-	-rm -rf debian/$(PACKAGE)
-	-rm -f debian/postinst.debhelper
-	-rm -f debian/postrm.debhelper
-	-rm -f debian/prerm.debhelper
-	-rm -f debian/substvars
-	-rm -f debian/files
-
+	-$(MAKE) distclean
 	dh_clean
 
 install: build
@@ -48,9 +39,8 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	# Add here commands to install the package into debian/smapi.
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/smapi
-	chmod 0644 $(CURDIR)/debian/smapi/usr/lib/patmat.o
+	# Add here commands to install the package into debian/tmp
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 
 
 # Build architecture-independent files here.
@@ -59,14 +49,15 @@ binary-indep: build install
 
 # Build architecture-dependent files here.
 binary-arch: build install
-	dh_testversion 2
 	dh_testdir
 	dh_testroot
+	dh_movefiles
+#	dh_installdebconf	
 	dh_installdocs
 	dh_installexamples
 	dh_installmenu
 	dh_installcron
-	dh_installmanpages
+	dh_installman
 	dh_installinfo
 #	dh_undocumented
 	dh_installchangelogs ChangeLog
