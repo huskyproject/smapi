@@ -1,7 +1,7 @@
 CC=	gcc
 CFLAGS=	-Wall -s
 CDEFS=	-DUNIX
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486 
+COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486 -g 
 LIB=	ar
 
 ALL: $(TARGET) libsmapilnx.so.2.0
