@@ -59,6 +59,7 @@
 #include "old_msg.h"
 #include "api_jam.h"
 
+#define MAXHDRINCORE  (1024*1024*10) /* Maximum jam hdr size for incore, 10M */
 
 #ifdef INTEL
 
@@ -1062,10 +1063,11 @@ int read_subfield(sword handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLe
 
 int read_allidx(JAMBASEptr jmb)
 {
-   byte  *buf, *pbuf, *hdrbuf;
+   byte  *buf, *pbuf, *hdrbuf = NULL;
+   JAMACTMSGptr newptr;
    JAMHDR  hbuf;
    int   len;
-   dword i,allocated,hlen;
+   dword i, allocated, hlen;
    dword offset;
 
    lseek(jmb->IdxHandle, 0, SEEK_END);
@@ -1082,36 +1084,59 @@ int read_allidx(JAMBASEptr jmb)
 
    lseek(jmb->HdrHandle, 0, SEEK_END);
    hlen = tell(jmb->HdrHandle);
-   hdrbuf = (byte *)palloc(hlen);
    lseek(jmb->HdrHandle, 0, SEEK_SET);
+   if (hlen<MAXHDRINCORE) {
+      /* read all headers in core */
+      hdrbuf = (byte *)palloc(hlen);
 
-   if (farread(jmb->HdrHandle, (byte far *)hdrbuf, hlen) != hlen) {
-      pfree(hdrbuf);
-      pfree(buf);
-      return 0;
-   } /* endif */
-
-   jmb->actmsg_read = 1;
+      if (farread(jmb->HdrHandle, (byte far *)hdrbuf, hlen) != hlen) {
+         pfree(hdrbuf);
+         pfree(buf);
+         return 0;
+      } /* endif */
+      jmb->actmsg_read = 1;
+   } else
+      jmb->actmsg_read = 2;
    allocated = jmb->HdrInfo.ActiveMsgs;
-   if (allocated)
+   if (allocated) {
       jmb->actmsg = (JAMACTMSGptr)farmalloc(allocated * sizeof(JAMACTMSG));
+      if (jmb->actmsg == NULL) {
+         if (hdrbuf) pfree(hdrbuf);
+	 pfree(buf);
+	 return 0;
+      }
+   }
 
    for (i = 0; (pbuf - buf) < len;) {
       offset = get_dword(pbuf+4);
       if (offset != 0xFFFFFFFFUL) {
          if (offset+HDR_SIZE<=hlen) {
-            decode_hdr(hdrbuf+offset, &hbuf);
+            if (hdrbuf)
+               decode_hdr(hdrbuf+offset, &hbuf);
+	    else {
+               lseek(jmb->HdrHandle, offset, SEEK_SET);
+	       read_hdr(jmb->HdrHandle, &hbuf);
+	    }
             if (!(hbuf.Attribute & JMSG_DELETED)) {
-               if (i >= allocated)
-                  jmb->actmsg = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*(allocated += 16));
+               if (i >= allocated) {
+                  newptr = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*(allocated += 16));
+                  if (newptr == NULL) {
+                     pfree(jmb->actmsg);
+                     if (hdrbuf) pfree(hdrbuf);
+		     pfree(buf);
+		     return 0;
+		  }
+		  jmb->actmsg = newptr;
+	       }
                jmb->actmsg[i].IdxOffset = pbuf - buf;
                jmb->actmsg[i].TrueMsg = offset;
                jmb->actmsg[i].UserCRC = get_dword(pbuf);
                memcpy(&(jmb->actmsg[i].hdr), &hbuf, sizeof(hbuf));
-               if (offset+HDR_SIZE+jmb->actmsg[i].hdr.SubfieldLen<=hlen) {
+               if (hdrbuf && offset+HDR_SIZE+jmb->actmsg[i].hdr.SubfieldLen<=hlen) {
                   decode_subfield(hdrbuf+offset+HDR_SIZE, &(jmb->actmsg[i].subfield), &(jmb->actmsg[i].hdr.SubfieldLen));
                   i++;
-               }
+               } else
+                  jmb->actmsg[i++].subfield = NULL;
             } /* endif */
          } /* endif */
       } /* endif */
@@ -1119,13 +1144,15 @@ int read_allidx(JAMBASEptr jmb)
    } /* endfor */
 
    pfree(buf);
-   pfree(hdrbuf);
+   if (hdrbuf) pfree(hdrbuf);
 
    if (i != jmb->HdrInfo.ActiveMsgs) {
       /* warning: database corrupted! */
       jmb->HdrInfo.ActiveMsgs = i;
-      if (i != allocated)
-         jmb->actmsg = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*i);
+      if (i != allocated) {
+         newptr = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*i);
+	 if (newptr) jmb->actmsg = newptr;
+      }
    } /* endif */
 
    return 1;
