@@ -121,14 +121,14 @@ static sword EXPENTRY JamCloseArea(MSG * jm)
       msgapierr = MERR_EOPEN;
       return -1;
    }
-   
+
    Jmd->HdrInfo.highwater = jm->high_water;
    Jmd->HdrInfo.ModCounter++;
    Jam_WriteHdrInfo(Jmd);
 
-   
+
    if (jm->locked) JamUnlock(jm);
-   
+
    Jam_CloseFile(Jmd);
 
    pfree(Jmd->BaseName);
@@ -179,7 +179,7 @@ static MSGH *EXPENTRY JamOpenMsg(MSG * jm, word mode, dword msgnum)
 
       } /* endif */
 
-   } 
+   }
    else if (msgnum == 0) {
       msgapierr = MERR_NOENT;
       return NULL;
@@ -239,37 +239,37 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
    if (msg) {
       /* make msg */
-      
+
       msg->attr = Jam_JamAttrToMsg(msgh);
 
       memset(msg->from, '\0', XMSG_FROM_SIZE);
       memset(msg->to, '\0', XMSG_TO_SIZE);
       memset(msg->subj, '\0', XMSG_SUBJ_SIZE);
-      
+
       /* get "from name" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SENDERNAME))) {
          strncpy(msg->from, SubField->Buffer, SubField->DatLen);
       } /* endif */
-      
+
       /* get "to name" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_RECVRNAME))) {
          strncpy(msg->to, SubField->Buffer, SubField->DatLen);
       } /* endif */
-      
+
       /* get "subj" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SUBJECT))) {
          strncpy(msg->subj, SubField->Buffer, SubField->DatLen);
       } /* endif */
-      
+
       /* get "orig address" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS))) {
          parseAddr(&(msg->orig), SubField->Buffer, SubField->DatLen);
       } /* endif */
-      
+
       /* get "dest address" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS))) {
@@ -288,7 +288,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
    bytesread = 0;
 
    if (bytes > 0 && text) {
-   
+
       /* read text message */
 
       if (offset > (msgh->Hdr.TxtLen+msgh->lclen)) offset = msgh->Hdr.TxtLen+msgh->lclen;
@@ -318,7 +318,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          } /* endif */
          msgh->cur_pos += bytesread;
       } /* endif */
-         
+
    }
 
    if (clen && ctxt) {
@@ -336,7 +336,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt)
 {
    /* not supported append if JAM !!! */
-   
+
    JAMHDR         jamhdrNew;
    JAMIDXREC      jamidxNew;
    JAMSUBFIELDptr subfieldNew;
@@ -349,7 +349,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 
    assert(append == 0);
 
-   
+
    if (InvalidMsgh(msgh)) {
       return -1L;
    }
@@ -421,8 +421,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             jamidxNew.HdrOffset = msgh->seek_hdr;
             write_idx(Jmd->IdxHandle, &jamidxNew);
             jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
-            jamhdrNew.TxtLen = strlen(onlytext);
-            farwrite(Jmd->TxtHandle, onlytext, strlen(onlytext));
+            jamhdrNew.TxtLen = strlen(oE  (ëÞ@ 2ÖáÃ&‚aÁŸ~è	aþvÖš1Âí€nmd->TxtHandle, onlytext, strlen(onlytext));
             msgh->cur_pos = tell(Jmd->TxtHandle);
             msgh->bytes_written = strlen(onlytext);
             jamhdrNew.ReplyCRC = 0xFFFFFFFF;
@@ -458,11 +457,11 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
             Jmd->HdrInfo.ModCounter++;
             Jam_WriteHdrInfo(Jmd);
-//	    memmove(&(msgh->Idx), &(jamidxNew), sizeof(JAMIDXREC));
-//	    memmove(&(msgh->Hdr), &(jamhdrNew), sizeof(JAMHDR));
-//	    msgh->SubFieldPtr = subfieldNew;
+/*	    memmove(&(msgh->Idx), &(jamidxNew), sizeof(JAMIDXREC));
+	    memmove(&(msgh->Hdr), &(jamhdrNew), sizeof(JAMHDR));
+	    msgh->SubFieldPtr = subfieldNew; */
 	    /* info from new message to msgh srtuct */
-//	    DecodeSubf(msgh);
+/*	    DecodeSubf(msgh); */
          } /* endif */
          pfree(subfieldNew);
       } /* endif */
@@ -660,7 +659,7 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
          if (type == UID_EXACT) return 0;
          else if (msgnum != 0 && type == UID_PREV) msgnum--;
          else if (msgnum <= jm->high_msg && type == UID_NEXT) msgnum++;
-         if ((msgnum == 0 && type == UID_PREV) || 
+         if ((msgnum == 0 && type == UID_PREV) ||
             (msgnum > jm->high_msg && type == UID_NEXT)) return 0;
       } else {
          return msgnum;
@@ -756,7 +755,7 @@ int openfilejm(char *name, word mode)
 
 #ifdef UNIX
       handle = sopen(name, mode, SH_DENYNONE, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
-#else	    
+#else
       handle = sopen(name, mode, SH_DENYNONE, S_IREAD | S_IWRITE);
 #endif
 
@@ -865,8 +864,8 @@ static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename)
 static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
 {
    struct _msgh *msgh;
-//   JAMIDXREC    idx;
-//   JAMHDR       hdr;
+/*   JAMIDXREC    idx; */
+/*   JAMHDR       hdr; */
 
    unused(mode);
 
@@ -902,8 +901,8 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
    msgh->mode = mode;
    msgh->id = MSGH_ID;
 
-//   msgh->Idx.HdrOffset = 0xffffffff;
-//   msgh->Idx.UserCRC   = 0xffffffff;
+/*   msgh->Idx.HdrOffset = 0xffffffff; */
+/*   msgh->Idx.UserCRC   = 0xffffffff; */
 
 
    if (Jmd->actmsg) {
@@ -1264,7 +1263,7 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr
    pfree(ctrl);
 
    ctrl = (unsigned char*)GetCtrlToken(ctxt, (unsigned char *)"MSGID");
-   if (ctrl) { 
+   if (ctrl) {
       jamhdr->MsgIdCRC = Jam_Crc32(ctrl+7, strlen(ctrl)-7);
       pfree(ctrl);
    }
@@ -1475,31 +1474,31 @@ void DecodeSubf(MSGH *msgh)
       if (intl) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(intl)+1);
          strcat(msgh->ctrl, intl);
-      } 
+      }
       if (topt) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(topt)+7);
          sprintf(msgh->ctrl+strlen(msgh->ctrl), "%cTOPT %s", '\x01', topt);
-      } 
+      }
       if (fmpt) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(fmpt)+7);
          sprintf(msgh->ctrl+strlen(msgh->ctrl), "%cFMPT %s", '\x01', fmpt);
-      } 
+      }
       if (msgid) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(msgid)+1);
          strcat(msgh->ctrl, msgid);
-      } 
+      }
       if (reply) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(reply)+1);
          strcat(msgh->ctrl, reply);
-      } 
+      }
       if (pid) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(pid)+1);
          strcat(msgh->ctrl, pid);
-      } 
+      }
       if (kludges) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(kludges)+1);
          strcat(msgh->ctrl, kludges);
-      } 
+      }
       if (flags) {
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(flags)+1);
          strcat(msgh->ctrl, flags);
@@ -1508,15 +1507,15 @@ void DecodeSubf(MSGH *msgh)
       if (seenby) {
          msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(seenby)+1);
          strcat(msgh->lctrl, seenby);
-      } 
+      }
       if (path) {
          msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(path)+1);
          strcat(msgh->lctrl, path);
-      } 
+      }
       if (via) {
          msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(via)+1);
          strcat(msgh->lctrl, via);
-      } 
+      }
       msgh->clen = strlen(msgh->ctrl);
       msgh->lclen = strlen(msgh->lctrl);
 
