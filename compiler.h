@@ -629,6 +629,8 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #define mode_t int
+#include <direct.h>
+#define mymkdir _mkdir
 
 #else
 
