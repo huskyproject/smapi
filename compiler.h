@@ -311,7 +311,7 @@ int lock(int handle, long ofs, long length);
 #define _fast
 #define _loadds
 #define cdecl
-#define pascal
+#define pascal __stdcall
 #define near
 #define far
 
