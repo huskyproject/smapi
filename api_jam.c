@@ -437,7 +437,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             lseek(Jmd->IdxHandle, 0, SEEK_END);
             lseek(Jmd->HdrHandle, 0, SEEK_END);
             lseek(Jmd->TxtHandle, 0, SEEK_END);
-            jamhdrNew.MsgNum = Jmd->HdrInfo.BaseMsgNum+(tell(Jmd->IdxHandle)/IDXSIZE);
+            jamhdrNew.MsgNum = Jmd->HdrInfo.BaseMsgNum+(tell(Jmd->IdxHandle)/IDX_SIZE);
             msgh->seek_idx = tell(Jmd->IdxHandle);
             msgh->seek_hdr = jamidxNew.HdrOffset = tell(Jmd->HdrHandle);
             jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen(msg->to));
