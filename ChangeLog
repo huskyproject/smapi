@@ -1,3 +1,7 @@
+2002-01-26 Saturday 14:38  mche
+
+	* compiler.h (1.77): added defenition of snprintf for mvc compiler
+
 2002-01-19 Saturday 14:02  mche
 
 	* msgapi.c (1.22), msgapi.h (1.38): removed win32 specific code
