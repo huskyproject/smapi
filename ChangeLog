@@ -1,3 +1,12 @@
+2002-11-23 Saturday 20:12  stas_degteff
+
+	* api_jam.c (1.96): Fix Watcom C for NT comilation warning: remove
+	spare type conversion
+
+2002-11-23 Saturday 20:08  stas_degteff
+
+	* makefile.wcw (1.21): Add 'all' tag; lowercase 'del' command
+
 2002-11-22 Friday 09:36  stas_degteff
 
 	* compiler.h (1.110): Define INTEL for true x86 (Watcom/x86, DJGPP,
