@@ -665,6 +665,25 @@ static sword EXPENTRY SquishWriteMsg(MSGH * msgh, word append, XMSG * msg, byte 
             lseek(Sqd->sfd, seek, SEEK_SET);
         }
 
+        /* make sure the __ftsc_date field is not empty */
+
+        if (*msg->__ftsc_date)
+        {
+            msg->__ftsc_date[sizeof(msg->__ftsc_date) - 1] = '\0';
+        }
+        else
+        {
+            sprintf((char *) msg->__ftsc_date,
+                    "%02d %s %02d  %02d:%02d:%02d",
+                    msg->date_written.date.da ? msg->date_written.date.da : 1,
+                    months_ab[msg->date_written.date.mo ?
+                              msg->date_written.date.mo - 1 : 0],
+                    (msg->date_written.date.yr + 80) % 100,
+                    msg->date_written.time.hh,
+                    msg->date_written.time.mm,
+                    msg->date_written.time.ss << 1);
+        }
+
         write_xmsg(Sqd->sfd, msg);
     }
 
