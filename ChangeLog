@@ -1,3 +1,9 @@
+2002-11-05 Tuesday 14:52  stas_degteff
+
+	* compiler.h (1.104), fexist.c (1.25), sq_lock.c (1.21): Convert
+	C++ comments into pure C comments to prevent compilation
+	warnings/errors
+
 2002-11-03 Sunday 00:05  d_sergienko
 
 	* api_jam.c (1.91), api_jam.h (1.11), msgapi.c (1.28), msgapi.h
