@@ -191,7 +191,7 @@ int read_xmsg(sword handle, XMSG *pxmsg)
                                 /* 4 bytes "umsgid" */
     pxmsg->umsgid = get_dword(pbuf);
     pbuf += 4;
-    
+
                                 /* 20 times FTSC date stamp */
     memmove(pxmsg->__ftsc_date, pbuf, 20);
     pbuf += 20;
@@ -282,7 +282,7 @@ int write_xmsg(sword handle, XMSG *pxmsg)
                                 /* 4 bytes "umsgid" */
     put_dword(pbuf, pxmsg->umsgid);
     pbuf += 4;
-    
+
 
                                 /* 20 times FTSC date stamp */
     memmove(pbuf, pxmsg->__ftsc_date, 20);
@@ -395,7 +395,7 @@ int read_sqidx(sword handle, SQIDX *psqidx, dword n)
     byte buf[SQIDX_SIZE], *pbuf = NULL;
     byte *accel_buffer = NULL;
     dword i, maxbuf = 0, rd;
-    
+
     if (n > 1)
     {
         maxbuf = n;
@@ -877,7 +877,7 @@ int read_hdr(sword handle, JAMHDR *Hdr)
    } /* endif */
 
    /* 04 bytes Signature */
-   memmove(Hdr->Signature, pbuf, (size_t)4); 
+   memmove(Hdr->Signature, pbuf, (size_t)4);
    pbuf += 4;
 
    /* 02 bytes Revision */
@@ -978,17 +978,17 @@ int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen)
 
    subfieldNext = *subfield = 0;
 
-   while ((pbuf - buf + 8) < *SubfieldLen) 
+   while ((pbuf - buf + 8) < *SubfieldLen)
 	 {
       subfieldNew = (JAMSUBFIELD2ptr) palloc(sizeof(JAMSUBFIELD2));
 			subfieldNew->next = 0;
 			if (subfieldNext)
 			  subfieldNext->next = subfieldNew;
 			subfieldNext = subfieldNew;
-			
+
 			if (!*subfield)
 			  *subfield = subfieldNext;
-			
+
       /* 02 bytes LoID */
       subfieldNext->LoID = get_word(pbuf);
       pbuf += 2;
@@ -1019,8 +1019,8 @@ int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen)
 
    } /* endwhile */
 
-   pfree(buf);
    *SubfieldLen = pbuf - buf;
+   pfree(buf);
 
    return 1;
 }
@@ -1135,7 +1135,7 @@ int write_hdr(sword handle, JAMHDR *Hdr)
    byte buf[HDR_SIZE], *pbuf = buf;
 
    /* 04 bytes Signature */
-   memmove(pbuf, Hdr->Signature, (size_t)4); 
+   memmove(pbuf, Hdr->Signature, (size_t)4);
    pbuf += 4;
 
    /* 02 bytes Revision */
@@ -1239,7 +1239,7 @@ int write_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword SubfieldLen)
       pbuf += 2;
       /* 04 bytes DatLen */
       put_dword(pbuf, subfieldNext->DatLen);
-      
+
       datlen = subfieldNext->DatLen;
       pbuf += 4;
       /* DatLen bytes Buffer */
@@ -1250,8 +1250,8 @@ int write_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword SubfieldLen)
 
    } /* endwhile */
    rc =(farwrite(handle, (byte far *)buf, SubfieldLen) == SubfieldLen);
-	 
+
    pfree(buf);
-	 
+
    return rc;
 }
