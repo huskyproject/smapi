@@ -421,7 +421,8 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             jamidxNew.HdrOffset = msgh->seek_hdr;
             write_idx(Jmd->IdxHandle, &jamidxNew);
             jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
-            jamhdrNew.TxtLen = strlen(oE  (ëÞ@ 2ÖáÃ&‚aÁŸ~è	aþvÖš1Âí€nmd->TxtHandle, onlytext, strlen(onlytext));
+            jamhdrNew.TxtLen = strlen(onlytext);
+            farwrite(Jmd->TxtHandle, onlytext, strlen(onlytext));
             msgh->cur_pos = tell(Jmd->TxtHandle);
             msgh->bytes_written = strlen(onlytext);
             jamhdrNew.ReplyCRC = 0xFFFFFFFF;
