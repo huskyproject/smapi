@@ -1241,6 +1241,7 @@ int qq(void)
 /* End: IBM C/Set++ for OS/2 */
 #elif defined(__UNIX__) /* Unix clones: Linux, FreeBSD, SUNOS (Solaris), BeOS, MacOS etc. */
 
+#  define SMAPI_EXT extern
 #  define _stdc
 #  define _intr
 #  define _intcast
