@@ -1,3 +1,7 @@
+2002-06-19 Wednesday 17:15  mche
+
+	* compiler.h (1.84): some defines for MSVC
+
 2002-06-17 Monday 23:38  tobi
 
 	* api_jam.c (1.83): bugfix for os/2
