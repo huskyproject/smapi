@@ -55,9 +55,9 @@ install: libsmapilnx.so.$(VER)
 	ln -sf $(LIBDIR)/libsmapilnx.so.$(VERH) $(LIBDIR)/libsmapilnx.so
 
 clean:
-        -rm *.o
-        -rm $(TARGET)
+	-rm *.o
+	-rm $(TARGET)
 
 distclean: clean
-        -rm libsmapilnx.so.$(VER)
+	-rm libsmapilnx.so.$(VER)
 
