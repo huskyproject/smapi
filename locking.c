@@ -8,14 +8,14 @@
  *
  * EMX GCC on OS/2:
  *   lock, unlock: implemented as OS/2 API calls
- *   sopen: provided by the EMX RTL
+ *   sopen: provided by the EMX
  *
  * EMX GCC on Windows 32 bit using RSXNT:
  *   lock, unlock: implemented as Win32 API calls
  *   sopen: provided by the RSX RTL
  *
  * UNIX:
- *   lock, unlock: implemented as calls to fcntl
+ *   lock, unlock: implemented as calls to 
  *   sopen: implemented as open with subsequent shared lock
  *
  * OTHER:
@@ -199,11 +199,4 @@ int waitlock(int handle, long ofs, long length)
     }
     return 0;
 }
-
 #endif
-
-
-
-
-
-
