@@ -202,6 +202,9 @@
 #define farwrite write
 #endif
 
+#define strcasecmp stricmp
+#define strncasecmp strnicmp
+
 #elif (defined(_MSC_VER) && (_MSC_VER < 1200))
 
 /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */

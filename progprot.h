@@ -20,7 +20,7 @@
 #ifndef __PROGPROT_H__
 #define __PROGPROT_H__
 
-#if !(defined (__WATCOMC__) || (defined(_MSC_VER) && (_MSC_VER >= 1200)))
+#if !( (defined(_MSC_VER) && (_MSC_VER >= 1200)))
 void pascal far flush_handle2(int fd);
 #endif
 void _fast flush_handle(FILE * fp);

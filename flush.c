@@ -19,6 +19,7 @@
 
 #include "prog.h"
 #include "unused.h"
+#include "progprot.h"
 
 
 #if !defined(UNIX) && !defined(SASC)

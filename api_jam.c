@@ -31,6 +31,7 @@
 #include "api_jamp.h"
 #include "apidebug.h"
 #include "unused.h"
+#include "progprot.h"
 
 #define Jmd ((JAMBASE *)(jm->apidata))
 #define MsghJm ((JAMBASE *)(((struct _msgh *)msgh)->sq->apidata))
@@ -62,7 +63,7 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
    {
       jm->isecho = TRUE;
    }
-   
+
    if (type & MSGTYPE_NOTH) jm->isecho = NOTH;
 
    jm->api = (struct _apifuncs *)palloc(sizeof(struct _apifuncs));
@@ -390,7 +391,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       if (ctxt) ctxt = NULL;
    }
 
-   
+
    if (clen && ctxt) {
        x = strlen((char*)ctxt);
        if (clen < x) clen = x+1;
