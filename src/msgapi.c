@@ -27,6 +27,10 @@
 #include <signal.h>
 #endif
 
+/* Swith for build DLL */
+#define DLLEXPORT
+#include <huskylib/huskyext.h>
+
 #include "msgapi.h"
 #include "apidebug.h"
 

@@ -51,6 +51,10 @@
 
 #define MSGAPI_HANDLERS
 
+/* Swith for build DLL */
+#define DLLEXPORT
+#include <huskylib/huskyext.h>
+
 #include "msgapi.h"
 #include "old_msg.h"
 #include "api_sdm.h"
@@ -1136,7 +1140,6 @@ static sword near _SdmRescanArea(MSGA * mh)
         FFindClose(ff);
 
         /* Now sort the list of messages */
-
         qksort((int *)Mhd->msgnum, (word) mh->num_msg);
     }
 

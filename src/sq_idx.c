@@ -51,6 +51,10 @@ static char rcs_id[]="$Id$";
 #include <malloc.h>
 #endif
 
+/* Swith for build DLL */
+#define DLLEXPORT
+#include <huskylib/huskyext.h>
+
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"

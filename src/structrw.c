@@ -59,6 +59,10 @@
 #  include <io.h>
 #endif
 
+/* Swith for build DLL */
+#define DLLEXPORT
+#include <huskylib/huskyext.h>
+
 #include "msgapi.h"
 #include "api_sq.h"
 #include "old_msg.h"

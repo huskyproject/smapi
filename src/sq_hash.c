@@ -35,6 +35,7 @@ static char rcs_id[]="$Id$";
 
 
 #include <huskylib/huskylib.h>
+
 #ifdef HAS_IO_H
 #  include <io.h>
 #endif
@@ -45,6 +46,10 @@ static char rcs_id[]="$Id$";
 #ifdef HAS_MALLOC_H
 #include <malloc.h>
 #endif
+
+/* Swith for build DLL */
+#define DLLEXPORT
+#include <huskylib/huskyext.h>
 
 #include "old_msg.h"
 #include "msgapi.h"

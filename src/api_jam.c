@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <fcntl.h>
+
 #include <huskylib/huskylib.h>
 
 #ifdef HAS_IO_H
@@ -31,6 +32,10 @@
 #endif
 
 #define MSGAPI_HANDLERS
+
+/* Swith for build DLL */
+#define DLLEXPORT
+#include <huskylib/huskyext.h>
 
 #include "msgapi.h"
 #include "api_jam.h"
