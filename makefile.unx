@@ -1,0 +1,57 @@
+# Legacy makefile for building on any Linux system
+# No support for the Husky build environment
+
+CC=	cc
+LD=	ld
+CFALGS=
+CDEFS=	-DUNIX
+COPT=
+LIB=	ar
+RANLIB=	ranlib
+VERH =  1
+VER  =  1.6.0
+
+
+
+TARGET=	libsmapiunix.a
+all: $(TARGET) libsmapiunix.so
+
+OBJS=	1stchar.o  \
+	api_sdm.o  \
+	api_sq.o   \
+	api_jam.o  \
+	cvtdate.o  \
+	date2bin.o \
+	dosdate.o  \
+	fexist.o   \
+	ffind.o    \
+	flush.o    \
+	locking.o  \
+	months.o   \
+	msgapi.o   \
+	parsenn.o  \
+	patmat.o   \
+	qksort.o   \
+	strextra.o \
+	strftim.o  \
+	strocpy.o  \
+	structrw.o \
+	trail.o    \
+	weekday.o
+
+# Thunderbirds are go!
+
+.c.o:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) r $(TARGET) $@
+
+$(TARGET): $(OBJS)
+	$(RANLIB) $(TARGET)
+
+libsmapiunix.so: $(OBJS)
+	$(LD) -shared -o libsmapiunix.so $(OBJS) -lc
+
+clean:
+	-rm *.o
+	-rm $(TARGET)
+	-rm libsmapiunix.so
