@@ -291,8 +291,7 @@ int _fast FFindNext(FFIND * ff)
             if (de == NULL)
             {
                closedir(ff->dir);
-               free(ff);
-               ff = NULL;
+               ff->dir = NULL;
                fin = 1;
             }
             else
