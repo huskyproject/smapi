@@ -1,8 +1,10 @@
-SMAPI; Modified Squish MSGAPI - version 1.4
+SMAPI; Modified Squish MSGAPI - version 2.2
+
+This version of the SMAPI library is part of the HUSKY fidosoft project.
+
 
 Squish MSGAPI0 is copyright 1991 by Scott J. Dudley.  All rights reserved.
 Modifications released to the public domain.
-
 
 Contained in this archive is the source code for the Squish MSGAPI which
 can be used to access Squish format message bases.  It is based heavily
@@ -37,24 +39,39 @@ The following makefiles can be used to compile this release of SMAPI:
 
 Makefile       Target library   Compiler
 ------------   --------------   -------------------------------------------
-MAKEFILE.BCD   SMAPIBCD.LIB     Borland C++ for DOS 3.1
-MAKEFILE.BCO   SMAPIBCO.LIB     Borland C++ for OS/2 1.0
-MAKEFILE.BSD   LIBSMAPIBSD.A    GNU C for FreeBSD 2.7.x
-MAKEFILE.DJG   SMAPIDJG.A       GNU C for MS-DOS 2.7.x (DJGPP)
-MAKEFILE.EMO   SMAPIEMO.LIB     GNU C for OS/2 2.7.x (EMX 0.9)
-MAKEFILE.HCO   SMAPIHCO.LIB     MetaWare High C for OS/2 3.2
-MAKEFILE.IBO   SMAPIIBO.LIB     IBM C/Set++ for OS/2 2.0
-MAKEFILE.LNX   SMAPILNX.A       GNU C for Linux 2.7.x
-MAKEFILE.QCD   SMAPIQCD.LIB     Microsoft QuickC for DOS 2.5 (makefile
+Makefile       libsmapi.*       Any (huskymak.cfg required)
+makefile.bcd   smapibcd.lib     Borland C++ for DOS 3.1
+makefile.bco   smapibco.lib     Borland C++ for OS/2 1.0
+makefile.bcw   smapibco.lib     Borland C++ for Windows 4.0
+makefile.be    libsmapibe.a     GNU C for BeOS 2.7.x
+makefile.bsd   libsmapibsd.a    GNU C for FreeBSD 2.7.x
+makefile.bsd4  libsmapibsd.a    GNU C for FreeBSD 2.7.x, use make (FreeBSD 4.*)
+makefile.cyg   libsmapicyg.a    GNU C for Cygwin 2.7.x
+makefile.djg   smapidjg.a       GNU C for MS-DOS 2.7.x (DJGPP)
+makefile.emo   smapiemo.lib     GNU C for OS/2 2.7.x (EMX 0.9) with OMF-Style
+                                linkage
+makefile.emx   smapiemx.a       GNU C for OS/2 2.7.x (EMX 0.9) a.out-style
+                                linkage (EMX Runtime)
+makefile.hco   smapihco.lib     MetaWare High C for OS/2 3.2
+makefile.ibo   smapiibo.lib     IBM C/Set++ for OS/2 2.0
+makefile.lnx   smapilnx.a       GNU C for Linux 2.7.x
+makefile.mgw   libsmapimgw.a    Mingw32 for NT
+makefile.mvc   smapimvc.lib     Microsoft Visual C/C++ 6.0
+makefile.mvcdll smapimvc.dll    Microsoft Visual C/C++ 6.0
+                                (shared library produced)
+makefile.qcd   smapiqcd.lib     Microsoft QuickC for DOS 2.5 (makefile
                                 requires either the Microsoft Macro
                                 Assembler, MASM, or the Borland Turbo
                                 Assembler, TASM)
-MAKEFILE.RXW   SMAPIRXW.LIB     GNU C for Windows NT 2.7.x (RSXNT/EMX)
-MAKEFILE.UNX   LIBSMAPIUNIX.A   Generic Unix Makefile
-MAKEFILE.WCD   SMAPIWCD.LIB     WATCOM C/C++ for 16-bit DOS 10.x
-MAKEFILE.WCO   SMAPIWCO.LIB     WATCOM C/C++ for 32-bit OS/2 10.x
-MAKEFILE.WCW   SMAPIWCW.LIB     WATCOM C/C++ for 32-bit Windows NT 10.x
-MAKEFILE.WCX   SMAPIWCX.LIB     WATCOM C/C++ for 32-bit DOS 10.x
+makefile.rxw   smapirxw.lib     GNU C for Windows NT 2.7.x (RSXNT/EMX)
+makefile.sun   libsmapisun.a    GNU C for Solaris 2.7.x
+makefile.unx   libsmapiunix.a   Generic Unix Makefile
+makefile.wcd   smapiwcd.lib     WATCOM C/C++ for 16-bit DOS 10.x
+makefile.wco   smapiwco.lib     WATCOM C/C++ for 32-bit OS/2 10.x
+makefile.wcw   smapiwcw.lib     WATCOM C/C++ for 32-bit Windows NT 10.x
+makefile.wcx   smapiwcx.lib     WATCOM C/C++ for 32-bit DOS 10.x
+
+Use GNU version of make (gmake on many platforms) if don't specified other.
 
 Note that the Linux and FreeBSD makefiles must be in UNIX text file
 format (linefeeds only; no carriage returns), in addition to COMPILER.H
@@ -79,7 +96,10 @@ above channels.
 
 OBTAINING SMAPI
 
-The latest release of SMAPI is available for file request (FREQ) from
+Latest version of the Husky Smapi available at the Husky homepage:
+http://husky.physcip.uni-stuttgart.de.
+
+The latest release of original SMAPI is available for file request (FREQ) from
 FidoNet node 3:635/728.  It can also be downloaded from Internet site
 ftp.zws.com from the /pub/msged/ directory.  The archive name for SMAPI
 release 1.4 will be named SMAPI14.ZIP, and so on.
