@@ -85,7 +85,7 @@ void _SquishInitSem()
   lock_sem = create_sem(0,0);
   release_sem(lock_sem);
 #elif defined(UNIX)
-  lock_sem = semget(IPC_PRIVATE, 1, 0);
+/*  lock_sem = semget(IPC_PRIVATE, 1, 0); */
 #endif
 }
 
@@ -94,7 +94,7 @@ void _SquishFreeSem()
 #ifdef __BEOS__
   delete_sem(lock_sem);
 #elif defined(UNIX)
-  struct sembuf sops;
+/*  struct sembuf sops;
 
 #ifdef HAS_SEMUN
   union semun fl;
@@ -110,6 +110,7 @@ void _SquishFreeSem()
   sops.sem_flg = 0;
 
   semop(lock_sem, &sops, 1);
+*/
 #endif
 }
 
@@ -122,7 +123,7 @@ short _SquishThreadLock(void)
   if (acquire_sem(lock_sem) != B_NO_ERROR)
     tdelay(10);
 #elif defined(UNIX)
-  struct sembuf sops;
+/*  struct sembuf sops;
   
   sops.sem_num = 0;
   sops.sem_op  = -1;
@@ -130,6 +131,7 @@ short _SquishThreadLock(void)
 
   while (semop(lock_sem, &sops, 1))
     usleep(10);
+*/
 #endif
   return 1;
 }
@@ -141,13 +143,14 @@ short _SquishThreadUnlock(void)
 #elif defined(__BEOS__)
   release_sem(lock_sem);
 #elif defined(UNIX)
-  struct sembuf sops;
+/*  struct sembuf sops;
   
   sops.sem_num = 0;
   sops.sem_op  = 1;
   sops.sem_flg = 0;
 
   semop(lock_sem, &sops, 1);
+*/
 #endif
   return 1;
 }
@@ -566,8 +569,9 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
   ha->sem = create_sem(0, 0);
   release_sem(ha->sem);
 #elif defined(UNIX)
-  ha->sem = semget(IPC_PRIVATE, 1, 0);
+/*  ha->sem = semget(IPC_PRIVATE, 1, 0);
   _SquishBaseThreadUnlock(ha);
+  */
 #endif
 
   /* Return the handle to this area */
@@ -691,7 +695,7 @@ sword EXPENTRY SquishCloseArea(HAREA ha)
 #ifdef __BEOS__
   delete_sem(ha->sem);
 #elif defined (UNIX)
-  {
+/*  {
 #ifdef HAS_SEMUN
     union semun fl;
     fl.val = 0;
@@ -700,6 +704,7 @@ sword EXPENTRY SquishCloseArea(HAREA ha)
 #endif
     semctl(ha->sem, 0, IPC_RMID, fl);
   }
+*/
 #endif
 
   pfree(ha->api);

@@ -70,7 +70,7 @@ short _fast _SquishBaseThreadLock(HAREA ha)
   while (acquire_sem(ha->sem) != B_NO_ERROR)
     tdelay(10);
 #elif defined(UNIX)
-  struct sembuf sops;
+/*  struct sembuf sops;
   
   sops.sem_num = 0;
   sops.sem_op  = -1;
@@ -78,6 +78,7 @@ short _fast _SquishBaseThreadLock(HAREA ha)
 
   while (semop(ha->sem, &sops, 1))
     usleep(10);
+    */
 #endif
   return 1;
 }
@@ -89,13 +90,14 @@ short _fast _SquishBaseThreadUnlock(HAREA ha)
 #elif defined(__BEOS__)
   release_sem(ha->sem);
 #elif defined(UNIX)
-  struct sembuf sops;
+/*  struct sembuf sops;
   
   sops.sem_num = 0;
   sops.sem_op  = 1;
   sops.sem_flg = 0;
 
   semop(ha->sem, &sops, 1);
+  */
 #endif
   return 1;
 }
