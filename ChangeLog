@@ -1,3 +1,8 @@
+2003-04-12 Saturday 13:54  mche
+
+	* smapiDll.vcproj (1.2), make/SmapiDll.vcproj (1.1): change
+	location
+
 2003-03-31 Monday 18:49  mche
 
 	* smapiDll.vcproj (1.1): vcproj Project File added for building
