@@ -36,13 +36,19 @@ extern "C" {
 #define MSGAREA_CREATE  0x01
 #define MSGAREA_CRIFNEC 0x02
 
+/* Message & messagebase types (FIDO/OPUS, jam, squish, passthrough, ...) */
+/*  - types by storage type */
+#define MSGTYPE_STORAGES    0x0F /* MSGTYPE_SDM | MSGTYPE_SQUISH | MSGTYPE_PASSTHROUGH | MSGTYPE_JAM */
 #define MSGTYPE_SDM         0x01
 #define MSGTYPE_SQUISH      0x02
 #define MSGTYPE_PASSTHROUGH 0x04
 #define MSGTYPE_JAM         0x08
+/*  - types by area type (echo, net, ...) */
+#define MSGTYPE_AREAS       0x1C0  /* MSGTYPE_ECHO | ... */
 #define MSGTYPE_ECHO        0x80
-#define MSGTYPE_NOTH        0x0100
+#define MSGTYPE_NOTH        0x0100 /* What is it ?... unknown... */
 
+/* Special message number values */
 #define MSGNUM_CUR      ((dword)-1L)
 #define MSGNUM_PREV     ((dword)-2L)
 #define MSGNUM_NEXT     ((dword)-3L)
