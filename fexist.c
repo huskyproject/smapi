@@ -18,7 +18,7 @@
  */
 
 
-#if defined(UNIX) || defined(__MINGW32__) || defined(EMX) || defined(RSXNT) || defined(__DJGPP__)
+#if defined(UNIX) || defined(__MINGW32__) || defined(EMX) || defined(RSXNT) || defined(__DJGPP__) || defined(_MSC_VER)
 /* These are compilers that have both a working stat() and (important!) the
    S_ISREG and S_ISDIR macros. The problem is that while stat() is POSIX, those
    macros are not. For compilers that do not provide these macros, we revert to
