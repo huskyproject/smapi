@@ -677,16 +677,16 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    msgnum = umsgid - Jmd->HdrInfo.BaseMsgNum + 1;
    if (msgnum <= 0)
       return 0;
-   if (msgnum > jm->high_msg)
-      return jm->high_msg;
+   if (msgnum > jm->num_msg)
+      return jm->num_msg;
 
    while (1) {
       if (!Jam_PosHdrMsg(jm, msgnum-1, &idxmsg, &hdrmsg)) {
          if (type == UID_EXACT) return 0;
          else if (msgnum != 0 && type == UID_PREV) msgnum--;
-         else if (msgnum <= jm->high_msg && type == UID_NEXT) msgnum++;
+         else if (msgnum <= jm->num_msg && type == UID_NEXT) msgnum++;
          if ((msgnum == 0 && type == UID_PREV) ||
-            (msgnum > jm->high_msg && type == UID_NEXT)) return 0;
+            (msgnum > jm->num_msg && type == UID_NEXT)) return 0;
       } else {
          return msgnum;
       } /* endif */
