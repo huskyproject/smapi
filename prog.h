@@ -30,17 +30,6 @@
 #include <malloc.h>
 #endif
 
-#ifdef __FARDATA__
-
-#ifndef ZREE
-#define malloc(n)     farmalloc(n)
-#define calloc(n,u)   farcalloc(n,u)
-#define free(p)       farfree(p)
-#define realloc(p,n)  farrealloc(p,n)
-#endif /* defined(ZREE) */
-
-#endif /* defined(__FARDATA__) */
-
 #if defined(__MSVC__)
 
 #ifndef ZREE
