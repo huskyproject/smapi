@@ -1,3 +1,22 @@
+2002-09-17 Tuesday 08:22  sfpavel
+
+	* Makefile (smapi-2_2-stable.3): Fix previous patch
+
+2002-09-17 Tuesday 06:08  sfpavel
+
+	* Makefile, compiler.h, file_id.diz, makefile.mgw, msgapi.h,
+	semaphor.h, debian/changelog, debian/libsmapi2-dev.preinst
+	(smapi-2_2-stable.[2,2,3,1,1,1,8,2]): Ver. 2.2-RC2: updates from
+	current branch
+
+2002-09-11 Wednesday 11:57  mche
+
+	* makefile.aix (1.2): make fidoconf compilable under AIX
+
+2002-09-11 Wednesday 10:28  mche
+
+	* makefile.aix (1.1): make smapi compilable under AIX
+
 2002-09-05 Thursday 02:51  sfpavel
 
 	* debian/: libsmapi2-dev.links, libsmapi2-dev.preinst
