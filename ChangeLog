@@ -1,3 +1,8 @@
+2002-08-22 Thursday 06:52  sfpavel
+
+	* debian/: changelog (1.14), control (1.8), copyright (1.2), docs
+	(1.3), rules (1.7): New debian package
+
 2002-08-17 Saturday 11:50  d_sergienko
 
 	* debian/changelog (1.13): revisions test
