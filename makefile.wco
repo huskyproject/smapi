@@ -18,10 +18,6 @@ EXE	= .exe
 
 TARGET	= smapiwco$(LIB)
 
-LIB	= .lib
-
-TARGET	= smapiwco$(LIB)
-
 EXENAMEFLAG = -fe=
 
 NULL     = @%null
