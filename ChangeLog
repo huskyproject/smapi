@@ -88,20 +88,6 @@
 
 	* tdelay.c (1.6): fixed Sleep(for work with MSVC6)
 
-2001-04-21 Saturday 16:11  joerg.jaspert
-
-	* debian/: changelog (1.5), control (1.3), huskymak.cfg (1.5),
-	rules (1.3), shlibs (1.4): Changed it so it compiles now with debug
-	enabled. From now on i compile only stable versions without debug.
-
-2001-04-14 Saturday 14:47  tobi
-
-	* debian/huskymak.cfg (1.4): fixed DEBLFLAGS
-
-2001-04-14 Saturday 14:47  tobi
-
-	* debian/README.Debian (1.3): fixed typo
-
 2001-04-14 Saturday 14:45  tobi
 
 	* tdelay.c (1.5): preprocessor directives must start at column #1
@@ -113,43 +99,10 @@
 	malloc.h with stdlib.h acccording to ANSI C and in order to remove
 	warnings on Unix systems
 
-2001-04-13 Friday 15:05  joerg.jaspert
-
-	* debian/: README.Debian (1.2), changelog (1.4), control (1.2),
-	huskymak.cfg (1.3), rules (1.2), shlibs (1.3): To much
-
 2001-04-13 Friday 15:04  joerg.jaspert
 
 	* Makefile (1.20): Removed most of my changes.	Changed symlinks to
 	be symlinks without path.
-
-2001-04-11 Wednesday 22:33  joerg.jaspert
-
-	* debian/README.BUILD-DEB (1.1): Some words for package-building on
-	Debian-Systems.
-
-2001-04-10 Tuesday 18:13  joerg.jaspert
-
-	* debian/: changelog (1.3), huskymak.cfg (1.2), shlibs (1.2): Error
-	in huskymak.
-
-2001-04-10 Tuesday 17:38  joerg.jaspert
-
-	* debian/changelog (1.2): Renamed to 1.6.4u-10 so
-	dpkg/dselect/apt-get find it newer than 1.6.4
-	
-	Could we please increment the version-number for the
-	develop-versions everytime we release a stable-package ? So stable
-	iss 1.6.4, unstable iss 1.6.5 (stable can go 1.6.4a, 1.6.4b,...)
-	The next stable release is 1.6.5 and the develop-version at this
-	time goes to 1.6.6 ?
-
-2001-04-10 Tuesday 16:52  joerg.jaspert
-
-	* debian/: README.Debian (1.1), changelog (1.1), control (1.1),
-	copyright (1.1), dirs (1.1), docs (1.1), huskymak.cfg (1.1), rules
-	(1.1), shlibs (1.1): The Controlfiles needed to build a
-	debian-Package.
 
 2001-04-10 Tuesday 16:51  joerg.jaspert
 
