@@ -20,10 +20,6 @@
 #ifndef __API_SDM_H__
 #define __API_SFM_H__
 
-#define MAX_SDM_CLEN  512  /* Maximum number of bytes which can be used
-                            * for kludge lines at top of *.MSG-type
-                            * messages. */
-
 struct _msgh
 {
     MSG *sq;
