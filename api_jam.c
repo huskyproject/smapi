@@ -318,6 +318,8 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       msg->xmreply1st = msgh->Hdr.Reply1st;
       msg->replies[1] = 0;
       msg->xmreplynext  = msgh->Hdr.ReplyNext;
+      msg->xmtimesread  = msgh->Hdr.TimesRead;
+      msg->xmcost  = msgh->Hdr.Cost;
 
    } /* endif */
 
@@ -1428,6 +1430,8 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    jamhdr->ReplyTo = msg->replyto;
    jamhdr->Reply1st = msg->xmreply1st;
    jamhdr->ReplyNext = msg->xmreplynext;
+   jamhdr->TimesRead = msg->xmtimesread;
+   jamhdr->Cost = msg->xmcost;
 
    *subfield = SubField;
 }

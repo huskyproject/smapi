@@ -1209,6 +1209,8 @@ static void MSGAPI Convert_Fmsg_To_Xmsg(struct _omsg *fmsg, XMSG * msg,
     msg->replyto = fmsg->reply;
     msg->replies[0] = fmsg->up;
     msg->attr = (dword) fmsg->attr;
+    msg->xmtimesread = fmsg->times;
+    msg->xmcost = fmsg->cost;
 
     /* Convert 4d pointnets */
 
@@ -1261,6 +1263,8 @@ static void MSGAPI Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg)
     fmsg->reply = (word) msg->replyto;
     fmsg->up = (word) msg->replies[0];
     fmsg->attr = (word) (msg->attr & 0xffffL);
+    fmsg->times = msg->xmtimesread;
+    fmsg->cost = msg->xmcost;
 
     /*
      *  Non-standard point kludge to ensure that 4D pointmail works
