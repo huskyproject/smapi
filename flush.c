@@ -17,6 +17,10 @@
  *  author.
  */
 
+#include "prog.h"
+#include "unused.h"
+
+
 #if !defined(UNIX) && !defined(SASC)
 #include <io.h>
 #endif
@@ -49,9 +53,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
-
-#include "prog.h"
-#include "unused.h"
 
 #if defined(UNIX) || defined(SASC) || defined(__DJGPP__)
 

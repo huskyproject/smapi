@@ -399,6 +399,7 @@ int lock(int handle, long ofs, long length);
 
 #define EXPENTRY pascal far
 
+
 #elif defined(UNIX)
 
 /* Linux, FreeBSD, etc. */

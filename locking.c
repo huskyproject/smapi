@@ -30,6 +30,10 @@
 
 #if (defined (__WATCOMC__) || defined(__EMX__) || defined(__IBMC__)) && defined(OS2)
 
+#ifdef EXPENTRY
+#undef EXPENTRY
+#endif
+
 #include <os2.h>
 
 int lock(int handle, long ofs, long length)
