@@ -1301,11 +1301,11 @@ static JAMSUBFIELD2ptr FromToSubjTOSubf(dword jamsfld, unsigned char *txt, dword
 
 static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield)
 {
-   JAMSUBFIELD2ptr SubFieldCur, SubField;
+   JAMSUBFIELD2ptr SubFieldCur, SubField, SubFieldI;
    struct tm stm, *ptm;
    dword clen, sublen;
 
-   SubField = *subfield;
+   SubFieldI = SubField = *subfield;
 
    memset(jamhdr, '\0', sizeof(JAMHDR));
 
@@ -1341,11 +1341,12 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
       memmove((char*)SubField+sublen, SubFieldCur, clen);
       free(SubFieldCur);*/
 			if (!SubField)
-			  SubField = SubFieldCur;
+			  SubFieldI = SubField = SubFieldCur;
 			else
 			{
-  	    SubFieldCur->next = SubField->next;
-				SubField->next = SubFieldCur;
+  	    		SubFieldCur->next = SubFieldI->next;
+				SubFieldI->next = SubFieldCur;
+				SubFieldI = SubFieldI->next;
 			}
       sublen += clen;
    } /* endif */
@@ -1358,11 +1359,12 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
       memmove((char*)SubField+sublen, SubFieldCur, clen);
       free(SubFieldCur);*/
 			if (!SubField)
-			  SubField = SubFieldCur;
+			  SubFieldI = SubField = SubFieldCur;
 			else
 			{
-  	    SubFieldCur->next = SubField->next;
-				SubField->next = SubFieldCur;
+		  	    SubFieldCur->next = SubFieldI->next;
+				SubFieldI->next = SubFieldCur;
+				SubFieldI = SubFieldI->next;
 			}
       sublen += clen;
    } /* endif */
@@ -1375,11 +1377,12 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
       memmove((char*)SubField+sublen, SubFieldCur, clen);
       free(SubFieldCur);*/
 			if (!SubField)
-			  SubField = SubFieldCur;
+			  SubFieldI = SubField = SubFieldCur;
 			else
 			{
-  	    SubFieldCur->next = SubField->next;
-				SubField->next = SubFieldCur;
+		  	    SubFieldCur->next = SubFieldI->next;
+				SubFieldI->next = SubFieldCur;
+				SubFieldI = SubFieldI->next;
 			}
       sublen += clen;
    } /* endif */
@@ -1391,11 +1394,12 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
       memmove((char*)SubField+sublen, SubFieldCur, clen);
       free(SubFieldCur);*/
 			if (!SubField)
-			  SubField = SubFieldCur;
+			  SubFieldI = SubField = SubFieldCur;
 			else
 			{
-  	    SubFieldCur->next = SubField->next;
-				SubField->next = SubFieldCur;
+		  	    SubFieldCur->next = SubFieldI->next;
+				SubFieldI->next = SubFieldCur;
+				SubFieldI = SubFieldI->next;
 			}
       sublen += clen;
    }
@@ -1408,11 +1412,12 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
       memmove((char*)SubField+sublen, SubFieldCur, clen);
       free(SubFieldCur);*/
 			if (!SubField)
-			  SubField = SubFieldCur;
+			  SubFieldI = SubField = SubFieldCur;
 			else
 			{
-  	    SubFieldCur->next = SubField->next;
-				SubField->next = SubFieldCur;
+		  	    SubFieldCur->next = SubFieldI->next;
+				SubFieldI->next = SubFieldCur;
+				SubFieldI = SubFieldI->next;
 			}
       sublen += clen;
    }
@@ -1430,12 +1435,12 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2ptr
                                    *subfield, dword clen, unsigned char *ctxt)
 {
-   JAMSUBFIELD2ptr SubFieldCur, SubField;
+   JAMSUBFIELD2ptr SubFieldCur, SubField, SubFieldI;
    dword len, sublen;
    unsigned char *ctrl, *ctrlp, *ptr;
 
    sublen = jamhdr->SubfieldLen;
-   SubField = *subfield;
+   SubFieldI = SubField = *subfield;
 
    ctrl = (unsigned char*)palloc(clen+1);
    strncpy((char *)ctrl, ctxt, clen);
@@ -1444,6 +1449,10 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2ptr
    ctrlp = ctrl;
 
    ptr = (unsigned char *)strchr((char *)ctrlp, '\001');
+
+   if (SubFieldI)
+     while (SubFieldI->next)
+       SubFieldI = SubFieldI->next;
 
    while (ptr) 
    {
@@ -1456,11 +1465,12 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2ptr
             memmove((char*)SubField+sublen, SubFieldCur, len);
             free(SubFieldCur);*/
 			if (!SubField)
-    		  	SubField = SubFieldCur;
+    		  	SubFieldI = SubField = SubFieldCur;
 		 	else
 			{
-  	    		SubFieldCur->next = SubField->next;
-				SubField->next = SubFieldCur;
+  	    		SubFieldCur->next = SubFieldI->next;
+				SubFieldI->next = SubFieldCur;
+				SubFieldI = SubFieldI->next;
 			}
             sublen += len;
          }
@@ -1476,11 +1486,12 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2ptr
       free(SubFieldCur);*/
 			
 			if (!SubField)
-			  SubField = SubFieldCur;
+			  SubFieldI = SubField = SubFieldCur;
 			else
 			{
-  	    SubFieldCur->next = SubField->next;
-				SubField->next = SubFieldCur;
+  	    		SubFieldCur->next = SubFieldI->next;
+				SubFieldI->next = SubFieldCur;
+				SubFieldI = SubFieldI->next;
 			}
 
       sublen += len;
