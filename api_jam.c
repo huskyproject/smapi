@@ -106,9 +106,9 @@ static sword EXPENTRY JamCloseArea(MSG * jm)
       return -1;
    }
 
-/*   Jmd->HdrInfo.highwater = jm->high_water;
+/*   Jmd->HdrInfo.highwater = jm->high_water;
    Jmd->HdrInfo.ModCounter++;
-   Jam_WriteHdrInfo(Jmd);*/
+   Jam_WriteHdrInfo(Jmd);*/
    
    if (jm->locked) JamUnlock(jm);
    
@@ -441,7 +441,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 //	    DecodeSubf(msgh);
          } /* endif */
 	 pfree(subfieldNew);
-      } /* endif */
+      } /* endif */
    } else {
       /* change text and SEEN_BY, PATH, VIA kludges posible only (message != create)*/
       ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, msgh->clen, msgh->ctrl);
