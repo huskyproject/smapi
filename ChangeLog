@@ -29,6 +29,12 @@ max (patches from Pavel Gulchouk):
 * great JAM bugfix! (ex: netmail looks good after packing)
 
 ----- cvs ci ------
+Tue Aug 06 20:36:01 CEST 2000
+tobi:
+* support for BeOS (file locking does not work yet, so be sure
+  you only run a single application at a time)
+
+----- cvs ci ------
 Mon Jul 31 12:18:23 NOVST 2000
 max (patches from Pavel Gulchouk):
 * MsgDeleteBase() functions
