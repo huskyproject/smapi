@@ -48,15 +48,19 @@
 
 static void freejamsubfield(JAMSUBFIELD2 *subfield)
 {
-  if (subfield->next)
-    freejamsubfield(subfield->next);
-
-	if (subfield->Buffer)
-	  free(subfield->Buffer);
-
-  pfree(subfield);	
+  JAMSUBFIELD2 *subi;
+  
+  while (subfield)
+  {
+	subi = subfield->next;  /* Remember next subf */
+  
+  	if (subfield->Buffer)   /* Remove buffer if avail */
+  		free(subfield->Buffer);
+  	pfree(subfield);	    /* Remove this subf */
+  
+  	subfield = subi;        /* Next subf */
+  }
 }
-
 
 MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
 {
