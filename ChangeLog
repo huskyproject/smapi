@@ -1,3 +1,12 @@
+2002-09-18 Wednesday 16:28  pgul
+
+	* api_jam.c (1.86), structrw.c (1.30): Optimize memory usage for
+	huge jam areas
+
+2002-09-18 Wednesday 08:34  sfpavel
+
+	* compiler.h (1.94): Fix OS/2 compilation
+
 2002-09-16 Monday 08:00  sfpavel
 
 	* debian/: changelog (1.16), libsmapi2-dev.links (1.2),
