@@ -84,15 +84,15 @@ typedef NETADDR *PNETADDR;
 typedef dword UMSGID;
 
 #define MSGAPI_VERSION    2
-#define MSGAPI_SUBVERSION 0x201
-#define SMAPI_VERSION   "2.0.1"
+#define MSGAPI_SUBVERSION 0x202
+#define SMAPI_VERSION   "2.0.2"
 
 struct _minf
 {
     word req_version;
     word def_zone;
     word haveshare;  /* filled in by msgapi routines - no need to set this */
-    
+
     /* Version 2 Information */
     word smapi_version;
     word smapi_subversion;
@@ -120,7 +120,7 @@ struct _netaddr
  *  and the structure used by the individual message base formats, is done
  *  on-the-fly by the API routines.
  */
- 
+
 typedef struct _xmsg
 {
     /* Bitmasks for 'attr' */
@@ -253,9 +253,9 @@ struct _msgapi
      */
 
     void *apidata;
-    
+
     SEMAPHORE sem;
-    
+
 #ifdef ALTLOCKING
     char  *lck_path;
     int    lck_handle;
