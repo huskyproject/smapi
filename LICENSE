@@ -1,3 +1,65 @@
+Squish MSGAPI0 is copyright 1991 by Scott J. Dudley. The terms of use are
+those of the GNU LESSER GENERAL PUBLIC LICENSE (LGPL). The digitally signed
+e-mail attached below confirms that Scott J. Dudley, who previously was
+licensing MSGAPI0 under a diffeent license, in 2003 has agreed to change the
+terms of use to those of the LGPL.
+
+
+From sdudley@idiom.com Wed Feb 12 02:32:00 2003
+Return-Path: <sdudley@idiom.com>
+Received: from server3.fastmail.fm (server3.internal [10.202.2.134])
+	by server2.fastmail.fm (Cyrus v2.1.9) with LMTP; Tue, 11 Feb 2003 20:32:00 -0500
+X-Sieve: CMU Sieve 2.2
+Received: from server3.fastmail.fm (server3.internal [10.202.2.134])
+	by server3.fastmail.fm (Cyrus v2.1.9) with LMTP; Tue, 11 Feb 2003 20:32:01 -0500
+Received: from server3.fastmail.fm (localhost [127.0.0.1])
+	by fastmail.fm (Postfix) with ESMTP id A8C6C3E9CB
+	for <XXXXXXXXXXXX@eml.cc>; Tue, 11 Feb 2003 20:32:01 -0500 (EST)
+X-Attached: smime.p7s
+Received: from 127.0.0.1 ([127.0.0.1] helo=server3.fastmail.fm) by fastmail.fm
+  with SMTP; Tue, 11 Feb 2003 20:32:01 -0500
+X-Mail-from: sdudley@idiom.com
+X-Delivered-to: <XXXXXXXXXXXX@eml.cc>
+Received: from idiom.com (idiom.com [216.240.32.1])
+	by server3.fastmail.fm (Postfix) with ESMTP id 4401D3CE82
+	for <XXXXXXXXXXXX@eml.cc>; Tue, 11 Feb 2003 20:32:01 -0500 (EST)
+Received: from idiom.com (1Cust11.tnt16.sfo8.da.uu.net [63.11.211.11])
+	by idiom.com (8.12.6/8.12.6) with ESMTP id h1C1VtAE098669
+	for <XXXXXXXXXXXX@eml.cc>; Tue, 11 Feb 2003 17:31:56 -0800 (PST)
+	(envelope-from sdudley@idiom.com)
+Message-ID: <3E49A3D4.1060905@idiom.com>
+Date: Tue, 11 Feb 2003 17:31:00 -0800
+From: Scott Dudley <sdudley@idiom.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.2.1) Gecko/20021130
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Tobias Ernst <XXXXXXXXXXXX@eml.cc>
+Subject: MsgAPI licensing change notification
+References: <20747336-3D1F-11D7-A3EB-0003931DA274@eml.cc>
+In-Reply-To: <20747336-3D1F-11D7-A3EB-0003931DA274@eml.cc>
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg=sha1; boundary="------------ms050204080905050402000901"
+Status: RO
+Content-Length: 32323
+Lines: 584
+
+This is a cryptographically signed message in MIME format.
+
+--------------ms050204080905050402000901
+Content-Type: text/plain; charset=KOI8-R; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Tobias,
+
+That sounds reasonable.  I hereby notify you that the terms and 
+conditions of the MsgAPI source code release are changed to those of the 
+GNU Lesser General Public License, the text of which is included below. 
+ You are free to use and redistribute any of the MsgAPI code (or its 
+derivatives) in a manner which is consistent with the aforementioned 
+license agreement.
+
+This message is digitally signed to verify its authenticity.
+
+Scott Dudley
 
   GNU LESSER GENERAL PUBLIC LICENSE
 		       Version 2.1, February 1999
@@ -56,7 +118,7 @@ modified by someone else and passed on, the recipients should know
 that what they have is not the original version, so that the original
 author's reputation will not be affected by problems that might be
 introduced by others.
-
+
   Finally, software patents pose a constant threat to the existence of
 any free program.  We wish to make sure that a company cannot
 effectively restrict the users of a free program by obtaining a
@@ -112,7 +174,7 @@ modification follow.  Pay close attention to the difference between a
 "work based on the library" and a "work that uses the library".  The
 former contains code derived from the library, whereas the latter must
 be combined with the library in order to run.
-
+
 		  GNU LESSER GENERAL PUBLIC LICENSE
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
@@ -159,7 +221,7 @@ Library.
   You may charge a fee for the physical act of transferring a copy,
 and you may at your option offer warranty protection in exchange for a
 fee.
-
+
   2. You may modify your copy or copies of the Library or any portion
 of it, thus forming a work based on the Library, and copy and
 distribute such modifications or work under the terms of Section 1
@@ -217,7 +279,7 @@ instead of to this License.  (If a newer version than version 2 of the
 ordinary GNU General Public License has appeared, then you can specify
 that version instead if you wish.)  Do not make any other change in
 these notices.
-
+
   Once this change is made in a given copy, it is irreversible for
 that copy, so the ordinary GNU General Public License applies to all
 subsequent copies and derivative works made from that copy.
@@ -268,7 +330,7 @@ Library will still fall under Section 6.)
 distribute the object code for the work under the terms of Section 6.
 Any executables containing that work also fall under Section 6,
 whether or not they are linked directly with the Library itself.
-
+
   6. As an exception to the Sections above, you may also combine or
 link a "work that uses the Library" with the Library to produce a
 work containing portions of the Library, and distribute that work
@@ -330,7 +392,7 @@ restrictions of other proprietary libraries that do not normally
 accompany the operating system.  Such a contradiction means you cannot
 use both them and the Library together in an executable that you
 distribute.
-
+
   7. You may place library facilities that are a work based on the
 Library side-by-side in a single library together with other library
 facilities not covered by this License, and distribute such a combined
@@ -371,7 +433,7 @@ subject to these terms and conditions.  You may not impose any further
 restrictions on the recipients' exercise of the rights granted herein.
 You are not responsible for enforcing compliance by third parties with
 this License.
-
+
   11. If, as a consequence of a court judgment or allegation of patent
 infringement or for any other reason (not limited to patent issues),
 conditions are imposed on you (whether by court order, agreement or
@@ -423,7 +485,7 @@ conditions either of that version or of any later version published by
 the Free Software Foundation.  If the Library does not specify a
 license version number, you may choose any version ever published by
 the Free Software Foundation.
-
+
   14. If you wish to incorporate parts of the Library into other free
 programs whose distribution conditions are incompatible with these,
 write to the author to ask for permission.  For software which is
@@ -456,3 +518,109 @@ FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
 SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGES.
 
+
+
+--------------ms050204080905050402000901
+Content-Type: application/x-pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIIPtDCC
+BMgwggQxoAMCAQICBAIAApswDQYJKoZIhvcNAQEFBQAwRTELMAkGA1UEBhMCVVMxGDAWBgNV
+BAoTD0dURSBDb3Jwb3JhdGlvbjEcMBoGA1UEAxMTR1RFIEN5YmVyVHJ1c3QgUm9vdDAeFw0w
+MjA4MjcxOTA3MDBaFw0wNjAyMjMyMzU5MDBaMIHcMQswCQYDVQQGEwJHQjEXMBUGA1UEChMO
+Q29tb2RvIExpbWl0ZWQxHTAbBgNVBAsTFENvbW9kbyBUcnVzdCBOZXR3b3JrMUYwRAYDVQQL
+Ez1UZXJtcyBhbmQgQ29uZGl0aW9ucyBvZiB1c2U6IGh0dHA6Ly93d3cuY29tb2RvLm5ldC9y
+ZXBvc2l0b3J5MR8wHQYDVQQLExYoYykyMDAyIENvbW9kbyBMaW1pdGVkMSwwKgYDVQQDEyND
+b21vZG8gQ2xhc3MgMyBTZWN1cml0eSBTZXJ2aWNlcyBDQTCCASIwDQYJKoZIhvcNAQEBBQAD
+ggEPADCCAQoCggEBALEeYGbgQwaeJ2gvApnHiN+F69tl7NRJZ3ouH83cFSzWHqzynUY6XQPA
+PQUsWhgNWSVCo3LArSjSrTwx4ksH+16Y66gz1mmyWp7qLEmmJi5M8MyrQNKq3ixOgbW6e7hc
+0Hu9R/XABtLA5NdH22JAr6EcUQMY27jQu5THPHnqJWSuJhnhPGZHZ5Kde1WrNMJ1btknjp2M
+8B3aa5yGBKKQteqdjM/7OUOo8BgtnvcZECycL+HQsf/XWcTNQDL514HbURzyQVKBQbGDuMgJ
+/pkiR4BPnMuu4CjVHKxwR7Alq6E4Qhdr+mpujV95+PYpAzCkbkbUhV2qQJk4dtseAX3lDKUC
+AwEAAaOCAacwggGjMEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly93d3cucHVibGljLXRydXN0
+LmNvbS9jZ2ktYmluL0NSTC8yMDA2L2NkcC5jcmwwHQYDVR0OBBYEFPZSIhcVEwgDWb8YlZ9I
+tLnp/vhmMIGSBgNVHSAEgYowgYcwSQYKKoZIhvhjAQIBBTA7MDkGCCsGAQUFBwIBFi1odHRw
+Oi8vd3d3LnB1YmxpYy10cnVzdC5jb20vQ1BTL09tbmlSb290Lmh0bWwwOgYMKwYBBAGyMQEC
+AQMBMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8vc2VjdXJlLmNvbW9kby5uZXQvQ1AwWAYDVR0j
+BFEwT6FJpEcwRTELMAkGA1UEBhMCVVMxGDAWBgNVBAoTD0dURSBDb3Jwb3JhdGlvbjEcMBoG
+A1UEAxMTR1RFIEN5YmVyVHJ1c3QgUm9vdIICAaMwKwYDVR0QBCQwIoAPMjAwMjA4MjcxOTA3
+MzFagQ8yMDA1MDIyMzIzNTkwMFowDgYDVR0PAQH/BAQDAgHmMA8GA1UdEwQIMAYBAf8CAQAw
+DQYJKoZIhvcNAQEFBQADgYEAtqewenGL4LqzgR42MnqGGNbxq005CHEGWmegSwHlMEBtibWe
+Faqxx/QKxlwO6TfeqJfH3M7Ncft0AgfcXxUnCFMHdtS5BunCd1AeysmwwkaBgACtRKpc1iDZ
+VTK+Vpbx6r2g47wNgDrqzPuaV+14pTY9VurR53TKNMPPsVHp4AwwggVwMIIEWKADAgECAhEA
+gqh5rwlNvu/BrjIcZKPOBDANBgkqhkiG9w0BAQUFADCB3DELMAkGA1UEBhMCR0IxFzAVBgNV
+BAoTDkNvbW9kbyBMaW1pdGVkMR0wGwYDVQQLExRDb21vZG8gVHJ1c3QgTmV0d29yazFGMEQG
+A1UECxM9VGVybXMgYW5kIENvbmRpdGlvbnMgb2YgdXNlOiBodHRwOi8vd3d3LmNvbW9kby5u
+ZXQvcmVwb3NpdG9yeTEfMB0GA1UECxMWKGMpMjAwMiBDb21vZG8gTGltaXRlZDEsMCoGA1UE
+AxMjQ29tb2RvIENsYXNzIDMgU2VjdXJpdHkgU2VydmljZXMgQ0EwHhcNMDMwMTE3MDAwMDAw
+WhcNMDQwMTE3MjM1OTU5WjCB2TE1MDMGA1UECxMsQ29tb2RvIFRydXN0IE5ldHdvcmsgLSBQ
+RVJTT05BIE5PVCBWQUxJREFURUQxRjBEBgNVBAsTPVRlcm1zIGFuZCBDb25kaXRpb25zIG9m
+IHVzZTogaHR0cDovL3d3dy5jb21vZG8ubmV0L3JlcG9zaXRvcnkxHzAdBgNVBAsTFihjKTIw
+MDIgQ29tb2RvIExpbWl0ZWQxFTATBgNVBAMTDFNjb3R0IER1ZGxleTEgMB4GCSqGSIb3DQEJ
+ARYRc2R1ZGxleUBpZGlvbS5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALK6wZ0K
+LHchdhyFQHkh3AuPcR81I5ung3Dj/KTsGEKPazdhOycmP58NRRqs/87uugN27fZn8Y4s/Kw6
+lRIRNdJ0n66KMn/gEl+TtneSGQ+3qa5WEOKaqu7PQa7kPBKyUvw2l6Wt5KQB7hQok2fcqeL4
+lHVDIqDbXz3Dk3f+HUN3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBT2UiIXFRMIA1m/GJWf
+SLS56f74ZjAdBgNVHQ4EFgQUUuzvk3Tmqvz07na9//80lnMmpXowDgYDVR0PAQH/BAQDAgWg
+MAwGA1UdEwEB/wQCMAAwIAYDVR0lBBkwFwYIKwYBBQUHAwQGCysGAQQBsjEBAwUCMEYGA1Ud
+IAQ/MD0wOwYMKwYBBAGyMQECAQEBMCswKQYIKwYBBQUHAgEWHWh0dHBzOi8vc2VjdXJlLmNv
+bW9kby5uZXQvQ1BTMIGwBgNVHR8EgagwgaUwOKA2oDSGMmh0dHA6Ly9jcmwuY29tb2RvLm5l
+dC9DbGFzczNTZWN1cml0eVNlcnZpY2VzXzIuY3JsMDqgOKA2hjRodHRwOi8vY3JsLmNvbW9k
+b2NhLmNvbS9DbGFzczNTZWN1cml0eVNlcnZpY2VzXzIuY3JsMC2gK6ApgSdDbGFzczNTZWN1
+cml0eVNlcnZpY2VzXzJAY3JsLmNvbW9kby5uZXQwEQYJYIZIAYb4QgEBBAQDAgUgMBwGA1Ud
+EQQVMBOBEXNkdWRsZXlAaWRpb20uY29tMA0GCSqGSIb3DQEBBQUAA4IBAQAGlpSAG30INsP2
+eJnsSMLaJtVR2AyvnN/hN83XHPVAo3rX/7rWI0aHJ4uVHoev9LYutkJMW6CwIWVJ9M/U4R4k
+nsJzUfc9moXiCvRUEesHTAAhCzuFwNd7ji8tBpZr0fmeLYBkCFa/WuohR7mZGPQ/zK14CDbz
+8iogSI8s/ROsCt7XSk3zEYevTnihIzAAVW0o3aDFGlzhnHZSJZ/hkL6ERb80jcOSMoRcRRDV
+d/mZq3lMA5btMQT6Xy5FsxZmettduVEV3q12/cHNjdtDTdcSZl+fbeYsfITlg5nt5sMrCAzQ
+i2kg/poagqnR/Fqe0eS12PnrAk4J83F3c1IznjHuMIIFcDCCBFigAwIBAgIRAIKoea8JTb7v
+wa4yHGSjzgQwDQYJKoZIhvcNAQEFBQAwgdwxCzAJBgNVBAYTAkdCMRcwFQYDVQQKEw5Db21v
+ZG8gTGltaXRlZDEdMBsGA1UECxMUQ29tb2RvIFRydXN0IE5ldHdvcmsxRjBEBgNVBAsTPVRl
+cm1zIGFuZCBDb25kaXRpb25zIG9mIHVzZTogaHR0cDovL3d3dy5jb21vZG8ubmV0L3JlcG9z
+aXRvcnkxHzAdBgNVBAsTFihjKTIwMDIgQ29tb2RvIExpbWl0ZWQxLDAqBgNVBAMTI0NvbW9k
+byBDbGFzcyAzIFNlY3VyaXR5IFNlcnZpY2VzIENBMB4XDTAzMDExNzAwMDAwMFoXDTA0MDEx
+NzIzNTk1OVowgdkxNTAzBgNVBAsTLENvbW9kbyBUcnVzdCBOZXR3b3JrIC0gUEVSU09OQSBO
+T1QgVkFMSURBVEVEMUYwRAYDVQQLEz1UZXJtcyBhbmQgQ29uZGl0aW9ucyBvZiB1c2U6IGh0
+dHA6Ly93d3cuY29tb2RvLm5ldC9yZXBvc2l0b3J5MR8wHQYDVQQLExYoYykyMDAyIENvbW9k
+byBMaW1pdGVkMRUwEwYDVQQDEwxTY290dCBEdWRsZXkxIDAeBgkqhkiG9w0BCQEWEXNkdWRs
+ZXlAaWRpb20uY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCyusGdCix3IXYchUB5
+IdwLj3EfNSObp4Nw4/yk7BhCj2s3YTsnJj+fDUUarP/O7roDdu32Z/GOLPysOpUSETXSdJ+u
+ijJ/4BJfk7Z3khkPt6muVhDimqruz0Gu5DwSslL8NpelreSkAe4UKJNn3Kni+JR1QyKg2189
+w5N3/h1DdwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAU9lIiFxUTCANZvxiVn0i0uen++GYw
+HQYDVR0OBBYEFFLs75N05qr89O52vf//NJZzJqV6MA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMB
+Af8EAjAAMCAGA1UdJQQZMBcGCCsGAQUFBwMEBgsrBgEEAbIxAQMFAjBGBgNVHSAEPzA9MDsG
+DCsGAQQBsjEBAgEBATArMCkGCCsGAQUFBwIBFh1odHRwczovL3NlY3VyZS5jb21vZG8ubmV0
+L0NQUzCBsAYDVR0fBIGoMIGlMDigNqA0hjJodHRwOi8vY3JsLmNvbW9kby5uZXQvQ2xhc3Mz
+U2VjdXJpdHlTZXJ2aWNlc18yLmNybDA6oDigNoY0aHR0cDovL2NybC5jb21vZG9jYS5jb20v
+Q2xhc3MzU2VjdXJpdHlTZXJ2aWNlc18yLmNybDAtoCugKYEnQ2xhc3MzU2VjdXJpdHlTZXJ2
+aWNlc18yQGNybC5jb21vZG8ubmV0MBEGCWCGSAGG+EIBAQQEAwIFIDAcBgNVHREEFTATgRFz
+ZHVkbGV5QGlkaW9tLmNvbTANBgkqhkiG9w0BAQUFAAOCAQEABpaUgBt9CDbD9niZ7EjC2ibV
+UdgMr5zf4TfN1xz1QKN61/+61iNGhyeLlR6Hr/S2LrZCTFugsCFlSfTP1OEeJJ7Cc1H3PZqF
+4gr0VBHrB0wAIQs7hcDXe44vLQaWa9H5ni2AZAhWv1rqIUe5mRj0P8yteAg28/IqIEiPLP0T
+rAre10pN8xGHr054oSMwAFVtKN2gxRpc4Zx2UiWf4ZC+hEW/NI3DkjKEXEUQ1Xf5mat5TAOW
+7TEE+l8uRbMWZnrbXblRFd6tdv3BzY3bQ03XEmZfn23mLHyE5YOZ7ebDKwgM0ItpIP6aGoKp
+0fxantHktdj56wJOCfNxd3NSM54x7jGCBF4wggRaAgEBMIHyMIHcMQswCQYDVQQGEwJHQjEX
+MBUGA1UEChMOQ29tb2RvIExpbWl0ZWQxHTAbBgNVBAsTFENvbW9kbyBUcnVzdCBOZXR3b3Jr
+MUYwRAYDVQQLEz1UZXJtcyBhbmQgQ29uZGl0aW9ucyBvZiB1c2U6IGh0dHA6Ly93d3cuY29t
+b2RvLm5ldC9yZXBvc2l0b3J5MR8wHQYDVQQLExYoYykyMDAyIENvbW9kbyBMaW1pdGVkMSww
+KgYDVQQDEyNDb21vZG8gQ2xhc3MgMyBTZWN1cml0eSBTZXJ2aWNlcyBDQQIRAIKoea8JTb7v
+wa4yHGSjzgQwCQYFKw4DAhoFAKCCAsEwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkq
+hkiG9w0BCQUxDxcNMDMwMjEyMDEzMTAxWjAjBgkqhkiG9w0BCQQxFgQUGU0CfZRc1F78c8vu
+O6TJxnFEJ44wUgYJKoZIhvcNAQkPMUUwQzAKBggqhkiG9w0DBzAOBggqhkiG9w0DAgICAIAw
+DQYIKoZIhvcNAwICAUAwBwYFKw4DAgcwDQYIKoZIhvcNAwICASgwggEDBgkrBgEEAYI3EAQx
+gfUwgfIwgdwxCzAJBgNVBAYTAkdCMRcwFQYDVQQKEw5Db21vZG8gTGltaXRlZDEdMBsGA1UE
+CxMUQ29tb2RvIFRydXN0IE5ldHdvcmsxRjBEBgNVBAsTPVRlcm1zIGFuZCBDb25kaXRpb25z
+IG9mIHVzZTogaHR0cDovL3d3dy5jb21vZG8ubmV0L3JlcG9zaXRvcnkxHzAdBgNVBAsTFihj
+KTIwMDIgQ29tb2RvIExpbWl0ZWQxLDAqBgNVBAMTI0NvbW9kbyBDbGFzcyAzIFNlY3VyaXR5
+IFNlcnZpY2VzIENBAhEAgqh5rwlNvu/BrjIcZKPOBDCCAQUGCyqGSIb3DQEJEAILMYH1oIHy
+MIHcMQswCQYDVQQGEwJHQjEXMBUGA1UEChMOQ29tb2RvIExpbWl0ZWQxHTAbBgNVBAsTFENv
+bW9kbyBUcnVzdCBOZXR3b3JrMUYwRAYDVQQLEz1UZXJtcyBhbmQgQ29uZGl0aW9ucyBvZiB1
+c2U6IGh0dHA6Ly93d3cuY29tb2RvLm5ldC9yZXBvc2l0b3J5MR8wHQYDVQQLExYoYykyMDAy
+IENvbW9kbyBMaW1pdGVkMSwwKgYDVQQDEyNDb21vZG8gQ2xhc3MgMyBTZWN1cml0eSBTZXJ2
+aWNlcyBDQQIRAIKoea8JTb7vwa4yHGSjzgQwDQYJKoZIhvcNAQEBBQAEgYAJA2vXBvQcmYe1
+b17Nb9SjSmSnGNQ35W3F88Mg8SDQY0coMjSfLRV29jxl34bwhX4LxK/r/i+K3mtQ0ijTBabG
+ncLTZD9b2NLpG8v0fVH8C4vWsVioKgpb1UZHmc8G2ZBva8706uZ8vkwiki/xASelNS4mZmnt
+NHd0CauVQ/mUzgAAAAAAAA==
+--------------ms050204080905050402000901--
