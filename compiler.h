@@ -1745,7 +1745,7 @@ int qq(void)
 #  define strnicmp(s1,s2,z) strncasecmp(s1,s2,z)
 
 #  define HAS_DIRENT_H         1  /* <dirent.h> */
-/*#  define HAS_UNISTD_H         1*/  /* <unistd.h> can't use because of conflicts with be/kernel/OS.h */
+#  define HAS_UNISTD_H         1  /* ? unistd.h conflicts with be/kernel/OS.h ? */
 #  define HAS_PWD_H            1  /* <pwd.h> */
 #  define HAS_GRP_H            1  /* may be used "#include <grp.h>" */
 #  define HAS_SIGNAL_H         1  /* <signal.h> */
@@ -1810,9 +1810,6 @@ int qq(void)
     /* list other UNIX os'es without getfree mechanism here */
 #  if defined( __svr4__ ) || defined( __SVR4 ) || defined (__linux__) && defined (__GLIBC__)
 #  define HAS_SYS_STATVFS_H
-#  if !defined (__BEOS__)  /* Strange... BeOS is not SVR4, and not linux*/
-#  define HAS_SYS_VFS_H
-#  endif
 #  endif
 
 #  if defined (__LINUX__) && !defined(__GLIBC__)
