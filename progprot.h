@@ -20,6 +20,12 @@
 #ifndef __PROGPROT_H__
 #define __PROGPROT_H__
 
+#include <stdio.h>
+#include <time.h>
+
+#include "compiler.h"
+#include "stamp.h"
+
 #if !((defined(__WATCOMC__) && !defined(MSDOS)) || (defined(_MSC_VER) && (_MSC_VER >= 1200)))
 void pascal far flush_handle2(int fd);
 #endif
