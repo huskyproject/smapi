@@ -107,11 +107,10 @@ int _fast direxist(char *directory)
 
 #elif defined(OS2) || defined(__NT__)
 
-#ifdef OS2
 #ifdef EXPENTRY
 #undef EXPENTRY
 #endif
-
+#ifdef OS2
 #define INCL_DOSFILEMGR
 #include <os2.h>
 #else
