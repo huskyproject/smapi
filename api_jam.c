@@ -1309,6 +1309,7 @@ static int StrToSubfield(unsigned char *str, dword lstr, dword *len, JAMSUBFIELD
                     kludge = str+7;
                     subtypes = JAMSFLD_REPLYID;
                  }
+                 break;
       case 'S':  if (lstr>9 && strncmp(str, "SEEN-BY: ", 9) == 0) {
                     kludge = str+9;
                     subtypes = JAMSFLD_SEENBY2D;
