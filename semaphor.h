@@ -66,6 +66,14 @@
 
 #endif
 
+#ifdef HAS_SEMUN_UNDECL
+union semun {
+     int val;
+     struct semid_ds *buf;
+     ushort *array;
+};
+#endif
+
 #ifndef NOSEMAPHORES
 void create_semaphore(SEMAPHORE *sem);
 void delete_semaphore(SEMAPHORE *sem);

@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Fri Sep 15 10:57:04 MSD 2000
+max (patch from Serguei Revtov):
+* core dump on Solaris (create_semaphore)
+
+----- cvs ci ------
 Wed Sep 13 14:40:01 NOVST 2000
 max (patches from Pavel Gulchouk):
 * JAM linking with empty msg subjects
