@@ -31,14 +31,8 @@
   #endif
 #endif
 
-/*
- Cygwin is win32
-*/
-#if !defined(__NT__) && defined(__CYGWIN__)
-# define __NT__
-#endif
-
-/* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option */
+/* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option  *
+ * This is NOT needed for pure Cygwin builds, Cygwin == UNIX !! */
 #if !defined(__NT__) && defined(__MINGW32__)
 # define __NT__
 #endif
@@ -527,7 +521,7 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
-#if (defined(__APPLE__) && defined(__MACH__)) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(_AIX) || defined(__sun__) || defined(__linux__) || defined(__osf__) || defined(__hpux) || defined(__BEOS__) || defined(__OpenBSD__)
+#if (defined(__APPLE__) && defined(__MACH__)) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(_AIX) || defined(__sun__) || defined(__linux__) || defined(__osf__) || defined(__hpux) || defined(__BEOS__) || defined(__OpenBSD__) || defined(__CYGWIN__)
 #define mymkdir(a) mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
 #else
 #define mymkdir(a) __mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
