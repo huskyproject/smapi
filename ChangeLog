@@ -1,7 +1,6 @@
 2003-02-07 Friday 08:21  stas_degteff
 
-	* msgapi.h (1.66, smapi-2_4-stable): Add comments for
-	CheckSmapiVersion()
+	* msgapi.h (1.66): Add comments for CheckSmapiVersion()
 
 2003-02-06 Thursday 11:40  sfpavel
 
