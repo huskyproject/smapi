@@ -525,3 +525,29 @@ char * _XPENTRY strmerr(int msgapierr)
     }
     return "Unknown error";
 }
+
+
+/* Check version of fidoconfig library
+ * return zero if test failed; non-zero if passed
+ * test cvs need for DLL version only, using #include <smapi/cvsdate.h>
+  const char *smapidate(){
+  static const
+  #include "../smapi/cvsdate.h"
+  return cvs_date;
+  }
+  CheckSmapiVersion( ..., smapidate());
+ */
+int _XPENTRY CheckSmapiVersion( int need_major, int need_minor,
+                      int need_patch, const char *cvs_date_string )
+{
+  static
+  #include "cvsdate.h"   /* char cvs_date[]=datestring; */
+
+  if( need_major==MSGAPI_VERSION &&
+      need_minor==((MSGAPI_SUBVERSION & 0x0F0)>>4) &&
+      need_patch==(MSGAPI_SUBVERSION & 0x00F)
+    )
+    return  !(cvs_date_string && strcmp(cvs_date_string,cvs_date));
+
+  return 0;
+}
