@@ -103,7 +103,7 @@ int _sqlock(HAREA ha, int t)
 int _sqlock(HAREA ha, int t)
 {
   if (t==-1)
-    // lock return 0 on success
+    /*  lock return 0 on success */
     return lock(Sqd->sfd, 0, 1) == 0;
     
   return waitlock2(Sqd->sfd, 0, 1, t) == 0;
@@ -111,7 +111,7 @@ int _sqlock(HAREA ha, int t)
 
 int _squnlock(HAREA ha)
 {
-  // unlock returns 0 on success
+  /*  unlock returns 0 on success */
   return unlock(Sqd->sfd, 0, 1) == 0;
 }
 

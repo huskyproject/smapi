@@ -657,7 +657,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #           define SMAPI_EXT __declspec(dllimport)
 #       else
 #           define SMAPI_EXT __declspec(dllexport)
-#       endif //_SMAPI_EXT
+#       endif /* _SMAPI_EXT */
 #   else
 #       define SMAPI_EXT extern
 #   endif

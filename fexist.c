@@ -319,11 +319,11 @@ int _createDirectoryTree(const char *pathName) {
    slash = start;
 
 #ifndef UNIX
-   // if there is a drivename, jump over it
+   /*  if there is a drivename, jump over it */
    if (slash[1] == ':') slash += 2;
 #endif
 
-   // jump over first limiter
+   /*  jump over first limiter */
    slash++;
 
    while ((slash = strchr(slash, limiter)) != NULL) {
@@ -331,7 +331,7 @@ int _createDirectoryTree(const char *pathName) {
 
       if (!direxist(start)) {
          if (!fexist(start)) {
-            // this part of the path does not exist, create it
+            /*  this part of the path does not exist, create it */
             if (mymkdir(start) != 0) {
                free(start);
                return 1;
