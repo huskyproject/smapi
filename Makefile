@@ -95,6 +95,8 @@ $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
 instdyn: $(LIBPREFIX)smapi.so.$(VER)
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
+	-$(RM) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
+	-$(RM) $(LIBDIR)/$(LIBPREFIX)smapi.so
 	$(LN) $(LNOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
 	$(LN) $(LNOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH) $(LIBDIR)/$(LIBPREFIX)smapi.so
 ifneq (~$(LDCONFIG)~, ~~)
