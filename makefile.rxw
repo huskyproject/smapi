@@ -1,9 +1,9 @@
-# Makefile for building a Windows 95 / NT console application
-# with RSXNT and EMX GCC for Win32
+# Makefile for building a Windows 95 / NT SMAPI library
+# with RSXNT and EMX GCC running on Win32 or OS/2.
 
 CC=     gcc
-CFLAGS= -w
-CDEFS=  -D__NT__ -DWINNT -D__RSXNT__
+CFLAGS= -w -Zwin32
+CDEFS=  -D__NT__ -DWINNT -D__RSXNT__ 
 COPT=   -O3
 LIB=    ar
 
