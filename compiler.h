@@ -656,8 +656,9 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define _fast
 #define near
 #define _XPENTRY
-#define strcasecmp stricmp
+#define strcasecmp  stricmp
 #define strncasecmp strnicmp
+#define snprintf    _snprintf
 #define vsnprintf _vsnprintf
 #define sleep(x) Sleep(1000L*(x))
 #define farread read
@@ -667,6 +668,9 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #endif
 #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #define mode_t int
+
+#define HAS_SNPRINTF  1
+#define HAS_VSNPRINTF 1
 
 SMAPI_EXT int unlock(int handle, long ofs, long length);
 SMAPI_EXT int lock(int handle, long ofs, long length);
@@ -717,8 +721,6 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define chsize		_chsize
 #define open		_open
 #define access		_access
-#define snprintf	_snprintf
-#define vsnprintf	_vsnprintf
 #define spawnvp		_spawnvp
 #define dup		    _dup
 #define mktemp		_mktemp
@@ -727,9 +729,6 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define O_RDWR		_O_RDWR
 #define S_IFMT		_S_IFMT
 #define S_IFDIR		_S_IFDIR
-
-#define HAS_SNPRINTF  1
-#define HAS_VSNPRINTF 1
 
 #endif
 
