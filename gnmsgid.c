@@ -1,3 +1,16 @@
+/* 
+   gnmsgid - standalone msgid generator using husky smapi library
+   Copyright 2003 by Alexander Reznikov, 2:4600/220@fidonet,
+                                         homebrewer@yadex.ru
+   and HUSKY team.
+
+   This file is part of HUSKY project
+
+   This is free software, you can FREE redistribute or modify it.
+
+*/
+/* $Id$ */
+
 /* $Id$
  * standalone msgid generator: print new msgid to stdout
 
@@ -12,8 +25,15 @@
 #include "compiler.h"
 #include "msgapi.h"
 /*#include "prog.h"*/
+#include "cvsdate.h"
 
 #define check_stricmp(a, b) (stricmp(a, b) == 0)
+#define str_or_unknown(str) (str? str: "unknown")
+
+char gnmsgid_rev[]  = "$Revision$";
+char gnmsgid_date[] = "$Date$";
+extern char genmsgid_rev[];
+extern char genmsgid_date[];
 
 int outrunparse(char *line, unsigned long *seqoutrun)
 {
@@ -51,16 +71,67 @@ void printusage(void)
 {
     printf("gnmsgid - standalone msgid generator using husky smapi library\n");
     printf("\nUsage:\n");
-    printf("gnmsgid [-seqdir <path>] [-seqoutrun <outrun>] [<num>]\n");
+    printf("gnmsgid [-h] [-v] [-seqdir <path>] [-seqoutrun <outrun>] [<num>]\n");
     printf("where\n");
+    printf("  -h         - print usage information and exit\n");
+    printf("  -v         - print version and exit\n");
     printf("  -seqdir    - specify msgid sequencer directory (see husky docs)\n");
     printf("  -seqoutrun - specify msgid outrun value (see husky docs)\n");
     printf("  <num>      - number msgid to generate\n");
 }
 
+char *extract_CVS_keyword(char *str)
+{
+    int l;
+    char *tmp, *r;
+
+    if(!str)
+        return NULL;
+
+    tmp = strchr(str, 0x20);
+
+    if ((!tmp)||(!*(++tmp)))
+        return NULL;
+
+    l = strlen(tmp);
+
+    if (l<3)
+        return NULL;
+
+    r = malloc(l-1);
+    strncpy(r, tmp, l-2);
+    r[l-2] = 0;
+
+    return r;
+}
+
+void printversion(void)
+{
+    char *rev, *date, *gen_rev, *gen_date;
+
+    rev = extract_CVS_keyword(gnmsgid_rev);
+    date = extract_CVS_keyword(gnmsgid_date);
+    gen_rev = extract_CVS_keyword(genmsgid_rev);
+    gen_date = extract_CVS_keyword(genmsgid_date);
+   
+    printf("gnmsgid - standalone msgid generator using husky smapi library\n");
+    printf("\nCopyright (c) Alexander Reznikov, 2:4600/220@fidonet\n");
+    printf("Copyright (c) HUSKY development team.\n\n"); 
+    printf("gnmsgid.c revision:  %s\n", str_or_unknown(rev));
+    printf("gnmsgid.c date:      %s\n", str_or_unknown(date));
+    printf("genmsgid.c revision: %s\n", str_or_unknown(gen_rev));
+    printf("genmsgid.c date:     %s\n", str_or_unknown(gen_date));
+    printf("SMAPI CVS date:      %s\n", cvs_date);
+
+    if (rev) free(rev);
+    if (date) free(date);
+    if (gen_rev) free(gen_rev);
+    if (gen_date) free(gen_date);
+}
+
 int main(int argc, char *argv[])
 {
-    int i, j, perr, usage, parsed;
+    int i, j, perr, usage, parsed, version;
     char *s;
     char *seqdir;
     unsigned long seqoutrun;
@@ -71,6 +142,7 @@ int main(int argc, char *argv[])
     seqdir = NULL;
     seqoutrun = 0;
     usage = 0;
+    version = 0;
     perr = 0;
     num = 1;
     parsed = 0;
@@ -115,11 +187,16 @@ int main(int argc, char *argv[])
                     break;
                 }
             }
-            if (check_stricmp(s, "?")||check_stricmp(s, "h")||check_stricmp(s, "-help"))
+            if (check_stricmp(s, "?")||check_stricmp(s, "h")||check_stricmp(argv[i], "--help"))
             {
                 usage = 1;
                 break;
             }
+            if (check_stricmp(s, "v")||check_stricmp(argv[i], "--version"))
+            {
+                version = 1;
+                break;
+            }    
             fprintf(stderr, "Illegal parameter: '%s'!\n", argv[i]);
             perr = 1;
             break;
@@ -156,6 +233,12 @@ int main(int argc, char *argv[])
         if (usage)
         {
             printusage();
+            return 1;
+        }
+
+        if (version)
+        {
+            printversion();
             return 1;
         }
 

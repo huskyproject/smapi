@@ -24,6 +24,9 @@
 
 #define GenMsgIdErr(a) { if (errstr!=NULL) { *errstr = a; } }
 
+char genmsgid_rev[]  = "$Revision$";
+char genmsgid_date[] = "$Date$";
+
 dword oldGenMsgId(void)
 {
 	dword seq = (dword)time(NULL);
