@@ -24,7 +24,7 @@ OBJ=	.o
    CFLAGS+= -fstrength-reduce -m486
 .endif
 
-.include makefile.inc
+.include <makefile.inc>
 
 .include <bsd.lib.mk>
 
