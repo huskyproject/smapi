@@ -138,7 +138,7 @@ ErrOpen:
         {
             if (mh->apidata)
             {
-                pfree((char *)mh->apidata);
+                pfree(mh->apidata);
             }
 
             pfree(mh->api);
@@ -239,7 +239,7 @@ static sword _XPENTRY SdmCloseArea(MSGA * mh)
         pfree(Mhd->msgnum);
     }
 
-    pfree((char *)mh->apidata);
+    pfree(mh->apidata);
     pfree(mh->api);
 
     mh->id = 0L;

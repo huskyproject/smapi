@@ -111,7 +111,7 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
 
    if (!Jam_OpenBase(jm, &mode, name)) {
       pfree(jm->api);
-      pfree((char*)jm->apidata);
+      pfree(jm->apidata);
       pfree(jm);
       msgapierr = MERR_BADF;
       return NULL;
@@ -183,7 +183,7 @@ static sword _XPENTRY JamCloseArea(MSGA * jm)
        jbOpen = jbOpen->jbNext;
 
    pfree(jm->api);
-   pfree((char *)jm->apidata);
+   pfree(jm->apidata);
    jm->id = 0L;
    memset(jm, 0, sizeof(MSGA));
    pfree(jm);
