@@ -1,3 +1,17 @@
+2002-10-18 Friday 06:34  mche
+
+	* smapiDll.dsp (1.2): Microsoft Developer Studio Project Files
+	added
+
+2002-10-18 Friday 06:28  mche
+
+	* .cvsignore (1.5), smapiDll.dsp (1.1), smapiStatic.dsp (1.1):
+	Microsoft Developer Studio Project Files added
+
+2002-10-18 Friday 06:10  mche
+
+	* .cvsignore (1.4): .dsw .dsp --> cvsignore
+
 2002-10-14 Monday 06:25  mche
 
 	* compiler.h (1.100): correct HAS_VSNPRINTF defenition for MSVC
