@@ -195,6 +195,8 @@
 #define EXPENTRY
 #endif
 
+#define mode_t int
+
 
 #elif defined(__WATCOMC__) && defined(MSDOS)
 
