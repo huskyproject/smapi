@@ -1,3 +1,8 @@
+2002-10-10 Thursday 06:51  sfpavel
+
+	* makefile.bsd (1.24), makefile.bsd4 (1.5): Disable SEMAPHORES for
+	BSD build
+
 2002-10-08 Tuesday 05:42  sfpavel
 
 	* makefile.mvc (1.6), makefile.mvcdll (1.7): Add -DNOSEMAPHORES for
