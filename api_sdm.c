@@ -594,7 +594,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
         }
 
         got = (word) farread(msgh->fd, text, (unsigned int)bytes);
-        text[(unsigned int)got] = '\0';
+        text[(unsigned int)bytes] = '\0';
 
         /*
          *  Update counter only if we got some text, and only if we're
@@ -742,12 +742,6 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             msgapierr = MERR_NODS;
             return -1;
         }
-        if (text[textlen])
-            if (farwrite(msgh->fd, "", 1) != 1)
-            {
-                msgapierr = MERR_NODS;
-                return -1;
-            }
     }
 
     msgapierr = MERR_NONE;
