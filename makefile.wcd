@@ -1,22 +1,35 @@
 # Makefile for Building SMAPI with Watcom C for 16 bit DOS
 # No support for Husky build environment.
 
+# ATTENTION ATTENTION ATTENTION!
+# SMAPI BUILD WITH WATCOM FOR DOS WILL MOST PROBABLY JUST CRASH OR OTHERWISE
+# NOT WORK.
+# JUST DON'T USE WATCOM FOR DOS
+# (Watcom for OS/2 and Watcom for Win32 should work without problems)
+
 CC=	wcl
-CFLAGS=	-zq -wx -ml
+CFLAGS=	-zq -wx -ml -bt=dos
 CDEFS=  -DMSDOS
-COPT=	-oneatx -5
+COPT=	-oneatx
 LIB=	wlib
 ASM=	WASM
+AFLAGS= -ml -zq -bt=dos
+ADEFS=-DWATCOM
 
 TARGET=	smapiwcd.lib
 
-OBJS=	1stchar.obj api_sdm.obj	api_sq.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj flushasm.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj sqasm.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj patmat.obj
+OBJS=	1stchar.obj api_sdm.obj	api_sq.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj patmat.obj sqasm.obj
 
 # Thunderbirds are go!
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) -b -q $(TARGET) -+$@
+
+.asm.obj:
+        $(ASM) $(AFLAGS) $(ADEFS) $<
+       	$(LIB) -b -q $(TARGET) -+$@
+
 
 $(TARGET): $(OBJS)
 
