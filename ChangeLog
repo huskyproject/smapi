@@ -4,8 +4,7 @@
 
 2003-02-05 Wednesday 11:49  sfpavel
 
-	* msgapi.c (1.40), msgapi.h (1.65): Add CheckSmapiVersion() into
-	msgapi.h
+	* msgapi.c (1.40): Add CheckSmapiVersion() into msgapi.h
 
 2003-02-05 Wednesday 11:09  sfpavel
 
@@ -201,8 +200,8 @@
 
 2003-01-15 Wednesday 11:03  stas_degteff
 
-	* msgapi.h (1.64), old_msg.h (1.3): Add comments about XMSG_SIZE
-	and OMSG_SIZE: this is sizes of data on disk
+	* old_msg.h (1.3): Add comments about XMSG_SIZE and OMSG_SIZE: this
+	is sizes of data on disk
 
 2003-01-15 Wednesday 09:42  stas_degteff
 
@@ -312,9 +311,9 @@
 
 	* compiler.h (1.129), fexist.c (1.30), flush.c (1.17), locking.c
 	(1.34), makefile.cyg (1.11), makefile.wcd (1.25), makefile.wco
-	(1.22), makefile.wcw (1.27), makefile.wcx (1.22), msgapi.h (1.63),
-	progprot.h (1.22), setfsize.c (1.15), structrw.c (1.37): Make new
-	code compilable on Watcom C
+	(1.22), makefile.wcw (1.27), makefile.wcx (1.22), progprot.h
+	(1.22), setfsize.c (1.15), structrw.c (1.37): Make new code
+	compilable on Watcom C
 
 2003-01-14 Tuesday 06:48  mche
 
@@ -349,12 +348,12 @@
 
 	* api_jam.c (1.100), api_sdm.c (1.36), compiler.h (1.122), dr.h
 	(1.2), ffind.c (1.22), genmsgid.c (1.15), gnmsgid.c (1.5),
-	locking.c (1.33), msgapi.c (1.36), msgapi.h (1.62), progprot.h
-	(1.21), sq_area.c (1.25), sq_hash.c (1.6), sq_help.c (1.8),
-	sq_idx.c (1.9), sq_kill.c (1.6), sq_lock.c (1.22), sq_misc.c (1.7),
-	sq_msg.c (1.8), sq_read.c (1.9), sq_uid.c (1.7), sq_write.c (1.11),
-	stamp.h (1.5), strftim.c (1.4), structrw.c (1.36), typedefs.h
-	(1.6): Use new defines for compiler-cpecific code
+	locking.c (1.33), msgapi.c (1.36), progprot.h (1.21), sq_area.c
+	(1.25), sq_hash.c (1.6), sq_help.c (1.8), sq_idx.c (1.9), sq_kill.c
+	(1.6), sq_lock.c (1.22), sq_misc.c (1.7), sq_msg.c (1.8), sq_read.c
+	(1.9), sq_uid.c (1.7), sq_write.c (1.11), stamp.h (1.5), strftim.c
+	(1.4), structrw.c (1.36), typedefs.h (1.6): Use new defines for
+	compiler-cpecific code
 
 2003-01-13 Monday 08:20  stas_degteff
 
@@ -389,15 +388,15 @@
 
 2003-01-11 Saturday 13:13  stas_degteff
 
-	* msgapi.h (1.61), prog.h (1.6): Update code (continue)
+	* prog.h (1.6): Update code (continue)
 
 2003-01-11 Saturday 12:55  stas_degteff
 
 	* compiler.h (1.116), fexist.c (1.29), ffind.c (1.21), ffind.h
 	(1.19), flush.c (1.15), gnmsgid.c (1.4), makefile.cyg (1.9),
-	makefile.emo (1.25), makefile.emx (1.18), msgapi.h (1.60), prog.h
-	(1.5), progprot.h (1.20), setfsize.c (1.14), strftim.c (1.3),
-	tdelay.c (1.14): Update compiler-specific code
+	makefile.emo (1.25), makefile.emx (1.18), prog.h (1.5), progprot.h
+	(1.20), setfsize.c (1.14), strftim.c (1.3), tdelay.c (1.14): Update
+	compiler-specific code
 
 2003-01-10 Friday 15:39  mche
 
@@ -488,9 +487,9 @@
 2003-01-09 Thursday 07:09  mche
 
 	* genmsgid.c (1.14), gnmsgid.c (1.1), makefile.mgw (1.18),
-	makefile.mvc (1.12), makefile.mvcdll (1.14), msgapi.h (1.59):
-	advanced msgid generation patch by [Alexander Reznikov		   
-	    2:4600/220]
+	makefile.mvc (1.12), makefile.mvcdll (1.14): advanced msgid
+	generation patch by [Alexander Reznikov 		
+	2:4600/220]
 
 2003-01-09 Thursday 02:54  andr_lukyanov
 
@@ -528,8 +527,8 @@
 
 2003-01-04 Saturday 11:58  stas_degteff
 
-	* api_jam.c (1.98), msgapi.h (1.58): Check malloc(), calloc() and
-	realloc() return values.
+	* api_jam.c (1.98): Check malloc(), calloc() and realloc() return
+	values.
 
 2002-12-17 Tuesday 12:44  stas_degteff
 
@@ -551,17 +550,12 @@
 
 2002-11-28 Thursday 08:20  stas_degteff
 
-	* msgapi.c (1.35), msgapi.h (1.57): Fix MSGTYPE_* usage
+	* msgapi.c (1.35): Fix MSGTYPE_* usage
 
 2002-11-27 Wednesday 15:56  stas_degteff
 
 	* msgapi.c (1.34): Full check parameters (filename, msgbase type)
 	in MsgOpenArea(), MsgDeleteBase(), MsgValidate()
-
-2002-11-27 Wednesday 15:54  stas_degteff
-
-	* msgapi.h (1.56): Declare MSGTYPE_PASSTHROUGH (from
-	fidoconf/fidoconf.h)
 
 2002-11-27 Wednesday 15:53  stas_degteff
 
@@ -600,8 +594,8 @@
 
 2002-11-22 Friday 07:34  stas_degteff
 
-	* msgapi.c (1.33), msgapi.h (1.55): Set _XPENTRY modifyer for
-	strmerr(): fix for '2002-11-18 Monday 10:58  stas_degteff'
+	* msgapi.c (1.33): Set _XPENTRY modifyer for strmerr(): fix for
+	'2002-11-18 Monday 10:58  stas_degteff'
 
 2002-11-22 Friday 06:56  stas_degteff
 
@@ -637,11 +631,11 @@
 
 2002-11-14 Thursday 05:34  stas_degteff
 
-	* msgapi.c (1.31), msgapi.h (1.54): Add comment
+	* msgapi.c (1.31): Add comment
 
 2002-11-13 Wednesday 14:51  pgul
 
-	* msgapi.c (1.30), msgapi.h (1.53): Add strmerr() function
+	* msgapi.c (1.30): Add strmerr() function
 
 2002-11-13 Wednesday 14:31  pgul
 
@@ -650,7 +644,7 @@
 2002-11-13 Wednesday 13:57  stas_degteff
 
 	* 1stchar.c (1.2), api_jam.c (1.94), cvtdate.c (1.12), msgapi.c
-	(1.29), msgapi.h (1.52): Fix: check pointers before use
+	(1.29): Fix: check pointers before use
 
 2002-11-13 Wednesday 10:55  stas_degteff
 
@@ -732,12 +726,8 @@
 
 2002-11-03 Sunday 00:05  d_sergienko
 
-	* api_jam.c (1.91), api_jam.h (1.11), msgapi.c (1.28), msgapi.h
-	(1.51): Added closing all opened JAM areas on MsgCloseApi()
-
-2002-11-01 Friday 23:51  stas_degteff
-
-	* msgapi.h (1.50): Fix version number (now informational only)
+	* api_jam.c (1.91), api_jam.h (1.11), msgapi.c (1.28): Added
+	closing all opened JAM areas on MsgCloseApi()
 
 2002-11-01 Friday 20:24  stas_degteff
 
@@ -781,8 +771,8 @@
 
 2002-10-24 Thursday 19:29  pgul
 
-	* genmsgid.c (1.4), msgapi.h (1.49): Add args for GenMsgId(),
-	create seqdir if not exists
+	* genmsgid.c (1.4): Add args for GenMsgId(), create seqdir if not
+	exists
 
 2002-10-24 Thursday 19:03  pgul
 
@@ -811,12 +801,7 @@
 
 2002-10-24 Thursday 12:51  pgul
 
-	* Makefile (1.28), genmsgid.c (1.1), msgapi.h (1.48): Add
-	GenMsgId() function
-
-2002-10-23 Wednesday 10:06  mche
-
-	* msgapi.h (1.47): clean type redefenition for win32 compilers
+	* Makefile (1.28), genmsgid.c (1.1): Add GenMsgId() function
 
 2002-10-23 Wednesday 09:19  pgul
 
@@ -887,10 +872,9 @@
 	(1.7), makefile.mvcdll (1.8), makefile.qcd (1.14), makefile.rxw
 	(1.14), makefile.sun (1.18), makefile.unx (1.16), makefile.wcd
 	(1.18), makefile.wco (1.14), makefile.wcw (1.19), makefile.wcx
-	(1.15), msgapi.h (1.46), sq_area.c (1.23), sq_kill.c (1.5),
-	sq_lock.c (1.20), sq_misc.c (1.6), sq_msg.c (1.7), sq_read.c (1.8),
-	sq_uid.c (1.6), sq_write.c (1.10): remove obsolete code for
-	semaphores support
+	(1.15), sq_area.c (1.23), sq_kill.c (1.5), sq_lock.c (1.20),
+	sq_misc.c (1.6), sq_msg.c (1.7), sq_read.c (1.8), sq_uid.c (1.6),
+	sq_write.c (1.10): remove obsolete code for semaphores support
 
 2002-10-10 Thursday 06:51  sfpavel
 
@@ -927,11 +911,10 @@
 	* api_brow.h (1.2), api_jam.c (1.88), api_jamp.h (1.18), api_sdm.c
 	(1.31), api_sdm.h (1.5), api_sdmp.h (1.4), api_sqp.h (1.8),
 	compiler.h (1.98), fexist.c (1.24), ffind.c (1.14), flush.c (1.11),
-	locking.c (1.29), msgapi.c (1.27), msgapi.h (1.45), sq_area.c
-	(1.22), sq_hash.c (1.5), sq_kill.c (1.4), sq_lock.c (1.19),
-	sq_misc.c (1.5), sq_msg.c (1.6), sq_read.c (1.7), sq_uid.c (1.5),
-	sq_write.c (1.8): global defines are changed to prevent conflicts
-	with <windows.h>
+	locking.c (1.29), msgapi.c (1.27), sq_area.c (1.22), sq_hash.c
+	(1.5), sq_kill.c (1.4), sq_lock.c (1.19), sq_misc.c (1.5), sq_msg.c
+	(1.6), sq_read.c (1.7), sq_uid.c (1.5), sq_write.c (1.8): global
+	defines are changed to prevent conflicts with <windows.h>
 	
 	MSG -->MSGA EXPENTRY --> _XPENTRY
 
@@ -974,10 +957,10 @@
 2002-09-25 Wednesday 09:38  stas_degteff
 
 	* fexist.c (1.21), ffind.h (1.14), flush.c (1.10), makefile.cyg
-	(1.2), msgapi.h (1.44), setfsize.c (1.11), tdelay.c (1.11),
-	typedefs.h (1.5): Remove unused macros WINNT; remove macros __CYG__
-	(use pre-defined __MINGW32__ instead). Remove macros __NT__ from
-	makefile.cyg (use __MINGW32__)
+	(1.2), setfsize.c (1.11), tdelay.c (1.11), typedefs.h (1.5): Remove
+	unused macros WINNT; remove macros __CYG__ (use pre-defined
+	__MINGW32__ instead). Remove macros __NT__ from makefile.cyg (use
+	__MINGW32__)
 
 2002-09-25 Wednesday 07:27  mche
 
@@ -1027,10 +1010,6 @@
 	* compiler.h (1.91): Added HAS_SNPRINTF and HAS_VSNPRINTF for
 	os2/emx, os2/watcom, cygwin, mingw32, unix
 
-2002-09-05 Thursday 08:26  mche
-
-	* msgapi.h (1.43): fix MSGAPI function usage
-
 2002-09-05 Thursday 02:51  sfpavel
 
 	* debian/libsmapi2-dev.links (1.1): file libsmapi2-dev.links was
@@ -1040,11 +1019,6 @@
 
 	* debian/libsmapi2-dev.preinst (1.1): file libsmapi2-dev.preinst
 	was initially added on branch smapi-2_2-stable.
-
-2002-09-02 Monday 12:30  stas_degteff
-
-	* msgapi.h (1.42): Update condition compilation: enable shares for
-	cygwin & mingw
 
 2002-08-30 Friday 12:15  mche
 
@@ -1281,11 +1255,6 @@
 
 	* api_sdm.c (1.26): Work with MsgNums but not MsgUids
 
-2002-02-26 Tuesday 08:18  ml
-
-	* msgapi.h (1.41): changes for compiling mscv6 dll version with
-	perl support
-
 2002-02-24 Sunday 11:23  mche
 
 	* .cvsignore (1.2, smapi-2_2_2-release, smapi-2_2_1-release): *.obj
@@ -1326,12 +1295,12 @@
 
 2002-02-08 Friday 17:19  mche
 
-	* msgapi.c (1.23), msgapi.h (1.40): - removed win32 specific code
+	* msgapi.c (1.23): - removed win32 specific code
 
 2002-01-29 Tuesday 10:55  mche
 
-	* api_sq.h (1.5), compiler.h (1.78), msgapi.h (1.39): making
-	hptsqfix compilable with dlls under win32
+	* api_sq.h (1.5), compiler.h (1.78): making hptsqfix compilable
+	with dlls under win32
 
 2002-01-26 Saturday 13:38  mche
 
@@ -1339,7 +1308,7 @@
 
 2002-01-19 Saturday 13:02  mche
 
-	* msgapi.c (1.22), msgapi.h (1.38): removed win32 specific code
+	* msgapi.c (1.22): removed win32 specific code
 
 2002-01-10 Thursday 18:05  tobi
 
@@ -1391,8 +1360,8 @@
 
 2001-12-27 Thursday 14:01  mche
 
-	* compiler.h (1.73), msgapi.c (1.21), msgapi.h (1.37): - changed
-	memory allocation function
+	* compiler.h (1.73), msgapi.c (1.21): - changed memory allocation
+	function
 	
 	conversion from static library to dynamic under win32 makes
 	smapimvc.dll  with MSVC compiler
@@ -1415,11 +1384,10 @@
 
 2001-12-24 Monday 07:55  mche
 
-	* compiler.h (1.72), msgapi.c (1.20), msgapi.h (1.36), patmat.c
-	(1.4), patmat.h (1.2, smapi-2_2_2-release, smapi-2_2_1-release),
-	progprot.h (1.12), makefile.mvcdll (1.1): conversion from static
-	library to dynamic under win32 makes smapimvc.dll under windows
-	with MSVC compiler
+	* compiler.h (1.72), msgapi.c (1.20), patmat.c (1.4), patmat.h
+	(1.2, smapi-2_2_2-release, smapi-2_2_1-release), progprot.h (1.12),
+	makefile.mvcdll (1.1): conversion from static library to dynamic
+	under win32 makes smapimvc.dll under windows with MSVC compiler
 
 2001-12-23 Sunday 20:08  pavel.gulchouck
 
@@ -1501,8 +1469,8 @@
 
 2001-09-15 Saturday 08:56  pavel.gulchouck
 
-	* api_jam.c (1.60), api_sdm.c (1.24), msgapi.h (1.35): Sqpack saves
-	times_read and cost for Jam and Msg msgbases now
+	* api_jam.c (1.60), api_sdm.c (1.24): Sqpack saves times_read and
+	cost for Jam and Msg msgbases now
 
 2001-09-10 Monday 09:17  pavel.gulchouck
 
@@ -1565,7 +1533,7 @@
 
 2001-06-02 Saturday 23:23  tobi
 
-	* Makefile (1.21), msgapi.h (1.34): Stepped version number to 2.1.0
+	* Makefile (1.21): Stepped version number to 2.1.0
 
 2001-06-02 Saturday 23:21  tobi
 
@@ -1643,8 +1611,8 @@
 
 2001-05-04 Friday 10:08  oliver.grimm
 
-	* msgapi.c (1.19, smapi-2_0_1-release, smapi-2_0_0-release),
-	msgapi.h (1.33): OG: Add verion information to the _minf structure
+	* msgapi.c (1.19, smapi-2_0_1-release, smapi-2_0_0-release): OG:
+	Add verion information to the _minf structure
 
 2001-04-30 Monday 06:09  kazimirow
 
@@ -1747,14 +1715,13 @@
 
 2001-03-03 Saturday 14:02  oliver.grimm
 
-	* msgapi.h (1.32), sq_area.c (1.17), sq_lock.c (1.15): OG: Some
-	ALTLOCKING fixes.
+	* sq_area.c (1.17), sq_lock.c (1.15): OG: Some ALTLOCKING fixes.
 
 2001-03-03 Saturday 13:41  oliver.grimm
 
-	* compiler.h (1.63), locking.c (1.23), msgapi.c (1.16), msgapi.h
-	(1.31), sq_area.c (1.16), sq_lock.c (1.14): OG: Some changes to
-	make filelocking smoother on most modern os (*ix, os2).
+	* compiler.h (1.63), locking.c (1.23), msgapi.c (1.16), sq_area.c
+	(1.16), sq_lock.c (1.14): OG: Some changes to make filelocking
+	smoother on most modern os (*ix, os2).
 
 2001-03-03 Saturday 11:14  oliver.grimm
 
@@ -1847,9 +1814,8 @@
 
 2001-01-07 Sunday 17:15  oliver.grimm
 
-	* compiler.h (1.58), locking.c (1.21), msgapi.h (1.30), sq_area.c
-	(1.14), sq_lock.c (1.10): og: Some changes to get alternative
-	locking running.
+	* compiler.h (1.58), locking.c (1.21), sq_area.c (1.14), sq_lock.c
+	(1.10): og: Some changes to get alternative locking running.
 
 2001-01-07 Sunday 15:06  oliver.grimm
 
@@ -1871,10 +1837,6 @@
 	* locking.c (1.20): og: Alternative locking-functions. (Begin with
 	"alt_")
 
-2001-01-07 Sunday 15:02  oliver.grimm
-
-	* msgapi.h (1.29): OG: Add char *lck_path to _msgapi structure.
-
 2000-12-05 Tuesday 21:35  sms
 
 	* compiler.h (1.55): added mode_t for Watcom/NT
@@ -1885,9 +1847,9 @@
 
 2000-12-03 Sunday 15:51  sms
 
-	* api_jam.c (1.45), api_jamp.h (1.10), api_sdm.c (1.19), msgapi.h
-	(1.28), sq_area.c (1.12): permissions fix (different permissions
-	for netmail/echomail, but the same for all formats)
+	* api_jam.c (1.45), api_jamp.h (1.10), api_sdm.c (1.19), sq_area.c
+	(1.12): permissions fix (different permissions for
+	netmail/echomail, but the same for all formats)
 
 2000-10-16 Monday 18:10  tobi
 
@@ -1900,8 +1862,7 @@
 
 2000-10-15 Sunday 12:18  ml
 
-	* api_jam.c (1.42), makefile.emo (1.18), msgapi.h (1.27): see
-	ChangeLog Oct 15
+	* api_jam.c (1.42), makefile.emo (1.18): see ChangeLog Oct 15
 
 2000-10-14 Saturday 20:03  tobi
 
@@ -1946,8 +1907,7 @@
 
 2000-10-03 Tuesday 16:16  tobi
 
-	* api_jam.c (1.37), msgapi.h (1.26): create a mapping for
-	JMSG_IMMEDIATE
+	* api_jam.c (1.37): create a mapping for JMSG_IMMEDIATE
 
 2000-10-02 Monday 22:16  tobi
 
@@ -1989,9 +1949,9 @@
 2000-09-04 Monday 10:07  ml
 
 	* Makefile (1.15), api_jam.c (1.32), api_sdm.c (1.17), makefile.lnx
-	(1.24), msgapi.h (1.24), setfsize.c (1.2), sq_area.c (1.10),
-	sq_idx.c (1.2), sq_lock.c (1.7), sq_msg.c (1.3), sq_uid.c (1.3):
-	see changelog sep 04
+	(1.24), setfsize.c (1.2), sq_area.c (1.10), sq_idx.c (1.2),
+	sq_lock.c (1.7), sq_msg.c (1.3), sq_uid.c (1.3): see changelog sep
+	04
 
 2000-09-03 Sunday 12:52  ml
 
@@ -2068,10 +2028,6 @@
 	makefile.wco (1.11), makefile.wcw (1.16), makefile.wcx (1.10):
 	Hopfully working old-style makefiles
 
-2000-08-23 Wednesday 19:16  oliver.grimm
-
-	* msgapi.h (1.23): Removed #pragma pack(1)
-
 2000-08-23 Wednesday 05:08  oliver.grimm
 
 	* sq_area.c (1.5), sq_lock.c (1.4): Out-Sourced multithreadding to
@@ -2112,8 +2068,7 @@
 	(1.8), api_sdmp.h (1.3, smapi-2_2_2-release, smapi-2_2_1-release,
 	smapi-2_0_1-release, smapi-2_0_0-release), api_sq.h (1.4,
 	smapi-2_0_1-release, smapi-2_0_0-release), api_sqp.h (1.6),
-	msgapi.h (1.22), progprot.h (1.8), Makefile (1.10): Complete new
-	Squish-API
+	progprot.h (1.8), Makefile (1.10): Complete new Squish-API
 
 2000-08-13 Sunday 08:16  oliver.grimm
 
@@ -2244,8 +2199,7 @@
 
 2000-04-09 Sunday 21:30  tobi
 
-	* compiler.h (1.44), msgapi.h (1.19): removed remaining pragma
-	pack()'s
+	* compiler.h (1.44): removed remaining pragma pack()'s
 
 2000-04-09 Sunday 16:30  tobi
 
@@ -2257,8 +2211,7 @@
 
 2000-04-09 Sunday 14:11  nestyurkin.nikolay
 
-	* ffind.h (1.8), msgapi.h (1.18): #pragma pack() fix for Watcom &
-	DJGPP
+	* ffind.h (1.8): #pragma pack() fix for Watcom & DJGPP
 
 2000-04-08 Saturday 09:33  tobi
 
@@ -2352,13 +2305,13 @@
 2000-03-31 Friday 15:57  tobi
 
 	* compiler.h (1.37), fexist.c (1.10), flush.c (1.4), locking.c
-	(1.12), msgapi.h (1.17), patmat.c (1.3, smapi-2_0_1-release,
-	smapi-2_0_0-release, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	Fr  31 Mar 2000 17:53:23 CEST tobi (patches mostly from Alex S.
-	Aganichev) * Modified the routines in fexist.c to use stat() if
-	available, instead   of opendir/readdir/closedir. This should speed
-	up things a lot and also   produce more reliable results.  * Some
-	small corrections in compiler.h for various compilers.	* Fixed
+	(1.12), patmat.c (1.3, smapi-2_0_1-release, smapi-2_0_0-release,
+	smapi-1_6_4b-release, smapi-1_6_4a-release): Fr  31 Mar 2000
+	17:53:23 CEST tobi (patches mostly from Alex S. Aganichev) *
+	Modified the routines in fexist.c to use stat() if available,
+	instead   of opendir/readdir/closedir. This should speed up things
+	a lot and also	 produce more reliable results.  * Some small
+	corrections in compiler.h for various compilers.  * Fixed
 	flush_handle2 for DJGPP and for RSXNT (the RSXNT code previously  
 	did use wrong handle numbers, which could produce very interesting 
 	 results ...) * Accelerated patmat routine for sequences with
@@ -2446,12 +2399,12 @@
 
 1999-11-28 Sunday 00:39  tobi
 
-	* compiler.h (1.30), makefile.emx (1.1), msgapi.h (1.15): Some
-	portability fixes for mgw
+	* compiler.h (1.30), makefile.emx (1.1): Some portability fixes for
+	mgw
 
 1999-11-27 Saturday 23:43  tobi
 
-	* compiler.h (1.29), msgapi.h (1.14): fix for emx
+	* compiler.h (1.29): fix for emx
 
 1999-11-27 Saturday 12:22  tobi
 
@@ -2501,7 +2454,7 @@
 
 1999-10-20 Wednesday 20:21  tobi
 
-	* msgapi.h (1.13), progprot.h (1.3): Code style fixes.
+	* progprot.h (1.3): Code style fixes.
 
 1999-10-17 Sunday 18:15  tobi
 
@@ -2566,8 +2519,8 @@
 
 1999-09-06 Monday 13:31  tobi
 
-	* compiler.h (1.25), makefile.unx (1.7), msgapi.h (1.10): Removed
-	superfluous pragma pack statements.
+	* compiler.h (1.25), makefile.unx (1.7): Removed superfluous pragma
+	pack statements.
 
 1999-08-31 Tuesday 23:15  sms
 
@@ -2587,12 +2540,11 @@
 
 	* compiler.h (1.23), fexist.c (1.4), ffind.c (1.6), ffind.h (1.4),
 	flush.c (1.3), locking.c (1.10), makefile.ibo (1.6), makefile.wcw
-	(1.5), msgapi.h (1.8), structrw.c (1.5): - Bug fix for CSet/2:
-	*.MSG was not working (couldn't open Msg Area) - Important bug fix
-	for RSXNT and MINGW32 compiler: Binaries created   with those
-	compilers completely messed up *.MSG areas.  - Numerous changes to
-	the code to make it compile with MINGW32.  - Removed CRs from
-	makefile.wcw
+	(1.5), structrw.c (1.5): - Bug fix for CSet/2: *.MSG was not
+	working (couldn't open Msg Area) - Important bug fix for RSXNT and
+	MINGW32 compiler: Binaries created   with those compilers
+	completely messed up *.MSG areas.  - Numerous changes to the code
+	to make it compile with MINGW32.  - Removed CRs from makefile.wcw
 
 1999-06-27 Sunday 22:21  tobi
 
@@ -2626,17 +2578,15 @@
 
 1999-03-01 Monday 18:56  mt
 
-	* makefile.djg (1.4), msgapi.h (1.7) (utags: smapi-1_5_6): djgpp
-	updates
+	* makefile.djg (1.4, smapi-1_5_6): djgpp updates
 
 1999-02-09 Tuesday 10:28  mt
 
 	* COPYING (1.2, smapi-2_2_2-release, smapi-2_2_1-release,
 	smapi-2_0_1-release, smapi-2_0_0-release, smapi-1_6_4b-release,
-	smapi-1_6_4a-release, smapi-1_5_6), VERSION (1.2, smapi-1_5_6),
-	makefile.lnx (1.9, smapi-1_5_6), msgapi.h (1.6): changed the
-	makefiles to generate a smapilnx with version 1.5.6 which is the
-	right value
+	smapi-1_6_4a-release), VERSION (1.2), makefile.lnx (1.9) (utags:
+	smapi-1_5_6): changed the makefiles to generate a smapilnx with
+	version 1.5.6 which is the right value
 
 1999-02-07 Sunday 07:20  me
 
@@ -2673,10 +2623,6 @@
 1999-01-28 Thursday 16:11  tobi
 
 	* date2bin.c (1.3, smapi-1_5_6): removed cr's
-
-1999-01-27 Wednesday 17:58  mt
-
-	* msgapi.h (1.5): added MSGLOCKED from Golded
 
 1999-01-25 Monday 23:32  me
 
@@ -2850,12 +2796,12 @@
 
 1998-07-09 Thursday 22:52  tobi
 
-	* compiler.h (1.5), msgapi.h (1.4): Introduced locking mechanism
-	with flock on Unix. Changed the locking mode to "blocking", which
-	means that the program will simply stop until the area it wants to
-	use is released. This is a dirty hack, but as 99% of
-	MSGAPI-programs do not check for any return codes, it seems to be
-	the only safe way to do it.
+	* compiler.h (1.5): Introduced locking mechanism with flock on
+	Unix. Changed the locking mode to "blocking", which means that the
+	program will simply stop until the area it wants to use is
+	released. This is a dirty hack, but as 99% of MSGAPI-programs do
+	not check for any return codes, it seems to be the only safe way to
+	do it.
 
 1998-07-09 Thursday 22:48  tobi
 
@@ -2904,8 +2850,8 @@
 	makefile.djg (1.2), makefile.emo (1.2), makefile.hco (1.2),
 	makefile.ibo (1.2), makefile.lnx (1.3), makefile.qcd (1.2),
 	makefile.rxw (1.1), makefile.wcd (1.2), makefile.wco (1.2),
-	makefile.wcw (1.2), makefile.wcx (1.2), msgapi.c (1.3), msgapi.h
-	(1.3), old_msg.h (1.2, smapi-2_2_2-release, smapi-2_2_1-release,
+	makefile.wcw (1.2), makefile.wcx (1.2), msgapi.c (1.3), old_msg.h
+	(1.2, smapi-2_2_2-release, smapi-2_2_1-release,
 	smapi-2_0_1-release, smapi-2_0_0-release, smapi-1_6_4b-release,
 	smapi-1_6_4a-release, smapi-1_5_6), readme.txt (1.2), structrw.c
 	(1.1): Changes done on 05/28/98 by Tobias Ernst:
@@ -2935,11 +2881,6 @@
 
 	* makefile.sun (1.1): added smapi makefile for sun
 
-1998-05-19 Tuesday 16:48  mt
-
-	* msgapi.h (1.2): changed order of including the header-files to
-	preserve pragma pack statements (
-
 1998-05-11 Monday 07:50  tw
 
 	* api_sdm.c (1.2), cvtdate.c (1.2), fexist.c (1.2), ffind.c (1.2),
@@ -2955,11 +2896,11 @@
 	(1.1), makefile.djg (1.1), makefile.emo (1.1), makefile.hco (1.1),
 	makefile.ibo (1.1), makefile.lnx (1.1), makefile.qcd (1.1),
 	makefile.wcd (1.1), makefile.wco (1.1), makefile.wcw (1.1),
-	makefile.wcx (1.1), msgapi.c (1.1), msgapi.h (1.1), old_msg.h
-	(1.1), parsenn.c (1.1), patmat.c (1.1), patmat.h (1.1), prog.h
-	(1.1), progprot.h (1.1), readme.txt (1.1), stamp.h (1.1),
-	strextra.c (1.1), strextra.h (1.1), strftim.c (1.1), typedefs.h
-	(1.1): Initial revision
+	makefile.wcx (1.1), msgapi.c (1.1), old_msg.h (1.1), parsenn.c
+	(1.1), patmat.c (1.1), patmat.h (1.1), prog.h (1.1), progprot.h
+	(1.1), readme.txt (1.1), stamp.h (1.1), strextra.c (1.1),
+	strextra.h (1.1), strftim.c (1.1), typedefs.h (1.1): Initial
+	revision
 
 1998-05-11 Monday 07:40  tw
 
