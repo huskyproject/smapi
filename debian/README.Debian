@@ -5,10 +5,10 @@ smapi is based on Squish MSGAPI0 from Scott J. Dudley.
 Look in readme.txt and license.txt !
 
 Future Development of smapi is done by the Husky-Team. More Information 
-over Husky is at
-http://husky.physcip.uni-stuttgart.de/ zu finden.
+over Husky is at http://husky.physcip.uni-stuttgart.de/
 
 I have made only one binary package and not a lib and a dev-Package. Its too
 small :)
+
 
  -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>, Wed, 28 Mar 2001 18:59:41 +0200

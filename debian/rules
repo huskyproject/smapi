@@ -27,9 +27,16 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-
 	# Add here commands to clean up after the build process.
 	-$(MAKE) clean
+	-rm -f configure-stamp
+	-rm -f build-stamp
+	-rm -rf debian/$(PACKAGE)
+	-rm -f debian/postinst.debhelper
+	-rm -f debian/postrm.debhelper
+	-rm -f debian/prerm.debhelper
+	-rm -f debian/substvars
+	-rm -f debian/files
 
 	dh_clean
 
@@ -42,9 +49,6 @@ install: build
 	# Add here commands to install the package into debian/smapi.
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/smapi
 	chmod 0644 $(CURDIR)/debian/smapi/usr/lib/patmat.o
-	cd $(CURDIR)/debian/smapi/usr/lib ; \
-	ln -s libsmapi.so.1.6.4 libsmapi.so.1 ;\
-	ln -s libsmapi.so.1.6.4 libsmapi.so
 
 
 # Build architecture-independent files here.
