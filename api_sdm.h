@@ -28,7 +28,7 @@ struct _msgh
     dword bytes_written;
     dword cur_pos;
 
-    /* For *.MSGA only! */
+    /* For *.msg only! */
 
     sdword clen;
     byte *ctrl;
@@ -40,7 +40,7 @@ struct _msgh
 
 
 /*
- *  This following junk is unique to *.MSGA!
+ *  This following junk is unique to *.msg!
  *  NO APPLICATIONS SHOULD USE THESE!
  */
 
