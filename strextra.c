@@ -13,7 +13,7 @@
 #include <ctype.h>
 #include "strextra.h"
 
-#if !defined(_MSC_VER) && !defined(__linux__)
+#if !defined(_MSC_VER) && !defined(__UNIX__)
 
 int stricmp(const char *s, const char *t)
 {
