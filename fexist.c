@@ -17,16 +17,67 @@
  *  author.
  */
 
+
+#if defined(UNIX) || defined(__MINGW32__) || defined(EMX) || defined(RSXNT) || defined(__DJGPP__)
+/* These are compilers that have both a working stat() and (important!) the
+   S_ISREG and S_ISDIR macros. The problem is that while stat() is POSIX, those
+   macros are not. For compilers that do not provide these macros, we revert to
+   the old "ffind" method. */
+#define USE_STAT_MACROS 
+#endif
+
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef USE_STAT_MACROS
+#include <sys/types.h>
+#include <sys/stat.h>
+#else
 #include "ffind.h"
 #include "prog.h"
-
 #if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__)
 #include <dos.h>
 #endif
+#endif
+
+#ifdef USE_STAT_MACROS
+
+/* This is the nice code that works on UNIX and every other decent platform.
+   It has been contributed by Alex S. Aganichev */
+
+int _fast fexist(char *filename)
+{
+    struct stat s;
+
+    if (stat (filename, &s))
+        return FALSE;
+    return S_ISREG(s.st_mode);
+}
+
+long _fast fsize(char *filename)
+{
+    struct stat s;
+
+    if (stat (filename, &s))
+        return -1L;
+    return s.st_size;
+}
+
+int _fast direxist(char *directory)
+{
+    struct stat s;
+    int rc;
+
+    rc = stat (directory, &s);
+    if (rc)
+        return FALSE;
+    return S_ISDIR(s.st_mode);
+}
+
+#else
+
+/* Here comes the ugly platform specific and sometimes even slow code. */
 
 int _fast fexist(char *filename)
 {
@@ -209,6 +260,8 @@ int _fast direxist(char *directory)
 #else
 
 #error Unknown compiler!
+
+#endif
 
 #endif
 

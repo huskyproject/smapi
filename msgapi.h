@@ -348,7 +348,7 @@ sword far pascal farwrite(sword handle, byte far * buf, word len);
 byte *_fast Address(NETADDR * a);
 byte *StripNasties(byte * str);
 
-#if defined(MSDOS) && !defined(__DJGPP__)
+#if defined(MSDOS)
 sword far pascal shareloaded(void);
 #elif defined(OS2) || defined(__NT__) || defined(UNIX)
 #define shareloaded() TRUE

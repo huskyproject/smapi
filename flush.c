@@ -25,7 +25,7 @@
 #include <io.h>
 #endif
 
-#ifdef UNIX
+#ifdef UNIX || defined(__DJGPP__)
 #include <unistd.h>
 #endif
 
@@ -54,7 +54,14 @@
 #include <windows.h>
 #endif
 
-#if defined(UNIX) || defined(SASC) || defined(__DJGPP__)
+#if defined(__DJGPP__)
+
+void pascal far flush_handle2(int fh)
+{
+    fsync(fh);
+}
+
+#elif defined(UNIX) || defined(SASC)
 
 void pascal far flush_handle2(int fh)
 {
@@ -70,8 +77,22 @@ void pascal far flush_handle2(int fh)
 
 #elif defined(__NT__)
 
+#ifdef RSXNT
+#include <emx/syscalls.h>
+#include <stdlib.h>
+
+#ifndef F_GETOSFD
+#define F_GETOSFD 6
+#endif
+#endif
+
 void pascal far flush_handle2(int fh)
 {
+#ifdef RSXNT
+    int nt_handle = __fcntl(handle, F_GETOSFD, 0);
+#else
+    int nt_handle = fh;
+#endif
     FlushFileBuffers((HANDLE) fh);
 }
 
@@ -90,9 +111,7 @@ void _fast flush_handle(FILE * fp)
 {
     fflush(fp);
 
-#if defined(OS2)
-    DosBufReset(fileno(fp));
-#elif defined(MSDOS) || defined(__NT__) || defined(__TURBOC__) || defined(SASC)
+#if defined(OS2) || defined(MSDOS) || defined(__NT__) || defined(__TURBOC__) || defined(SASC) || defined(__DJGPP__)
     flush_handle2(fileno(fp));
 #else
     {

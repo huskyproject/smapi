@@ -2,6 +2,19 @@ development version
 -------------------
 
 ----- cvs ci ------
+Fr  31 Mar 2000 17:53:23 CEST
+tobi (patches mostly from Alex S. Aganichev)
+* Modified the routines in fexist.c to use stat() if available, instead
+  of opendir/readdir/closedir. This should speed up things a lot and also 
+  produce more reliable results.
+* Some small corrections in compiler.h for various compilers.
+* Fixed flush_handle2 for DJGPP and for RSXNT (the RSXNT code previously
+  did use wrong handle numbers, which could produce very interesting
+  results ...)
+* Accelerated patmat routine for sequences with multiple wildcards.
+* Added shareloaded function for DJGPP.
+
+----- cvs ci ------
 Mon Mar 20 08:56:28 MSK 2000
 max (patch from Serguei Revtov):
 * change legacy SUN makefile to compile

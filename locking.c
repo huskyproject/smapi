@@ -28,6 +28,19 @@
 
 #include "compiler.h"
 
+#ifdef __DJGPP__
+#include "msgapi.h"
+#include <dpmi.h>
+
+sword far pascal shareloaded(void)
+{
+    __dpmi_regs r;
+    r.x.ax = 0x1000;
+    __dpmi_int(0x2f, &r);
+    return (r.h.al == 0xff);
+}
+#endif
+
 #if (defined (__WATCOMC__) || defined(__EMX__) || defined(__IBMC__)) && defined(OS2)
 
 #ifdef EXPENTRY

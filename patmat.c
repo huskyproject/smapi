@@ -57,8 +57,18 @@ int patmat(char *raw, char *pat)
     {
         int i;
 
+        /* match patterns *?****???***?? faster... */
+        while (*(++pat))
+            if (*pat == '*') {
+                /* do nothing */
+            } else if (*pat == '?') {
+                if (*raw) ++raw;
+                else return 0;
+            } else
+                break;
+
         /* if it is the end of pat, then match */
-        if (*(pat + 1) == '\0')
+        if (*pat == '\0')
         {
             return 1;
         }
@@ -66,10 +76,10 @@ int patmat(char *raw, char *pat)
         /* else hunt for match or wildcard */
         for (i = 0; i <= strlen(raw); i++)
         {
-            if (*(raw + i) == *(pat + 1) || *(pat + 1) == '?')
+            if (*(raw + i) == *pat || *pat == '?')
             {
                 /* if found, match rest of pat */
-                if (patmat(raw + i + 1, pat + 2) == 1)
+                if (patmat(raw + i + 1, pat + 1) == 1)
                 {
                     return 1;
                 }

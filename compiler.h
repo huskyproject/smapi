@@ -344,7 +344,9 @@ int lock(int handle, long ofs, long length);
 #define SH_DENYNO 0x40
 #endif
 
+#ifndef EXPENTRY
 #define EXPENTRY
+#endif
 
 #elif defined(__TURBOC__) && defined(WINNT)
 
@@ -385,9 +387,7 @@ int lock(int handle, long ofs, long length);
 
 #define farread read
 #define farwrite write
-#define mymkdir __mkdir
-
-extern int __mkdir (__const__ char *name);
+#define mymkdir(a) mkdir((a), 0)
 
 int unlock(int handle, long ofs, long length);
 int lock(int handle, long ofs, long length);
