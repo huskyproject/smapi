@@ -66,6 +66,7 @@ struct tm *_fast DosDate_to_TmDate(union stamp_combo *dosdate, struct tm *tmdate
 
 union stamp_combo *_fast TmDate_to_DosDate(struct tm *tmdate, union stamp_combo *dosdate)
 {
+  if(tmdate && dosdate){
     dosdate->msg_st.date.da = tmdate->tm_mday;
     dosdate->msg_st.date.mo = tmdate->tm_mon + 1;
     dosdate->msg_st.date.yr = tmdate->tm_year - 80;
@@ -73,8 +74,8 @@ union stamp_combo *_fast TmDate_to_DosDate(struct tm *tmdate, union stamp_combo 
     dosdate->msg_st.time.hh = tmdate->tm_hour;
     dosdate->msg_st.time.mm = tmdate->tm_min;
     dosdate->msg_st.time.ss = tmdate->tm_sec >> 1;
-
-    return dosdate;
+  }
+  return dosdate;
 }
 
 static void print02d(char **str, int i)
