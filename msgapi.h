@@ -289,11 +289,10 @@ struct _msgh
  *  This variable is modified whenever an error occurs with the MsgXxx()
  *  functions.  If msgapierr == 0, then no error occurred.
  */
-
+#ifndef _MAKE_DLL_MVC_
 extern word _stdc msgapierr;
-
-#ifdef _MAKE_DLL_MVC_
-SMAPI_EXT  word GetMsgapiErr();
+#else
+SMAPI_EXT  word msgapierr;
 #endif
 
 extern struct _minf _stdc mi;

@@ -493,9 +493,3 @@ word EXPENTRY NumKludges(char *txt)
 
     return nk;
 }
-
-#ifdef _MAKE_DLL_MVC_
-
-word GetMsgapiErr() { return msgapierr; }
-
-#endif
