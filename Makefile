@@ -95,8 +95,8 @@ $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
 instdyn: $(LIBPREFIX)smapi.so.$(VER)
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
-	-$(RM) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
-	-$(RM) $(LIBDIR)/$(LIBPREFIX)smapi.so
+	-$(RM) $(RMOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
+	-$(RM) $(RMOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so
 	$(LN) $(LNOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
 	$(LN) $(LNOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH) $(LIBDIR)/$(LIBPREFIX)smapi.so
 ifneq (~$(LDCONFIG)~, ~~)
@@ -129,30 +129,30 @@ install: instdyn
 	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
 
 uninstall:
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)alc.h 
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_brow.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)compiler.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)ffind.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)msgapi.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)patmat.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)prog.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)progprot.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)stamp.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)typedefs.h
-	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)unused.h
-	-$(RM) $(LIBDIR)$(DIRSEP)$(TARGET)
-	-$(RM) $(LIBDIR)$(DIRSEP)patmat$(OBJ)
-	-$(RM) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
-	-$(RM) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERH)
-	-$(RM) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)alc.h 
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_brow.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)compiler.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)ffind.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)msgapi.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)patmat.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)prog.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)progprot.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)stamp.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)typedefs.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)unused.h
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)patmat$(OBJ)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERH)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so
 
 clean:
-	-$(RM) *$(OBJ)
-	-$(RM) *~
+	-$(RM) $(RMOPT) *$(OBJ)
+	-$(RM) $(RMOPT) *~
 
 distclean: clean
-	-$(RM) $(TARGET)
-	-$(RM) $(LIBPREFIX)smapi.so.$(VER)
+	-$(RM) $(RMOPT) $(TARGET)
+	-$(RM) $(RMOPT) $(LIBPREFIX)smapi.so.$(VER)
 
 all: $(TARGET)
 
