@@ -340,6 +340,8 @@ int lock(int handle, long ofs, long length);
 #define lseek _lseek
 #define tell _tell
 #define sleep _sleep
+#define write _write
+#define read _read
 
 #define stricmp _strcmpi
 #define strcmpi _strcmpi
