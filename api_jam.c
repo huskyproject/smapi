@@ -12,9 +12,9 @@
 #include <io.h>
 #endif
 
-#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 
 #if !defined(UNIX) && !defined(SASC)
 #include <share.h>
@@ -256,7 +256,7 @@ static int opencreatefilejm(char *name, word mode, mode_t permissions)
         *slash = '\0';
         _createDirectoryTree(name);
         *slash = PATH_DELIM;
-     }    
+     }
      hF=sopen(name, mode, SH_DENYNONE, permissions);
   }
   return hF;
@@ -445,9 +445,9 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
       return -1L;
    }
 
-   if (msgh->mode != MOPEN_CREATE && msgh->mode != MOPEN_WRITE && msgh->mode != MOPEN_RW) 
+   if (msgh->mode != MOPEN_CREATE && msgh->mode != MOPEN_WRITE && msgh->mode != MOPEN_RW)
       return -1L;
-   
+
    jm = msgh->sq;
    Jmd->modified = 1;
 
@@ -455,35 +455,35 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
    memset(&jamhdrNew, '\0', sizeof(JAMHDR));
    jamhdrNew.ReplyCRC = jamhdrNew.MsgIdCRC = 0xFFFFFFFFUL;
 
-   if (!ctxt) 
+   if (!ctxt)
      clen = 0L;
 
-   if (!text) 
+   if (!text)
      textlen = 0L;
 
-   if (textlen == 0L) 
+   if (textlen == 0L)
      text = NULL;
 
-   if (clen == 0L) 
+   if (clen == 0L)
      ctxt = NULL;
 
-   if (msgh->mode != MOPEN_CREATE) 
+   if (msgh->mode != MOPEN_CREATE)
    {
       if (clen) clen = 0;
       if (ctxt) ctxt = NULL;
    }
 
-   if (clen && ctxt) 
+   if (clen && ctxt)
    {
        x = strlen((char*)ctxt);
        if (clen < x) clen = x+1;
    }
 
    subfieldNew = NULL;
-   if (msg) 
+   if (msg)
      ConvertXmsgToJamHdr(msgh, msg, &jamhdrNew, &subfieldNew);
-   else 
-     if (msgh->mode != MOPEN_CREATE) 
+   else
+     if (msgh->mode != MOPEN_CREATE)
      {
         JamReadMsg(msgh, &msg_old, 0, 0, NULL, 0, NULL);
         ConvertXmsgToJamHdr(msgh, &msg_old, &jamhdrNew, &subfieldNew);
@@ -496,31 +496,31 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
       }
    }
 
-   if (clen && ctxt) 
+   if (clen && ctxt)
      ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, clen, ctxt);
 
-   if (textlen && text) 
+   if (textlen && text)
      onlytext = DelimText(&jamhdrNew, &subfieldNew, text, textlen);
-   else 
-     if (msgh->mode != MOPEN_CREATE) 
+   else
+     if (msgh->mode != MOPEN_CREATE)
      {
         DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl, msgh->lclen);
         jamhdrNew.TxtOffset = msgh->Hdr.TxtOffset;
         jamhdrNew.TxtLen = msgh->Hdr.TxtLen;
      }
-     
+
    if (onlytext==NULL) {
       onlytext = palloc(1);
       *onlytext='\0';
    }
 
-   if (msgh->mode == MOPEN_CREATE) 
+   if (msgh->mode == MOPEN_CREATE)
    {
       /* no logic if msg not present */
-      if (msg) 
+      if (msg)
       {
          if (Jmd->TxtHandle == 0) Jam_OpenTxtFile(Jmd);
-         if (msgh->msgnum == 0) 
+         if (msgh->msgnum == 0)
          {
             /* new message in end of position */
             lseek(Jmd->IdxHandle, 0, SEEK_END);
@@ -592,8 +592,8 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             } else
                freejamsubfield(subfieldNew);
             jm->num_msg++;
-         } 
-         else 
+         }
+         else
          {
             /* new message instead of old message position */
             msgh->Hdr.TxtLen = 0;
@@ -630,18 +630,18 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
                freejamsubfield(subfieldNew);
          } /* endif */
       } /* endif */
-   } 
-   else 
+   }
+   else
    {
       /* change text and SEEN_BY, PATH, VIA kludges posible only (message != create)*/
       ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, msgh->clen, msgh->ctrl);
 
-      if (msg) 
+      if (msg)
          jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen(msg->to));
-      else 
+      else
          jamidxNew.UserCRC = msgh->Idx.UserCRC;
 
-      if (jamhdrNew.SubfieldLen > msgh->Hdr.SubfieldLen) 
+      if (jamhdrNew.SubfieldLen > msgh->Hdr.SubfieldLen)
       {
          msgh->Hdr.TxtLen = 0;
          msgh->Hdr.Attribute |= JMSG_DELETED;
@@ -765,7 +765,7 @@ static sword EXPENTRY JamLock(MSG * jm)
       return 0;
    }
 
-   if (!Jam_Lock(jm, 0)) 
+   if (!Jam_Lock(jm, 0))
       return -1;
 
    jm->locked = TRUE;
@@ -1128,7 +1128,7 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
 /*   msgh->Idx.UserCRC   = 0xffffffff; */
 
    if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
- 
+
    if (Jmd->actmsg) {
       msgh->seek_idx = Jmd->actmsg[msgnum-1].IdxOffset;
       msgh->Idx.HdrOffset = Jmd->actmsg[msgnum-1].TrueMsg;
@@ -1142,9 +1142,9 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
          } else {
          } /* endif */
          if (mode == MOPEN_CREATE) return (MSGH *)msgh;
-               
+
          msgh->SubFieldPtr = 0;
-               
+
          copy_subfield(&(msgh->SubFieldPtr), Jmd->actmsg[msgnum-1].subfield);
          DecodeSubf(msgh);
          return (MSGH *) msgh;
@@ -1204,7 +1204,7 @@ char *Jam_GetKludge(MSG *jm, dword msgnum, word what)
    }
 
    if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
- 
+
    if (!Jmd->actmsg)
       return NULL;
    subf = Jmd->actmsg[msgnum-1].subfield;
@@ -1245,7 +1245,7 @@ JAMHDR *Jam_GetHdr(MSG *jm, dword msgnum)
    }
 
    if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
- 
+
    if (!Jmd->actmsg)
       return NULL;
 
@@ -1361,7 +1361,7 @@ static dword Jam_MsgAttrToJam(XMSG *msg)
    if (msg->attr & MSGLOCKED)  attr |= JMSG_LOCKED;
    if (msg->attr & MSGXX2)     attr |= JMSG_DIRECT;
    if (msg->attr & MSGIMM)     attr |= JMSG_IMMEDIATE;
-   
+
    return attr;
 }
 
@@ -1585,7 +1585,7 @@ static void resize_subfields(JAMSUBFIELD2LISTptr *subfield, dword newcount,
    else {
       memcpy(SubField->subfield, subfield[0]->subfield,
              SubField->subfieldCount * sizeof(JAMSUBFIELD2));
-      SubField->subfield[SubField->subfieldCount].Buffer = 
+      SubField->subfield[SubField->subfieldCount].Buffer =
          subfield[0]->subfield[SubField->subfieldCount-1].Buffer +
          subfield[0]->subfield[SubField->subfieldCount-1].DatLen;
    }
@@ -1954,11 +1954,11 @@ static dword EXPENTRY JamGetHash(HAREA mh, dword msgnum)
 {
   XMSG xmsg;
   HMSG msgh;
-  dword rc = 0l; 
+  dword rc = 0l;
 
   if ((msgh=JamOpenMsg(mh, MOPEN_READ, msgnum))==NULL)
     return (dword) 0l;
-  
+
   if (JamReadMsg(msgh, &xmsg, 0L, 0L, NULL, 0L, NULL)!=(dword)-1)
   {
     rc = SquishHash(xmsg.to) | (xmsg.attr & MSGREAD) ? 0x80000000l : 0;
