@@ -1,3 +1,7 @@
+2001-12-22 Saturday 00:20  pavel.gulchouck
+
+	* api_jam.c (1.68): A bit speedup
+
 2001-12-20 Thursday 20:37  pavel.gulchouck
 
 	* api_jam.c (1.67), fexist.c (1.17), tdelay.c (1.9): Fixes for
