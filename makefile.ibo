@@ -4,7 +4,8 @@ CC=	icc
 CFLAGS=	-Sp1 -W2 -Q
 CDEFS=	-DOS2
 COPT=	-O
-LIB=	lib
+LIB=	ilib
+#LIB=   lib
 
 TARGET=	smapiibo.lib
 
