@@ -1,3 +1,8 @@
+2002-09-29 Sunday 13:35  d_sergienko
+
+	* compiler.h (1.97): added alias strnicmp for strncasecmp() under
+	UNIXes
+
 2002-09-28 Saturday 08:49  pgul
 
 	* compiler.h (1.96): add HAS_VSNPRINTF for MAKE_DLL_MVC
