@@ -85,23 +85,22 @@ int waitlock(int handle, long ofs, long length)
 #elif defined(__RSXNT__)  
 
 #include <windows.h>
-
-/* To achieve file locking with RSX, we need to access some RSX
-   internal structures that are defined in rsxnt.h in order to obtain
-   a file handle that can be passed on to the Win32 API. The file
-   rsxnt.h can be found in \RSXNT\SOURCE\RSXNT\INCLUDE and might not
-   be present on your system if you did not install the full source
-   code for RSX ... Sorry, but I did not find a better way to do it. */
-#include <../source/rsxnt/include/rsxnt.h>
-
+#include <emx/syscalls.h>
 #include <stdlib.h>
+
+#ifndef F_GETOSFD
+#define F_GETOSFD 6
+#endif
 
 int waitlock(int handle, long ofs, long length)
 {
-    EMXPROCESS *p = _rsxnt_get_process_ptr();
+    int nt_handle = __fcntl(handle, F_GETOSFD, 0);
 
-    while (LockFile(p->file[handle].f_handle, (DWORD)ofs,
-                 0L, (DWORD)length, 0L) == FALSE)
+    if (nt_handle < 0)
+    {
+        return -1;
+    }
+    while (LockFile(nt_handle, (DWORD)ofs, 0L, (DWORD)length, 0L) == FALSE)
     {
         sleep(1);
     }
@@ -111,10 +110,10 @@ int waitlock(int handle, long ofs, long length)
 
 int lock(int handle, long ofs, long length)
 {
-    EMXPROCESS *p = _rsxnt_get_process_ptr();
-
-    if (LockFile(p->file[handle].f_handle, (DWORD)ofs,
-                 0L, (DWORD)length, 0L) == FALSE)
+    int nt_handle = __fcntl(handle, F_GETOSFD, 0);
+        
+    if (nt_handle < 0 ||
+        LockFile((DWORD)nt_handle, (DWORD)ofs, 0L, (DWORD)length, 0L) == FALSE)
     {
         return -1;
     }
@@ -123,10 +122,11 @@ int lock(int handle, long ofs, long length)
 
 int unlock(int handle, long ofs, long length)
 {
-    EMXPROCESS *p = _rsxnt_get_process_ptr();
+    int nt_handle = __fcntl(handle, F_GETOSFD, 0);
 
-    if (UnlockFile(p->file[handle].f_handle, (DWORD)ofs,
-                   0L, (DWORD)length, 0L) == FALSE)
+    if (nt_handle < 0 ||
+        UnlockFile((DWORD)nt_handle, (DWORD)ofs, 0L, (DWORD)length,
+                   0L) == FALSE)
     {
         return -1;
     }
