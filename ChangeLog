@@ -1,3 +1,7 @@
+2005-03-20 Sunday 00:11  sfpavel
+
+	* debian/changelog (smapi-2_4-stable.11): 1.4-RC3 release
+
 2004-07-20 Tuesday 15:01  pgul
 
 	* api_jam.c, structrw.c (smapi-2_4-stable.[4,1]): Migrate jam
