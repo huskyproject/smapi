@@ -88,6 +88,15 @@
   {
     return ftruncate(fd, size);
   }
+#elif defined(__NT__)
+  #define WIN32_LEAN_AND_MEAN
+  #include <windows.h>
+  #include <winbase.h>
+  int _fast setfsize(int fd, long size)
+  {
+    SetFilePointer((HANDLE)fd, size, NULL, FILE_BEGIN);
+    return (!SetEndOfFile((HANDLE)fd));
+  }
 #else
   #error Unknown OS
 #endif

@@ -22,6 +22,10 @@
 
 #include "compiler.h"
 
+#if defined(__NT__)
+#define NOSEMAPHORES
+#endif
+
 /* No semaphores (unsupported or non-multitasking systems) */
 #if defined(NOSEMAPHORES)
 
