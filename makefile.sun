@@ -1,5 +1,16 @@
+# include Husky-Makefile-Config
+include ../huskymak.cfg
+
+include makefile.common
+
 CC=	gcc
-CFLAGS=	-Wall -s
+
+ifeq ($(DEBUG), 1)
+  CFLAGS=	-Wall -g
+else
+  CFLAGS=	-Wall -s
+endif
+
 CDEFS=	-DUNIX -D_POSIX_C_SOURCE
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce 
 LIB=	ar
@@ -29,10 +40,22 @@ OBJS=	1stchar.o  \
 	trail.o    \
 	weekday.o
 
-# Thunderbirds are go!
+all: $(TARGET)
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
     
 $(TARGET): $(OBJS)
+
+clean:
+	rm *.o *~
+
+distclean: clean
+	rm $(TARGET)
+
+install: $(TARGET)
+	install $(ILOPT) $(TARGET) $(LIBDIR)
+	install $(IIOPT) msgapi.h $(INCDIR)
+	install $(IIOPT) smapi.pas $(INCDIR)
+

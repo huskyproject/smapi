@@ -1,12 +1,21 @@
+# include Husky-Makefile-Config
+include ../huskymak.cfg
+
+include makefile.common
+
 CC=	gcc
-CFLAGS=	-Wall -s
+
+ifeq ($(DEBUG), 1)
+  CFLAGS=	-Wall -ggdb
+#  CFLAGS=	-Wall -ggdb -DNO_LOCKING
+else
+  CFLAGS=	-Wall -s
+# CFLAGS=	-Wall -s -DNO_LOCKING
+endif
+
 CDEFS=	-DUNIX
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486 -g -fPIC
+COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486 -fPIC
 LIB=	ar
-LIBDIR= /usr/local/lib
-ILOPT= -c -m644
-VERH = 1
-VER  = 1.6.0
 
 ALL: $(TARGET) libsmapilnx.so.$(VER)
 
@@ -35,8 +44,6 @@ OBJS=	1stchar.o  \
 	trail.o    \
 	weekday.o
 
-# Thunderbirds are go!
-
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
@@ -50,3 +57,12 @@ install: libsmapilnx.so.$(VER)
 	install $(ILOPT) libsmapilnx.so.$(VER) $(LIBDIR)
 	ln -sf $(LIBDIR)/libsmapilnx.so.$(VER) $(LIBDIR)/libsmapilnx.so.$(VERH)
 	ln -sf $(LIBDIR)/libsmapilnx.so.$(VERH) $(LIBDIR)/libsmapilnx.so
+	install $(IIOPT) msgapi.h $(INCDIR)
+	install $(IIOPT) smapi.pas $(INCDIR)
+
+clean:
+	-rm *.o *~
+
+distclean: clean
+	-rm $(TARGET) libsmapilnx.so.$(VER)
+

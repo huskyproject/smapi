@@ -8,10 +8,22 @@
 #use this line if you are using MINGW32 CPD on a Unix box
 CC=i386--mingw32-gcc
 
-CFLAGS= -Wall
+# include Husky-Makefile-Config
+include ../huskymak.cfg
+
+include makefile.common
+
+ifeq ($(DEBUG), 1)
+  CFLAGS= -Wall
+else
+  CFLAGS= -Wall
+endif
+
 CDEFS=  -D__NT__ -DWINNT -D__MINGW32__
 COPT=
 LIB=    ar
+RM=rm
+INSTALL=install
 
 TARGET= smapimgw.a
 
@@ -32,15 +44,29 @@ OBJS=   1stchar.o  \
 	qksort.o   \
 	strftim.o  \
 	strocpy.o  \
-	structrw.o  \
+	structrw.o \
 	trail.o    \
 	weekday.o
 
-# Thunderbirds are go!
+all: $(TARGET)
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
+
+clean:
+	$(RM) *.o
+	$(RM) *~
+	$(RM) *.bak
+
+distclean: clean
+	$(RM) $(TARGET)
+
+install: $(TARGET)
+	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
+	$(INSTALL) $(IIOPT) msgapi.h $(INCDIR)
+	$(INSTALL) $(IIOPT) smapi.pas $(INCDIR)
+
 

@@ -63,3 +63,11 @@ SMAPI 1.6.0
 ----------
 
 - Adapted msgapi for Jam message base. Need check and test.
+
+----- cvs ci ------
+Thu Oct 16 13:40:00 MET DST 1999
+sms:
+- reorganized Makefiles, please read README.Makefiles in the husky-common
+  package!
+
+

@@ -1,5 +1,16 @@
+# include Husky-Makefile-Config
+!include ..\huskymak.cfg
+
+!include makefile.common
+
 CC=	qcl
-CFLAGS=	-nologo -W4 -AL
+
+!IF $(DEBUG) == 1
+  CFLAGS=	-nologo -W4 -AL -g
+!ELSE
+  CFLAGS=	-nologo -W4 -AL -s
+!ENDIF
+
 CDEFS=	-DMSDOS
 COPT=	-Ox
 LIB=	lib
@@ -30,7 +41,7 @@ OBJS=	1stchar.obj  \
 	trail.obj    \
 	weekday.obj
 
-# Thunderbirds are go!
+all: $(TARGET)
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
@@ -41,3 +52,16 @@ OBJS=	1stchar.obj  \
 	$(LIB) /nologo $(TARGET) -+$@,,
 
 $(TARGET): $(OBJS)
+
+clean:
+	del *.obj
+	del *.bak
+
+distclean: clean
+	del $(TARGET)
+
+install: $(TARGET)
+	copy $(TARGET) $(LIBDIR)
+	copy msgapi.h $(INCDIR)
+	copy smapi.pas $(INCDIR)
+

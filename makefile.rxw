@@ -1,8 +1,19 @@
 # Makefile for building a Windows 95 / NT SMAPI library
 # with RSXNT and EMX GCC running on Win32 or OS/2.
 
+# include Husky-Makefile-Config
+include ../huskymak.cfg
+
+include makefile.common
+
 CC=     gcc
-CFLAGS= -w -Zwin32
+
+ifeq ($(DEBUG), 1)
+  CFLAGS= -w -Zwin32
+else
+  CFLAGS= -w -Zwin32
+endif
+
 CDEFS=  -D__NT__ -DWINNT -D__RSXNT__ 
 COPT=   
 LIB=    ar
@@ -26,15 +37,27 @@ OBJS=   1stchar.o  \
 	qksort.o   \
 	strftim.o  \
 	strocpy.o  \
-	structrw.o  \
+	structrw.o \
 	trail.o    \
 	weekday.o
 
-# Thunderbirds are go!
+all: $(TARGET)
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
+
+clean:
+	-cmd /c del *.o
+	-cmd /c del *.bak
+
+distclean: clean
+	-cmd /c del $(TARGET)
+
+install: $(TARGET)
+	cmd /c copy $(TARGET) $(LIBDIR)
+	cmd /c copy msgapi.h $(INCDIR)
+	cmd /c copy smapi.pas $(INCDIR)
 

@@ -1,5 +1,16 @@
+# include Husky-Makefile-Config
+!include ..\huskymak.cfg
+
+!include makefile.common
+
 CC=     wcl386
-CFLAGS= -zq -wx -bt=nt -l=nt
+
+!IF $(DEBUG) == 1
+  CFLAGS= -zq -wx -bt=nt -l=nt -d2
+!ELSE
+  CFLAGS= -zq -wx -bt=nt -l=nt
+!ENDIF
+
 CDEFS=
 COPT=   -oneatx -5
 LIB=    wlib
@@ -8,7 +19,7 @@ TARGET= smapiwcw.lib
 
 OBJS=   1stchar.obj api_sdm.obj api_sq.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj
 
-# Thunderbirds are go!
+all: $(TARGET)
 
 .c.obj:
         $(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
@@ -17,4 +28,14 @@ OBJS=   1stchar.obj api_sdm.obj api_sq.obj api_jam.obj cvtdate.obj date2bin.obj 
 $(TARGET): $(OBJS)
 
 clean:
-        del *.obj *.lib *.bak
+	del *.obj
+	del *.bak
+
+distclean: clean
+	del $(TARGET)
+
+install: $(TARGET)
+	copy $(TARGET) $(LIBDIR)
+	copy msgapi.h $(INCDIR)
+	copy smapi.pas $(INCDIR)
+

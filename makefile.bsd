@@ -1,12 +1,21 @@
+# include Husky-Makefile-Config
+include ../huskymak.cfg
+
+include makefile.common
+
 CC=	gcc
 LD=	gcc
-CFLAGS=	-Wall -s
+
+ifeq ($(DEBUG), 1)
+  CFLAGS=	-Wall -g
+else
+  CFLAGS=	-Wall -s
+endif
+
 CDEFS=	-DUNIX
-COPT=	-fpic -O2 -fomit-frame-pointer -fstrength-reduce -m486
+COPT=	-fpic -O2 -fomit-frame-pointer -fstrength-reduce
 LIB=	ar
 RANLIB= ranlib
-ILOPT=	-c -m 444 -o bin -g bin
-LIBDIR=	/usr/local/lib
 
 TARGET=	libsmapibsd.a
 
@@ -33,8 +42,6 @@ OBJS=	1stchar.o  \
 	trail.o    \
 	weekday.o
 
-# Thunderbirds are go!
-
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
@@ -50,4 +57,13 @@ libsmapibsd.so.2: $(OBJS)
 install: $(TARGET) libsmapibsd.so.2
 	install $(ILOPT) libsmapibsd.a $(LIBDIR)
 	install $(ILOPT) libsmapibsd.so.2 $(LIBDIR)
+	install $(IIOPT) msgapi.h $(INCDIR)
+	install $(IIOPT) smapi.pas $(INCDIR)
 	ln -sf libsmapibsd.so.2 $(LIBDIR)/libsmapibsd.so
+
+clean:
+	-rm *.o *~
+
+distclean: clean
+	-rm $(TARGET) libsmapibsd.so.2
+
