@@ -77,7 +77,7 @@ void pascal far flush_handle2(int fh)
 
 #elif defined(__NT__)
 
-#ifdef RSXNT
+#ifdef __RSXNT__
 #include <emx/syscalls.h>
 #include <stdlib.h>
 
@@ -88,12 +88,12 @@ void pascal far flush_handle2(int fh)
 
 void pascal far flush_handle2(int fh)
 {
-#ifdef RSXNT
-    int nt_handle = __fcntl(handle, F_GETOSFD, 0);
+#ifdef __RSXNT__
+    int nt_handle = __fcntl(fh, F_GETOSFD, 0);
 #else
     int nt_handle = fh;
 #endif
-    FlushFileBuffers((HANDLE) fh);
+    FlushFileBuffers((HANDLE) nt_handle);
 }
 
 #else
