@@ -22,28 +22,28 @@
 #include <string.h>
 #include "compiler.h"
 
-#if defined(__TURBOC__) || defined(__DJGPP__)
-#include <dir.h>
+#if defined(HAS_DIR_H)
+#  include <dir.h>
 #endif
 
-#if !defined( __IBMC__) && !defined(UNIX) && !defined(__MINGW32__) && !defined(__MSVC__)
-#include <dos.h>
+#if !defined( __IBMC__) && !defined(__UNIX__) && !defined(__MINGW32__) && !defined(__MSVC__)
+#  include <dos.h>
 #endif
 
 #include "ffind.h"
 
 #ifdef __OS2__
-#define INCL_NOPM
-#define INCL_DOS
-#include <os2.h>
-#if defined(__386__) || defined(__FLAT__)
-#undef DosQPathInfo
-#define DosQPathInfo(a,b,c,d,e)  DosQueryPathInfo(a,b,c,d)
-#endif
+#  define INCL_NOPM
+#  define INCL_DOS
+#  include <os2.h>
+#  if defined(__FLAT__)
+#    undef DosQPathInfo
+#    define DosQPathInfo(a,b,c,d,e)  DosQueryPathInfo(a,b,c,d)
+#  endif
 #endif
 
-#ifdef UNIX
-#include "patmat.h"
+#ifdef __UNIX__
+#  include "patmat.h"
 #endif
 
 /*
@@ -98,7 +98,7 @@ FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
 
 #elif defined(__OS2__)
 
-#if defined(__386__) || defined(__FLAT__)
+#if defined(__FLAT__)
         ULONG SearchCount = 1;
         FILEFINDBUF3 findbuf;
 #else
@@ -124,7 +124,7 @@ FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
             ff = NULL;
         }
 
-#elif defined(UNIX)
+#elif defined(__UNIX__)
 
         char *p;
         int fin = 0;
@@ -165,7 +165,7 @@ FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
                     if (patmat(de->d_name, ff->lastbit))
                     {
                         strncpy(ff->ff_name, de->d_name, sizeof ff->ff_name);
-			 ff->ff_fsize = -1L; /* All who wants to know it's size 
+			 ff->ff_fsize = -1L; /* All who wants to know it's size
 					      * must read it by himself
 					      */
                         fin = 1;
@@ -214,7 +214,7 @@ FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
             ff = NULL;
         }
 
-#elif defined(__RSXNT__) || defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
+#elif defined(__RSXNT__) || defined(__MINGW32__) || defined(__MSVC__)
 
         ff->hDirA = FindFirstFile(filespec, &(ff->InfoBuf));
         ff->attrib_srch = (char)attribute;
@@ -298,7 +298,7 @@ int _fast FFindNext(FFIND * ff)
 
 #elif defined(__OS2__)
 
-#if defined(__386__) || defined(__FLAT__)
+#if defined(__FLAT__)
         ULONG SearchCount = 1;
         FILEFINDBUF3 findbuf;
 #else
@@ -317,7 +317,7 @@ int _fast FFindNext(FFIND * ff)
             rc = 0;
         }
 
-#elif defined(UNIX)
+#elif defined(__UNIX__)
 
         int fin = 0;
         struct dirent *de;
@@ -336,7 +336,7 @@ int _fast FFindNext(FFIND * ff)
                 if (patmat(de->d_name, ff->lastbit))
                 {
                     strncpy(ff->ff_name, de->d_name, sizeof ff->ff_name);
-		    ff->ff_fsize = -1L; /* All who wants to know it's size 
+		    ff->ff_fsize = -1L; /* All who wants to know it's size
 					 * must read it by himself
 					 */
 		    fin = 1;
@@ -414,14 +414,14 @@ void _fast FFindClose(FFIND * ff)
     if (ff != NULL)
     {
 #if defined(__TURBOC__) || defined(__DJGPP__)
-#elif (defined(__WATCOMC__NT__)) || (defined(__MSC__) && !defined(MSDOS))
+#elif (defined(__WATCOMC__NT__)) || (defined(__MSC__) && !defined(__DOS__))
         _dos_findclose(&(ff->ffbuf));
 #elif defined(__OS2__)
         if (ff->hdir)
         {
             DosFindClose(ff->hdir);
         }
-#elif defined(UNIX)
+#elif defined(__UNIX__)
         if (ff->dir)
         {
             closedir(ff->dir);

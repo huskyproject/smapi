@@ -418,7 +418,7 @@ SMAPI_EXT dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dwor
  */
 SMAPI_EXT char * _XPENTRY  strmerr(int msgapierr);
 
-#if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__DJGPP__) && !defined(__NT__) && !defined(NT) && !defined(__MINGW32__)
+#if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__NT__)
 sword far pascal farread(sword handle, byte far * buf, word len);
 sword far pascal farwrite(sword handle, byte far * buf, word len);
 #endif
@@ -426,9 +426,9 @@ sword far pascal farwrite(sword handle, byte far * buf, word len);
 byte *_fast Address(NETADDR * a);
 byte *StripNasties(byte * str);
 
-#if defined(MSDOS)
+#if defined(__DOS__)
 sword far pascal shareloaded(void);
-#elif defined(OS2) || defined(__NT__) || defined(UNIX) || defined(__MINGW32__) || defined(__CYGWIN__)
+#elif defined(OS2) || defined(__NT__) || defined(UNIX)
 #define shareloaded() TRUE
 #else
 #define shareloaded() FALSE

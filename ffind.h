@@ -22,15 +22,13 @@
 
 #include "compiler.h"
 
-#ifdef UNIX
-#include <stdio.h>
-#include <unistd.h>
-#include <dirent.h>
-#endif
-
 #ifdef SASC
-#include <stdio.h>
-#include <dos.h>
+#  include <stdio.h>
+#  include <dos.h>
+#elif defined(__UNIX__)
+#  include <stdio.h>
+#  include <unistd.h>
+#  include <dirent.h>
 #endif
 
 #if defined(__RSXNT__) || defined(__MINGW32__) || defined(__MSVC__)
@@ -57,7 +55,7 @@
 
 #define FFIND struct ffind
 
-#if defined(__DJGPP__) || defined(__TURBOC__) 
+#if defined(__DJGPP__) || defined(__TURBOC__)
 #include <dir.h>
 #endif
 
@@ -91,15 +89,15 @@ struct ffind
     unsigned short hdir;  /* directory handle from DosFindFirst */
 #endif
 
-#elif defined(UNIX)
-    DIR *dir;
-    char firstbit[FILENAME_MAX];
-    char lastbit[FILENAME_MAX];
-
 #elif defined(SASC)
     struct FileInfoBlock info;
     char newfile[FILENAME_MAX];
     char prefix[FILENAME_MAX];
+
+#elif defined(__UNIX__)
+    DIR *dir;
+    char firstbit[FILENAME_MAX];
+    char lastbit[FILENAME_MAX];
 
 #elif defined(__RSXNT__) || defined(__MINGW32__) || defined(__MSVC__)
     WIN32_FIND_DATA InfoBuf;

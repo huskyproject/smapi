@@ -17,26 +17,37 @@
  *  author.
  */
 
-
-#if defined(UNIX) || defined(__MINGW32__) || defined(EMX) || defined(RSXNT) || defined(__DJGPP__) || defined(_MSC_VER)
 /* These are compilers that have both a working stat() and (important!) the
    S_ISREG and S_ISDIR macros. The problem is that while stat() is POSIX, those
    macros are not. For compilers that do not provide these macros, we revert to
    the old "ffind" method. */
+/* Moved to compiler.h
+#if defined(__UNIX__) || defined(__MINGW32__) || defined(__EMX__) || defined(__RSXNT__) || defined(__DJGPP__) || defined(_MSC_VER)
 #define USE_STAT_MACROS
 #endif
+*/
 
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#if defined(UNIX) || defined(__MINGW32__) || defined(__EMX__)
+#if defined(__UNIX__) || defined(__MINGW32__) || defined(__EMX__)
 #include <unistd.h>
 #endif
 
+#include "compiler.h"
+
 #ifdef USE_STAT_MACROS
-#include <sys/types.h>
-#include <sys/stat.h>
+/* These are compilers that have both a working stat() and (important!) the
+   S_ISREG and S_ISDIR macros. The problem is that while stat() is POSIX, those
+   macros are not. For compilers that do not provide these macros, we revert to
+   the old "ffind" method. */
+#  include <sys/types.h>
+#  include <sys/stat.h>
+#else
+#  if HAS_DOS_H
+#    include <dos.h>
+#  endif
 #endif
 
 #include "ffind.h"
@@ -110,7 +121,7 @@ int _fast direxist(const char *directory)
     return S_ISDIR(s.st_mode);
 }
 
-#else
+#else /* USE_STAT_MACROS not defined */
 
 /* Here comes the ugly platform specific and sometimes even slow code. */
 
@@ -141,24 +152,22 @@ long _fast fsize(const char *filename)
 
     if (ff)
     {
-#ifndef UNIX
+#ifndef __UNIX__
 	ret = ff->ff_fsize;
-	if (ret != -1L) {
+	if (ret != -1L)
 #endif
-	    fp = fopen(filename, "rb");
+	{   fp = fopen(filename, "rb");
 	    fseek(fp, 0, SEEK_END);
 	    ret = ftell(fp);
 	    fclose(fp);
-#ifndef UNIX
-	};
-#endif
+	}
         FFindClose(ff);
     }
 
     return ret;
 }
 
-#if defined(MSDOS) || defined(__DJGPP__) || (defined(__FLAT__) && defined(__WATCOMC__))
+#if defined(__DOS__) || defined(__DPMI__)
 
 int _fast direxist(const char *directory)
 {
@@ -202,9 +211,9 @@ int _fast direxist(const char *directory)
 
 }
 
-#elif defined(OS2) || defined(__NT__) || defined(__MINGW32__)
+#elif defined(__OS2__) || defined(__NT__)
 
-#ifdef OS2
+#ifdef __OS2__
 #define INCL_DOSFILEMGR
 #include <os2.h>
 #else
@@ -219,7 +228,7 @@ int _fast direxist(const char *directory)
 {
     char *tempstr, *p;
     size_t l;
-#if defined(__NT__) || defined(__MINGW32__) || defined(__CYGWIN__)
+#if defined(__NT__) || defined(__CYGWIN__)
     DWORD attr;
 #else
     FILESTATUS3 s;
@@ -254,7 +263,7 @@ int _fast direxist(const char *directory)
           *p='\\';
     }
 
-#ifdef OS2
+#ifdef __OS2__
     if (DosQueryPathInfo((PSZ)tempstr, FIL_STANDARD,
                          (PVOID)&s, sizeof(s)) == 0)
     {
@@ -276,9 +285,7 @@ int _fast direxist(const char *directory)
 #endif
 }
 
-#elif defined(UNIX) || defined(SASC)
-
-#include <stdio.h>
+#elif defined(__UNIX__)
 
 int _fast direxist(const char *directory)
 {
@@ -316,7 +323,7 @@ int _createDirectoryTree(const char *pathName) {
    }
    slash = start;
 
-#ifndef UNIX
+#ifndef __UNIX__
    /*  if there is a drivename, jump over it */
    if (slash[1] == ':') slash += 2;
 #endif

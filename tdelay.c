@@ -21,13 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef MSDOS
-#ifndef __MSDOS__
-#define __MSDOS__
-#endif
-#endif
-
-#if defined(__MSDOS__) || (defined(__FLAT__) && defined(__WATCOMC__))
+#if defined(__DOS__) || defined(__DPMI__)
 #include <dos.h>
 #endif
 
@@ -36,6 +30,7 @@
 #define INCL_DOS    /* must be before prog.h */
 #endif
 
+#include "compiler.h"
 #include "prog.h"
 
 #if defined(__OS2__)
@@ -47,7 +42,7 @@
       DosSleep((ULONG)msecs);
   }
 
-#elif defined(__MSDOS__)
+#elif defined(__DOS__)
 #include <time.h>
 
   void _fast tdelay(int msecs)
@@ -68,7 +63,7 @@
     _sleep((dword)msecs);
   }
 
-#elif defined(NT) || defined(__NT__) || defined(__WIN32__)
+#elif defined(__WIN32__)
 /* win32/nt not mingw or `cygwin -mno-cygwin`  (MS VC, Borland C/win32, Watcom C)*/
 
 # if defined(_MSC_VER) || defined(__TURBOC__)
@@ -90,7 +85,7 @@
     snooze(msecs*1000l);
   }
 
-#elif defined(UNIX)
+#elif defined(__UNIX__)
 
 #include <unistd.h>
 
@@ -107,5 +102,3 @@
 #else
 #error Unknown OS
 #endif
-
-

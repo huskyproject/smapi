@@ -4,7 +4,7 @@
 
 CC=	gcc
 CFLAGS=	-Wall -Zomf -Zsys
-CDEFS=	-DOS2
+CDEFS=	-D__OS2__
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -Wall -funsigned-char -s
 LIB=	emxomfar
 OBJ=	.obj

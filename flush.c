@@ -23,15 +23,15 @@
 #include "progprot.h"
 
 
-#if !defined(UNIX) && !defined(SASC)
+#if !defined(__UNIX__) && !defined(SASC)
 #include <io.h>
 #endif
 
-#if defined(UNIX) || defined(__DJGPP__)
+#if defined(__UNIX__) || defined(__DJGPP__)
 #include <unistd.h>
 #endif
 
-#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__) && !defined(__MSVC__)
+#if !defined(__IBMC__) && !defined(__DOS__) && !defined(__UNIX__) && !defined(__MINGW32__) && !defined(__MSVC__)
 #include <dos.h>
 #endif
 
@@ -40,7 +40,13 @@
 #define INCL_NOPM
 #include <os2.h>
 
-#if defined(__386__) || defined(__FLAT__) || defined(__EMX__)
+#if defined(__EMX__)
+#undef DosBufReset
+#define DosBufReset DosResetBuffer
+#endif
+
+#if defined(__FLAT__)
+#warning Please report about DosResetBuffer() in your compiler to husky developers: http://husky.sf.net
 #undef DosBufReset
 #define DosBufReset DosResetBuffer
 #endif
@@ -62,7 +68,7 @@ void pascal far flush_handle2(int fh)
     fsync(fh);
 }
 
-#elif defined(UNIX) || defined(SASC)
+#elif defined(__UNIX__) || defined(SASC)
 
 void pascal far flush_handle2(int fh)
 {
@@ -97,7 +103,7 @@ void pascal far flush_handle2(int fh)
     FlushFileBuffers((HANDLE) nt_handle);
 }
 
-#elif defined(__WATCOMC__) && defined(MSDOS)
+#elif defined(__WATCOMC__DOS__)
 
 #include <dos.h>
 
@@ -121,7 +127,7 @@ void _fast flush_handle(FILE * fp)
 {
     fflush(fp);
 
-#if defined(__OS2__) || defined(MSDOS) || defined(__NT__) || defined(__MINGW32__) || defined(__TURBOC__) || defined(SASC) || defined(__DJGPP__)
+#if defined(__OS2__) || defined(__DOS__) || defined(__NT__) || defined(__TURBOC__) || defined(SASC) || defined(__DJGPP__)
     flush_handle2(fileno(fp));
 #else
     {

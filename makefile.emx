@@ -6,7 +6,7 @@
 
 CC	= gcc
 CFLAGS	= -Wall -Zcrtdll
-CDEFS	= -DOS2
+CDEFS	= -D__OS2__
 COPT	= -O3 -fomit-frame-pointer -fstrength-reduce -funsigned-char -s
 AR	= ar
 AR_R	= r
@@ -17,7 +17,7 @@ EXE	= .exe
 
 TARGET	= smapiemx$(LIB)
 
-EXENAMEFLAG = -o 
+EXENAMEFLAG = -o
 
 # Thunderbirds are go!
 

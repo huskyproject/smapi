@@ -3,48 +3,52 @@
 # No support for the Husky build environment.
 
 # Uncomment this for compile info for gdb
-#DEBUG= -g
+#DEBUG	= -g
 
 #use this line if you are using MINGW32 on a Windows box
-GCC=gcc
-LIB=ar
-RANLIB=ranlib
-#RM=del
+GCC	= gcc
+AR	= ar
+RANLIB	= ranlib
 
 #use this line if you are using MINGW32 CPD on a Unix box as cross compiler
-#CC=i386-mingw32-gcc
-#LIB=i386-mingw32-ar
-#RANLIB=i386-mingw32-ranlib
-RM=rm
+#CC	= i386-mingw32-gcc
+#AR	= i386-mingw32-ar
+#RANLIB	= i386-mingw32-ranlib
+RM	= rm
 
-OBJ=	.o
+C	= .c
+OBJ	= .o
+EXE	= .exe
 
 # __CYGWIN__ is predefined macros for GCC/cygwin native mode;
 # __MINGW32__ is predefined macros for `gcc -mno-cygwin` call.
 # Removed macros __NT__ declared in compiler.h
 # Use these macroses for condition compilation, please
-CDEFS=
+CDEFS	=
 
-CFLAGS=-Wall -mno-cygwin
-COPT=-O3
+CFLAGS	= -Wall -mno-cygwin -pedantic -O3
+COPT	= -c
+EXENAMEOPT= -o
+AROPT	= r
 
-TARGET=libsmapicyg.a
+TARGET	= libsmapicyg.a
+GNMSGID	= gnmsgid
 
-default: $(TARGET)
+default: $(TARGET) $(GNMSGID)$(EXE)
 
 include makefile.inc
 
-all: $(TARGET) gnmsgid.exe
+all: $(TARGET)
 
 .c.o:
-	$(CC) $(DEBUG) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
+	$(CC) $(DEBUG) $(CFLAGS) $(CDEFS) $(COPT) $<
+	$(AR) $(AROPT) $(TARGET) $@
 
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 	
-gnmsgid.exe: $(MGOBJS)
-	$(CC) -Wall $(CFLAGS) $(COPT) gnmsgid.c -o$@ $(TARGET)
+$(GNMSGID)$(EXE): $(GMOBJS)
+	$(CC) $(CFLAGS) $(EXENAMEOPT)$@ $(GNMSGID)$(C) $(GMOBJS)
 
 clean:
 	-$(RM) *.o

@@ -12,7 +12,7 @@ int outrunparse(char *line, unsigned long *seqoutrun)
 {
     char *p;
     while (isspace(*line)) line++;
-    if (!isdigit(*line)) 
+    if (!isdigit(*line))
     {
         fprintf(stderr, "Bad SeqOutrun value '%s'!\n", line);
         return 1;
@@ -60,14 +60,14 @@ int main(int argc, char *argv[])
     int num;
     dword msgid;
     char *msgiderr;
-    
+
     seqdir = NULL;
     seqoutrun = 0;
     usage = 0;
     perr = 0;
     num = 1;
     parsed = 0;
-    
+
     for(i=1; i<argc; i++)
     {
         if ((argv[i][0] == '-')||(argv[i][0] == '/'))
@@ -133,9 +133,9 @@ int main(int argc, char *argv[])
             }
             if (perr!=0)
                 break;
-            
+
             num = atoi(argv[i]);
-            
+
             if (num<1)
             {
                 fprintf(stderr, "Invalid <num> parameter ('%s')!\n", argv[i]);
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
             }
             break;
     }
-    
+
     if (perr==0)
     {
         if (usage)
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
             printusage();
             return 1;
         }
-        
+
         for(i=1; i<=num; i++)
         {
             msgid = GenMsgIdEx(seqdir, seqoutrun, NULL, &msgiderr);

@@ -26,9 +26,10 @@
 #include "compiler.h"
 #include "stamp.h"
 
-#if !( (defined(__WATCOMC__) && !defined(MSDOS)) || defined(__MSVC__) )
+#if !( (defined(__WATCOMC__) && !defined(__DOS__)) || defined(__MSVC__) )
 void pascal far flush_handle2(int fd);
 #endif
+
 void _fast flush_handle(FILE * fp);
 SMAPI_EXT int _fast fexist(const char *filename);
 SMAPI_EXT long _fast fsize(const char *filename);

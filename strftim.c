@@ -21,9 +21,10 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include "compiler.h"
 #include "prog.h"
 
-#ifndef NO_STRFTIME
+#ifndef HAS_STRFTIME
 /* Note: TZ environment variable MUST be defined to use the %Z function! */
 
 size_t cdecl strftime(char *string, size_t maxsize, const char *format, const struct tm *current_time)

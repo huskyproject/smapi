@@ -57,14 +57,14 @@ void far *farcalloc(int n, int m);
 
 #endif /* defined(ZREE) */
 
-#define NO_STRFTIME
-#define NO_MKTIME
+#define HAS_STRFTIME
+#define HAS_MKTIME
 
 #elif defined(__TURBOC__)
 
 #if __TURBOC__ == 0x0295
-#define NO_STRFTIME
-#define NO_MKTIME
+#define HAS_STRFTIME
+#define HAS_MKTIME
 #endif
 
 #endif
@@ -92,7 +92,7 @@ void far *farcalloc(int n, int m);
 
 /* Default separator for path specification */
 
-#if defined(SASC) || defined(UNIX)
+#if defined(__UNIX__)
 #define PATH_DELIM  '/'
 #else
 #define PATH_DELIM  '\\'
@@ -109,9 +109,11 @@ void far *farcalloc(int n, int m);
 #define eqstri(str1,str2)     (stricmp(str1,str2)==0)
 #define eqstrn(str1,str2,n)   (strncmp(str1,str2,n)==0)
 
+/* Moved to compiler.h
 #ifndef min
 #define min(a,b)              (((a) < (b)) ? (a) : (b))
 #endif
+*/
 
 extern char _stdc months[][10];
 extern char _stdc weekday[][10];
@@ -121,9 +123,9 @@ extern char _stdc weekday_ab[][4];
 
 #include "progprot.h"
 
-#ifndef NO_STRFTIME
-
 /* If compiler doesn't include a strftime(), we need our own */
+/* Moved to compiler.h
+#ifndef NO_STRFTIME
 
 #include <time.h>
 #include <sys/types.h>
@@ -132,10 +134,11 @@ size_t _stdc strftime(char *str, size_t maxsize, const char *fmt,
   const struct tm *tm_ptr);
 
 #endif
-
-#ifndef NO_MKTIME
+*/
 
 /* If compiler doesn't include a mktime(), we need our own */
+/* Moved to compiler.h
+#ifndef NO_MKTIME
 
 #include <time.h>
 #include <sys/types.h>
@@ -143,11 +146,13 @@ size_t _stdc strftime(char *str, size_t maxsize, const char *fmt,
 time_t _stdc mktime(struct tm *tm_ptr);
 
 #endif
-
+*/
+/* Moved to compiler.h
 #ifdef SH_DENYNO
 #ifndef SH_DENYNONE
 #define SH_DENYNONE SH_DENYNO
 #endif
 #endif
+*/
 
 #endif

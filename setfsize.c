@@ -24,18 +24,13 @@
 /* name=Function to dynamically change the size of a file
 */
 
-#ifdef MSDOS
-#ifndef __MSDOS__
-#define __MSDOS__
-#endif
-#endif
 
-#ifdef __MSDOS__
+#ifdef __DOS__
 #include <dos.h>
 #endif
 #include "prog.h"
 
-#if defined(__MSDOS__)
+#if defined(__DOS__)
 
   #ifdef __WATCOMC__
   #include <i86.h>
@@ -53,7 +48,7 @@
 
     lseek(fd, size, SEEK_SET);
 
-  #ifdef __386__
+  #ifdef __FLAT__
     r.h.ah=0x40;
     r.x.ebx=fd;
     r.x.ecx=0;
@@ -83,7 +78,7 @@
     return ((int)DosSetFileSize((HFILE)fd, (ULONG)size));
   }
 
-#elif defined(UNIX)
+#elif defined(__UNIX__)
 
   #include <unistd.h>
 
@@ -91,14 +86,14 @@
   {
     return ftruncate(fd, size);
   }
-#elif defined(__NT__) || defined(NT) || defined(__MINGW32__) || defined(__WIN32__)
+#elif defined(__WIN32__)
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <winbase.h>
   #include <io.h>
   int _fast setfsize(int fd, long size)
   {
-#if (defined(_MSC_VER) && (_MSC_VER >= 1200)) || defined(__MINGW32__)
+#if defined(__MSVC__) || defined(__MINGW32__)
     return chsize(fd, size);
 #else
     SetFilePointer((HANDLE)fd, size, NULL, FILE_BEGIN);
