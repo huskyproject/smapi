@@ -30,6 +30,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #ifdef USE_STAT_MACROS
 #include <sys/types.h>
 #include <sys/stat.h>

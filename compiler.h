@@ -346,6 +346,7 @@ int lock(int handle, long ofs, long length);
 #define read _read
 #if !defined(__CYG__)
 #define stat _stat
+#define fstat _fstat
 
 #define stricmp _strcmpi
 #define strcmpi _strcmpi
