@@ -1261,7 +1261,8 @@ JAMSUBFIELD2ptr NETADDRtoSubf(NETADDR addr, dword *len, word opt)
     subf = (JAMSUBFIELD2ptr) palloc(sizeof(JAMSUBFIELD2));
 		
    if (!subf) return NULL;
-   memset(subf, '\0', *len);
+/*   memset(subf, '\0', *len); */
+   memset(subf, '\0', sizeof(JAMSUBFIELD2));
    if (opt) {
       subf->LoID = JAMSFLD_DADDRESS;
    } else {
