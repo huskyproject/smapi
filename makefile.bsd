@@ -4,6 +4,9 @@
 # Run 'gmake hinstall' to install C header files.
 # No support for the Husky build environment.
 
+VERH =  2.1
+VER  =  2.1.0
+
 prefix=	/usr/local
 CC=	gcc
 CFLAGS=	-Wall
@@ -83,7 +86,8 @@ distclean: clean
 install: $(TARGET)
 	$(INSTALL) $(DIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
-	ln -sf $(LIBDIR)$(TARGET) $(LIBDIR)$(TARGET).1
+	ln -sf $(LIBDIR)$(TARGET) $(LIBDIR)$(TARGET).$(VER)
+	ln -sf $(LIBDIR)$(TARGET) $(LIBDIR)$(TARGET).$(VERH)
 
 hinstall:
 	$(INSTALL) $(DIROPT) $(INCDIR)
