@@ -1,3 +1,32 @@
+2001-05-09 Wednesday 10:56  oliver.grimm
+
+	* api_jam.c (1.57): OG: The kludges should be now in the right
+	order in JAM Areas.
+
+2001-05-09 Wednesday 10:42  oliver.grimm
+
+	* api_jam.c (1.56): OG: Speed up and reduce stacke usage in
+	freejamsubfield()
+
+2001-05-09 Wednesday 00:38  tobi
+
+	* structrw.c (1.22): bogus fix to stop boundary checking from
+	complaining
+
+2001-05-09 Wednesday 00:38  tobi
+
+	* api_jam.c (1.55): fixed coredump when sqpack was run on a jam
+	area
+
+2001-05-09 Wednesday 00:34  tobi
+
+	* BEOS.TXT (1.2): corrected some errors
+
+2001-05-09 Wednesday 00:33  tobi
+
+	* makefile.emo (1.20), makefile.emx (1.12): fixed emx makefiles for
+	gmake
+
 2001-05-06 Sunday 21:52  ml
 
 	* .cvs2cl (1.1): added .cvs2cl file
