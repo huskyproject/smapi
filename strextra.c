@@ -39,7 +39,7 @@ int stricmp(const char *s, const char *t)
 
 #endif
 
-#if !defined(__IBMC__) && !defined(__linux__) && !defined(__sun__) && !defined(__WATCOMC__) && !defined(_MSC_VER) 
+#if !(defined(__APPLE__) && defined(__MACH__)) && !defined(__IBMC__) && !defined(__linux__) && !defined(__sun__) && !defined(__WATCOMC__) && !defined(_MSC_VER) 
 
 char *strdup(const char *s)
 {
