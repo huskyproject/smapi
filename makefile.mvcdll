@@ -19,15 +19,23 @@ include makefile.inc
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
 
-all: $(SMAPIDLL)
-
+all: $(SMAPIDLL) gnmsgid.exe
+        
 $(SMAPIDLL): $(OBJS)
 	$(LINK) $(LINKOPTS) $(OBJS)
 
+gnmsgid.exe: $(OBJS)
+        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ gnmsgid.c $(OBJS) /link /opt:nowin98
+        -del gnmsgid.exp
+        -del gnmsgid.lib
+
 clean:
 	-del *.obj
+        -del gnmsgid.exp
+        -del gnmsgid.lib
 
 distclean: clean
 	-del $(SMAPIL)
 	-del $(SMAPIDLL)
 	-del smapimvc.exp
+        -del gnmsgid.exe

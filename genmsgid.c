@@ -22,6 +22,8 @@
 
 #define MAX_OUTRUN	(3ul*365*24*60*60) /* 3 year */
 
+#define GenMsgIdErr(a) { if (errstr!=NULL) { *errstr = a; } }
+
 dword oldGenMsgId(void)
 {
 	dword seq = (dword)time(NULL);
@@ -29,18 +31,23 @@ dword oldGenMsgId(void)
 	return seq;
 }
 
-dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
+dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dword (*altGenMsgId)(void), char **errstr)
 {
 	dword seq, n, curtime;
 	FFIND *ff;
 	char *seqpath, max_fname[13], *new_fname, *pname, *p;
 	int  h, try;
 
+	if (altGenMsgId == NULL)
+		altGenMsgId = oldGenMsgId;
+	GenMsgIdErr(NULL);
+
 	if (seqdir == NULL || *seqdir == '\0') {
 		seqdir = getenv("SEQDIR");
 		if (seqdir == NULL || *seqdir == '\0') {
 			/* warning: no SEQDIR defined, fall to ugly old algorythm */
-			return oldGenMsgId();
+			GenMsgIdErr("no SEQDIR defined");
+			return (*altGenMsgId)();
 		}
 	}
 	seqpath = malloc(strlen(seqdir)+13);
@@ -81,7 +88,8 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 				goto emptydir;
 			free(seqpath);
 			if (new_fname) free(new_fname);
-			return oldGenMsgId();
+			GenMsgIdErr("can't open/create SEQDIR directory");
+			return (*altGenMsgId)();
 		}
 		do {
 			for (p=ff->ff_name; isxdigit((int)(*p)); p++);
@@ -125,7 +133,8 @@ emptydir:
 			if (errno == EEXIST) continue;
 			free(seqpath);
 			free(new_fname);
-			return oldGenMsgId();
+			GenMsgIdErr("error creating file in SEQDIR directory");
+			return (*altGenMsgId)();
 		}
 		/* rename max_fname to new_fname */
 		strcpy(pname, max_fname);
@@ -139,6 +148,12 @@ emptydir:
 			continue;
 		free(seqpath);
 		free(new_fname);
-		return oldGenMsgId();
+		GenMsgIdErr("can't rename .seq file");
+		return (*altGenMsgId)();
 	}
+}
+
+dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
+{
+  return GenMsgIdEx(seqdir, max_outrun, NULL, NULL);
 }

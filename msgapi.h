@@ -412,6 +412,7 @@ void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
 word _XPENTRY NumKludges(char *txt);
 SMAPI_EXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
 SMAPI_EXT dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun);
+SMAPI_EXT dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dword (*altGenMsgId)(void), char **errstr);
 
 /*  Return MSGAPI error text (string constant).
  */

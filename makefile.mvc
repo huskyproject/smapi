@@ -5,7 +5,7 @@ CC=     cl
 CFLAGS= -nologo -Zp1
 CDEFS=  -D__NT__ -DWIN32 -D_CONSOLE -DINTEL
 COPT=   -O2
-LIB=    lib -nologo
+TLIB=    lib -nologo
 OBJ=	.obj
 
 SMAPIL= smapimvc.lib
@@ -16,13 +16,17 @@ include makefile.inc
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
-all: $(SMAPIL)
+all: $(SMAPIL) gnmsgid.exe
 
 $(SMAPIL): $(OBJS)
-	$(LIB) /out:$@ $(OBJS)
+	$(TLIB) /out:$@ $(OBJS)
+
+gnmsgid.exe: $(SMAPIL)
+        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ gnmsgid.c $(SMAPIL) /link /opt:nowin98
 
 clean:
 	-del *.obj
 
 distclean: clean
 	-del *.lib
+	-del gnmsgid.exe

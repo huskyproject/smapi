@@ -5,7 +5,11 @@
 CC=gcc
 LIB=ar
 RANLIB=ranlib
+ifeq ($(TERM),msys)
+RM=rm
+else
 RM=del
+endif
 OBJ=	.o
 
 # __MINGW32__ is predefined macros, __NT__ defined in compiler.h
@@ -22,7 +26,7 @@ TARGET=libsmapimgw.a
 include makefile.inc
 
 
-all: $(TARGET)
+all: $(TARGET) gnmsgid.exe
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $<
@@ -31,8 +35,11 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
+gnmsgid.exe: $(OBJS)
+	$(CC) -Wall $(CDEFS) $(COPT) gnmsgid.c -o$@ $(OBJS)
 clean:
 	-$(RM) *.o
 
 distclean:
 	-$(RM) $(TARGET)
+	-$(RM) gnmsgid.exe
