@@ -1,3 +1,11 @@
+smapi (2.1.0-6) unstable; urgency=low
+
+  * After a long time im back. A new Debian Package built. :)
+  * Wonder why there is no Big Version change ? Dont ask me, its Upstream
+    2.1.0 !:)
+
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Sun,  3 Mar 2002 23:32:18 +0100
+
 smapi (2.1.0-5) unstable; urgency=low
 
   * Package (hopefully) gets into Debian. Filed a bug against wnpp and
@@ -34,6 +42,4 @@ smapi (2.1.0-1) unstable; urgency=low
 
  -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Sun,  1 Jul 2001 17:37:41 +0200
 
-Local variables:
-mode: debian-changelog
-End:
+
