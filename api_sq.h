@@ -266,14 +266,14 @@ struct _msgh
 #define SQBASE_SIZE 256
 
 
-SMAPI_EXT int read_xmsg(sword handle, XMSG *pxmsg);
-SMAPI_EXT int write_xmsg(sword handle, XMSG *pxmsg);
-SMAPI_EXT int read_sqhdr(sword, SQHDR *);
-SMAPI_EXT int write_sqhdr(sword, SQHDR *);
-SMAPI_EXT int read_sqidx(sword, SQIDX *, dword);
-SMAPI_EXT int write_sqidx(sword, SQIDX *, dword);
-SMAPI_EXT int read_sqbase(sword handle, struct _sqbase *psqbase);
-SMAPI_EXT int write_sqbase(sword handle, struct _sqbase *psqbase);
+SMAPI_EXT int read_xmsg(int handle, XMSG *pxmsg);
+SMAPI_EXT int write_xmsg(int handle, XMSG *pxmsg);
+SMAPI_EXT int read_sqhdr(int, SQHDR *);
+SMAPI_EXT int write_sqhdr(int, SQHDR *);
+SMAPI_EXT int read_sqidx(int, SQIDX *, dword);
+SMAPI_EXT int write_sqidx(int, SQIDX *, dword);
+SMAPI_EXT int read_sqbase(int handle, struct _sqbase *psqbase);
+SMAPI_EXT int write_sqbase(int handle, struct _sqbase *psqbase);
 
 #endif /* __API_SQ_H_DEFINED */
 

@@ -122,7 +122,7 @@ void put_word(byte *ptr, word value)
 }
 #endif
 
-int read_xmsg(sword handle, XMSG *pxmsg)
+int read_xmsg(int handle, XMSG *pxmsg)
 {
     byte buf[XMSG_SIZE], *pbuf = buf;
     word rawdate, rawtime;
@@ -208,7 +208,7 @@ int read_xmsg(sword handle, XMSG *pxmsg)
     return 1;
 }
 
-int write_xmsg(sword handle, XMSG *pxmsg)
+int write_xmsg(int handle, XMSG *pxmsg)
 {
     byte buf[XMSG_SIZE], *pbuf = buf;
     word rawdate, rawtime;
@@ -300,7 +300,7 @@ int write_xmsg(sword handle, XMSG *pxmsg)
     return (farwrite(handle, (byte far *)buf, XMSG_SIZE) == XMSG_SIZE);
 }
 
-int read_sqhdr(sword handle, SQHDR *psqhdr)
+int read_sqhdr(int handle, SQHDR *psqhdr)
 {
     byte buf[SQHDR_SIZE], *pbuf = buf;
 
@@ -343,7 +343,7 @@ int read_sqhdr(sword handle, SQHDR *psqhdr)
     return 1;
 }
 
-int write_sqhdr(sword handle, SQHDR *psqhdr)
+int write_sqhdr(int handle, SQHDR *psqhdr)
 {
     byte buf[SQHDR_SIZE], *pbuf = buf;
 
@@ -398,7 +398,7 @@ int write_sqhdr(sword handle, SQHDR *psqhdr)
  * in a single structure" must be change if the structure layout changes.
  */
 
-int read_sqidx(sword handle, SQIDX *psqidx, dword n)
+int read_sqidx(int handle, SQIDX *psqidx, dword n)
 {
     byte buf[SQIDX_SIZE], *pbuf = NULL;
     byte *accel_buffer = NULL;
@@ -465,7 +465,7 @@ int read_sqidx(sword handle, SQIDX *psqidx, dword n)
 }
 
 
-int write_sqidx(sword handle, SQIDX *psqidx, dword n)
+int write_sqidx(int handle, SQIDX *psqidx, dword n)
 {
     byte buf[SQIDX_SIZE], *pbuf = NULL;
     byte *accel_buffer = NULL;
@@ -533,7 +533,7 @@ int write_sqidx(sword handle, SQIDX *psqidx, dword n)
     return 1;
 }
 
-int read_sqbase(sword handle, struct _sqbase *psqbase)
+int read_sqbase(int handle, struct _sqbase *psqbase)
 {
     byte buf[SQBASE_SIZE], *pbuf = buf;
 
@@ -598,7 +598,7 @@ int read_sqbase(sword handle, struct _sqbase *psqbase)
     return 1;
 }
 
-int write_sqbase(sword handle, struct _sqbase *psqbase)
+int write_sqbase(int handle, struct _sqbase *psqbase)
 {
     byte buf[SQBASE_SIZE], *pbuf = buf;
 

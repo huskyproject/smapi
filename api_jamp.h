@@ -100,18 +100,18 @@ static struct _apifuncs jm_funcs =
     JamGetHash
 };
 
-int read_hdrinfo(sword handle, JAMHDRINFO *HdrInfo);
-int read_idx(sword handle, JAMIDXREC *Idx);
-int read_hdr(sword handle, JAMHDR *Hdr);
-int read_subfield(sword handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen);
+int read_hdrinfo(int handle, JAMHDRINFO *HdrInfo);
+int read_idx(int handle, JAMIDXREC *Idx);
+int read_hdr(int handle, JAMHDR *Hdr);
+int read_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen);
 int copy_subfield(JAMSUBFIELD2LISTptr *to, JAMSUBFIELD2LISTptr from);
 
 int read_allidx(JAMBASEptr jmb);
 
-int write_hdrinfo(sword handle, JAMHDRINFO *HdrInfo);
-int write_idx(sword handle, JAMIDXREC *Idx);
-int write_hdr(sword handle, JAMHDR *Hdr);
-int write_subfield(sword handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLen);
+int write_hdrinfo(int handle, JAMHDRINFO *HdrInfo);
+int write_idx(int handle, JAMIDXREC *Idx);
+int write_hdr(int handle, JAMHDR *Hdr);
+int write_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLen);
 
 
 

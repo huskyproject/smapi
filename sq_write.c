@@ -498,7 +498,7 @@ static unsigned near _SquishWriteXmsg(HMSG hmsg, PXMSG pxm, dword *pdwOfs)
       return FALSE;
     }
 
-  if (write_xmsg((sword)HSqd->sfd, pxm) != 1)
+  if (write_xmsg(HSqd->sfd, pxm) != 1)
   {
     msgapierr=MERR_NODS;
     return FALSE;

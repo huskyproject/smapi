@@ -59,7 +59,7 @@ struct _sdmdata
 
 int EXPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc)(byte * str), byte * kludges);
 
-int read_omsg(sword, struct _omsg *);
-int write_omsg(sword, struct _omsg *);
+int read_omsg(int, struct _omsg *);
+int write_omsg(int, struct _omsg *);
 
 #endif
