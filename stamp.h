@@ -21,7 +21,6 @@
 #define __STAMP_H__
 
 #include <huskylib/compiler.h>
-#include <huskylib/typedefs.h>
 
 #if defined(__WATCOMC__) || defined(__DJGPP__) || defined(__MSVC__)
 typedef unsigned short bits;

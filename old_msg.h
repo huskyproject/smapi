@@ -20,7 +20,6 @@
 #ifndef __OLD_MSG_H__
 #define __OLD_MSG_H__
 
-#include <huskylib/typedefs.h>
 #include <huskylib/cvtdate.h>
 
 /* OPUS message header structure */

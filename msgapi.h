@@ -25,7 +25,6 @@ extern "C" {
 #define MSGAPI
 
 #include <huskylib/compiler.h>
-#include <huskylib/typedefs.h>
 #include <huskylib/cvtdate.h>
 
 #ifdef __BEOS__

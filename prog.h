@@ -23,7 +23,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <huskylib/compiler.h>
-/* #include "typedefs.h" */
 /* #include "stamp.h" */
 
 #ifndef TRUE
