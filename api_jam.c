@@ -1020,7 +1020,7 @@ static int gettz(void)
 int JamDeleteBase(char *name)
 {
    char *hdr, *idx, *txt, *lrd;
-   int x = strlen(name)+5;
+   int x;
    int rc = 1;
 
    if( !name || !*name )
@@ -1029,6 +1029,7 @@ int JamDeleteBase(char *name)
      return -1;
    }
 
+   x = strlen(name)+5;
    hdr = (char*) palloc(x);
    idx = (char*) palloc(x);
    txt = (char*) palloc(x);
