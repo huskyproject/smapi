@@ -134,7 +134,7 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
 {
   char szFile[PATHLEN];
 
-  (void)strcpy(szFile, szName);
+  (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sqd);
 
   Sqd->sfd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
@@ -142,10 +142,10 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
 
   if ((Sqd->sfd == -1) && (mode & O_CREAT) && (errno == ENOENT) )
   {
-     char* slash = strrchr(szName, PATH_DELIM);
+     char* slash = strrchr((char*)szName, PATH_DELIM);
      if (slash) {
         *slash = '\0';
-        _createDirectoryTree(szName);
+        _createDirectoryTree((char*)szName);
         *slash = PATH_DELIM;
      }
      Sqd->sfd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
@@ -157,7 +157,7 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
     return FALSE;
   }
 
-  (void)strcpy(szFile, szName);
+  (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sqi);
 
   if ((Sqd->ifd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
@@ -187,27 +187,27 @@ static unsigned near _SquishUnlinkBaseFiles(byte  *szName)
   char szFile[PATHLEN];
   unsigned rc=TRUE;
 
-  if ( !szName || (szName && (strlen(szName)+5>PATHLEN)) ) return FALSE;
+  if ( !szName || (szName && (strlen((char*)szName)+5>PATHLEN)) ) return FALSE;
 
-  (void)strcpy(szFile, szName);
+  (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sqd);
 
   if (unlink(szFile) != 0)
     rc=FALSE;
 
-  (void)strcpy(szFile, szName);
+  (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sqi);
 
   if (unlink(szFile) != 0)
     rc=FALSE;
 
-  (void)strcpy(szFile, szName);
+  (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sql);
 
   if (unlink(szFile) != 0)
     rc=FALSE;
 
-  (void)strcpy(szFile, szName);
+  (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_lck);
 
   if (unlink(szFile) != 0)
@@ -334,7 +334,7 @@ static unsigned near _SquishFillBaseHeader(SQBASE *psqb, byte  *szName)
   psqb->skip_msg=0L;
   psqb->high_water=0L;
   psqb->uid=1L;
-  (void)strcpy(psqb->base, szName);
+  (void)strcpy((char*)(psqb->base), (char*)szName);
   psqb->begin_frame=NULL_FRAME;
   psqb->last_frame=NULL_FRAME;
   psqb->free_frame=NULL_FRAME;
@@ -647,13 +647,13 @@ sword MSGAPI SquishValidate(byte  *szName)
 {
   char szFile[PATHLEN];
 
-  (void)strcpy(szFile, szName);
+  (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sqd);
 
   if (!fexist(szFile))
     return FALSE;
 
-  (void)strcpy(szFile, szName);
+  (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sqi);
 
   return fexist(szFile);

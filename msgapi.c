@@ -325,7 +325,7 @@ byte *_XPENTRY GetCtrlToken(byte *where, byte *what)
     unsigned int len;
 
     if (where == NULL || what == NULL) return NULL;
-    len = strlen(what);
+    len = strlen((char *)what);
 
     do {
 	where = (byte *)strchr((char *)where, '\001');
@@ -333,7 +333,7 @@ byte *_XPENTRY GetCtrlToken(byte *where, byte *what)
 	where++;
     } while (strncmp((char *)where, (char *)what, len));
 
-    if (where == NULL || strlen(where)<len) return NULL;
+    if (where == NULL || strlen((char *)where)<len) return NULL;
 
     end = (byte *) strchr((char *) where, '\r');
     if (end == NULL) end = (byte *) strchr((char *) where, '\001');
@@ -473,10 +473,10 @@ byte *_XPENTRY CvtCtrlToKludge(byte * ctrl)
 void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
 {
     byte *p;
-    unsigned int len = strlen(what);
+    unsigned int len = strlen((char *)what);
 
     while (1) {
-	ctrl = strchr((char *)ctrl, '\001');
+	ctrl = (unsigned char *)strchr((char *)ctrl, '\001');
 	if (ctrl == NULL) return;
 	if (strncmp((char *)ctrl+1, (char *)what, len)) {
 	    ctrl++;
@@ -484,7 +484,7 @@ void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
 	}
 	if (strlen((char *)ctrl + 1) < len) return;
 	/* found */
-	p = strchr((char *)ctrl + 1, '\001');
+	p = (unsigned char *)strchr((char *)ctrl + 1, '\001');
 	if (p == NULL) {
 	    *ctrl = '\0';
 	    return;

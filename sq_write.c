@@ -470,7 +470,7 @@ static unsigned near _SquishWriteXmsg(HMSG hmsg, PXMSG pxm, dword *pdwOfs)
   */
   if (xmsg.date_written.date.yr > 19 ||
       xmsg.__ftsc_date[0] == 0)
-      MsgCvtFTSCDateToBinary(xmsg.__ftsc_date, (union stamp_combo *)&xmsg.date_written);
+      MsgCvtFTSCDateToBinary((char*)(xmsg.__ftsc_date), (union stamp_combo *)&xmsg.date_written);
 
 
 
