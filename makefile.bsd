@@ -1,16 +1,28 @@
-# Legacy makefile for building on FreeBSD
+# Legacy makefile for building on FreeBSD (old versions)
+# Run 'make hinstall' to install C header files.
 # No support for the Husky build environment.
 
+prefix=	/usr/local
 CC=	gcc
 CFLAGS=	-Wall
 CDEFS=	-DUNIX
 COPT=	-O3 
-# add the following for FreeBSD/i386
-# -fomit-frame-pointer -fstrength-reduce -m486
 LIB=	ar
 RANLIB= ranlib
 
 TARGET=	libsmapibsd.a
+TARGET_H= *.h
+LIBDIR=	$(prefix)/lib/
+INCDIR=	$(prefix)/include/smapi/
+ILOPT=	-m 444 -c
+IIOPT=	-m 444 -c
+DIROPT=	-d -m 755
+
+# FreeBSD/i386 addition
+#
+.if ${MACHINE_ARCH} == "i386"
+   CFLAGS+= -fomit-frame-pointer -fstrength-reduce -m486
+.endif
 
 OBJS=	1stchar.o  \
 	api_sdm.o  \
@@ -63,4 +75,13 @@ clean:
 
 distclean: clean
 	-rm $(TARGET)
+
+install: $(TARGET)
+	$(INSTALL) $(DIROPT) $(LIBDIR)
+	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
+	ln -sf $(LIBDIR)$(TARGET) $(LIBDIR)$(TARGET).1
+
+hinstall:
+	$(INSTALL) $(DIROPT) $(INCDIR)
+	$(INSTALL) $(IIOPT) $(TARGET_H) $(INCDIR)
 
