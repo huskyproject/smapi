@@ -24,51 +24,60 @@
 /* name=Function to dynamically change the size of a file
 */
 
-
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
 
 #include "compiler.h"
 
-#ifdef HAS_IO_H
-#include <io.h>
-#endif
-
 #ifdef HAS_DOS_H
 #include <dos.h>
 #endif
 
+#ifdef HAS_IO_H
+#include <io.h>
+#endif
+
+#ifdef HAS_UNISTD_H
+  #include <unistd.h>
+#endif
+
 #include "prog.h"
 
-#if defined(__DOS__)
+#ifdef __DOS__
 
-  #ifdef __WATCOMC__
-  #include <i86.h>
-  #endif
-
+  /* Call DOS Fn 40H: Write to File via Handle
+   * AH    0x40
+   * BX    file handle
+   * CX    number of bytes to write (Note: 0 means truncate the file)
+   * DS:DX address of a buffer containing the data to write
+   * Returns: AX    error code if CF is set to CY
+   *                number of bytes actually written ออออ use for error test
+   *
+   * DOS 3.0+ If CX is 0000H on entry, the file is truncated at the
+   * current file position -- or the file is padded to that position.
+   */
   int _fast setfsize(int fd, long size)
   {
     union REGS r;
     long pos=tell(fd);
 
     lseek(fd, size, SEEK_SET);
+    memset(&r,0,sizeof(r));
 
-  #ifdef __FLAT__
     r.h.ah=0x40;
-    r.x.ebx=fd;
-    r.x.ecx=0;
-    r.x.edx=0;
 
-    int386(0x21, &r, &r);
-  #else
-    r.h.ah=0x40;
+    #if defined(__DOS16__) || defined(__DJGPP__)
     r.x.bx=fd;
-    r.x.cx=0;
-    r.x.dx=0;
 
     int86(0x21, &r, &r);
-  #endif
+
+    #elif defined(__DPMI__)
+    r.x.ebx=fd;
+
+    int386(0x21, &r, &r);
+    #endif
 
     lseek(fd, pos, SEEK_SET);
 
@@ -86,8 +95,6 @@
 
 #elif defined(__UNIX__)
 
-  #include <unistd.h>
-
   int _fast setfsize(int fd, long size)
   {
     return ftruncate(fd, size);
@@ -97,7 +104,6 @@
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <winbase.h>
-  #include <io.h>
 
   int _fast setfsize(int fd, long size)
   {
