@@ -65,6 +65,7 @@ binary-arch: build install
 	dh_installdeb
 #	dh_perl
 	dh_shlibdeps
+	cp debian/overrides debian/libsmapi2/usr/share/lintian/overrides/libsmapi2
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
