@@ -6,6 +6,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#ifdef _MSC_VER
+#   include <io.h>
+#endif
+
 #include "prog.h"
 #include "ffind.h"
 
