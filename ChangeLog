@@ -58,3 +58,8 @@ SMAPI 1.4
 - y2k fixes and other fixes
 
 - rights patch for created directories and files.
+
+SMAPI 1.4J
+----------
+
+- Adapted msgapi for Jam message base. Need check and test.

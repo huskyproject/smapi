@@ -30,6 +30,7 @@
 
 #define MSGTYPE_SDM     0x01
 #define MSGTYPE_SQUISH  0x02
+#define MSGTYPE_JAM     0x08
 #define MSGTYPE_ECHO    0x80
 
 #define MSGNUM_CUR      ((dword)-1L)
@@ -323,6 +324,9 @@ sword MSGAPI SdmValidate(byte * name);
 
 MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type);
 sword MSGAPI SquishValidate(byte * name);
+
+MSG *MSGAPI JamOpenArea(byte * name, word mode, word type);
+sword MSGAPI JamValidate(byte * name);
 
 byte *EXPENTRY CvtCtrlToKludge(byte * ctrl);
 byte *EXPENTRY GetCtrlToken(byte * where, byte * what);

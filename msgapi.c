@@ -53,26 +53,16 @@ sword EXPENTRY MsgCloseApi(void)
 
 MSG *EXPENTRY MsgOpenArea(byte * name, word mode, word type)
 {
-    if (type & MSGTYPE_SQUISH)
-    {
-        return SquishOpenArea(name, mode, type);
-    }
-    else
-    {
-        return SdmOpenArea(name, mode, type);
-    }
+    if (type & MSGTYPE_SQUISH) return SquishOpenArea(name, mode, type);
+    else if (type & MSGTYPE_JAM) return JamOpenArea(name, mode, type);
+    else return SdmOpenArea(name, mode, type);
 }
 
 sword EXPENTRY MsgValidate(word type, byte * name)
 {
-    if (type & MSGTYPE_SQUISH)
-    {
-        return SquishValidate(name);
-    }
-    else
-    {
-        return SdmValidate(name);
-    }
+    if (type & MSGTYPE_SQUISH) return SquishValidate(name);
+    else if (type & MSGTYPE_JAM) return JamValidate(name);
+    else return SdmValidate(name);
 }
 
 /*
