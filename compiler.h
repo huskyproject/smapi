@@ -629,7 +629,14 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #ifndef mysleep
 #define mysleep(x)
 #endif
+
 extern int waitlock(int, long, long);
+
+#ifdef ALTLOCKING
+  extern int alt_lock(const char *);
+  extern int alt_unlock(const char *);
+  extern int alt_waitlock(const char *);
+#endif
 
 #endif
 
