@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SMAPI_DLL_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I ".." /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_WINDOWS" /D "_DLL" /D "__NT__" /D "_CONSOLE" /D "_SMAPI_EXT" /D "_MAKE_DLL" /D "INTEL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I ".." /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_WINDOWS" /D "_DLL" /D "__NT__" /D "_CONSOLE" /D "_SMAPI_EXT" /D "_MAKE_DLL" /D "INTEL" /FR /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /D "NDEBUG" /win32
@@ -219,6 +219,10 @@ SOURCE=.\ffind.c
 # Begin Source File
 
 SOURCE=.\flush.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\genmsgid.c
 # End Source File
 # Begin Source File
 
