@@ -64,7 +64,7 @@ void _MsgCloseApi(void)
     JamCloseOpenAreas();
 }
 
-#ifdef __UNIX__
+#ifdef HAS_SIGNAL_H /* old: #ifdef __UNIX__ */
 /* Just a dummy alarm-fnct */
 static void alrm(int x)
 {}
@@ -72,11 +72,11 @@ static void alrm(int x)
 
 sword _XPENTRY MsgOpenApi(struct _minf *minf)
 {
-#ifdef __UNIX__
+#ifdef HAS_SIGNAL_H /* old: #ifdef __UNIX__ */
     struct sigaction alrmact;
 #endif
 
-    unused(copyright);
+/*    unused(copyright);*/
     mi.req_version = minf->req_version;
     mi.def_zone    = minf->def_zone;
     mi.haveshare   = minf->haveshare = shareloaded();
@@ -95,7 +95,7 @@ sword _XPENTRY MsgOpenApi(struct _minf *minf)
     /*
      * Set the dummy alarm-fcnt to supress stupid messages.
      */
-#ifdef __UNIX__
+#ifdef HAS_SIGNAL_H /* old: #ifdef __UNIX__ */
     memset(&alrmact, 0, sizeof(alrmact));
     alrmact.sa_handler = alrm;
     sigaction(SIGALRM, &alrmact, 0);
@@ -537,7 +537,7 @@ char * _XPENTRY strmerr(int msgapierr)
  * test cvs need for DLL version only, using #include <smapi/cvsdate.h>
   const char *smapidate(){
   static const
-  #include "../smapi/cvsdate.h"
+  #include "../smapi/smapi/cvsdate.h"
   return cvs_date;
   }
   CheckSmapiVersion( ..., smapidate());
