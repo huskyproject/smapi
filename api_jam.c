@@ -427,7 +427,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 
    if (textlen && text) onlytext = DelimText(&jamhdrNew, &subfieldNew, text, textlen);
    else if (msgh->mode != MOPEN_CREATE) {
-      DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl, 0);
+      DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl, msgh->lclen);
       jamhdrNew.TxtOffset = msgh->Hdr.TxtOffset;
       jamhdrNew.TxtLen = msgh->Hdr.TxtLen;
    }
