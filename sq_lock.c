@@ -94,10 +94,12 @@ static unsigned near _SquishLockBase(HAREA ha)
   /* The first step is to obtain a lock on the Squish file header.  Another *
    * process may be attempting to do the same thing, so we retry a couple   *
    * of times just in case.                                                 */
-
+#ifdef ALTLOCKING
+  return !alt_lock(ha->lck_path);
+#else
   return _sqlock(Sqd->sfd, 0, 1);
+#endif
 }
-
 
 /* Unlock the first byte of the Squish file */
 
@@ -111,12 +113,14 @@ static unsigned near _SquishUnlockBase(HAREA ha)
   /* Unlock the first byte of the file */
 
   if (mi.haveshare)
+#ifdef ALTLOCKING
+    alt_unlock(ha->lck_path);
+#else
     (void)_squnlock(Sqd->sfd, 0L, 1L);
+#endif
 
   return TRUE;
 }
-
-
 
 /* Obtain exclusive access to this message area.  We need to do this to     *
  * synchronize access to critical fields in the Squish file header.         */
