@@ -1,3 +1,17 @@
+2002-10-23 Wednesday 10:37  stas_degteff
+
+	* makefile.djg (smapi-2_2-stable.3): Add 'all' tag for DJGPP build
+
+2002-10-23 Wednesday 10:19  stas_degteff
+
+	* makefile.emo, makefile.emx (smapi-2_2-stable.[1,1]): Use
+	NOSEMAPHORES define for OS/2 compilation: semaphores don't tested
+
+2002-10-23 Wednesday 10:05  stas_degteff
+
+	* semaphor.h (smapi-2_2-stable.2): Prevent redefine HMTX for Os/2
+	EMX compilation
+
 2002-10-22 Tuesday 10:17  stas_degteff
 
 	* readme.txt (smapi-2_2-stable.3): Update comilators list
