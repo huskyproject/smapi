@@ -1003,7 +1003,7 @@ int read_allidx(JAMBASEptr jmb)
    len = tell(jmb->IdxHandle);
    lseek(jmb->IdxHandle, 0, SEEK_SET);
 
-   buf = (char*)palloc(len);
+   buf = (unsigned char*)palloc(len);
    pbuf = buf;
 
    if (farread(jmb->IdxHandle, (byte far *)buf, len) != len) {
@@ -1188,11 +1188,11 @@ int write_hdr(sword handle, JAMHDR *Hdr)
 
 int write_subfield(sword handle, JAMSUBFIELDptr *subfield, dword SubfieldLen)
 {
-   char *buf, *pbuf;
+   unsigned char *buf, *pbuf;
    dword datlen;
    JAMSUBFIELDptr subfieldNext;
 
-   buf = (char*)palloc(SubfieldLen);
+   buf = (unsigned char*)palloc(SubfieldLen);
    pbuf = buf;
    subfieldNext = *subfield;
 

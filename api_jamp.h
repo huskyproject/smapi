@@ -25,7 +25,7 @@ static dword EXPENTRY JamGetCtrlLen(MSGH * msgh);
 #define fop_wpb (O_CREAT | O_TRUNC | O_RDWR | O_BINARY)
 #define fop_rpb (O_RDWR | O_BINARY)
 
-static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, char *basename);
+static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename);
 int Jam_OpenFile(JAMBASE *jambase, word *mode);
 void Jam_CloseFile(JAMBASE *jambase);
 static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum);
@@ -37,12 +37,12 @@ static void near Jam_Unlock(MSG * jm);
 dword Jam_PosHdrMsg(MSG * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr);
 static dword Jam_JamAttrToMsg(MSGH *msgh);
 sword Jam_WriteHdrInfo(JAMBASEptr jambase);
-dword Jam_Crc32(char* buff, dword len);
+dword Jam_Crc32(unsigned char* buff, dword len);
 static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield);
-static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, dword clen, char *ctxt);
-char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, char *text);
-int makeKludge(char **buff, char *sstr, char *str, char *ent, int len);
-void parseAddr(NETADDR *netAddr, char *str, dword len);
+static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, dword clen, unsigned char *ctxt);
+unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned char *text);
+int makeKludge(char **buff, char *sstr, unsigned char *str, char *ent, int len);
+void parseAddr(NETADDR *netAddr, unsigned char *str, dword len);
 void DecodeSubf(MSGH *msgh);
 
 struct _msgh

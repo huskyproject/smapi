@@ -226,7 +226,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
    dword SubPos, bytesread;
    struct tm *s_time;
    SCOMBO *scombo;
-   char *ftsdate;
+   unsigned char *ftsdate;
 
    if (InvalidMsgh(msgh))
    {
@@ -280,8 +280,8 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       s_time = localtime((time_t *)(&(msgh->Hdr.DateWritten)));
       scombo = (SCOMBO*)(&(msg->date_written));
       scombo = TmDate_to_DosDate(s_time, scombo);
-      ftsdate = msg->__ftsc_date;
-      ftsdate = sc_time(scombo, msg->__ftsc_date);
+      /* ftsdate = msg->__ftsc_date; */
+      ftsdate = (unsigned char *)sc_time(scombo, (char *)(msg->__ftsc_date));
 
    } /* endif */
 
@@ -343,7 +343,8 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
    XMSG           msg_old;
    MSG            *jm;
 
-   char           ch = 0, *onlytext = NULL;
+   char           ch = 0;
+   unsigned char *onlytext = NULL;
    int            didlock = FALSE;
 
    assert(append == 0);
@@ -845,9 +846,9 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode)
    return 1;
 }
 
-static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, char *basename)
+static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename)
 {
-   Jmd->BaseName = (char*)palloc(strlen(basename)+1);
+   Jmd->BaseName = (unsigned char*)palloc(strlen(basename)+1);
    strcpy(Jmd->BaseName, basename);
 
    if (!Jam_OpenFile(Jmd, mode)) {
@@ -1043,10 +1044,10 @@ static dword Jam_MsgAttrToJam(XMSG *msg)
    return attr;
 }
 
-JAMSUBFIELDptr StrToSubfield(char *str, dword *len)
+static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
 {
    JAMSUBFIELDptr subf;
-   char *kludge;
+   unsigned char *kludge;
    dword subtypes;
 
    for (subtypes = strlen(str); subtypes > 0; subtypes--) {
@@ -1089,7 +1090,7 @@ JAMSUBFIELDptr StrToSubfield(char *str, dword *len)
 
    subf->LoID = subtypes;
    subf->DatLen = strlen(kludge);
-   memmove(&(subf->Buffer), kludge, strlen(kludge));
+   memmove(subf->Buffer, kludge, strlen(kludge));
 
 
    return subf;
@@ -1120,12 +1121,12 @@ JAMSUBFIELDptr NETADDRtoSubf(NETADDR addr, dword *len, word opt)
       subf->LoID = JAMSFLD_OADDRESS;
    } /* endif */
    subf->DatLen = strlen(buf);
-   memmove(&(subf->Buffer), buf, strlen(buf));
+   memmove(subf->Buffer, buf, strlen(buf));
 
    return subf;
 }
 
-JAMSUBFIELDptr FromToSubjTOSubf(dword jamsfld, char *txt, dword *len)
+static JAMSUBFIELDptr FromToSubjTOSubf(dword jamsfld, unsigned char *txt, dword *len)
 {
    JAMSUBFIELDptr subf;
 
@@ -1147,7 +1148,6 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    dword clen, sublen;
 
    SubField = *subfield;
-
 
    memset(jamhdr, '\0', sizeof(JAMHDR));
 
@@ -1221,22 +1221,23 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    *subfield = SubField;
 }
 
-static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, dword clen, char *ctxt)
+static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr
+                                   *subfield, dword clen, unsigned char *ctxt)
 {
    JAMSUBFIELDptr SubFieldCur, SubField;
    dword len, sublen;
-   char *ctrl, *ctrlp, *ptr;
+   unsigned char *ctrl, *ctrlp, *ptr;
 
    sublen = jamhdr->SubfieldLen;
    SubField = *subfield;
 
-   ctrl = (char*)palloc(clen+1);
-   strcpy(ctrl, ctxt);
+   ctrl = (unsigned char*)palloc(clen+1);
+   strcpy((char *)ctrl, ctxt);
    ctrl[clen] = '\0';
 
    ctrlp = ctrl;
 
-   ptr = strchr(ctrlp, '\1');
+   ptr = (unsigned char *)strchr((char *)ctrlp, '\1');
 
    while (ptr) {
       *ptr = '\0';
@@ -1250,7 +1251,7 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield,
       }
       ptr++;
       ctrlp = ptr;
-      ptr = strchr(ctrlp, '\1');
+      ptr = (unsigned char *)strchr(ctrlp, '\1');
    }
 
    if (*ctrlp && (SubFieldCur = StrToSubfield(ctrlp, &len))) {
@@ -1262,12 +1263,12 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield,
 
    pfree(ctrl);
 
-   ctrl = (char*)GetCtrlToken(ctxt, "MSGID");
+   ctrl = (unsigned char*)GetCtrlToken(ctxt, (unsigned char *)"MSGID");
    if (ctrl) { 
       jamhdr->MsgIdCRC = Jam_Crc32(ctrl+7, strlen(ctrl)-7);
       pfree(ctrl);
    }
-   ctrl = (char*)GetCtrlToken(ctxt, "REPLY");
+   ctrl = (unsigned char*)GetCtrlToken(ctxt, (unsigned char *)"REPLY");
    if (ctrl) {
       jamhdr->ReplyCRC = Jam_Crc32(ctrl+7, strlen(ctrl)-7);
       pfree(ctrl);
@@ -1277,24 +1278,24 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield,
    *subfield = SubField;
 }
 
-char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, char *text)
+unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned char *text)
 {
    JAMSUBFIELDptr SubField, SubFieldCur;
    dword sublen, clen;
-   char *onlytext, *first, *ptr;
+   unsigned char *onlytext, *first, *ptr;
 
    SubField = *subfield;
 
    sublen = jamhdr->SubfieldLen;
 
-   onlytext = (char*)palloc(1);
+   onlytext = (unsigned char*)palloc(1);
    *onlytext = '\0';
 
    first = text;
    while (*first) {
-      ptr = strchr(first, '\r');
+      ptr = (unsigned char *)strchr(first, '\r');
       if (ptr) *ptr = 0;
-      if (strstr(first, "SEEN-BY: ") == first  || *first == '\1') {
+      if (strstr(first, "SEEN-BY: ") == (char*)first  || *first == '\1') {
 
          if (*first == '\1') first++;
 
@@ -1306,7 +1307,7 @@ char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, char *text)
          } else {;}
 
       } else {
-         onlytext = (char*)farrealloc(onlytext, strlen(onlytext)+strlen(first)+2);
+         onlytext = (unsigned char*)farrealloc(onlytext, strlen(onlytext)+strlen(first)+2);
          sprintf(onlytext+strlen(onlytext), "%s\r", first);
       } /* endif */
       if (ptr) {
@@ -1323,7 +1324,7 @@ char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, char *text)
    return onlytext;
 }
 
-int makeKludge(char **buff, char *sstr, char *str, char *ent, int len)
+int makeKludge(char **buff, char *sstr, unsigned char *str, char *ent, int len)
 {
    if (!*buff) *buff = (char*)calloc(1, sizeof(char));
 
@@ -1340,7 +1341,7 @@ int makeKludge(char **buff, char *sstr, char *str, char *ent, int len)
    return 1;
 }
 
-void parseAddr(NETADDR *netAddr, char *str, dword len)
+void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
 {
    char *strAddr, *ptr, *tmp, ch[10];
 
@@ -1468,52 +1469,52 @@ void DecodeSubf(MSGH *msgh)
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FLAGS));) {
          makeKludge(&path, "\x01", SubField->Buffer, "\r", SubField->DatLen);
       }
-      msgh->ctrl = (char*)palloc(1);
-      msgh->lctrl = (char*)palloc(1);
+      msgh->ctrl = (unsigned char*)palloc(1);
+      msgh->lctrl = (unsigned char*)palloc(1);
       *(msgh->ctrl)=*(msgh->lctrl)='\0';
       if (intl) {
-         msgh->ctrl = (char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(intl)+1);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(intl)+1);
          strcat(msgh->ctrl, intl);
       } 
       if (topt) {
-         msgh->ctrl = (char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(topt)+7);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(topt)+7);
          sprintf(msgh->ctrl+strlen(msgh->ctrl), "%cTOPT %s", '\x01', topt);
       } 
       if (fmpt) {
-         msgh->ctrl = (char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(fmpt)+7);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(fmpt)+7);
          sprintf(msgh->ctrl+strlen(msgh->ctrl), "%cFMPT %s", '\x01', fmpt);
       } 
       if (msgid) {
-         msgh->ctrl = (char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(msgid)+1);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(msgid)+1);
          strcat(msgh->ctrl, msgid);
       } 
       if (reply) {
-         msgh->ctrl = (char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(reply)+1);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(reply)+1);
          strcat(msgh->ctrl, reply);
       } 
       if (pid) {
-         msgh->ctrl = (char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(pid)+1);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(pid)+1);
          strcat(msgh->ctrl, pid);
       } 
       if (kludges) {
-         msgh->ctrl = (char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(kludges)+1);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(kludges)+1);
          strcat(msgh->ctrl, kludges);
       } 
       if (flags) {
-         msgh->ctrl = (char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(flags)+1);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(flags)+1);
          strcat(msgh->ctrl, flags);
       }
 
       if (seenby) {
-         msgh->lctrl = (char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(seenby)+1);
+         msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(seenby)+1);
          strcat(msgh->lctrl, seenby);
       } 
       if (path) {
-         msgh->lctrl = (char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(path)+1);
+         msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(path)+1);
          strcat(msgh->lctrl, path);
       } 
       if (via) {
-         msgh->lctrl = (char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(via)+1);
+         msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(via)+1);
          strcat(msgh->lctrl, via);
       } 
       msgh->clen = strlen(msgh->ctrl);
@@ -1598,10 +1599,10 @@ static long crc32tab[256]= {
 **  Note: This function returns data, NOT a status code!
 **
 ***********************************************************************/
-dword Jam_Crc32(char* buff, dword len)
+dword Jam_Crc32(unsigned char* buff, dword len)
 {
     dword crc = 0xffffffff;
-    char *ptr = buff;
+    unsigned char *ptr = buff;
 
     for (; len; len--, ptr++)
         crc=(crc >> 8) ^ crc32tab [(int) ((crc^tolower(*ptr)) & 0xffUL)];
