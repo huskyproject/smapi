@@ -1,3 +1,7 @@
+2002-01-05 Saturday 14:15  mche
+
+	* compiler.h (1.76): added some defines for MSVC
+
 2002-01-03 Thursday 10:30  mche
 
 	* compiler.h (1.75), progprot.h (1.13): build smapimvc.dll with
