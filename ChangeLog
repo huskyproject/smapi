@@ -1,3 +1,8 @@
+2002-10-08 Tuesday 05:42  sfpavel
+
+	* makefile.mvc (1.6), makefile.mvcdll (1.7): Add -DNOSEMAPHORES for
+	mvc makefiles
+
 2002-10-04 Friday 06:50  sfpavel
 
 	* debian/changelog (1.17): New debian packages
