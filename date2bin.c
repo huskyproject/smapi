@@ -38,13 +38,38 @@ void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written)
     timeval = time(NULL);
     tim = localtime(&timeval);
 
-    if (*msgdate == '\0')
+  if (*msgdate=='\0') /* If no date... */
+  {
+    /* OG: localtime must only generated, if msgadate == '' & yr = 1980
+           A little bit more speed !
+    */
+
+    if (d_written->msg_st.date.yr == 0)
     {
-        /* If no date, insert today's date */
-        strftime(msgdate, 19, "%d %b %y %H:%M:%S", tim);
-        StandardDate(d_written);
-        return;
+      timeval=time(NULL);
+      tim=localtime(&timeval);
+
+      /* Insert today's date */
+      strftime(msgdate,19,"%d %b %y  %H:%M:%S",tim);
+
+      StandardDate(d_written);
+    }  
+    else /* If msgdate = '' & yr > 1980, date_written seems to be ok ! */
+    {
+      if (d_written->msg_st.date.mo == 0 ||
+          d_written->msg_st.date.mo > 12)
+        d_written->msg_st.date.mo = 1;
+      sprintf(msgdate,
+             "%02d %s %02d  %02d:%02d:%02d",
+             d_written->msg_st.date.da,
+             months_ab[d_written->msg_st.date.mo-1],
+             (d_written->msg_st.date.yr+80) % 100,
+             d_written->msg_st.time.hh,
+             d_written->msg_st.time.mm,
+             d_written->msg_st.time.ss);
     }
+    return;
+  }
 
     if (sscanf(msgdate, "%d %s %d %d:%d:%d", &dd, temp, &yy, &hh, &mm, &ss) == 6)
     {
