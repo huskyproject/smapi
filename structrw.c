@@ -1029,7 +1029,7 @@ int read_allidx(JAMBASEptr jmb)
 {
    byte  *buf, *pbuf;
    byte  hbuf[HDR_SIZE], *phbuf = hbuf;
-   int   len, i;
+   int   len, i, allocated;
    dword offset, attr;
 
    lseek(jmb->IdxHandle, 0, SEEK_END);
@@ -1044,6 +1044,10 @@ int read_allidx(JAMBASEptr jmb)
       return 0;
    } /* endif */
 
+   jmb->actmsg_read = 1;
+   allocated = jmb->HdrInfo.ActiveMsgs;
+   if (allocated)
+      jmb->actmsg = (JAMACTMSGptr)farmalloc(allocated * sizeof(JAMACTMSG));
 
    for (i = 0; (pbuf - buf) < len;) {
       offset = get_dword(pbuf+4);
@@ -1052,9 +1056,11 @@ int read_allidx(JAMBASEptr jmb)
          if (farread(jmb->HdrHandle, (byte far *)hbuf, HDR_SIZE) == HDR_SIZE) {
             attr = get_dword(phbuf+52);
             if (!(attr & JMSG_DELETED)) {
-               jmb->actmsg = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*(i+1));
+               if (i >= allocated)
+                  jmb->actmsg = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*(allocated += 16));
                jmb->actmsg[i].IdxOffset = pbuf - buf;
                jmb->actmsg[i].TrueMsg = offset;
+               jmb->actmsg[i].UserCRC = get_dword(pbuf);
                i++;
             } /* endif */
          } /* endif */
@@ -1063,7 +1069,10 @@ int read_allidx(JAMBASEptr jmb)
    } /* endfor */
 
    if (i != jmb->HdrInfo.ActiveMsgs) {
+      /* warning: database corrupted! */
       jmb->HdrInfo.ActiveMsgs = i;
+      if (i != allocated)
+         jmb->actmsg = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*i);
    } else {
    } /* endif */
 

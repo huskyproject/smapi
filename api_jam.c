@@ -118,7 +118,7 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
       return NULL;
    }
 
-   Jam_ActiveMsgs(Jmd);
+   /* Jam_ActiveMsgs(Jmd); */
 
    jm->high_water = Jmd->HdrInfo.highwater;
    jm->high_msg = Jam_HighMsg(Jmd);
@@ -492,6 +492,13 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             Jmd->HdrInfo.ModCounter++;
             Jam_WriteHdrInfo(Jmd);
             jm->high_msg++;
+            if (Jmd->actmsg_read) {
+               Jmd->actmsg = (JAMACTMSGptr)farrealloc(Jmd->actmsg, sizeof(JAMACTMSG)*(jm->num_msg+1));
+               Jmd->actmsg[jm->num_msg].IdxOffset = msgh->seek_idx;
+               Jmd->actmsg[jm->num_msg].TrueMsg = msgh->seek_hdr;
+               Jmd->actmsg[jm->num_msg].UserCRC = jamidxNew.UserCRC;
+            }
+            jm->num_msg++;
          } 
          else 
          {
@@ -524,10 +531,14 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 	    msgh->SubFieldPtr = subfieldNew; */
 	    /* info from new message to msgh srtuct */
 /*	    DecodeSubf(msgh); */
+            if (Jmd->actmsg_read) {
+               Jmd->actmsg[msgh->msgnum - 1].TrueMsg = msgh->seek_hdr;
+               Jmd->actmsg[msgh->msgnum - 1].UserCRC = jamidxNew.UserCRC;
+            }
          } /* endif */
-				 
+
          /* pfree(subfieldNew); */
-				 freejamsubfield(subfieldNew);
+         freejamsubfield(subfieldNew);
       } /* endif */
    } 
    else 
@@ -578,6 +589,10 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 			freejamsubfield(msgh->SubFieldPtr);
       msgh->SubFieldPtr = subfieldNew;
       DecodeSubf(msgh);
+      if (Jmd->actmsg_read) {
+         Jmd->actmsg[msgh->msgnum - 1].TrueMsg = msgh->seek_hdr;
+         Jmd->actmsg[msgh->msgnum - 1].UserCRC = jamidxNew.UserCRC;
+      }
 
    } /* endif */
    if (didlock) {
@@ -587,8 +602,10 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 
    pfree(onlytext);
 
+   /*
    Jam_ActiveMsgs(Jmd);
    jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
+   */
 
    return 0;
 }
@@ -706,6 +723,7 @@ static UMSGID EXPENTRY JamMsgnToUid(MSG * jm, dword msgnum)
     msgapierr = MERR_NONE;
     if (msgnum > jm->num_msg) return (UMSGID) -1;
     if (msgnum <= 0) return (UMSGID) 0;
+    if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
     return (UMSGID) (Jmd->actmsg[msgnum - 1].IdxOffset / 8 + Jmd->HdrInfo.BaseMsgNum);
 }
 
@@ -721,6 +739,7 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    msgnum = umsgid - Jmd->HdrInfo.BaseMsgNum + 1;
    if (msgnum <= 0)
       return 0;
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
    left = 1;
    right = jm->num_msg;
    while (left <= right)
@@ -892,7 +911,8 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
       jambase->HdrHandle = openfilejm(hdr, fop_wpb, permissions);
       jambase->TxtHandle = openfilejm(txt, fop_wpb, permissions);
       jambase->IdxHandle = openfilejm(idx, fop_wpb, permissions);
-      jambase->LrdHandle = openfilejm(lrd, fop_wpb, permissions);
+      /* jambase->LrdHandle = openfilejm(lrd, fop_wpb, permissions);
+      */ jambase->LrdHandle = 0;
 
       memset(&(jambase->HdrInfo), '\0', sizeof(JAMHDRINFO));
       strcpy(jambase->HdrInfo.Signature, HEADERSIGNATURE);
@@ -908,7 +928,8 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
       jambase->HdrHandle = openfilejm(hdr, fop_rpb, permissions);
       jambase->TxtHandle = openfilejm(txt, fop_rpb, permissions);
       jambase->IdxHandle = openfilejm(idx, fop_rpb, permissions);
-      jambase->LrdHandle = openfilejm(lrd, fop_rpb, permissions);
+      /* jambase->LrdHandle = openfilejm(lrd, fop_rpb, permissions);
+      */ jambase->LrdHandle = 0;
    } /* endif */
 
    if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {
@@ -925,7 +946,8 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
       jambase->HdrHandle = openfilejm(hdr, fop_wpb|O_EXCL, permissions);
       jambase->TxtHandle = openfilejm(txt, fop_wpb|O_EXCL, permissions);
       jambase->IdxHandle = openfilejm(idx, fop_wpb|O_EXCL, permissions);
-      jambase->LrdHandle = openfilejm(lrd, fop_wpb|O_EXCL, permissions);
+      /* jambase->LrdHandle = openfilejm(lrd, fop_wpb|O_EXCL, permissions);
+      */ jambase->LrdHandle = 0;
 
       if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {
          Jam_CloseFile(jambase);
@@ -1016,33 +1038,28 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
 /*   msgh->Idx.HdrOffset = 0xffffffff; */
 /*   msgh->Idx.UserCRC   = 0xffffffff; */
 
-
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
+ 
    if (Jmd->actmsg) {
-      if (lseek(Jmd->IdxHandle, Jmd->actmsg[msgnum-1].IdxOffset, SEEK_SET) != -1) {
-         msgh->seek_idx = tell(Jmd->IdxHandle);
-         if (read_idx(Jmd->IdxHandle, &(msgh->Idx))) {
-            if (msgh->Idx.HdrOffset != 0xffffffffUL) {
-               msgh->seek_hdr = msgh->Idx.HdrOffset;
-               lseek(Jmd->HdrHandle, msgh->Idx.HdrOffset, SEEK_SET);
-               read_hdr(Jmd->HdrHandle, &(msgh->Hdr));
-               if (stricmp((char*)&msgh->Hdr, "JAM") != 0) {
-                  pfree(msgh);
-                  return NULL;
-               } else {
-               } /* endif */
-               if(mode == MOPEN_CREATE) return (MSGH *)msgh;
+      msgh->seek_idx = Jmd->actmsg[msgnum-1].IdxOffset;
+      msgh->Idx.HdrOffset = Jmd->actmsg[msgnum-1].TrueMsg;
+      msgh->Idx.UserCRC = Jmd->actmsg[msgnum-1].UserCRC;
+      if (msgh->Idx.HdrOffset != 0xffffffffUL) {
+         msgh->seek_hdr = msgh->Idx.HdrOffset;
+         lseek(Jmd->HdrHandle, msgh->Idx.HdrOffset, SEEK_SET);
+         read_hdr(Jmd->HdrHandle, &(msgh->Hdr));
+         if (stricmp((char*)&msgh->Hdr, "JAM") != 0) {
+            pfree(msgh);
+            return NULL;
+         } else {
+         } /* endif */
+         if(mode == MOPEN_CREATE) return (MSGH *)msgh;
                
-               msgh->SubFieldPtr = 0;
+         msgh->SubFieldPtr = 0;
                
-/*               msgh->SubFieldPtr = (JAMSUBFIELD2ptr)palloc(sizeof(JAMSUBFIELD2));
-*/
-/*               msgh->SubFieldPtr = (JAMSUBFIELDptr)palloc(msgh->Hdr.SubfieldLen);
-*/
-               read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), &(msgh->Hdr.SubfieldLen));
-               DecodeSubf(msgh);
-               return (MSGH *) msgh;
-            }
-         }
+         read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), &(msgh->Hdr.SubfieldLen));
+         DecodeSubf(msgh);
+         return (MSGH *) msgh;
       }
    }
 
@@ -1091,9 +1108,9 @@ void Jam_ActiveMsgs(JAMBASEptr jambase)
 
 dword Jam_PosHdrMsg(MSG * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr)
 {
-   if (lseek(Jmd->IdxHandle, Jmd->actmsg[msgnum].IdxOffset, SEEK_SET) == -1) return 0;
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
 
-   if (read_idx(Jmd->IdxHandle, jamidx) == 0) return 0;
+   jamidx->HdrOffset = Jmd->actmsg[msgnum].TrueMsg;
 
    if (jamidx->HdrOffset == 0xffffffffUL) return 0;
 

@@ -203,6 +203,7 @@ typedef struct
 typedef struct {
    dword     IdxOffset;         /* Offset Idx file */
    dword     TrueMsg;           /* JAMIDXREC.HdrOffset */
+   dword     UserCRC;           /* CRC-32 of user name (lowercase) */
    } JAMACTMSG, *JAMACTMSGptr;
 
 /* struct jam base */
@@ -216,6 +217,7 @@ typedef struct {
    JAMHDRINFO      HdrInfo;        /* Message header info */
    JAMACTMSGptr    actmsg;
    word            msgs_open;
+   word            actmsg_read;
    } JAMBASE, *JAMBASEptr;
 
 #endif /* __JAM_H__ */
