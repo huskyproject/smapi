@@ -3,7 +3,7 @@ Section: non-free/libs
 Priority: optional
 Maintainer: Pavel Andreew <pavel@collage.etel.ru>
 Build-Depends: debhelper (>> 4.0.0), binutils, huskybase
-Standards-Version: 3.5.6
+Standards-Version: 3.5.8
 
 Package: libsmapi2
 Architecture: any
