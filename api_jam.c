@@ -245,6 +245,23 @@ static int openfilejm(char *name, word mode, mode_t permissions)
    return sopen(name, mode, SH_DENYNONE, permissions);
 }
 
+static int opencreatefilejm(char *name, word mode, mode_t permissions)
+{
+  int hF =sopen(name, mode, SH_DENYNONE, permissions);
+
+  if ((hF == -1) && (mode & O_CREAT) && (errno == ENOENT) )
+  {
+     char* slash = strrchr(name, PATH_DELIM);
+     if (slash) {
+        *slash = '\0';
+        _createDirectoryTree(name);
+        *slash = PATH_DELIM;
+     }    
+     hF=sopen(name, mode, SH_DENYNONE, permissions);
+  }
+  return hF;
+}
+
 static int Jam_OpenTxtFile(JAMBASE *jambase)
 {
    char *txt;
@@ -256,9 +273,12 @@ static int Jam_OpenTxtFile(JAMBASE *jambase)
       jambase->TxtHandle = openfilejm(txt, fop_wpb, jambase->permissions);
    else
       jambase->TxtHandle = openfilejm(txt, fop_rpb, jambase->permissions);
+   if ((jambase->TxtHandle == -1) && (jambase->mode == MSGAREA_CRIFNEC)) {
+      jambase->mode = MSGAREA_CREATE;
+      jambase->TxtHandle = opencreatefilejm(txt, fop_cpb, jambase->permissions);
+   }
    pfree(txt);
-   if (jambase->TxtHandle == -1)
-   {
+   if (jambase->TxtHandle == -1) {
       Jam_CloseFile(jambase);
       msgapierr = MERR_NOENT;
       return 0;
@@ -896,23 +916,6 @@ void Jam_CloseFile(JAMBASE *jambase)
    if (jambase->LrdHandle != 0 && jambase->LrdHandle != -1) {
       close(jambase->LrdHandle);
    } /* endif */
-}
-
-static int opencreatefilejm(char *name, word mode, mode_t permissions)
-{
-  int hF =sopen(name, mode, SH_DENYNONE, permissions);
-
-  if ((hF == -1) && (mode & O_CREAT) && (errno == ENOENT) )
-  {
-     char* slash = strrchr(name, PATH_DELIM);
-     if (slash) {
-        *slash = '\0';
-        _createDirectoryTree(name);
-        *slash = PATH_DELIM;
-     }    
-     hF=sopen(name, mode, SH_DENYNONE, permissions);
-  }
-  return hF;
 }
 
 static int gettz(void)
