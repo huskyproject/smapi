@@ -82,7 +82,7 @@ int waitlock(int handle, long ofs, long length)
     return 0;
 }
 
-#elif defined(__RSXNT__)  
+#elif defined(__RSXNT__)
 
 #include <windows.h>
 #include <emx/syscalls.h>
@@ -111,7 +111,7 @@ int waitlock(int handle, long ofs, long length)
 int lock(int handle, long ofs, long length)
 {
     int nt_handle = __fcntl(handle, F_GETOSFD, 0);
-        
+
     if (nt_handle < 0 ||
         LockFile((DWORD)nt_handle, (DWORD)ofs, 0L, (DWORD)length, 0L) == FALSE)
     {
@@ -184,6 +184,11 @@ int sopen(const char *name, int oflag, int ishared, int mode)
 #ifdef OS2
 #define INCL_DOSDATETIME
 #include <os2.h>
+#endif
+
+#if defined(__TURBOC__) && defined(__MSDOS__)
+#include <io.h>
+#include <dos.h>
 #endif
 
 int waitlock(int handle, long ofs, long length)
