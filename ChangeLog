@@ -1,3 +1,7 @@
+2003-02-27 Thursday 13:33  stas_degteff
+
+	* compiler.h (smapi-2_4-stable.1): Fix BeOS and unixes declarations
+
 2003-02-25 Tuesday 09:48  sfpavel
 
 	* debian/changelog (smapi-2_4-stable.5): New debian version:
