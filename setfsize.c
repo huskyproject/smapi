@@ -97,8 +97,12 @@
   #include <winbase.h>
   int _fast setfsize(int fd, long size)
   {
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+    return chsize(fd, size);
+#else
     SetFilePointer((HANDLE)fd, size, NULL, FILE_BEGIN);
     return (!SetEndOfFile((HANDLE)fd));
+#endif
   }
 #else
   #error Unknown OS
