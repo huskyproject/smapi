@@ -178,7 +178,7 @@ static sword _XPENTRY JamCloseArea(MSGA * jm)
    }
 
    if (jbOpen != Jmd)
-       (JAMBASE *)jbptr->jbNext = Jmd->jbNext;
+       jbptr->jbNext = Jmd->jbNext;
    else
        jbOpen = jbOpen->jbNext;
 
