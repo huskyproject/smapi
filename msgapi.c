@@ -104,29 +104,35 @@ sword _XPENTRY MsgCloseApi(void)
 
 MSGA *_XPENTRY MsgOpenArea(byte * name, word mode, word type)
 {
-    if (type & MSGTYPE_SQUISH) return SquishOpenArea(name, mode, type);
-    else if (type & MSGTYPE_JAM) return JamOpenArea(name, mode, type);
-    else return SdmOpenArea(name, mode, type);
-    
-    /* Hey, i'm reading correct ? If not SQUISH and not JAM it must be SDM ?
-       That's a good thing to make incompatible code, but we're not M$ !
-       TODO: Use MSGTYPE_SDM for checking type-parameter. There could be
-             other developer who wants to extend the API with another
-             Base-Type */
+    switch( type ){
+    case MSGTYPE_SQUISH:        return SquishOpenArea(name, mode, type);
+    case MSGTYPE_JAM:           return JamOpenArea(name, mode, type);
+    case MSGTYPE_SDM:           return SdmOpenArea(name, mode, type);
+    case MSGTYPE_PASSTHROUGH:   return TRUE;
+    default:                    msgapierr=MERR_BADA; /* illegal msgbase type */
+                                return FALSE;
+    }
 }
 
 int MsgDeleteBase(char * name, word type)
 {
-    if (type & MSGTYPE_SQUISH) return SquishDeleteBase(name);
-    else if (type & MSGTYPE_JAM) return JamDeleteBase(name);
-    else return SdmDeleteBase(name);
+    if(!name) return FALSE;
+    switch( type ){
+    case MSGTYPE_SQUISH: return SquishDeleteBase(name);
+    case MSGTYPE_JAM:    return JamDeleteBase(name);
+    case MSGTYPE_SDM:    return SdmDeleteBase(name);
+    default:             return TRUE;
+    }
 }
 
 sword _XPENTRY MsgValidate(word type, byte * name)
 {
-    if (type & MSGTYPE_SQUISH) return SquishValidate(name);
-    else if (type & MSGTYPE_JAM) return JamValidate(name);
-    else return SdmValidate(name);
+    switch( type ){
+    case MSGTYPE_SQUISH: return SquishValidate(name);
+    case MSGTYPE_JAM:    return JamValidate(name);
+    case MSGTYPE_SDM:    return SdmValidate(name);
+    default:             return TRUE;
+    }
 }
 
 /*
