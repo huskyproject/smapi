@@ -1,6 +1,6 @@
 Source: smapi
 Section: libs
-Priority: extra
+Priority: optional
 Maintainer: Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>
 Build-Depends: debhelper (>> 3.0.0)
 Standards-Version: 3.5.2

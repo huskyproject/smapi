@@ -1,1 +1,1 @@
-libsmapi 1 smapi (>= 1.6.4.20010413-1)
+libsmapi 1 smapi (>= 1.6.4-14), smapi(<= 1.6.5)
