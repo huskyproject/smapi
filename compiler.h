@@ -82,6 +82,7 @@
    * HAS_UNISTD_H        - may be used "#include <unistd.h>"
    * HAS_SHARE_H         - may be used "#include <share.h>" for sopen() etc.
    * HAS_PWD_H           - may be used "#include <pwd.h>"
+   * HAS_GRP_H           - may be used "#include <grp.h>"
    * HAS_UTIME_H         - may be used "#include <utime.h>"
    * HAS_SYS_UTIME_H     - #include <sys/utime.h> in alternate to <utime.h>
    * HAS_SYS_PARAM_H     - #include <sys/params.h>
@@ -89,6 +90,8 @@
    * HAS_SYS_WAIT_H      - #include <sys/wait.h>
    * HAS_SYS_STATVFS_H   - #include <sys/statvfs.h>
    * HAS_SYS_VFS_H       - #include <sys/vfs.h>
+   * HAS_SYS_SYSEXITS_H  - #include <sys/sysexits.h>
+   * HAS_SYSEXITS_H      - #include <sysexits.h>
    *
    * USE_SYSTEM_COPY     - OS have system call for files copiing (see
    *                       copy_file() and move_file() functions)
@@ -694,7 +697,7 @@ int qq(void)
 #  define __AMIGA__
 #endif
 
-#if defined(__alpha) || defined(_M_ALPHA)
+#if defined(__alpha) || defined(__alpha__) || defined(_M_ALPHA) || defined(M_ALPHA)
 #  ifndef __ALPHA__
 #    define __ALPHA__
 #  endif
@@ -1594,6 +1597,7 @@ int qq(void)
 #  define HAS_MALLOC_H        /* use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_IO_H     1  /* may use "#include <io.h> */
 #  define HAS_SHARE_H  1  /* may use "#include <share.h> */
+#  define HAS_DIRECT_H 1  /* may use "#include <direct.h> */
 
 /* End: IBM C/Set++ for OS/2 */
 #elif defined(__UNIX__) /* Unix clones: Linux, FreeBSD, SUNOS (Solaris), BeOS, MacOS etc. */
@@ -1688,6 +1692,7 @@ int qq(void)
 #    define mysleep(x) snooze(x*1000000l)
 #    define sleep(x) snooze(x*1000000l)
 #    define HAS_sleep     1
+#    define HAS_SYS_SYSEXITS_H     1  /*  <sys/sysexits.h> */
 #  elif defined(__LINUX__) || defined(__SUN__)
 #    define mysleep(x) usleep(x*1000000l)
 #    define sleep(x)   usleep(x*1000000l)
@@ -1699,11 +1704,17 @@ int qq(void)
 #    define HAS_vsnprintf 1
 #  endif
 
-#  define HAS_UNISTD_H  1  /* <unistd.h> */
-#  define HAS_PWD_H     1  /* <pwd.h> */
-#  define HAS_SIGNAL_H  1  /* <signal.h> */
+#  ifndef __BEOS__
+#    define HAS_SYSEXITS_H     1  /*  <sysexits.h> */
+#  endif
+#  define HAS_UNISTD_H         1  /* <unistd.h> */
+#  define HAS_PWD_H            1  /* <pwd.h> */
+#  define HAS_GRP_H            1  /* may be used "#include <grp.h>" */
+#  define HAS_SIGNAL_H         1  /* <signal.h> */
+#  define HAS_SYS_WAIT_H       1  /* <sys/wait.h> */
 #  define USE_STAT_MACROS
 
+#define <fcntl.h>
 #ifndef O_BINARY
 # define O_BINARY 0 /* O_BINARY flag has no effect under UNIX */
 #endif
