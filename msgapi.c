@@ -498,18 +498,4 @@ word EXPENTRY NumKludges(char *txt)
 
 word GetMsgapiErr() { return msgapierr; }
 
-#undef EXPENTRY
-#undef MSG
-#include <Windows.h>
-
-void *_salloc(size_t size)
-{
-    return HeapAlloc(GetProcessHeap(), HEAP_NO_SERIALIZE, size);
-}
-
-void _sfree(void* ptr) 
-{ 
-	if(ptr) HeapFree(GetProcessHeap(), HEAP_NO_SERIALIZE, ptr);
-}
-
 #endif
