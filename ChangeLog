@@ -1,3 +1,7 @@
+2002-03-31 Sunday 07:57  ml
+
+	* api_sdm.c (1.28): cleanup
+
 2002-03-20 Wednesday 22:45  pavel.gulchouck
 
 	* api_sdm.c (1.27): Read *.msg >64K fixed
