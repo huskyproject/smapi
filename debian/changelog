@@ -1,12 +1,14 @@
-smapi (1.6.4-10) unstable; urgency=low
+smapi (1.6.4u-10) unstable; urgency=low
 
+  * Renamed it to 1.6.4u-10 so dpkg/dselect/apt-get find it newer than
+    1.6.4b-*
   * I now build direct from cvs-Source. AND i insert my changes into cvs.
     So there are no more package.orig.tar.gz and package.diff.gz Source-
     Packages, just a package.tar.gz for source. Its the same as in cvs !
 
  -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Tue, 10 Apr 2001 16:39:06 +0200
 
-smapi (1.6.4-9) unstable; urgency=low
+smapi (1.6.4b-9) unstable; urgency=low
 
   * Und nun die aktuellste Developversion, direkt aussem cvs.
   * Kein Paket macht mehr ein Suggest auf ein anderes Paket. Ich lass
