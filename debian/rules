@@ -14,8 +14,6 @@ export PACKAGE=libsmapi2
 # Next Line to build debug-versions !
 # export DEB_BUILD_OPTIONS=nostrip
 # shared library versions, option 1
-version=2.3.0
-major=2
 
 configure: configure-stamp
 configure-stamp:
@@ -62,7 +60,7 @@ binary-arch: build install
 	dh_installinfo
 #	dh_undocumented
 	dh_installchangelogs ChangeLog
-	rm -rf $(CURDIR)/debian/libsmapi2-dev/usr/share/doc/libsmapi2-dev
+	rm -rf $(CURDIR)/debian/$(PACKAGE)-dev/usr/share/doc/$(PACKAGE)-dev
 	dh_link
 	dh_strip
 	dh_compress
