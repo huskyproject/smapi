@@ -49,5 +49,4 @@ $(TARGET).so: $(OBJS)
 
 install:
 	cp -f $(TARGET).so $(LIBDIR)
-	cp -f *.h  $(INCDIR)
 	
