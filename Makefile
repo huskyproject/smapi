@@ -58,7 +58,7 @@ $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
 	      -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
   else
 $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
-	$(CC) -shared -Wall,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
+	$(CC) -shared -Wl,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
           -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
   endif
 
