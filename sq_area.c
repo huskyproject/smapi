@@ -92,7 +92,7 @@ short _SquishThreadUnlock(void)
 }
 
 
-static unsigned _SquishUnlinkBaseFiles(byte *);
+static unsigned near _SquishUnlinkBaseFiles(byte *);
 
 int SquishDeleteBase(char *name)
 {
