@@ -1,3 +1,8 @@
+2003-02-25 Tuesday 09:48  sfpavel
+
+	* debian/changelog (smapi-2_4-stable.5): New debian version:
+	2.4-beta2
+
 2003-02-21 Friday 07:51  sfpavel
 
 	* debian/: changelog, docs (smapi-2_4-stable.[4,1]): Add HISTORY to
