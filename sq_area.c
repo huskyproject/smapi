@@ -640,12 +640,9 @@ sword EXPENTRY apiSquishCloseArea(HAREA ha)
 
   delete_semaphore(&(ha->sem));
 
-#ifdef ALT_LOCKING
+#ifdef ALTLOCKING
   if (ha->lck_path)
-  {
-    remove(ha->lck_path);
     pfree(ha->lck_path);
-  }
 #endif
     
   pfree(ha->api);

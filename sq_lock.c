@@ -92,6 +92,7 @@ int _squnlock(HAREA ha)
 int _sqlock(HAREA ha, int t)
 {
    int forever = 0;
+   int rc;
    
    if (t == -1)
      return _alt_lock(ha) == 0;

@@ -249,7 +249,7 @@ struct _msgapi
     
     SEMAPHORE sem;
     
-#ifdef ALT_LOCKING
+#ifdef ALTLOCKING
     char  *lck_path;
     int    lck_handle;
 #endif
