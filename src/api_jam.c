@@ -417,7 +417,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
                   if (!(msg->orig.zone || msg->orig.net || msg->orig.node))
                       parseAddr(&(msg->orig), addrstr, strlen(addrstr));
               } /* endif */
-/*      } /* endif */
+/*      } */ /* endif */
 
 
       s_time = gmtime((time_t *)(&(msgh->Hdr.DateWritten)));
