@@ -2,6 +2,11 @@ development version
 -------------------
 
 ----- cvs ci ------
+Fri Apr  7 15:25:58 MSD 2000
+max (patch from Serguei Revtov):
+* MsgReadMsg now sets last character of text & ctext to '\0'
+
+----- cvs ci ------
 Sat Apr 1 13:40:17 MSD 2000
 Fedor:
 * fixed logical error (&&, ||) in Jam_Close()

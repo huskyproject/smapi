@@ -342,6 +342,7 @@ static dword EXPENTRY SquishReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword
             }
 
             farread(MsghSqd->sfd, ctxt, (int)min(msgh->clen, clen));
+            ctxt[(int)min(msgh->clen, clen)] = '\0';
 
             /* Skip over rest of control info */
 
@@ -362,6 +363,7 @@ static dword EXPENTRY SquishReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword
         if (bytes && text)
         {
             bytesread = (dword) farread(MsghSqd->sfd, text, (unsigned int) bytes);
+            text[(unsigned int) bytes] = '\0';
             msgh->cur_pos += (dword) bytesread;
         }
 

@@ -594,6 +594,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
         }
 
         got = (word) farread(msgh->fd, text, (unsigned int)bytes);
+        text[(unsigned int)bytes] = '\0';
 
         /*
          *  Update counter only if we got some text, and only if we're
@@ -646,6 +647,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
         slen = strlen((char *) msgh->ctrl) + 1;
         memmove(ctxt, msgh->ctrl, min(slen, (size_t) clen));
+        ctxt[min(slen, (size_t) clen)] = '\0';
     }
 
     if (fake_msgbuf)

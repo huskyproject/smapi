@@ -326,7 +326,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          } /* endif */
          msgh->cur_pos += bytesread;
       } /* endif */
-
+      text[bytes] = '\0';
    }
 
    if (clen && ctxt) {
