@@ -943,10 +943,10 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
          return 0;
       }
       *mode = MSGAREA_CREATE;
-      jambase->HdrHandle = openfilejm(hdr, fop_wpb|O_EXCL, permissions);
-      jambase->TxtHandle = openfilejm(txt, fop_wpb|O_EXCL, permissions);
-      jambase->IdxHandle = openfilejm(idx, fop_wpb|O_EXCL, permissions);
-      /* jambase->LrdHandle = openfilejm(lrd, fop_wpb|O_EXCL, permissions);
+      jambase->HdrHandle = openfilejm(hdr, fop_cpb, permissions);
+      jambase->TxtHandle = openfilejm(txt, fop_cpb, permissions);
+      jambase->IdxHandle = openfilejm(idx, fop_cpb, permissions);
+      /* jambase->LrdHandle = openfilejm(lrd, fop_cpb, permissions);
       */ jambase->LrdHandle = 0;
 
       if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {

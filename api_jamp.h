@@ -26,6 +26,7 @@ static dword  EXPENTRY JamGetHash(HAREA mh, dword msgnum);
 
 #define fop_wpb (O_CREAT | O_TRUNC | O_RDWR | O_BINARY)
 #define fop_rpb (O_RDWR | O_BINARY)
+#define fop_cpb (O_CREAT | O_EXCL | O_RDWR | O_BINARY)
 
 static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename);
 int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions);
