@@ -35,7 +35,7 @@
 #endif
 #include "prog.h"
 
-#if defined(__MSDOS__) || (defined(__FLAT__) && defined(__WATCOMC__))
+#if defined(__MSDOS__)
 
   #ifdef __WATCOMC__
   #include <i86.h>

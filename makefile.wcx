@@ -2,7 +2,7 @@
 # No support for Husky build environment.
 
 CC=	wcl386
-CFLAGS=	-zq -wx
+CFLAGS=	-zq -wx -bt=dos4g -l=dos4g
 CDEFS=  -DNOSEMAPHORES -D__FLAT__
 COPT=	-oneatx -5
 LIB=	wlib
