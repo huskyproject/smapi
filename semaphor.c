@@ -25,7 +25,7 @@
 
 /* No code for Non-Multitasking Systems */
 
-#elif definded(__BEOS__)
+#elif defined(__BEOS__)
 
 void create_semaphore(SEMAPHORE *sem)
 {
