@@ -97,7 +97,7 @@ int waitlock(int handle, long ofs, long length)
     return 0;
 }
 
-int waitlock2(int handle, long ofs, long length)
+int waitlock2(int handle, long ofs, long length, long t)
 {
     FILELOCK urange, lrange;
     APIRET apiret;
