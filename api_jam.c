@@ -311,6 +311,8 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       memset(msg->from, '\0', XMSG_FROM_SIZE);
       memset(msg->to, '\0', XMSG_TO_SIZE);
       memset(msg->subj, '\0', XMSG_SUBJ_SIZE);
+      memset(&(msg->orig), 0, sizeof(msg->orig));
+      memset(&(msg->dest), 0, sizeof(msg->dest));
 
       /* get "from name" line */
       SubPos = 0;
@@ -330,16 +332,18 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          strncpy(msg->subj, SubField->Buffer, min(SubField->DatLen, sizeof(msg->subj)));
       } /* endif */
 
-      /* get "orig address" line */
-      SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS))) {
-         parseAddr(&(msg->orig), SubField->Buffer, SubField->DatLen);
-      } /* endif */
+      if (!msgh->sq->isecho) {
+          /* get "orig address" line */
+          SubPos = 0;
+          if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS))) {
+             parseAddr(&(msg->orig), SubField->Buffer, SubField->DatLen);
+          } /* endif */
 
-      /* get "dest address" line */
-      SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS))) {
-         parseAddr(&(msg->dest), SubField->Buffer, SubField->DatLen);
+          /* get "dest address" line */
+          SubPos = 0;
+          if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS))) {
+             parseAddr(&(msg->dest), SubField->Buffer, SubField->DatLen);
+          } /* endif */
       } /* endif */
 
 
@@ -1343,6 +1347,8 @@ static int NETADDRtoSubf(NETADDR addr, dword *len, word opt, JAMSUBFIELD2ptr sub
 
    if (!subf) return 0;
 
+   if (addr.zone==0 && addr.net==0 && addr.node==0 && addr.point==0)
+      return 0;
    if (addr.point) {
       sprintf(subf->Buffer, "%d:%d/%d.%d", addr.zone, addr.net, addr.node, addr.point);
    } else {
