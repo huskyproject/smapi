@@ -6,3 +6,5 @@ if [ "$1" = "upgrade" ]; then
 	rm -rf /usr/share/doc/libsmapi2-dev
     fi
 fi
+
+#DEBHELPER#
