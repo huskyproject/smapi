@@ -1719,8 +1719,8 @@ int qq(void)
 #    define mysleep(x) usleep(x*1000000l)
 #    define sleep(x)   usleep(x*1000000l)
 #    define HAS_sleep     1
-#  elif defined(__FreeBSD__) || defined(__CYGWIN__)
-#    define mysleep(x) usleep(x*1000000l)
+#  elif defined(__BSD__) || defined(__CYGWIN__)
+#    define mysleep(x) sleep(x)
 #    define HAS_sleep     1
 #  endif
 #  ifndef __SUN__ /* SunOs 2.7 not have snprintf() and vsnprintf in libc */
@@ -1748,7 +1748,7 @@ int qq(void)
 # define O_TEXT   0 /* O_TEXT flag has no effect under UNIX */
 #endif
 
-#if defined(__LINUX__) || defined(__FreeBSD__) || defined(__CYGWIN__)
+#if defined(__LINUX__) || defined(__BSD__) || defined(__CYGWIN__)
 #  define HAS_mktime	/* <time.h> */
 #  define HAS_strftime	/* <time.h> */
 #  define HAS_DIRENT_H  /* <dirent.h> */
