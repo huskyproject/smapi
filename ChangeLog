@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Thu Aug 24 13:54:51 UTC 2000
+sms:
+* fixed return value of _sqlock
+
+----- cvs ci ------
 Thu Aug 24 13:18:35 UTC 2000
 sms:
 * renamed exported Squish*-functions to apiSquish* to prevent name collisions

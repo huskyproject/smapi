@@ -77,12 +77,14 @@ short _fast _SquishBaseThreadUnlock(HAREA ha)
 
 int _sqlock(int handle, long ofs, long length)
 {
-  return waitlock(handle, ofs, length);
+  // waitlock returns 0 on success
+  return !waitlock(handle, ofs, length);
 }
 
 int _squnlock(int handle, long ofs, long length)
 {
-  return unlock(handle, ofs, length);
+  // unlock returns 0 on success
+  return !unlock(handle, ofs, length);
 }
 
 /* Lock the first byte of the Squish file header.  Do this up to            *
