@@ -57,6 +57,10 @@ OBJS=	1stchar$(OBJ)  \
 	$(AR) $(AR_R) $(TARGET) $@
 
 $(TARGET): $(OBJS)
+ifdef RANLIB
+	$(RANLIB) $(TARGET)
+endif
+	
 
 ifeq ($(DYNLIBS), 1)
 $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
@@ -75,7 +79,9 @@ instdyn: $(TARGET)
 endif
 
 install: instdyn
+	-$(MKDIR) $(MKDIROPT) $(INCDIR)
 	-$(MKDIR) $(MKDIROPT) $(INCDIR)/smapi
+	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
 	$(INSTALL) $(IIOPT) alc.h $(INCDIR)/smapi
 	$(INSTALL) $(IIOPT) api_brow.h $(INCDIR)/smapi
 	$(INSTALL) $(IIOPT) compiler.h $(INCDIR)/smapi
