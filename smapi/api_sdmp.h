@@ -53,8 +53,9 @@ static void _stdc WriteToFd(byte * str);
 static void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate, byte * asciidate);
 
 static int statfd;  /* file handle for WriteToFd */
-static byte *sd_msg = (byte *) "%s%u.msg";
 
+static byte *sd_msg = (byte *) "%s%u.msg";  /* format string for sprintf() */
+typedef unsigned sdm_msgnum_type;           /* type modificator for 4th parameter in sprintf(&s,sd_msg,path,number) */
 
 static struct _apifuncs sdm_funcs =
 {

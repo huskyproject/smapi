@@ -67,7 +67,7 @@
 #define Mhd ((struct _sdmdata *)(mh->apidata))
 #define MsghMhd ((struct _sdmdata *)(((struct _msgh *)msgh)->sq->apidata))
 
-static byte *hwm_from = (byte *) "-=| SquishMail |=-";
+static byte *hwm_from = (byte *) "-=|smapi internal|=-";
 
 MSGA *MSGAPI SdmOpenArea(byte * name, word mode, word type)
 {
@@ -329,7 +329,7 @@ static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
             {
                 /* Check to see if the msg we're writing already exists */
 
-                sprintf((char *) msgname, (char *) sd_msg, Mhd->base, (int)mh->high_msg + 1);
+                sprintf((char *) msgname, (char *) sd_msg, Mhd->base, (sdm_msgnum_type)mh->high_msg + 1);
 
                 if (fexist((char *) msgname))
                 {
