@@ -1,3 +1,11 @@
+2003-02-27 Thursday 13:33  stas_degteff
+
+	* compiler.h (1.170): Fix unixes declarations
+
+2003-02-27 Thursday 13:21  stas_degteff
+
+	* compiler.h (1.169): Fix BeOS declarations
+
 2003-02-21 Friday 19:20  stas_degteff
 
 	* compiler.h (1.168): Add some info about BeOS defines
