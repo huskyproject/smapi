@@ -868,7 +868,7 @@ int qq(void)
 
 #if defined(__OS2__) && !defined(_MSC_VER)
 #if !defined(__386__) && !defined(__FLAT__)
-#error Please check your compiler to target: 16 bit or 32 bit and sent report to husky developers: http://sf.net/projects/husky
+#error Please check your compiler to target: 16 bit or 32 bit and sent report to husky developers: http:\/\/sf.net/projects/husky
 #endif
 #  ifndef __386__
 #    define __386__
