@@ -4,9 +4,6 @@
 # Run 'gmake hinstall' to install C header files.
 # No support for the Husky build environment.
 
-VERH =  2.3
-VER  =  2.3.0
-
 prefix=	/usr/local
 CC=	gcc
 CFLAGS=	-Wall
@@ -15,11 +12,15 @@ COPT=	-O3
 LIB=	ar
 RANLIB= ranlib
 OBJ=	.o
+C=	.c
+EXE=
 
 TARGET=	libsmapibsd.a
 TARGET_H= *.h
+BINDIR=	$(prefix)/bin/
 LIBDIR=	$(prefix)/lib/
 INCDIR=	$(prefix)/include/smapi/
+IBOPT=	-m 555 -c
 ILOPT=	-m 444 -c
 IIOPT=	-m 444 -c
 DIROPT=	-d -m 755
@@ -40,10 +41,13 @@ include makefile.inc
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
-all: $(TARGET)
+all: $(TARGET) $(PROGRAMS)
 
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
+
+$(GNMSGID)$(EXE): $(GMOBJS)
+	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $@$(C) $^  $(TARGET) $(LIBS)
 
 clean:
 	-$(RM) *.o
@@ -51,19 +55,30 @@ clean:
 distclean: clean
 	-$(RM) $(TARGET)
 
-install: $(TARGET)
+install: $(PROGRAMS)
+	$(INSTALL) $(DIROPT) $(BINDIR)
+	$(INSTALL) $(IBOPT) $(PROGRAMS) $(BINDIR)
+	echo " Run 'gmake linstall' to install library into $(LIBDIR)"
+	echo " Run 'gmake hinstall' to install C header files into $(INCDIR)"
+
+linstall: $(TARGET)
 	$(INSTALL) $(DIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
 	ln -sf $(LIBDIR)$(TARGET) $(LIBDIR)$(TARGET).$(VER)
 	ln -sf $(LIBDIR)$(TARGET) $(LIBDIR)$(TARGET).$(VERH)
-	echo " Run 'gmake hinstall' to install C header files into $(INCDIR)"
 
 hinstall:
 	$(INSTALL) $(DIROPT) $(INCDIR)
 	$(INSTALL) $(IIOPT) $(TARGET_H) $(INCDIR)
 
-uninstall:
-	$(RM) $(LIBDIR)$(TARGET).1
-	$(RM) $(LIBDIR)$(TARGET)
-	-$(RM) $(LIBDIR)
+uninstall: uninstall-h uninstall-lib uninstall-progs
 
+uninstall-progs:
+        -cd $(BINDIR) ; $(RM) $(PROGRAMS)
+
+uninstall-lib:
+	-$(RM) $(LIBDIR)$(TARGET).1
+	-$(RM) $(LIBDIR)$(TARGET)
+
+uninstall-h:
+        -cd $(INCDIR) ; $(RM) $(TARGET_H) ; cd .. ; $(RM) $(INCDIR)
