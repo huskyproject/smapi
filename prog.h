@@ -30,6 +30,7 @@
 #include <malloc.h>
 #endif
 
+/***** moved to compiler.h ? *****
 #if defined(__MSVC__)
 
 #ifndef ZREE
@@ -46,7 +47,7 @@ void far *farcalloc(int n, int m);
 #endif
 #endif
 
-#endif /* defined(ZREE) */
+#endif  defined(ZREE)
 
 #endif
 
@@ -61,6 +62,7 @@ void far *farcalloc(int n, int m);
 #define farrealloc realloc
 #define farfree    free
 #define _fmalloc   malloc
+*/
 
 #ifndef TRUE
 #define FALSE 0
