@@ -1,5 +1,4 @@
 # Makefile for the Husky build environment
-# Makefile for the Husky build environment
 
 # include Husky-Makefile-Config
 ifeq ($(DEBIAN), 1)
@@ -14,17 +13,20 @@ ifeq ($(OSTYPE), UNIX)
   DLLPREFIX=lib
 endif
 
-include makefile.inc
+include make/makefile.inc
 
 ifeq ($(DEBUG), 1)
   CFLAGS=$(WARNFLAGS) $(DEBCFLAGS)
-# CFLAGS=$(WARNFLAGS) $(DEBCFLAGS) -DNO_LOCKING
+  LFLAGS=$(DEBLFLAGS)
 else
   CFLAGS=$(WARNFLAGS) $(OPTCFLAGS)
-# CFLAGS=$(WARNFLAGS) $(OPTCFLAGS) -DNO_LOCKING
+  LFLAGS=$(OPTLFLAGS)
 endif
 
-CDEFS=-D$(OSTYPE) $(ADDCDEFS) -I$(INCDIR)
+SRC_DIR = src/
+H_DIR   = smapi/
+
+CDEFS=-D$(OSTYPE) $(ADDCDEFS) -I$(H_DIR) -I$(INCDIR)
 
 ifeq ($(DYNLIBS), 1)
 all: $(TARGETLIB) $(TARGETDLL).$(VER)
@@ -33,8 +35,8 @@ all: $(TARGETLIB)
 endif
 
 
-.c$(_OBJ):
-	$(CC) $(CFLAGS) $(CDEFS)  $<
+%$(_OBJ): $(SRC_DIR)%.c
+	$(CC) $(CFLAGS) $(CDEFS) $(SRC_DIR)$*.c
 
 $(TARGETLIB): $(OBJS)
 	$(AR) $(AR_R) $(TARGETLIB) $?
@@ -45,14 +47,14 @@ endif
 ifeq ($(DYNLIBS), 1)
   ifeq (~$(MKSHARED)~,~ld~)
 $(TARGETDLL).$(VER): $(OBJS)
-	$(LD) $(OPTLFLAGS) -o $(TARGETDLL).$(VER) $(OBJS)
+	$(LD) $(LFLAGS) -o $(TARGETDLL).$(VER) $(OBJS)
   else
 $(TARGETDLL).$(VER): $(OBJS)
 	$(CC) -shared -Wl,-soname,$(TARGETDLL).$(VERH) \
           -o $(TARGETDLL).$(VER) $(OBJS)
   endif
 
-instdyn: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
+instdyn: $(TARGETLIB) $(TARGETDLL).$(VER)
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(TARGETDLL).$(VER) $(LIBDIR)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL).$(VERH)
@@ -74,11 +76,10 @@ endif
 FORCE:
 
 install-h-dir: FORCE
-	-$(MKDIR) $(MKDIROPT) $(INCDIR)
-	-$(MKDIR) $(MKDIROPT) $(INCDIR)$(DIRSEP)$(LIBNAME)
+	-$(MKDIR) $(MKDIROPT) $(INCDIR)/$(H_DIR)
 
 %.h: FORCE
-	-$(INSTALL) $(IIOPT) $@ $(INCDIR)$(DIRSEP)$(LIBNAME)
+	-$(INSTALL) $(IIOPT) $(H_DIR)$@ $(INCDIR)/$(H_DIR)
         
 install-h: install-h-dir $(HEADERS)
 
@@ -87,12 +88,10 @@ install: install-h instdyn
 	$(INSTALL) $(ISLOPT) $(TARGETLIB) $(LIBDIR)
 
 uninstall:
-	-cd $(INCDIR)$(DIRSEP)$(LIBNAME)$(DIRSEP) ;\
+	-cd $(INCDIR)/$(H_DIR) ;\
 	$(RM) $(RMOPT) $(HEADERS)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETLIB)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL).$(VER)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL).$(VERH)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL)
+	-$(RM) $(RMOPT) $(LIBDIR)/$(TARGETLIB)
+	-$(RM) $(RMOPT) $(LIBDIR)/$(TARGETDLL)*
 
 clean:
 	-$(RM) $(RMOPT) *$(_OBJ)

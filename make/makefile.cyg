@@ -1,0 +1,126 @@
+# $Id$
+# Makefile to build HUSKYLIB/win32 with Mingw32 from Cygwin.
+# No support for the Husky build environment.
+
+# Uncomment this for compile info for gdb and display more compiler warnings
+DEBUG	= -g -pedantic
+
+# Uncomment this for strip all simbols from binaries to reduce file sizes
+#STRIP	= -s
+
+
+## programs ##
+
+#use this line if you are using MINGW32 on a Windows box
+CC	= gcc
+AR	= ar
+RANLIB	= ranlib
+
+#use this line if you are using MINGW32 CPD on a Unix box as cross compiler
+#CC	= i386-mingw32-gcc
+#AR	= i386-mingw32-ar
+#RANLIB	= i386-mingw32-ranlib
+RM	= rm
+
+## file suffixes ##
+
+_C	= .c
+_OBJ	= .o
+_LIB	= .a
+_EXE	= .exe
+_DLL	= .dll
+
+## program options ##
+
+# compiler defines
+CDEFS	=
+# common compiler options
+CFLAGS	= -Wall -mno-cygwin -O3
+# options for compile only (link is off)
+OBJOPT	= -c
+# options for build static library
+LIBOPT	= -static
+# options for build dll
+DLLOPT  = -shared
+# option for specify output file name
+NAMEOPT	= -o
+# options for $(AR) program
+ARFLAGS	= rs
+# options for $(RM) program
+RMFLAGS	= -f
+
+
+## Library filename elements ##
+
+# Prefix to construct static library name
+LIBPREFIX=lib
+# Prefix to construct dll name
+DLLPREFIX=
+# Suffix to construct library name
+LIBSUFFIX=cyg
+# Suffix to construct dll name
+DLLSUFFIX=
+
+## make directives ##
+
+.PHONY:	distclean clean all static dll programs default
+
+## Default make rule ##
+
+default:
+	@echo Run 'make dll' to build dll version \($(TARGETDLL), $(PROGRAMS)\)
+	@echo Run 'make static' to build static version \($(TARGETLIB), $(PROGRAMS)\)
+#	@echo Run 'make dllprograms' to build dll version of programs \($(PROGRAMS)\)
+#	@echo Run 'make programs' to build static version of programs \($(PROGRAMS)\)
+	@echo Run 'make all' to build all above
+
+## include common makefiles part ##
+
+include makefile.inc
+
+# libraries need to build binary file
+LIBS	+=
+
+## other, usualy not modify below ##
+CYGWIN_VERSION	= $(shell uname -r)
+
+ifeq ( , $(findstring "1.3.9", $(CYGWIN_VERSION)) )
+ifeq ( , $(findstring "1.3.10", $(CYGWIN_VERSION)) )
+ifeq ( , $(findstring "1.3.11", $(CYGWIN_VERSION)) )
+ # new cygwin require library mingwex for build with '-mno-cygwin' option
+LIBS	+= -lmingwex
+endif
+endif
+endif
+
+## Additions (add into end of strings) ##
+CFLAGS	+= -I$(H_DIR) -I../../huskylib $(DEBUG)
+
+## make rules ##
+
+all:	static dll programs
+
+static:	$(TARGETLIB)
+dll:	$(TARGETDLL)
+programs: $(TARGETLIB) $(PROGRAMS)
+dllprograms: $(TARGETDLL) $(PROGRAMS)
+
+%$(_EXE): $(SRC_DIR)%$(_C) $(TARGETLIB)
+	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $^ $(LIBS)
+
+%$(_OBJ): $(SRC_DIR)%$(_C)
+	$(CC) $(CFLAGS) $(CDEFS) $(OBJOPT) $<
+
+$(TARGETLIB):	$(OBJS)
+	$(AR) $(ARFLAGS) $@ $?
+#	$(RANLIB) $@   # 'ar rs' doing this
+	
+$(TARGETDLL):	$(OBJS)
+	$(CC) $(DLLOPT) $(CFLAGS) $(NAMEOPT)$@ $^
+
+
+clean:
+	-$(RM) $(RMOPT) *$(_OBJ)
+
+distclean:
+	-$(RM) $(RMOPT) $(TARGETDLL) $(TARGETLIB) $(PROGRAMS)

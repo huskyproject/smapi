@@ -1,0 +1,100 @@
+# $Id$
+#
+# Settings for AIX
+
+# There is no makefile for AIX any more as we don't have a AIX machine to
+# test things any more.
+
+# To build husky on AIX with gcc, try to use makefile.lnx, but if you
+# are using IBM's C compiler, may be add the following parameter to the CFLAGS:
+#
+#     -qcpluscmt
+#
+# This will allow "//" style comments in ANSI C # source code.
+
+# Specify debug info generate compiler options
+#DEBUG=
+
+# Specify characters strip linker options
+#STRIP=
+
+## programs ##
+
+CC	= cc
+AR	= ar
+RANLIB	= ranlib
+RM	= rm
+INSTALL	= install
+
+## file suffixes ##
+
+_C=	.c
+_OBJ=	.o
+_LIB=	.a
+_DLL=
+_EXE=
+
+## program options ##
+
+# compiler defines
+CDEFS	= -D_AIX
+# common compiler options
+CFLAGS	=
+# options for compile only (link is off)
+OBJOPT	= -c
+# options for build static library
+LIBOPT	=
+# options for build dll
+DLLOPT  =
+# option for specify output file name
+NAMEOPT	= -o
+# options for $(AR) program
+ARFLAGS	= r
+# options for $(RM) program
+RMFLAGS	= -f
+
+## Library filename elements ##
+
+# Prefix to construct static library name
+LIBPREFIX=lib
+# Prefix to construct dll name
+DLLPREFIX=lib
+# Suffix to construct library name
+LIBSUFFIX=aix
+# Suffix to construct dll name
+DLLSUFFIX=aix
+
+## make directives ##
+
+
+## Default make rule ##
+
+all: $(TARGETLIB)
+
+## include common makefiles part ##
+
+include makefile.inc
+
+# Additions (add into end of strings)
+#LIBS	+= ../../huskylib/libhusky.a
+LIBS	+=
+
+CFLAGS	+= -I$(H_DIR) -I../../huskylib $(DEBUG)
+
+## make rules ##
+
+#%$(_EXE): %$(_C) $(TARGETLIB)
+#	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $^ $(LIBS)
+
+%$(_OBJ): $(SRC_DIR)%$(_C)
+	$(CC) $(CFLAGS) $(CDEFS) $(OBJOPT) $<
+
+$(TARGETLIB): $(OBJS)
+	$(AR) $(ARFLAGS) $@ $?
+	$(RANLIB) $@
+
+clean:
+	-$(RM) $(RMFLAGS) *$(_OBJ)
+
+distclean:
+	-$(RM) $(RMFLAGS) $(TARGETLIB)

@@ -1,0 +1,148 @@
+# $Id$
+# Makefile to build HUSKYLIB with cross-compiler Mingw32 on unix
+# No support for the Husky build environment.
+
+# Uncomment this for compile info for gdb and display more compiler warnings
+DEBUG	= -g -pedantic
+
+# Uncomment this for strip all simbols from binaries to reduce file sizes
+#STRIP	= -s
+
+
+## programs ##
+
+# compiler
+CC	= gcc
+# library tool
+AR	= ar
+# library indexer
+RANLIB	= ranlib
+# linker program
+LINK	= ld
+# archiver program
+ARCHIVER= zip
+# file removing command
+#   Note from Alexander Reznikov <homebrewer@yandex.ru>:
+#   We can't use 'TERM' enviroment variable: if use msys from rxvt terminal
+#   then TERM==msys, but if use msys from console then TERM==cygwin.
+ifeq ($(OSTYPE),msys)
+RM	= rm
+else
+RM	= del
+endif
+
+## file suffixes ##
+
+_C	= .c
+_OBJ	= .o
+_LIB	= .a
+_EXE	= .exe
+_DLL	= .dll
+
+## program options ##
+
+# compiler defines
+CDEFS	=
+# common compiler options
+CFLAGS	= -Wall -O3
+# linker options
+LFLAGS	=
+# options for compile only (link is off)
+OBJOPT	= -c
+# options for build static library
+LIBOPT	= -static
+# options for build dll
+DLLOPT  =
+# option for specify output file name
+NAMEOPT	= -o
+# options for $(AR) program
+ARFLAGS	= r
+# options for $(RM) program
+ifeq ($(RM),rm)
+RMFLAGS	= -f
+else
+RMFLAGS	=
+endif
+# options for archiver
+ARCFLAGS= -9 -j
+
+## Library filename elements ##
+
+# Prefix to construct static library name
+LIBPREFIX=lib
+# Prefix to construct dll name
+DLLPREFIX=
+# Suffix to construct library name
+LIBSUFFIX=mgw
+# Suffix to construct dll name
+DLLSUFFIX=
+
+## Binary package name ##
+PACKAGENAME=$(LIBNAME)$(LIBSUFFIX)
+
+## make directives ##
+
+.PHONY:	distclean clean all static dll programs default doc package
+
+## Default make rule ##
+
+default: all
+#	@echo Run 'make dll' to build dll version \($(TARGETDLL), $(PROGRAMS)\)
+#	@echo Run 'make static' to build static version \($(TARGETLIB), $(PROGRAMS)\)
+#	@echo Run 'make dllprograms' to build dll version of programs \($(PROGRAMS)\)
+#	@echo Run 'make programs' to build static version of programs \($(PROGRAMS)\)
+#	@echo Run 'make all' to build all above
+
+## include common makefiles part ##
+
+include makefile.inc
+
+# libraries need to build binary file
+LIBS	+=
+
+## other, usualy not modify below ##
+
+## Additions (add into end of strings) ##
+CFLAGS	+= -I$(H_DIR) -I../../huskylib $(DEBUG)
+
+## make rules ##
+
+all:	static programs
+
+static:	$(TARGETLIB)
+dll:	$(TARGETDLL)
+programs: $(TARGETLIB) $(PROGRAMS)
+dllprograms: $(TARGETDLL) $(PROGRAMS)
+
+%$(_EXE): $(SRC_DIR)%$(_C) $(TARGETLIB)
+	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $^ $(LIBS)
+
+%$(_OBJ): $(SRC_DIR)%$(_C)
+	$(CC) $(CFLAGS) $(CDEFS) $(OBJOPT) $<
+
+$(TARGETLIB):	$(OBJS)
+	$(AR) $(ARFLAGS) $@ $?
+	$(RANLIB) $@
+	
+$(TARGETDLL):	$(OBJS)
+	$(CC) $(DLLOPT) $(CFLAGS) $(NAMEOPT)$@ $^
+
+
+clean:
+	-$(RM) $(RMOPT) *$(_OBJ)
+
+distclean:
+#	-$(RM) $(RMOPT) $(TARGETDLL)
+	-$(RM) $(RMOPT) $(TARGETLIB)
+	-$(RM) $(RMOPT) $(PROGRAMS)
+
+
+package: static programs
+        @echo husky library v.$(VER) for Win32 platform (Mingw32 compiler)> file_id.diz
+	@echo (Part of HUSKY Fidonet Software Project) >> file_id.diz
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(TARGETLIB) $(PROGRAMS)
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../VERSION ../README ../License
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../COPYING ../cvsdate.h
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../INSTALL ../HISTORY
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) file_id.diz
+	-$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../README

@@ -1,0 +1,161 @@
+# $Id$
+#
+# Generic makefile for building huskylib (static library) on unix-like OS
+# No support for the Husky build environment (huskymak.cfg)
+# Use GNU version of make utility with this file.
+
+prefix=	/usr/local
+
+# Uncomment this for compile info for gdb and display more compiler warnings
+DEBUG	= -g -pedantic
+
+# Uncomment this for strip all simbols from binaries to reduce file sizes
+#STRIP	= -s
+
+## Directories & permissions ##
+
+BINDIR	= $(prefix)/bin/
+LIBDIR	= $(prefix)/lib/
+INCDIR	= $(prefix)/include/smapi/
+IBOPT	= -m 555 -c
+ILOPT	= -m 444 -c
+IIOPT	= -m 444 -c
+IDOPT	= -d -m 755
+
+## programs ##
+GCC	= gcc
+AR	= ar
+RANLIB	= ranlib
+INSTALL	= install
+
+## file suffixes ##
+
+_C	= .c
+_OBJ	= .o
+_LIB	= .a
+_EXE	=
+_DLL	= .so
+
+
+## program options ##
+
+# compiler defines
+CDEFS	=
+# common compiler options
+CFLAGS	= -Wall
+# options for compile only (link is off)
+OBJOPT	= -c
+# options for build static library
+LIBOPT	= -static
+# options for build dll
+DLLOPT  = -shared
+# option for specify output file name
+NAMEOPT	= -o
+# options for $(AR) program
+ARFLAGS	= r
+# options for $(RM) program
+RMFLAGS	= -f
+
+
+## Library filename elements ##
+
+# Prefix to construct static library name
+LIBPREFIX=lib
+# Prefix to construct dll name
+DLLPREFIX=lib
+# Suffix to construct library name
+LIBSUFFIX=unx
+# Suffix to construct dll name
+DLLSUFFIX=
+
+## make directives ##
+
+.PHONY:	distclean clean all static programs dllprograms default \
+	install hinstall linstall pinstall dinstall \
+	uninstall-progs uninstall-lib uninstall-h
+
+
+## Default make rule ##
+
+default: all
+#	@echo Run 'make dll' to build dll version \($(TARGETDLL), $(PROGRAMS)\)
+#	@echo Run 'make static' to build static version \($(TARGETLIB), $(PROGRAMS)\)
+#	@echo Run 'make programs' to build static version of programs \($(PROGRAMS)\)
+#	@echo Run 'make dllprograms' to build dll version of programs \($(PROGRAMS)\)
+#	@echo Run 'make all' to build all above
+
+## include common makefiles part ##
+
+include "makefile.inc"
+
+
+## Additions (add into end of strings) ##
+
+# libraries need to build binary file (add into end of string)
+LIBS	+=
+
+# Append includes dir and debug code generate options (if defined)
+CFLAGS	+= -I$(H_DIR) -I../../huskylib $(DEBUG)
+
+## make rules ##
+
+all:	static programs
+
+static:	$(TARGETLIB)
+dll:	$(TARGETDLL)
+programs:  $(PROGRAMS)
+
+%$(_OBJ): $(SRC_DIR)%$(_C)
+	$(CC) $(CFLAGS) $(CDEFS) $(OBJOPT) $<
+
+$(TARGETLIB):	$(OBJS)
+	$(AR) $(ARFLAGS) $@ $?
+	$(RANLIB) $@
+	
+$(TARGETDLL):	$(OBJS)
+	$(CC) $(DLLOPT) $(CFLAGS) $(NAMEOPT)$@ $^
+
+clean:
+	-$(RM) $(RMFLAGS) *$(_OBJ)
+
+distclean:
+	-$(RM) $(RMFLAGS) $(TARGETDLL) $(TARGETLIB) $(PROGRAMS)
+
+
+install:
+	@echo " Check directory tree to install: $(prefix)"
+	@echo " Edit makefile.unx if not agree."
+#	@echo " Run 'make proginstall' to install programs into $(BINDIR)"
+	@echo " Run 'make linstall' to install static library into $(LIBDIR)"
+#	@echo " Run 'make dinstall' to install shared library into $(LIBDIR)"
+	@echo " Run 'make hinstall' to install C header files into $(INCDIR)"
+
+proginstall: $(PROGRAMS)
+	$(INSTALL) $(IDOPT) $(BINDIR)
+	$(INSTALL) $(IBOPT) $(PROGRAMS) $(BINDIR)
+
+linstall: $(TARGETLIB)
+	$(INSTALL) $(IDOPT) $(LIBDIR)
+	$(INSTALL) $(ILOPT) $(TARGETLIB) $(LIBDIR)
+
+dinstall: $(TARGETDLL)
+	$(INSTALL) $(IDOPT) $(LIBDIR)
+	$(INSTALL) $(ILOPT) $(TARGETDLL) $(LIBDIR)
+	ln -sf $(LIBDIR)$(TARGETDLL) $(LIBDIR)$(TARGETDLL).$(VERMAJOR)
+
+hinstall:
+	$(INSTALL) $(IDOPT) $(INCDIR)
+	$(INSTALL) $(IIOPT) $(TARGET_H) $(INCDIR)
+
+uninstall: uninstall-h uninstall-lib uninstall-progs
+
+uninstall-progs:
+	-cd $(BINDIR) ; $(RM) $(RMFLAGS) $(PROGRAMS)
+
+uninstall-lib:
+	-$(RM) $(RMFLAGS) $(LIBDIR)$(TARGETDLL)
+	-$(RM) $(RMFLAGS) $(LIBDIR)$(TARGETDLL).$(VERMAJOR)
+
+uninstall-h:
+	-cd $(INCDIR) ; $(RM) $(RMFLAGS) $(TARGET_H)
+	-$(RM) $(RMFLAGS) $(INCDIR)

@@ -1,0 +1,30 @@
+# $Id$
+# Makefile for building a Windows 95 / NT SMAPI library
+# with RSXNT and EMX GCC running on Win32 or OS/2.
+# No support for the Husky build environment
+
+CC=     gcc
+CFLAGS= -w -Zwin32 -I..\smapi -I..\..\huskylib
+CDEFS=  -D__NT__ -DWINNT -D__RSXNT__
+COPT=
+LIB=    ar
+OBJ=	.o
+
+TARGET= smapirxw.a
+
+include makefile.inc
+
+
+# Thunderbirds are go!
+
+.c.o:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) r $(TARGET) $@
+
+$(TARGET): $(OBJS)
+
+clean:
+	-DEL *.o
+
+distclean:
+	-DEL $(TARGET)

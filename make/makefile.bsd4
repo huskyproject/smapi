@@ -1,0 +1,32 @@
+# $Id$
+# Legacy makefile for building on FreeBSD using 'make' program.
+# Tested on FreeBSD 4.1-RELEASE & 4.4-RELEASE
+#
+# No support for the Husky build environment (../huskymak.cfg)
+
+# Uncoment this if we are to create .a only (don't create .so)
+#NOPIC=	1
+
+NOMAN=	1
+prefix= 	/usr/local
+LIBDIR= 	$(prefix)/lib
+CFLAGS= 	-Wall -DUNIX -O3
+
+LIB=		smapi
+SHLIB_MAJOR=	2
+SHLIB_MINOR=	2.5
+
+OBJ=	.o
+
+# FreeBSD/i386 addition
+#
+.if ${MACHINE_ARCH} == "i386"
+   CFLAGS+= -fstrength-reduce -m486
+.endif
+
+.include <makefile.inc>
+
+CFLAGS+= -I$(H_DIR) -I../../huskylib
+
+.include <bsd.lib.mk>
+

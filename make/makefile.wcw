@@ -1,0 +1,61 @@
+# $Id$
+# Makefile for Building SMAPI with Watcom C 11.0c for Windows.
+# No support for Husky build environment.
+#
+# Predefines: __WATCOMC__,
+# __NT__ (-bt=nt)
+
+CC	= wcl386
+CFLAGS	= -i=..\h;..\..\huskylib -zq -wx -bt=nt -oneatx -5 -fpi87 -c -fp5
+CDEFS	=
+LFLAGS	= -mf -l=nt -fpi87 -fp5
+EXENAMEFLAG	= -fe=
+AR	= wlib
+AROPT	= -b -q
+ASMPROG	= wasm
+RM	= del
+
+LIB	= .lib
+DLLIB	= .dll
+OBJ	= .obj
+EXE	= .exe
+ASM	= .asm
+ERR	= .err
+
+TARGET	= smapiwcw$(LIB)
+GNMSGID = gnmsgid$(EXE)
+
+NULL     = @%null
+SYMBOLIC = .SYMBOLIC
+
+.DEFAULT
+	$(NULL)
+
+!include makefile.inc
+
+default : all $(SYMBOLIC)
+
+programs: $(GNMSGID) $(SYMBOLIC)
+
+all : $(TARGET) programs $(SYMBOLIC)
+#all : $(TARGET) $(GNMSGID)  $(SYMBOLIC)
+
+.c$(OBJ) :
+	$(CC) $(CFLAGS) $(CDEFS)  $<
+	$(AR) $(AROPT) $(TARGET) -+$@
+
+$(TARGET) : $(OBJS)  $(SYMBOLIC)
+
+$(GNMSGID) : $(GMOBJS)
+	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $@$(C) $(GMOBJS) $(TARGET)
+
+.IGNORE
+
+clean :
+	-$(RM) *$(OBJ)
+	-$(RM) *$(ERR)
+
+distclean : clean
+	-$(RM) $(TARGET)
+	-$(RM) $(GENMSGID)
+		
