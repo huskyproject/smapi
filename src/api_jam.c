@@ -2100,7 +2100,7 @@ void parseAddr(NETADDR *netAddr, const unsigned char *str, dword len)
 
    ptr = tmp = strAddr;
 
-   while(isdigit(*tmp)) ++tmp;
+   while(*tmp<='9' && *tmp>='0') ++tmp;
 
    if(*tmp == ':')
    {
@@ -2108,7 +2108,7 @@ void parseAddr(NETADDR *netAddr, const unsigned char *str, dword len)
         ptr = ++tmp;
    }
 
-   while(isdigit(*tmp)) ++tmp;
+   while(*tmp<='9' && *tmp>='0') ++tmp;
 
    if(*tmp == '/')
    {
@@ -2116,16 +2116,17 @@ void parseAddr(NETADDR *netAddr, const unsigned char *str, dword len)
         ptr = ++tmp;
    }
 
-   while(isdigit(*tmp)) ++tmp;
+   while(*tmp<='9' && *tmp>='0') ++tmp;
+
+   netAddr->node = atoi(ptr);
 
    if(*tmp == '.')
    {
-        netAddr->node = atoi(ptr);
-        ptr = ++tmp;
-   }
+       ptr = ++tmp;
 
-   if(isdigit(*ptr))
-        netAddr->point = atoi(ptr);
+       if(*tmp<='9' && *tmp>='0')
+           netAddr->point = atoi(ptr);
+    }
 
    free(strAddr);
 
