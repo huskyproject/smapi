@@ -1,3 +1,7 @@
+2002-02-20 Wednesday 10:50  ml
+
+	* .cvsignore (1.1): add .cvsignore file
+
 2002-02-17 Sunday 14:28  pavel.gulchouck
 
 	* api_jam.c (1.76): Set HighWaterMark for JAM to UID, not MsgNum
