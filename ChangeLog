@@ -1,3 +1,8 @@
+2003-04-25 Friday 04:39  andr_lukyanov
+
+	* make/: makefile.cyg (1.3), makefile.djg (1.3): Fixed compilation.
+	Remark DEBUG mode.
+
 2003-04-12 Saturday 13:54  mche
 
 	* smapiDll.vcproj (1.2), make/SmapiDll.vcproj (1.1): change
