@@ -54,7 +54,7 @@ void unlock_semaphore(SEMAPHORE *sem)
 
 #elif defined(UNIX)
 
-#if defined(__GNU_LIBRARY__) && !defined(_SEM_SEMUN_UNDEFINED)
+#if ((defined(__FreeBSD__) || defined(__GNU_LIBRARY__)) && !defined(_SEM_SEMUN_UNDEFINED)) 
    /* union semun is defined by including <sys/sem.h> */
 #else
    /* according to X/OPEN we have to define it ourselves */
