@@ -1,4 +1,4 @@
-SMAPI; Modified Squish MSGAPI - version 2.4
+SMAPI; Modified Squish MSGAPI - version 2.5-current
 
 This version of the SMAPI library is part of the HUSKY fidosoft project.
 This version are development (unstable). Use carefully!
@@ -41,37 +41,37 @@ The following makefiles can be used to compile this release of SMAPI:
 Makefile       Target library   Compiler
 ------------   --------------   -------------------------------------------
 Makefile       libsmapi.*       Any (huskymak.cfg required)
-makefile.bcd   smapibcd.lib     Borland C++ for DOS 3.1
-makefile.bco   smapibco.lib     Borland C++ for OS/2 1.0
-makefile.bcw   smapibco.lib     Borland C++ for Windows 4.0
-makefile.be    libsmapibe.a     GNU C for BeOS 2.7.x
-makefile.bsd   libsmapibsd.a    GNU C for FreeBSD 2.7.x
-makefile.bsd4  libsmapibsd.a    GNU C for FreeBSD 2.9.x, use BSD make
+makefile.bcd   smapibcd.lib     Borland C++ 3.1 for DOS
+makefile.bco   smapibco.lib     Borland C++ 1.0 for OS/2
+makefile.bcw   smapibco.lib     Borland C++ 4.0 for Windows
+makefile.be    libsmapibe.a     GNU C 2.7.x for BeOS
+makefile.bsd   libsmapibsd.a    GNU C 2.9.x for all BSD clones, use BSD make
+makefile.bsd4  libsmapibsd.a    GNU C 2.9.x for FreeBSD, use BSD make
                                 on FreeBSD 4.x
-makefile.cyg   libsmapicyg.a    GNU C for Cygwin 2.7.x
-makefile.djg   smapidjg.a       GNU C for MS-DOS DPMI 2.7.x-3.x (DJGPP)
-makefile.emo   smapiemo.lib     GNU C for OS/2 2.7.x (EMX 0.9) and above with
+makefile.cyg   libsmapicyg.a    GNU C 2.9.x for Cygwin
+makefile.djg   smapidjg.a       GNU C 2.7.x-3.x for MS-DOS DPMI (DJGPP)
+makefile.emo   smapiemo.lib     GNU C 2.7.x for OS/2 (EMX 0.9) and above with
                                 OMF-Style linkage
-makefile.emx   smapiemx.a       GNU C for OS/2 2.7.x (EMX 0.9) a.out-style
+makefile.emx   smapiemx.a       GNU C 2.7.x for OS/2 (EMX 0.9) a.out-style
                                 linkage (EMX Runtime)
-makefile.hco   smapihco.lib     MetaWare High C for OS/2 3.2
-makefile.ibo   smapiibo.lib     IBM C/Set++ for OS/2 2.0
-makefile.lnx   smapilnx.a       GNU C for Linux 2.7.x
-makefile.mgw   libsmapimgw.a    Mingw32 for NT and cross-compilation
+makefile.hco   smapihco.lib     MetaWare High C 3.2 for OS/2
+makefile.ibo   smapiibo.lib     IBM C/Set++ 2.0 for OS/2
+makefile.lnx   smapilnx.a       GNU C 2.7.x for Linux
+makefile.mgw   libsmapimgw.a    Mingw32 for NT and cross-compilation on unixes
 makefile.mvc   smapimvc.lib     Microsoft Visual C/C++ 6.0
 makefile.mvcdll smapimvc.dll    Microsoft Visual C/C++ 6.0
                                 (shared library produced)
-makefile.qcd   smapiqcd.lib     Microsoft QuickC for DOS 2.5 (makefile
+makefile.qcd   smapiqcd.lib     Microsoft QuickC 2.5 for DOS (makefile
                                 requires either the Microsoft Macro
                                 Assembler, MASM, or the Borland Turbo
                                 Assembler, TASM)
-makefile.rxw   smapirxw.lib     GNU C for Windows NT 2.7.x (RSXNT/EMX)
-makefile.sun   libsmapisun.a    GNU C for Solaris 2.7.x
+makefile.rxw   smapirxw.lib     GNU C 2.7.x for Windows NT (RSXNT/EMX)
+makefile.sun   libsmapisun.a    GNU C 2.7.x for Solaris
 makefile.unx   libsmapiunix.a   Generic Unix Makefile
-makefile.wcd   smapiwcd.lib     WATCOM C/C++ for 16-bit DOS 10.x
-makefile.wco   smapiwco.lib     WATCOM C/C++ for 32-bit OS/2 10.x
-makefile.wcw   smapiwcw.lib     WATCOM C/C++ for 32-bit Windows NT 10.x
-makefile.wcx   smapiwcx.lib     WATCOM C/C++ for 32-bit DOS 10.x
+makefile.wcd   smapiwcd.lib     WATCOM C/C++ 10.x for 16-bit DOS
+makefile.wco   smapiwco.lib     WATCOM C/C++ 10.x for 32-bit OS/2
+makefile.wcw   smapiwcw.lib     WATCOM C/C++ 10.x for 32-bit Windows NT
+makefile.wcx   smapiwcx.lib     WATCOM C/C++ 10.x for 32-bit DOS
 
 Use GNU version of make (gmake on many platforms) if don't specified other.
 

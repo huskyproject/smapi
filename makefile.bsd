@@ -1,22 +1,26 @@
 # $Id$
 #
-# Legacy makefile for building on FreeBSD using GNU make
-# Run 'gmake hinstall' to install C header files.
+# Legacy makefile for building smapi (static binary & library)
+# on FreeBSD/OpenBSD/NetBSD using BSD make.
+# Run 'make linstall' to install library into $(LIBDIR)
+# Run 'make hinstall' to install C header files.
 # No support for the Husky build environment.
 
 prefix=	/usr/local
 CC=	gcc
 CFLAGS=	-Wall
 CDEFS=	-DUNIX
-COPT=	-O3 
+COPT=	-O3
 NAMEOPT=-o
-LIB=	ar
+AR=	ar
+ARFLAGS	= r
 RANLIB= ranlib
 OBJ=	.o
 C=	.c
+LIB=	.a
 EXE=
 
-TARGET=	libsmapibsd.a
+TARGET=	libsmapibsd$(LIB)
 TARGET_H= *.h
 BINDIR=	$(prefix)/bin/
 LIBDIR=	$(prefix)/lib/
@@ -26,41 +30,43 @@ ILOPT=	-m 444 -c
 IIOPT=	-m 444 -c
 DIROPT=	-d -m 755
 INSTALL=install
-RM=     rm -f
+RM=     rm
+RMFLAGS=-f
 
-# FreeBSD/i386 addition
+# i386 addition
 #
-ifeq ( ${MACHINE_ARCH} , "i386" )
+.if ${MACHINE_ARCH} == "i386"
    CFLAGS+= -fomit-frame-pointer -fstrength-reduce -m486
-endif
+.endif
 
-include makefile.inc
-
-# Thunderbirds are go!
+.include "makefile.inc"
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
 
-all: $(TARGET) $(PROGRAMS)
+all: $(TARGET) $(PROGRAMS) .MAIN
 
 $(TARGET): $(OBJS)
+	$(AR) $(ARFLAGS) $(TARGET) $?
 	$(RANLIB) $(TARGET)
 
 $(GNMSGID)$(EXE): $(GMOBJS)
-	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $@$(C) $^  $(TARGET) $(LIBS)
+	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $@$(C) $^ $(TARGET) $(LIBS)
 
 clean:
-	-$(RM) *.o
+	-$(RM) $(RMFLAGS) *.o
 
 distclean: clean
-	-$(RM) $(TARGET)
+	-$(RM) $(RMFLAGS) $(TARGET)
 
-install: $(PROGRAMS)
+install: .PHONY
+	@echo " Run 'make proginstall' to install programs into $(BINDIR)"
+	@echo " Run 'make linstall' to install library into $(LIBDIR)"
+	@echo " Run 'make hinstall' to install C header files into $(INCDIR)"
+
+proginstall: $(PROGRAMS)
 	$(INSTALL) $(DIROPT) $(BINDIR)
 	$(INSTALL) $(IBOPT) $(PROGRAMS) $(BINDIR)
-	echo " Run 'gmake linstall' to install library into $(LIBDIR)"
-	echo " Run 'gmake hinstall' to install C header files into $(INCDIR)"
 
 linstall: $(TARGET)
 	$(INSTALL) $(DIROPT) $(LIBDIR)
@@ -75,11 +81,11 @@ hinstall:
 uninstall: uninstall-h uninstall-lib uninstall-progs
 
 uninstall-progs:
-	-cd $(BINDIR) ; $(RM) $(PROGRAMS)
+	-cd $(BINDIR) ; $(RM) $(RMFLAGS) $(PROGRAMS)
 
 uninstall-lib:
-	-$(RM) $(LIBDIR)$(TARGET).1
-	-$(RM) $(LIBDIR)$(TARGET)
+	-$(RM) $(RMFLAGS) $(LIBDIR)$(TARGET)*
 
 uninstall-h:
-	-cd $(INCDIR) ; $(RM) $(TARGET_H) ; cd .. ; $(RM) $(INCDIR)
+	-cd $(INCDIR) ; $(RM) $(RMFLAGS) $(TARGET_H) ; cd .. ; $(RM) $(RMFLAGS) $(INCDIR)
+
