@@ -65,7 +65,11 @@ OBJS=	1stchar$(OBJ)  \
 	setfsize$(OBJ)
 
 
+ifeq ($(DYNLIBS), 1)
+all: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
+else
 all: $(TARGET)
+endif
 
 .c$(OBJ):
 	$(CC) $(CFLAGS) $(CDEFS)  $<
