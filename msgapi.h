@@ -36,11 +36,12 @@ extern "C" {
 #define MSGAREA_CREATE  0x01
 #define MSGAREA_CRIFNEC 0x02
 
-#define MSGTYPE_SDM     0x01
-#define MSGTYPE_SQUISH  0x02
-#define MSGTYPE_JAM     0x08
-#define MSGTYPE_ECHO    0x80
-#define MSGTYPE_NOTH    0x0100
+#define MSGTYPE_SDM         0x01
+#define MSGTYPE_SQUISH      0x02
+#define MSGTYPE_PASSTHROUGH 0x04
+#define MSGTYPE_JAM         0x08
+#define MSGTYPE_ECHO        0x80
+#define MSGTYPE_NOTH        0x0100
 
 #define MSGNUM_CUR      ((dword)-1L)
 #define MSGNUM_PREV     ((dword)-2L)
