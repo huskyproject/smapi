@@ -77,6 +77,12 @@ union stamp_combo *_fast TmDate_to_DosDate(struct tm *tmdate, union stamp_combo 
     return dosdate;
 }
 
+static void print02d(char **str, int i)
+{
+  *(*str)++=i/10+'0';
+  *(*str)++=i%10+'0';
+}
+
 char *_fast sc_time(union stamp_combo *sc, char *string)
 {
     if (sc->msg_st.date.yr == 0)
@@ -85,9 +91,26 @@ char *_fast sc_time(union stamp_combo *sc, char *string)
     }
     else
     {
+#if 0
         sprintf(string, "%02d %s %02d  %02d:%02d:%02d", sc->msg_st.date.da,
           months_ab[sc->msg_st.date.mo - 1], (sc->msg_st.date.yr + 80) % 100,
           sc->msg_st.time.hh, sc->msg_st.time.mm, sc->msg_st.time.ss << 1);
+#else
+        print02d(&string, sc->msg_st.date.da);
+        *string++=' ';
+        strcpy(string, months_ab[sc->msg_st.date.mo - 1]);
+        string += strlen(string);
+        *string++=' ';
+        print02d(&string, (sc->msg_st.date.yr + 80) % 100);
+        *string++=' ';
+        *string++=' ';
+        print02d(&string, sc->msg_st.time.hh);
+        *string++=':';
+        print02d(&string, sc->msg_st.time.mm);
+        *string++=':';
+        print02d(&string, sc->msg_st.time.ss << 1);
+        *string = '\0';
+#endif
     }
 
     return string;

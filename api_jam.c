@@ -47,20 +47,9 @@
 
 /* Free's up a SubField-Chain */
 
-static void freejamsubfield(JAMSUBFIELD2 *subfield)
+static void freejamsubfield(JAMSUBFIELD2LIST *subfield)
 {
-  JAMSUBFIELD2 *subi;
-
-  while (subfield)
-  {
-	subi = subfield->next;  /* Remember next subf */
-
-  	if (subfield->Buffer)   /* Remove buffer if avail */
-  		free(subfield->Buffer);
-  	pfree(subfield);	    /* Remove this subf */
-
-  	subfield = subi;        /* Next subf */
-  }
+  pfree(subfield);
 }
 
 MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
@@ -148,10 +137,11 @@ static sword EXPENTRY JamCloseArea(MSG * jm)
       return -1;
    }
 
-   Jmd->HdrInfo.highwater = jm->high_water;
-   Jmd->HdrInfo.ModCounter++;
-   Jam_WriteHdrInfo(Jmd);
-
+   if (Jmd->modified || Jmd->HdrInfo.highwater != jm->high_water) {
+      Jmd->HdrInfo.highwater = jm->high_water;
+      Jmd->HdrInfo.ModCounter++;
+      Jam_WriteHdrInfo(Jmd);
+   }
 
    if (jm->locked) JamUnlock(jm);
 
@@ -250,6 +240,32 @@ static sword EXPENTRY JamCloseMsg(MSGH * msgh)
     return 0;
 }
 
+static int openfilejm(char *name, word mode, mode_t permissions)
+{
+   return sopen(name, mode, SH_DENYNONE, permissions);
+}
+
+static int Jam_OpenTxtFile(JAMBASE *jambase)
+{
+   char *txt;
+
+   txt = (char *) palloc(strlen(jambase->BaseName)+5);
+   strcpy(txt, jambase->BaseName);
+   strcat(txt, EXT_TXTFILE);
+   if (jambase->mode == MSGAREA_CREATE)
+      jambase->TxtHandle = openfilejm(txt, fop_wpb, jambase->permissions);
+   else
+      jambase->TxtHandle = openfilejm(txt, fop_rpb, jambase->permissions);
+   pfree(txt);
+   if (jambase->TxtHandle == -1)
+   {
+      Jam_CloseFile(jambase);
+      msgapierr = MERR_NOENT;
+      return 0;
+   }
+   return 1;
+}
+
 static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt)
 {
    JAMSUBFIELD2ptr SubField;
@@ -279,19 +295,19 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       /* get "from name" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SENDERNAME))) {
-         strncpy(msg->from, SubField->Buffer, SubField->DatLen);
+         strncpy(msg->from, SubField->Buffer, min(SubField->DatLen, sizeof(msg->from)));
       } /* endif */
 
       /* get "to name" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_RECVRNAME))) {
-         strncpy(msg->to, SubField->Buffer, SubField->DatLen);
+         strncpy(msg->to, SubField->Buffer, min(SubField->DatLen, sizeof(msg->to)));
       } /* endif */
 
       /* get "subj" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SUBJECT))) {
-         strncpy(msg->subj, SubField->Buffer, SubField->DatLen);
+         strncpy(msg->subj, SubField->Buffer, min(SubField->DatLen, sizeof(msg->subj)));
       } /* endif */
 
       /* get "orig address" line */
@@ -350,6 +366,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          } /* endif */
          msgh->cur_pos += bytesread;
       } else {
+         if (MsghJm->TxtHandle == 0) Jam_OpenTxtFile(MsghJm);
          lseek(MsghJm->TxtHandle, msgh->Hdr.TxtOffset+offset, SEEK_SET);
          if (bytes > msgh->Hdr.TxtLen-offset) {
             bytesread =  farread(MsghJm->TxtHandle, text, msgh->Hdr.TxtLen-offset);
@@ -378,7 +395,8 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
    return bytesread;
 }
 
-static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt)
+static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
+             byte * text, dword textlen, dword totlen, dword clen, byte * ctxt)
 {
    /* not supported append if JAM !!!
       the reason is that we need to know ALL of the text before we can set up
@@ -387,7 +405,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 
    JAMHDR         jamhdrNew;
    JAMIDXREC      jamidxNew;
-   JAMSUBFIELD2ptr subfieldNew;
+   JAMSUBFIELD2LISTptr subfieldNew;
    XMSG           msg_old;
    MSG            *jm;
    sdword	  x = 0;
@@ -407,6 +425,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       return -1L;
    
    jm = msgh->sq;
+   Jmd->modified = 1;
 
    memset(&jamidxNew, '\0', sizeof(JAMIDXREC));
    memset(&jamhdrNew, '\0', sizeof(JAMHDR));
@@ -423,17 +442,11 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
    if (clen == 0L) 
      ctxt = NULL;
 
-/*   if (msgh->mode != MOPEN_CREATE) {
-      msgh->bytes_written = 0L;
-      append = TRUE;
-   }*/
-
    if (msgh->mode != MOPEN_CREATE) 
    {
       if (clen) clen = 0;
       if (ctxt) ctxt = NULL;
    }
-
 
    if (clen && ctxt) 
    {
@@ -477,6 +490,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       /* no logic if msg not present */
       if (msg) 
       {
+         if (Jmd->TxtHandle == 0) Jam_OpenTxtFile(Jmd);
          if (msgh->msgnum == 0) 
          {
             /* new message in end of position */
@@ -527,6 +541,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                return -1;
             }
             Jmd->HdrInfo.ActiveMsgs++;
+#ifndef LAZY_WRITE_HDR
             Jmd->HdrInfo.ModCounter++;
             if (Jam_WriteHdrInfo(Jmd))
             {
@@ -537,6 +552,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                msgapierr = MERR_NODS;
                return -1;
             }
+#endif
             jm->high_msg++;
             if (Jmd->actmsg_read) {
                Jmd->actmsg = (JAMACTMSGptr)farrealloc(Jmd->actmsg, sizeof(JAMACTMSG)*(jm->num_msg+1));
@@ -573,13 +589,11 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             jamhdrNew.ReplyCRC = 0xFFFFFFFFUL;
             write_hdr(Jmd->HdrHandle, &jamhdrNew);
             write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
+#ifndef LAZY_WRITE_HDR
             Jmd->HdrInfo.ModCounter++;
             Jam_WriteHdrInfo(Jmd);
-/*	    memmove(&(msgh->Idx), &(jamidxNew), sizeof(JAMIDXREC));
-	    memmove(&(msgh->Hdr), &(jamhdrNew), sizeof(JAMHDR));
-	    msgh->SubFieldPtr = subfieldNew; */
+#endif
 	    /* info from new message to msgh srtuct */
-/*	    DecodeSubf(msgh); */
             if (Jmd->actmsg_read) {
                Jmd->actmsg[msgh->msgnum - 1].TrueMsg = msgh->seek_hdr;
                Jmd->actmsg[msgh->msgnum - 1].UserCRC = jamidxNew.UserCRC;
@@ -624,6 +638,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       }
 
       if (text && textlen) {
+         if (Jmd->TxtHandle == 0) Jam_OpenTxtFile(Jmd);
          lseek(Jmd->TxtHandle, 0, SEEK_END);
          jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
          jamhdrNew.TxtLen = strlen(onlytext);
@@ -633,13 +648,12 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
       write_hdr(Jmd->HdrHandle, &jamhdrNew);
       write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
+#ifndef LAZY_WRITE_HDR
       Jmd->HdrInfo.ModCounter++;
       Jam_WriteHdrInfo(Jmd);
+#endif
       memmove(&(msgh->Idx), &(jamidxNew), sizeof(JAMIDXREC));
       memmove(&(msgh->Hdr), &(jamhdrNew), sizeof(JAMHDR));
-			/*
-      pfree(msgh->SubFieldPtr);
-			*/
       freejamsubfield(msgh->SubFieldPtr);
       msgh->SubFieldPtr = subfieldNew;
       DecodeSubf(msgh);
@@ -656,11 +670,6 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
    } /* endif */
 
    pfree(onlytext);
-
-   /*
-   Jam_ActiveMsgs(Jmd);
-   jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
-   */
 
    return rc;
 }
@@ -688,9 +697,8 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
 
    if (JamLock(jm) == -1) return -1L;
 
-
+   Jmd->modified = 1;
    Jmd->HdrInfo.ActiveMsgs--;
-   Jmd->HdrInfo.ModCounter++;
    jamhdr.TxtLen = 0;
    jamhdr.Attribute |= JMSG_DELETED;
    jamidx.UserCRC = 0xFFFFFFFFL;
@@ -699,7 +707,10 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
    lseek(Jmd->IdxHandle, -(IDX_SIZE), SEEK_CUR);
    write_idx(Jmd->IdxHandle, &jamidx);
    write_hdr(Jmd->HdrHandle, &jamhdr);
+#ifndef LAZY_WRITE_HDR
+   Jmd->HdrInfo.ModCounter++;
    Jam_WriteHdrInfo(Jmd);
+#endif
 
    if (Jmd->actmsg_read) {
       int i;
@@ -758,9 +769,7 @@ static sword EXPENTRY JamUnlock(MSG * jm)
 static sword EXPENTRY JamSetCurPos(MSGH * msgh, dword pos)
 {
     if (InvalidMsgh(msgh))
-    {
         return -1;
-    }
 
     msgh->cur_pos = pos;
     return 0;
@@ -769,9 +778,7 @@ static sword EXPENTRY JamSetCurPos(MSGH * msgh, dword pos)
 static dword EXPENTRY JamGetCurPos(MSGH * msgh)
 {
     if (InvalidMsgh(msgh))
-    {
         return -1;
-    }
 
     return msgh->cur_pos;
 }
@@ -779,9 +786,7 @@ static dword EXPENTRY JamGetCurPos(MSGH * msgh)
 static UMSGID EXPENTRY JamMsgnToUid(MSG * jm, dword msgnum)
 {
     if (InvalidMh(jm))
-    {
         return (UMSGID) -1;
-    }
 
     msgapierr = MERR_NONE;
     if (msgnum > jm->num_msg) return (UMSGID) -1;
@@ -795,9 +800,8 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    dword  msgnum, left, right, new;
    UMSGID umsg;
 
-   if (InvalidMh(jm)) {
+   if (InvalidMh(jm))
       return -1L;
-   }
 
    msgnum = umsgid - Jmd->HdrInfo.BaseMsgNum + 1;
    if (msgnum <= 0)
@@ -827,9 +831,7 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
 static dword EXPENTRY JamGetHighWater(MSG * jm)
 {
    if (InvalidMh(jm))
-   {
       return -1L;
-   }
 
    return jm->high_water;
 }
@@ -837,9 +839,7 @@ static dword EXPENTRY JamGetHighWater(MSG * jm)
 static sword EXPENTRY JamSetHighWater(MSG * jm, dword hwm)
 {
    if (InvalidMh(jm))
-   {
       return -1L;
-   }
 
    if (hwm > jm->high_msg) return -1L;
 
@@ -866,23 +866,17 @@ sword MSGAPI JamValidate(byte * name)
     sprintf((char *) temp, "%s%s", name, EXT_HDRFILE);
 
     if (!fexist((char *) temp))
-    {
         return FALSE;
-    }
 
     sprintf((char *) temp, "%s%s", name, EXT_TXTFILE);
 
     if (!fexist((char *) temp))
-    {
         return FALSE;
-    }
 
     sprintf((char *) temp, "%s%s", name, EXT_IDXFILE);
 
     if (!fexist((char *) temp))
-    {
         return FALSE;
-    }
 
     return TRUE;
 }
@@ -906,12 +900,7 @@ void Jam_CloseFile(JAMBASE *jambase)
    } /* endif */
 }
 
-int openfilejm(char *name, word mode, mode_t permissions)
-{
-   return sopen(name, mode, SH_DENYNONE, permissions);
-}
-
-int opencreatefilejm(char *name, word mode, mode_t permissions)
+static int opencreatefilejm(char *name, word mode, mode_t permissions)
 {
   int hF =sopen(name, mode, SH_DENYNONE, permissions);
 
@@ -989,7 +978,7 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
 
    if (*mode == MSGAREA_CREATE) {
       jambase->HdrHandle = opencreatefilejm(hdr, fop_wpb, permissions);
-      jambase->TxtHandle = openfilejm(txt, fop_wpb, permissions);
+      /* jambase->TxtHandle = openfilejm(txt, fop_wpb, permissions); */
       jambase->IdxHandle = openfilejm(idx, fop_wpb, permissions);
       /* jambase->LrdHandle = openfilejm(lrd, fop_wpb, permissions);
       */ jambase->LrdHandle = 0;
@@ -1006,13 +995,13 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
 
    } else {
       jambase->HdrHandle = openfilejm(hdr, fop_rpb, permissions);
-      jambase->TxtHandle = openfilejm(txt, fop_rpb, permissions);
+      /* jambase->TxtHandle = openfilejm(txt, fop_rpb, permissions); */
       jambase->IdxHandle = openfilejm(idx, fop_rpb, permissions);
       /* jambase->LrdHandle = openfilejm(lrd, fop_rpb, permissions);
       */ jambase->LrdHandle = 0;
    } /* endif */
 
-   if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {
+   if (jambase->HdrHandle == -1 || /* jambase->TxtHandle == -1 || */ jambase->IdxHandle == -1) {
       if (*mode != MSGAREA_CRIFNEC) {
          Jam_CloseFile(jambase);
          pfree(hdr);
@@ -1024,12 +1013,12 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
       }
       *mode = MSGAREA_CREATE;
       jambase->HdrHandle = opencreatefilejm(hdr, fop_cpb, permissions);
-      jambase->TxtHandle = openfilejm(txt, fop_cpb, permissions);
+      /* jambase->TxtHandle = openfilejm(txt, fop_cpb, permissions); */
       jambase->IdxHandle = openfilejm(idx, fop_cpb, permissions);
       /* jambase->LrdHandle = openfilejm(lrd, fop_cpb, permissions);
       */ jambase->LrdHandle = 0;
 
-      if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {
+      if (jambase->HdrHandle == -1 || /* jambase->TxtHandle == -1 || */ jambase->IdxHandle == -1) {
          Jam_CloseFile(jambase);
          pfree(hdr);
          pfree(txt);
@@ -1055,6 +1044,11 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
    pfree(txt);
    pfree(idx);
    pfree(lrd);
+
+   jambase->TxtHandle = 0;
+   jambase->mode = *mode;
+   jambase->permissions = permissions;
+   jambase->modified = 0;
 
    return 1;
 }
@@ -1154,25 +1148,17 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
 JAMSUBFIELD2ptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what)
 {
    JAMSUBFIELD2ptr SubField;
+   JAMSUBFIELD2LISTptr SubFieldList;
+   int i;
 
-                                /* this crashes on Sparc */
-/*
-   while (*SubPos < msgh->Hdr.SubfieldLen) {
-      SubField = (JAMSUBFIELDptr)((char*)(msgh->SubFieldPtr)+(*SubPos));
-      *SubPos += (SubField->DatLen+sizeof(JAMBINSUBFIELD));
-      if (SubField->LoID == what) {
-         return SubField;
-      } 
-   } */
-
-   SubField = msgh->SubFieldPtr;
-	 
-	 while (SubField)
-	 {
-	   if (SubField->LoID == what)
+   SubFieldList = msgh->SubFieldPtr;
+   SubField = msgh->SubFieldPtr->subfield;
+   for (i=*SubPos; i<SubFieldList->subfieldCount; i++, SubField++) {
+	   if (SubField->LoID == what) {
+                   *SubPos = i;
 		   return SubField;
-		 SubField = SubField->next;
-	 }
+           }
+   }
 
    return NULL;
 }
@@ -1226,6 +1212,7 @@ sword Jam_WriteHdrInfo(JAMBASEptr jambase)
 {
    if (lseek(jambase->HdrHandle, 0, SEEK_SET) == -1) return -1;
    if (write_hdrinfo(jambase->HdrHandle, &(jambase->HdrInfo)) == 0) return -1;
+   jambase->modified = 0;
    return 0;
 }
 
@@ -1277,138 +1264,119 @@ static dword Jam_MsgAttrToJam(XMSG *msg)
    return attr;
 }
 
-static JAMSUBFIELD2ptr StrToSubfield(unsigned char *str, dword *len)
+static int StrToSubfield(unsigned char *str, dword lstr, dword *len, JAMSUBFIELD2ptr subf)
 {
-   JAMSUBFIELD2ptr subf;
+   /* warning: str is read only and NOT nul-terminated! */
    unsigned char *kludge;
    dword subtypes;
-   int x;
 
-   for (subtypes = strlen(str); subtypes > 0; subtypes--) {
-      if (str[subtypes-1] == '\r') str[subtypes-1] = '\0';
-      else break;
-   } /* endfor */
+   if (!subf) return 0;
 
-   if (strncmp(str, "INTL ", 5)==0) return NULL;
-   else if (strncmp(str, "FMPT ", 5)==0) return NULL;
-   else if (strncmp(str, "TOPT ", 5)==0) return NULL;
-   else if (strncmp(str, "SEEN-BY: ", 10)==0) {
-      kludge = str+9;
-      subtypes = JAMSFLD_SEENBY2D;
-   }
-   else if (strncmp(str, "PATH: ", 6)==0) {
-      kludge = str+6;
-      subtypes = JAMSFLD_PATH2D;
-   }
-   else if (strncmp(str, "MSGID: ", 7)==0) {
-      kludge = str+7;
-      subtypes = JAMSFLD_MSGID;
-   }
-   else if (strncmp(str, "REPLY: ", 7)==0) {
-      kludge = str+7;
-      subtypes = JAMSFLD_REPLYID;
-   }
-   else if (strncmp(str, "PID: ", 5)==0) {
-      kludge = str+5;
-      subtypes = JAMSFLD_PID;
-   }
-   else if (strncmp(str, "Via ", 3)==0) {
-      kludge = str+4;
-      subtypes = JAMSFLD_TRACE;
-   }
-   else if (strncmp(str, "FLAGS ", 6)==0) {
-      kludge = str+6;
-      subtypes = JAMSFLD_FLAGS;
-   }
-   else if (strncmp(str, "TZUTC: ", 7)==0) {
-      kludge = str+7;
-      subtypes = JAMSFLD_TZUTCINFO;
-   }
-   else {
-      kludge = str;
-      subtypes = JAMSFLD_FTSKLUDGE;
-   }
+   while (lstr > 0)
+      if (str[lstr-1] == '\r')
+         lstr--;
+      else
+         break;
 
-   x = strlen(kludge);
-   *len = sizeof(JAMBINSUBFIELD)+x;
-/*   subf = (JAMSUBFIELDptr)palloc(*len);*/
-	 subf = (JAMSUBFIELD2ptr)palloc(sizeof(JAMSUBFIELD2));
-	 
-   if (!subf) return NULL;
-/*   memset(subf, '\0', *len); */
-   memset(subf, 0, sizeof(JAMSUBFIELD2));
+   kludge = str;
+   subtypes = JAMSFLD_FTSKLUDGE;
 
+   switch (*str) {
+      case 'F':  if (lstr>5 && strncmp(str, "FMPT ", 5) == 0)
+                    return 0;
+                 else if (lstr>6 && strncmp(str, "FLAGS ", 6) == 0) {
+                    kludge = str+6;
+                    subtypes = JAMSFLD_FLAGS;
+                 }
+                 break;
+      case 'I':  if (lstr>4 && strncmp(str, "INTL ", 4) == 0)
+                    return 0;
+                 break;
+      case 'M':  if (lstr>7 && strncmp(str, "MSGID: ", 7) == 0) {
+                    kludge = str+7;
+                    subtypes = JAMSFLD_MSGID;
+                 }
+                 break;
+      case 'P':  if (lstr>6 && strncmp(str, "PATH: ", 6) == 0) {
+                    kludge = str+6;
+                    subtypes = JAMSFLD_PATH2D;
+                 } else if (lstr>5 && strncmp(str, "PID: ", 5) == 0) {
+                    kludge = str+5;
+                    subtypes = JAMSFLD_PID;
+                 }
+                 break;
+      case 'R':  if (lstr>7 && strncmp(str, "REPLY: ", 7) == 0) {
+                    kludge = str+7;
+                    subtypes = JAMSFLD_REPLYID;
+                 }
+      case 'S':  if (lstr>9 && strncmp(str, "SEEN-BY: ", 9) == 0) {
+                    kludge = str+9;
+                    subtypes = JAMSFLD_SEENBY2D;
+                 }
+                 break;
+      case 'T':  if (lstr>5 && strncmp(str, "TOPT ", 5) == 0)
+                    return 0;
+                 else if (lstr>7 && strncmp(str, "TZUTC: ", 7) == 0) {
+                    kludge = str+7;
+                    subtypes = JAMSFLD_TZUTCINFO;
+                 }
+                 break;
+      case 'V':  if (lstr>4 && strncmp(str, "Via ", 4) == 0) {
+                    kludge = str+4;
+                    subtypes = JAMSFLD_TRACE;
+                 }
+   }
    subf->LoID = subtypes;
-   subf->DatLen = x;
-   subf->Buffer = strdup(kludge);
-/*   memmove(subf->Buffer, kludge, x); */
-
-   return subf;
+   subf->DatLen = lstr-(kludge-str);
+   memcpy(subf->Buffer, kludge, subf->DatLen);
+   subf->Buffer[subf->DatLen] = '\0';
+   *len = sizeof(JAMBINSUBFIELD)+subf->DatLen;
+   return 1;
 }
 
-JAMSUBFIELD2ptr NETADDRtoSubf(NETADDR addr, dword *len, word opt)
+static int NETADDRtoSubf(NETADDR addr, dword *len, word opt, JAMSUBFIELD2ptr subf)
 {
    /* opt = 0 origaddr */
    /* opt = 1 destaddr */
 
-   JAMSUBFIELD2ptr subf;
-   char buf[30];
-   int x;
-
+   if (!subf) return 0;
 
    if (addr.point) {
-      sprintf(buf, "%d:%d/%d.%d", addr.zone, addr.net, addr.node, addr.point);
+      sprintf(subf->Buffer, "%d:%d/%d.%d", addr.zone, addr.net, addr.node, addr.point);
    } else {
-      sprintf(buf, "%d:%d/%d", addr.zone, addr.net, addr.node);
+      sprintf(subf->Buffer, "%d:%d/%d", addr.zone, addr.net, addr.node);
    } /* endif */
 
-   x = strlen(buf);
-   *len = sizeof(JAMBINSUBFIELD) + x;
-/*   subf = (JAMSUBFIELDptr) palloc(*len); */
-    subf = (JAMSUBFIELD2ptr) palloc(sizeof(JAMSUBFIELD2));
-		
-   if (!subf) return NULL;
-/*   memset(subf, '\0', *len); */
-   memset(subf, '\0', sizeof(JAMSUBFIELD2));
-   if (opt) {
-      subf->LoID = JAMSFLD_DADDRESS;
-   } else {
-      subf->LoID = JAMSFLD_OADDRESS;
-   } /* endif */
-   subf->DatLen = x;
-	 
-   subf->Buffer = strdup(buf);
-/*   memmove(subf->Buffer, buf, x); */
+   subf->DatLen = *len = strlen(subf->Buffer);
+   *len += sizeof(JAMBINSUBFIELD);
+   subf->LoID = opt ? JAMSFLD_DADDRESS : JAMSFLD_OADDRESS;
 
-   return subf;
+   return 1;
 }
 
-static JAMSUBFIELD2ptr FromToSubjTOSubf(dword jamsfld, unsigned char *txt, dword *len)
+static int FromToSubjTOSubf(dword jamsfld, unsigned char *txt, dword *len, JAMSUBFIELD2ptr subf)
 {
-   JAMSUBFIELD2ptr subf;
-   int x = strlen(txt);
-
-   *len = sizeof(JAMBINSUBFIELD) + x;
-/*   subf = (JAMSUBFIELDptr)palloc(*len);*/
-   subf = (JAMSUBFIELD2ptr)palloc(sizeof(JAMSUBFIELD2));
-   if (!subf) return NULL;
-/*   memset(subf, '\0', *len); */
-   memset(subf,0,sizeof(JAMSUBFIELD2));
+   if (!subf) return 0;
    subf->LoID = jamsfld;
-   subf->DatLen = x;
-   subf->Buffer = strdup(txt);
-/*   memmove(subf->Buffer, txt, x);*/
+   memmove(subf->Buffer, txt, *len = subf->DatLen = strlen(txt));
+   *len += sizeof(JAMBINSUBFIELD);
 
-   return subf;
+   return 1;
 }
 
-static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield)
+static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield)
 {
-   JAMSUBFIELD2ptr SubFieldCur, SubField, SubFieldI;
+   JAMSUBFIELD2ptr SubFieldCur;
    struct tm stm, *ptm;
    dword clen, sublen;
 
-   SubFieldI = SubField = *subfield;
+   clen = msgh->sq->isecho ? 3 : 5;
+   sublen = sizeof(JAMSUBFIELD2LIST)+sizeof(JAMSUBFIELD2)*clen+37+37+73+
+            (msgh->sq->isecho ? 0 : 30*2);
+   *subfield = palloc(sublen);
+   subfield[0]->arraySize = sublen;
+   subfield[0]->subfieldCount = 0;
+   subfield[0]->subfield[0].Buffer = (char *)&(subfield[0]->subfield[clen+1]);
 
    memset(jamhdr, '\0', sizeof(JAMHDR));
 
@@ -1438,92 +1406,55 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 
    /* From Name */
 
-   SubFieldCur = FromToSubjTOSubf(JAMSFLD_SENDERNAME, msg->from, &clen);
-   if (SubFieldCur) {
-      /*SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
-      memmove((char*)SubField+sublen, SubFieldCur, clen);
-      free(SubFieldCur);*/
-			if (!SubField)
-			  SubFieldI = SubField = SubFieldCur;
-			else
-			{
-  	    		SubFieldCur->next = SubFieldI->next;
-				SubFieldI->next = SubFieldCur;
-				SubFieldI = SubFieldI->next;
-			}
+   SubFieldCur = subfield[0]->subfield;
+   if (FromToSubjTOSubf(JAMSFLD_SENDERNAME, msg->from, &clen, SubFieldCur)) {
+      SubFieldCur[1].Buffer = SubFieldCur->Buffer+SubFieldCur->DatLen+1;
+      subfield[0]->subfieldCount++;
+      SubFieldCur++;
       sublen += clen;
    } /* endif */
 
    /* To Name */
 
-   SubFieldCur = FromToSubjTOSubf(JAMSFLD_RECVRNAME, msg->to, &clen);
-   if (SubFieldCur) {
-      /*SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
-      memmove((char*)SubField+sublen, SubFieldCur, clen);
-      free(SubFieldCur);*/
-			if (!SubField)
-			  SubFieldI = SubField = SubFieldCur;
-			else
-			{
-		  	    SubFieldCur->next = SubFieldI->next;
-				SubFieldI->next = SubFieldCur;
-				SubFieldI = SubFieldI->next;
-			}
+   if (FromToSubjTOSubf(JAMSFLD_RECVRNAME, msg->to, &clen, SubFieldCur)) {
+      SubFieldCur[1].Buffer = SubFieldCur->Buffer+SubFieldCur->DatLen+1;
+      subfield[0]->subfieldCount++;
+      SubFieldCur++;
       sublen += clen;
    } /* endif */
 
    /* Subject */
 
-   SubFieldCur = FromToSubjTOSubf(JAMSFLD_SUBJECT, msg->subj, &clen);
-   if (SubFieldCur) {
-/*      SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
-      memmove((char*)SubField+sublen, SubFieldCur, clen);
-      free(SubFieldCur);*/
-			if (!SubField)
-			  SubFieldI = SubField = SubFieldCur;
-			else
-			{
-		  	    SubFieldCur->next = SubFieldI->next;
-				SubFieldI->next = SubFieldCur;
-				SubFieldI = SubFieldI->next;
-			}
+   if (FromToSubjTOSubf(JAMSFLD_SUBJECT, msg->subj, &clen, SubFieldCur)) {
+      SubFieldCur[1].Buffer = SubFieldCur->Buffer+SubFieldCur->DatLen+1;
+      subfield[0]->subfieldCount++;
+      SubFieldCur++;
       sublen += clen;
    } /* endif */
 
-   /* Orig Address */
+   if (!msgh->sq->isecho) {
 
-   if (!msgh->sq->isecho && (SubFieldCur = NETADDRtoSubf(msg->orig, &clen, 0))) {
-      /*SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
-      memmove((char*)SubField+sublen, SubFieldCur, clen);
-      free(SubFieldCur);*/
-			if (!SubField)
-			  SubFieldI = SubField = SubFieldCur;
-			else
-			{
-		  	    SubFieldCur->next = SubFieldI->next;
-				SubFieldI->next = SubFieldCur;
-				SubFieldI = SubFieldI->next;
-			}
-      sublen += clen;
+      /* Orig Address */
+
+      if (NETADDRtoSubf(msg->orig, &clen, 0, SubFieldCur)) {
+         SubFieldCur[1].Buffer = SubFieldCur->Buffer+SubFieldCur->DatLen+1;
+         subfield[0]->subfieldCount++;
+         SubFieldCur++;
+         sublen += clen;
+      } /* endif */
+
+      /* Dest Address */
+
+      if (NETADDRtoSubf(msg->dest, &clen, 1, SubFieldCur)) {
+         SubFieldCur[1].Buffer = SubFieldCur->Buffer+SubFieldCur->DatLen+1;
+         subfield[0]->subfieldCount++;
+         SubFieldCur++;
+         sublen += clen;
+      } /* endif */
+
    }
-
-   /* Dest Address */
-
-   if (!msgh->sq->isecho && (SubFieldCur = NETADDRtoSubf(msg->dest, &clen, 1)))
-   {  
-	    /*SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
-      memmove((char*)SubField+sublen, SubFieldCur, clen);
-      free(SubFieldCur);*/
-			if (!SubField)
-			  SubFieldI = SubField = SubFieldCur;
-			else
-			{
-		  	    SubFieldCur->next = SubFieldI->next;
-				SubFieldI->next = SubFieldCur;
-				SubFieldI = SubFieldI->next;
-			}
-      sublen += clen;
-   }
+   assert(SubFieldCur->Buffer<=(byte *)*subfield+subfield[0]->arraySize);
+   assert((byte *)(SubFieldCur+1)<=subfield[0]->subfield[0].Buffer);
 
    jamhdr->SubfieldLen = sublen;
    jamhdr->PasswordCRC = 0xFFFFFFFFUL;
@@ -1533,114 +1464,106 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    jamhdr->ReplyNext = msg->xmreplynext;
    jamhdr->TimesRead = msg->xmtimesread;
    jamhdr->Cost = msg->xmcost;
-
-   *subfield = SubField;
 }
 
-static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2ptr
+static void resize_subfields(JAMSUBFIELD2LISTptr *subfield, dword newcount,
+                             dword len)
+{
+   dword offs;
+   int i;
+   JAMSUBFIELD2LISTptr SubField;
+
+   SubField = palloc(len);
+   SubField->arraySize = len;
+   SubField->subfieldCount = subfield[0]->subfieldCount;
+   if (subfield[0]->subfieldCount == 0)
+      SubField->subfield[0].Buffer = (char *)&(SubField->subfield[SubField->subfieldCount + newcount]);
+   else {
+      memcpy(SubField->subfield, subfield[0]->subfield,
+             SubField->subfieldCount * sizeof(JAMSUBFIELD2));
+      SubField->subfield[SubField->subfieldCount].Buffer = 
+         subfield[0]->subfield[SubField->subfieldCount-1].Buffer +
+         subfield[0]->subfield[SubField->subfieldCount-1].DatLen;
+   }
+   offs=(byte *)&(SubField->subfield[newcount])-subfield[0]->subfield[0].Buffer;
+   for (i=subfield[0]->subfieldCount; i>=0; i--)
+      SubField->subfield[i].Buffer += offs;
+   memcpy(SubField->subfield[0].Buffer, subfield[0]->subfield[0].Buffer,
+    subfield[0]->arraySize-((char *)(subfield[0]->subfield[0].Buffer)-(char *)(*subfield)));
+
+   freejamsubfield(*subfield);
+   *subfield = SubField;
+   assert(subfield[0]->subfield[subfield[0]->subfieldCount].Buffer<=(byte *)*subfield+subfield[0]->arraySize);
+   assert((byte *)&(subfield[0]->subfield[newcount])==subfield[0]->subfield[0].Buffer);
+}
+
+static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr
                                    *subfield, dword clen, unsigned char *ctxt)
 {
-   JAMSUBFIELD2ptr SubFieldCur, SubField, SubFieldI;
-   dword len, sublen;
-   unsigned char *ctrl, *ctrlp, *ptr;
+   JAMSUBFIELD2ptr SubField;
+   dword len, i;
+   unsigned char *ptr;
 
-   sublen = jamhdr->SubfieldLen;
-   SubFieldI = SubField = *subfield;
+   /* count new subfields */
+   i = *ctxt ? 2 : 1;
+   for (ptr=ctxt, len=0; len<clen; len++)
+     if (*ptr++=='\001') i++;
+   resize_subfields(subfield, subfield[0]->subfieldCount+i,
+                    subfield[0]->arraySize + clen + i + i*sizeof(JAMSUBFIELD2));
+   SubField = &(subfield[0]->subfield[subfield[0]->subfieldCount]);
 
-   ctrl = (unsigned char*)palloc(clen+1);
-   strncpy((char *)ctrl, ctxt, clen);
-   ctrl[clen] = '\0';
-
-   ctrlp = ctrl;
-
-   ptr = (unsigned char *)strchr((char *)ctrlp, '\001');
-
-   if (SubFieldI)
-     while (SubFieldI->next)
-       SubFieldI = SubFieldI->next;
-
-   while (ptr) 
-   {
-      *ptr = '\0';
-      if (*ctrlp) 
-      {
-         if ((SubFieldCur = StrToSubfield(ctrlp, &len))) 
-         {
-/*            SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+len);
-            memmove((char*)SubField+sublen, SubFieldCur, len);
-            free(SubFieldCur);*/
-			if (!SubField)
-    		  	SubFieldI = SubField = SubFieldCur;
-		 	else
-			{
-  	    		SubFieldCur->next = SubFieldI->next;
-				SubFieldI->next = SubFieldCur;
-				SubFieldI = SubFieldI->next;
-			}
-            sublen += len;
+   for (ptr=ctxt, len=0; len<=clen; len++, ptr++) {
+      if (*ptr=='\0' || len==clen || *ptr=='\001') {
+         if (*ctxt && *ctxt!='\001' &&
+             StrToSubfield(ctxt, ptr-ctxt, &i, SubField)) {
+            SubField[1].Buffer = SubField->Buffer+SubField->DatLen+1;
+            jamhdr->SubfieldLen += i;
+            subfield[0]->subfieldCount++;
+            if (SubField->LoID==JAMSFLD_MSGID)
+               jamhdr->MsgIdCRC=Jam_Crc32(SubField->Buffer, SubField->DatLen);
+            else if (SubField->LoID==JAMSFLD_REPLYID)
+               jamhdr->ReplyCRC=Jam_Crc32(SubField->Buffer, SubField->DatLen);
+            SubField++;
          }
+         if (*ptr=='\0' || len==clen)
+            break;
+         ctxt = ptr+1;
       }
-      ptr++;
-      ctrlp = ptr;
-      ptr = (unsigned char *)strchr(ctrlp, '\001');
    }
-
-   if (*ctrlp && (SubFieldCur = StrToSubfield(ctrlp, &len))) {
-/*      SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+len);
-      memmove((char*)SubField+sublen, SubFieldCur, len);
-      free(SubFieldCur);*/
-			
-			if (!SubField)
-			  SubFieldI = SubField = SubFieldCur;
-			else
-			{
-  	    		SubFieldCur->next = SubFieldI->next;
-				SubFieldI->next = SubFieldCur;
-				SubFieldI = SubFieldI->next;
-			}
-
-      sublen += len;
-   }
-
-   pfree(ctrl);
-
-   ctrl = (unsigned char*)GetCtrlToken(ctxt, (unsigned char *)"MSGID");
-   if (ctrl) {
-      jamhdr->MsgIdCRC = Jam_Crc32(ctrl+7, strlen(ctrl)-7);
-      pfree(ctrl);
-   }
-   ctrl = (unsigned char*)GetCtrlToken(ctxt, (unsigned char *)"REPLY");
-   if (ctrl) {
-      jamhdr->ReplyCRC = Jam_Crc32(ctrl+7, strlen(ctrl)-7);
-      pfree(ctrl);
-   }
-
-   jamhdr->SubfieldLen = sublen;
-   *subfield = SubField;
+   assert(SubField->Buffer<=(byte *)*subfield+subfield[0]->arraySize);
+   assert((byte *)(SubField+1)<=subfield[0]->subfield[0].Buffer);
 }
 
-unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield, unsigned
-                         char *text, size_t textlen)
+unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,
+                         unsigned char *text, size_t textlen)
 {
-   JAMSUBFIELD2ptr SubField, SubFieldCur, SubFieldNext;
-   dword sublen, clen, x, firstlen;
+   JAMSUBFIELD2ptr SubField;
+   dword clen, firstlen, i, len;
    unsigned char *onlytext, *first, *ptr, *curtext;
 
-   SubFieldNext = SubField = *subfield;
-   
-   if (SubFieldNext)
-     while (SubFieldNext->next)
-       SubFieldNext = SubFieldNext->next;
-
-   sublen = jamhdr->SubfieldLen;
-   
    if (textlen)
    {
        if (text[textlen-1] != '\r')
            textlen++;
        onlytext = curtext = (unsigned char*)palloc(textlen + 1);
        *onlytext = '\0';
-       
+
+       /* count subfields */
+       i = 1;
+       len = 0;
+       for (first = text; first<text+textlen; first = ptr+1) {
+          ptr = strchr(first, '\r');
+          if (ptr==NULL) ptr=text+textlen;
+          if (*first == '\001' || strncmp(first, "SEEN-BY: ", 9) == 0) {
+             if (*first == '\001') first++;
+             i++;
+             len += (ptr-first);
+          }
+       }
+       resize_subfields(subfield, subfield[0]->subfieldCount+i,
+                     subfield[0]->arraySize + len + i + i*sizeof(JAMSUBFIELD2));
+       SubField = &(subfield[0]->subfield[subfield[0]->subfieldCount]);
+
        first = text;
        while (*first) {
            ptr = (unsigned char *)strchr(first, '\r');
@@ -1648,30 +1571,20 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield, unsigned
            firstlen = ptr ? (ptr-first) : strlen(first);
            if ((firstlen > 9 && strncmp(first, "SEEN-BY: ", 9) == 0)  ||
                *first == '\001') {
-               
+
                if (*first == '\001') {
                    first++;
                    firstlen--;
                }
-               
-               if ((SubFieldCur = StrToSubfield(first, &clen))) {
-                   /*SubField = (JAMSUBFIELDptr)
-                       farrealloc(SubField, sublen+clen);
-                   memmove((char*)SubField+sublen, SubFieldCur, clen);
-                   free(SubFieldCur);*/
-                   					 if (!SubField)
-			  						   SubFieldNext = SubField = SubFieldCur;
-									 else
-									 {
-									     SubFieldCur->next = 0;
-									     SubFieldNext->next = SubFieldCur;
-										 SubFieldNext = SubFieldCur;
-									 } 			
-                   sublen += clen;
-               } else {;}
+
+               if (StrToSubfield(first, firstlen, &clen, SubField)) {
+                  SubField[1].Buffer = SubField->Buffer+SubField->DatLen+1;
+                  jamhdr->SubfieldLen += clen;
+                  subfield[0]->subfieldCount++;
+                  SubField++;
+               }
            } else {
-               x = curtext - onlytext;
-               assert(x + firstlen +1  <= textlen);
+               assert((curtext - onlytext) + firstlen +1  <= textlen);
                strcpy(curtext, first);
                curtext+=firstlen;
                *curtext++ = '\r';
@@ -1684,37 +1597,15 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield, unsigned
                first += firstlen;
            } /* endif */
        } /* endwhile */
+       assert(SubField->Buffer<=(byte *)*subfield+subfield[0]->arraySize);
+       assert((byte *)(SubField+1)<=subfield[0]->subfield[0].Buffer);
    }
    else
    {
        onlytext = NULL;
    }
-   
-   jamhdr->SubfieldLen = sublen;
-   *subfield = SubField;
 
    return onlytext;
-}
-
-int makeKludge(char **buff, char *sstr, unsigned char *str, char *ent, int len)
-{
-   char *p;
-   if (!*buff) {
-       *buff = (char*)malloc(strlen(sstr)+strlen(ent)+len+1);
-       if (*buff) **buff='\0';
-   }
-   else
-       *buff = (char*)realloc(*buff, strlen(*buff)+strlen(sstr)+strlen(ent)+len+1);
-
-   if (!*buff) return 0;
-
-   p=*buff+strlen(*buff);
-   strcpy(p, sstr);
-   p += strlen(p);
-   strncpy(p, str, len);
-   strcpy(p+len, ent);
-
-   return 1;
 }
 
 void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
@@ -1767,40 +1658,42 @@ void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
    } /* endif */
 }
 
-static void addkludge(unsigned char **line, char *kludge)
+static void addkludge(char **line, char *kludge, char *ent, char *lf, dword len)
 {
-   if (*line == NULL) {
-       *line = malloc(strlen(kludge)+1);
-       strcpy(*line, kludge);
-       return;
-   }
-   *line = realloc(*line, strlen(*line)+strlen(kludge)+1);
-   strcat(*line, kludge);
+    strcpy(*line, kludge);
+    *line += strlen(kludge);
+    strncpy(*line, ent, len);
+    (*line)[len]='\0';
+    *line += strlen(*line);
+    strcpy(*line, lf);
+    *line += strlen(*line);
 }
 
 void DecodeSubf(MSGH *msgh)
 {
    dword  SubPos;
    JAMSUBFIELD2ptr SubField;
-   char *ptr, *orig, *dest, *fmpt, *topt;
-   int x;
+   JAMSUBFIELD2LISTptr sfl;
+   char *ptr, *pctrl, *plctrl, *fmpt, *topt;
+   char orig[30], dest[30];
+   int  i;
 
-   msgh->ctrl = (unsigned char*)palloc(1);
-   msgh->lctrl = (unsigned char*)palloc(1);
+   msgh->ctrl = (unsigned char*)palloc(msgh->SubFieldPtr->arraySize+65);
+   msgh->lctrl = (unsigned char*)palloc(msgh->SubFieldPtr->arraySize+65);
    *(msgh->ctrl)=*(msgh->lctrl)='\0';
-   orig = dest = NULL;
+   pctrl = msgh->ctrl;
+   plctrl = msgh->lctrl;
+   orig[0] = dest[0] = '\0';
 
    if (!msgh->sq->isecho) {
       SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS))) {
-         makeKludge(&orig, "", SubField->Buffer, "", SubField->DatLen);
-      }
+      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS)))
+         strncpy(orig, SubField->Buffer, min(SubField->DatLen, sizeof(orig)));
       SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS))) {
-         makeKludge(&dest, "", SubField->Buffer, "", SubField->DatLen);
-      }
+      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS)))
+         strncpy(dest, SubField->Buffer, min(SubField->DatLen, sizeof(dest)));
       fmpt = topt = NULL;
-      if (orig) {
+      if (orig[0]) {
          ptr = strchr(orig, '@');
          if (ptr) *ptr = '\0';
          ptr = strchr(orig, '.');
@@ -1809,7 +1702,7 @@ void DecodeSubf(MSGH *msgh)
 	    if (atoi(ptr) != 0) fmpt = ptr;
          }
       }
-      if (dest) {
+      if (dest[0]) {
          ptr = strchr(dest, '@');
          if (ptr) *ptr = '\0';
          ptr = strchr(dest, '.');
@@ -1818,92 +1711,54 @@ void DecodeSubf(MSGH *msgh)
 	    if (atoi(ptr) != 0) topt = ptr;
          }
       }
-      if (orig && dest) {
-         x = strlen(msgh->ctrl);
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(orig)+strlen(dest)+8);
-         sprintf(msgh->ctrl+x, "%cINTL %s %s", '\x01', dest, orig);
+      if (orig[0] && dest[0]) {
+         strcpy(pctrl, "\001" "INTL "); pctrl+=strlen(pctrl);
+         strcpy(pctrl, dest); pctrl+=strlen(pctrl);
+         strcpy(pctrl, " "); pctrl++;
+         strcpy(pctrl, orig); pctrl+=strlen(pctrl);
       }
-      if (fmpt) {
-         x = strlen(msgh->ctrl);
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(fmpt)+7);
-         sprintf(msgh->ctrl+x, "%cFMPT %s", '\x01', fmpt);
-      }
-      if (topt) {
-         x = strlen(msgh->ctrl);
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(topt)+7);
-         sprintf(msgh->ctrl+x, "%cTOPT %s", '\x01', topt);
-      }
-      if (orig) pfree(orig);
-      if (dest) pfree(dest);
-      orig = dest = NULL;
+      if (fmpt)
+         addkludge(&pctrl, "\001" "FMPT", "", fmpt, 0);
+      if (topt)
+         addkludge(&pctrl, "\001" "TOPT", "", topt, 0);
+      orig[0] = dest[0] = '\0';
    }
 
    SubPos = 0;
 
-   SubField = msgh->SubFieldPtr;
+   sfl = msgh->SubFieldPtr;
 
-                                /* this crashes on Sparc */
-/*   while (SubPos < msgh->Hdr.SubfieldLen) { */
-   while (SubField) { 
-/*      SubField = (JAMSUBFIELDptr)((char*)(msgh->SubFieldPtr)+SubPos); 
-      SubPos += (SubField->DatLen+sizeof(JAMBINSUBFIELD)); */
-      ptr = NULL;
-      if (SubField->LoID == JAMSFLD_MSGID) {
-         makeKludge(&ptr, "\001MSGID: ", SubField->Buffer, "", SubField->DatLen);
-         addkludge(&msgh->ctrl, ptr);
-         pfree(ptr);
-      }
-      else if (SubField->LoID == JAMSFLD_REPLYID) {
-         makeKludge(&ptr, "\001REPLY: ", SubField->Buffer, "", SubField->DatLen);
-         addkludge(&msgh->ctrl, ptr);
-         pfree(ptr);
-      }
-      else if (SubField->LoID == JAMSFLD_PID) {
-         makeKludge(&ptr, "\001PID: ", SubField->Buffer, "", SubField->DatLen);
-         addkludge(&msgh->ctrl, ptr);
-         pfree(ptr);
-      }
-      else if (SubField->LoID == JAMSFLD_TRACE) {
-         makeKludge(&ptr, "\001Via ", SubField->Buffer, "\r", SubField->DatLen);
-         addkludge(&msgh->lctrl, ptr);
-         pfree(ptr);
-      }
+   SubField = &(sfl->subfield[0]);
+   for (i=0; i<sfl->subfieldCount; i++, SubField++) {
+
+      if (SubField->LoID == JAMSFLD_MSGID)
+         addkludge(&pctrl, "\001MSGID: ", SubField->Buffer, "", SubField->DatLen);
+      else if (SubField->LoID == JAMSFLD_REPLYID)
+         addkludge(&pctrl, "\001REPLY: ", SubField->Buffer, "", SubField->DatLen);
+      else if (SubField->LoID == JAMSFLD_PID)
+         addkludge(&pctrl, "\001PID: ", SubField->Buffer, "", SubField->DatLen);
+      else if (SubField->LoID == JAMSFLD_TRACE)
+         addkludge(&plctrl, "\001Via ", SubField->Buffer, "\r", SubField->DatLen);
       else if (SubField->LoID == JAMSFLD_FTSKLUDGE) {
          if (strncasecmp(SubField->Buffer, "Via", 3) == 0 ||
-             strncasecmp(SubField->Buffer, "Recd", 4) == 0) {
-              makeKludge(&ptr, "\001", SubField->Buffer, "\r", SubField->DatLen);
-              addkludge(&msgh->lctrl, ptr);
-         }
-         else {
-              makeKludge(&ptr, "\001", SubField->Buffer, "", SubField->DatLen);
-              addkludge(&msgh->ctrl, ptr);
-         }
-         pfree(ptr);
+             strncasecmp(SubField->Buffer, "Recd", 4) == 0)
+              addkludge(&plctrl, "\001", SubField->Buffer, "\r", SubField->DatLen);
+         else
+              addkludge(&pctrl, "\001", SubField->Buffer, "", SubField->DatLen);
       }
-      else if (SubField->LoID == JAMSFLD_FLAGS) {
-         makeKludge(&ptr, "\001FLAGS ", SubField->Buffer, "", SubField->DatLen);
-         addkludge(&msgh->ctrl, ptr);
-         pfree(ptr);
-      }
-      else if (SubField->LoID == JAMSFLD_PATH2D) {
-		  makeKludge(&ptr, "\001PATH: ", SubField->Buffer, "\r", SubField->DatLen);
-		  addkludge(&msgh->lctrl, ptr);
-		  pfree(ptr);
-      }
-      else if (SubField->LoID == JAMSFLD_SEENBY2D) {
-         makeKludge(&ptr, "SEEN-BY: ", SubField->Buffer, "\r", SubField->DatLen);
-         addkludge(&msgh->lctrl, ptr);
-         pfree(ptr);
-      }
-      else if (SubField->LoID == JAMSFLD_TZUTCINFO) {
-         makeKludge(&ptr, "\001TZUTC: ", SubField->Buffer, "", SubField->DatLen);
-         addkludge(&msgh->ctrl, ptr);
-         pfree(ptr);
-      }
-			SubField = SubField->next;
+      else if (SubField->LoID == JAMSFLD_FLAGS)
+         addkludge(&pctrl, "\001" "FLAGS ", SubField->Buffer, "", SubField->DatLen);
+      else if (SubField->LoID == JAMSFLD_PATH2D)
+         addkludge(&plctrl, "\001PATH: ", SubField->Buffer, "\r", SubField->DatLen);
+      else if (SubField->LoID == JAMSFLD_SEENBY2D)
+         addkludge(&plctrl, "SEEN-BY: ", SubField->Buffer, "\r", SubField->DatLen);
+      else if (SubField->LoID == JAMSFLD_TZUTCINFO)
+         addkludge(&pctrl, "\001TZUTC: ", SubField->Buffer, "", SubField->DatLen);
    } /* endwhile */
-   msgh->clen = strlen(msgh->ctrl);
-   msgh->lclen = strlen(msgh->lctrl);
+   msgh->clen = pctrl-(char *)msgh->ctrl;
+   msgh->lclen = plctrl-(char *)msgh->lctrl;
+   assert(msgh->clen<msgh->SubFieldPtr->arraySize+65);
+   assert(msgh->lclen<msgh->SubFieldPtr->arraySize+65);
 }
 
 /***********************************************************************

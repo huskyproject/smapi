@@ -155,9 +155,14 @@ typedef struct JAMSUBFIELD2struct
 	word  HiID;
 	dword DatLen;
 	byte *Buffer;
-	struct JAMSUBFIELD2struct *next;
 } JAMSUBFIELD2, *JAMSUBFIELD2ptr;
 
+typedef struct JAMSUBFIELD2LISTstruct
+{
+	dword subfieldCount;
+	dword arraySize;
+	JAMSUBFIELD2 subfield[1];
+} JAMSUBFIELD2LIST, *JAMSUBFIELD2LISTptr;
 
 typedef struct
     {
@@ -205,7 +210,7 @@ typedef struct {
    dword     TrueMsg;           /* JAMIDXREC.HdrOffset */
    dword     UserCRC;           /* CRC-32 of user name (lowercase) */
    JAMHDR    hdr;               /* Message header */
-   JAMSUBFIELD2ptr subfield;    /* Message subfields */
+   JAMSUBFIELD2LISTptr subfield;    /* Message subfields */
    } JAMACTMSG, *JAMACTMSGptr;
 
 /* struct jam base */
@@ -220,6 +225,9 @@ typedef struct {
    JAMACTMSGptr    actmsg;
    word            msgs_open;
    word            actmsg_read;
+   mode_t          permissions;
+   word            mode;
+   word            modified;
    } JAMBASE, *JAMBASEptr;
 
 #endif /* __JAM_H__ */

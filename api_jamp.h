@@ -41,11 +41,10 @@ dword Jam_PosHdrMsg(MSG * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr);
 static dword Jam_JamAttrToMsg(MSGH *msgh);
 sword Jam_WriteHdrInfo(JAMBASEptr jambase);
 dword Jam_Crc32(unsigned char* buff, dword len);
-static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield);
-static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield, dword clen, unsigned char *ctxt);
-unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2ptr *subfield, unsigned
-                         char *text, size_t textlen);
-int makeKludge(char **buff, char *sstr, unsigned char *str, char *ent, int len);
+static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield);
+static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield, dword clen, unsigned char *ctxt);
+unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,
+                         unsigned char *text, size_t textlen);
 void parseAddr(NETADDR *netAddr, unsigned char *str, dword len);
 void DecodeSubf(MSGH *msgh);
 
@@ -61,7 +60,7 @@ struct _msgh
 
     JAMIDXREC       Idx;            /* Message index */
     JAMHDR          Hdr;            /* Message header */
-    JAMSUBFIELD2ptr  SubFieldPtr;    /* Pointer to Subfield structure */
+    JAMSUBFIELD2LISTptr  SubFieldPtr;    /* Pointer to Subfield structure */
 
     dword seek_idx;
     dword seek_hdr;
@@ -101,15 +100,15 @@ static struct _apifuncs jm_funcs =
 int read_hdrinfo(sword handle, JAMHDRINFO *HdrInfo);
 int read_idx(sword handle, JAMIDXREC *Idx);
 int read_hdr(sword handle, JAMHDR *Hdr);
-int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen);
-int copy_subfield(JAMSUBFIELD2ptr *to, JAMSUBFIELD2ptr from);
+int read_subfield(sword handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen);
+int copy_subfield(JAMSUBFIELD2LISTptr *to, JAMSUBFIELD2LISTptr from);
 
 int read_allidx(JAMBASEptr jmb);
 
 int write_hdrinfo(sword handle, JAMHDRINFO *HdrInfo);
 int write_idx(sword handle, JAMIDXREC *Idx);
 int write_hdr(sword handle, JAMHDR *Hdr);
-int write_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword SubfieldLen);
+int write_subfield(sword handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLen);
 
 
 
