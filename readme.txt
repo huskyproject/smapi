@@ -45,11 +45,12 @@ makefile.bco   smapibco.lib     Borland C++ for OS/2 1.0
 makefile.bcw   smapibco.lib     Borland C++ for Windows 4.0
 makefile.be    libsmapibe.a     GNU C for BeOS 2.7.x
 makefile.bsd   libsmapibsd.a    GNU C for FreeBSD 2.7.x
-makefile.bsd4  libsmapibsd.a    GNU C for FreeBSD 2.7.x, use make (FreeBSD 4.*)
+makefile.bsd4  libsmapibsd.a    GNU C for FreeBSD 2.9.x, use BSD make
+                                on FreeBSD 4.x
 makefile.cyg   libsmapicyg.a    GNU C for Cygwin 2.7.x
-makefile.djg   smapidjg.a       GNU C for MS-DOS 2.7.x (DJGPP)
-makefile.emo   smapiemo.lib     GNU C for OS/2 2.7.x (EMX 0.9) with OMF-Style
-                                linkage
+makefile.djg   smapidjg.a       GNU C for MS-DOS DPMI 2.7.x-3.x (DJGPP)
+makefile.emo   smapiemo.lib     GNU C for OS/2 2.7.x (EMX 0.9) and above with
+                                OMF-Style linkage
 makefile.emx   smapiemx.a       GNU C for OS/2 2.7.x (EMX 0.9) a.out-style
                                 linkage (EMX Runtime)
 makefile.hco   smapihco.lib     MetaWare High C for OS/2 3.2
