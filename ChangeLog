@@ -1,4 +1,18 @@
 ----- cvs ci ------
+Sun Aug 13 21:25:00 CET 2000
+oliver grimm ():
+* remove api_sq.* (MSGAPI 0)
+* add sq_*.* (MSGAPI 2)
+* add function GetHash()
+* add function GetNextUid()
+* tested under BeOS
+* compiled under linux & BeOS
+*******************************************
+* COMPLETE REFRESH OF THE SQUISH-CODE           *
+* COULD BE UNSTABLE                                              *
+*******************************************
+
+----- cvs ci ------
 Sun Aug 13 10:18:23 CET 2000
 oliver grimm ():
 * found locking Bug
