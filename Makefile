@@ -60,9 +60,10 @@ OBJS=	1stchar$(OBJ)  \
 	strocpy$(OBJ)  \
 	structrw$(OBJ) \
 	trail$(OBJ)    \
-	weekday$(OBJ) \
-	tdelay$(OBJ) \
-	setfsize$(OBJ)
+	weekday$(OBJ)  \
+	tdelay$(OBJ)   \
+	setfsize$(OBJ) \
+	semaphor$(OBJ)
 
 
 ifeq ($(DYNLIBS), 1)
