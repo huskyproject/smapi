@@ -73,13 +73,6 @@
     return ((int)DosSetFileSize((HFILE)fd, (ULONG)size));
   }
 
-#elif defined(NT)
-
-  int _fast setfsize(int fd, long size)
-  {
-    SetFilePointer((HANDLE)fd, size, NULL, FILE_BEGIN);
-    return (!SetEndOfFile((HANDLE)fd));
-  }
 #elif defined(UNIX)
 
   #include <unistd.h>
@@ -88,7 +81,7 @@
   {
     return ftruncate(fd, size);
   }
-#elif defined(__NT__)
+#elif defined(__NT__) || defined(NT)
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <winbase.h>

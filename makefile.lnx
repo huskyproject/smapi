@@ -10,7 +10,7 @@ COPT=	-O3
 # -fomit-frame-pointer -fstrength-reduce -fPIC -m486
 
 #add this for old linux systems (semaphores)
-CDEFS+=-DHAS_SEMUN
+#CDEFS+=-DHAS_SEMUN
 
 LIB=	ar
 RANLIB= ranlib
