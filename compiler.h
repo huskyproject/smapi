@@ -173,11 +173,65 @@ int qq(void)
 }
 */
 
-#if defined(__GNUC__) && (__GNUC__==2) && (__GNUC_MINOR__>95)
+#if defined(__GNUC__) 
+#if (__GNUC__==2) && (__GNUC_MINOR__>95)   /* don't place in one line for prevent old compilers warnings */
 #warning Latest GNU C branch 2 is 2.95.*. Your version is not GNU C and not supported. You may use it for your risk.
 #warning Download and install GNU C release from www.gnu.org only, please.
 #endif
+#endif
 
+/**** Compiler defines ****/
+
+#if defined(_MSC_VER)
+# if (_MSC_VER >= 1200) /* MS Visual C/C++ */
+#  define __MSVC__
+# endif
+# if (_MSC_VER < 1200)
+#  define __MSC__  /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
+# endif
+#endif
+
+/* Watcom C */
+#if defined(__WATCOMC__) 
+#  if defined(MSDOS) && !defined(__WATCOMC__DOS__)
+#    define __WATCOMC__DOS__
+#  endif
+#  if defined(__DOS4G__) && !defined(__WATCOMC__DOS4G__)
+#    define __WATCOMC__DOS4G__
+#  endif
+#  if defined(__OS2__) && !defined(__WATCOMC__OS2__)
+#    define __WATCOMC__OS2__
+#  endif
+#  if !defined(__WATCOMC__NT__) && defined(__NT__)
+#    define __WATCOMC__NT__
+#  endif
+#  if !defined(__WATCOMC__QNX__) && defined(__QNX__)
+#    define __WATCOMC__QNX__
+#  endif
+#endif
+
+/* Turbo C/C++ & Borland C/C++ */
+#if defined(__TURBOC__)
+#  if defined(__MSDOS__) && !defined(__TURBOC__DOS__)
+#    define __TURBOC__DOS__   /* Turbo C/C++ & Borland C/C++ for MS-DOS */
+#  endif
+#  if defined(__WIN32__) && !defined(__TURBOC__WIN32__)
+#    define __TURBOC__WIN32__ /* Borland C/C++ for Win32 */
+#  endif
+#  if defined(__OS2__) && !defined(__TURBOC__OS2__)
+#    define __TURBOC__OS2__   /* Borland C/C++ for OS/2 */
+#  endif
+#endif
+
+/* IBM C */
+#if defined(__IBMC__) && !defined(UNIX)
+#  if !defined(__IBMC__OS2__)
+#    define __IBMC__OS2__     /* IBM C/Set++ for OS/2 */
+#  endif
+#endif
+
+
+/**** OS defines ****/
 
 /*
   BeOS is NOT Unix, but sometime it seem's to Be ... ;)
@@ -207,15 +261,16 @@ int qq(void)
 #  endif
 #endif
 
-#ifdef MSDOS
 
-#  define _XPENTRY pascal
-
-#ifdef __X86__ /* Watcom C for intel x86 platform */
+#if defined(__WATCOMC__) && defined(__X86__) /* Watcom C for intel x86 platform */
 #  ifndef INTEL
 #    define INTEL  /* using to select functions/macroses for read & write binary values */
 #  endif
 #endif
+
+#ifdef __WATCOMC__DOS__
+
+#  define _XPENTRY pascal
 
 /* WATCOM has both M_I86xxx and __modeltype__ macros */
 
@@ -239,7 +294,7 @@ int qq(void)
 #    define __HUGE__
 #  endif
 
-#endif /* ifdef MSDOS */
+#endif /* ifdef __WATCOMC__DOS__ */
 
 /* Handle 386 "flat" memory model */
 
@@ -336,9 +391,8 @@ int qq(void)
    *              (usualy 'extern')
    */
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-/* MS Visual C/C++ */
 
+#ifdef __MSVC__
 #  undef SMAPI_EXT
 #  ifdef _MAKE_DLL
 #    define _MAKE_DLL_MVC_
@@ -429,7 +483,8 @@ int qq(void)
 #  define mymkdir _mkdir
 
 /* End: MS Visual C/C++ */
-#elif (defined(_MSC_VER) && (_MSC_VER < 1200))
+/*#elif (defined(_MSC_VER) && (_MSC_VER < 1200))*/
+#elif defined(__MSC__)
 /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
 
 #ifndef INTEL
@@ -461,7 +516,8 @@ int qq(void)
 /* End: Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
 
 /* Begin: Watcom C all variants (DOS, Win. OS/2 */
-#elif defined(__WATCOMC__) && defined(MSDOS)
+/*#elif defined(__WATCOMC__) && defined(MSDOS)*/
+#elif defined(__WATCOMC__DOS__) || defined(__WATCOMC__DOS4G__)
 /* WATCOM C/C++ for MS-DOS */
 
 /* predefined:
@@ -487,7 +543,8 @@ int qq(void)
 #  define HAS_SPAWNVP 1
 
 /* End: WATCOM C/C++ for MS-DOS */
-#elif defined(__WATCOMC__) && defined(__OS2__)
+/*#elif defined(__WATCOMC__) && defined(__OS2__)*/
+#elif defined(__WATCOMC__OS2__)
 /* WATCOM C/C++ for OS/2 */
 /* Predefined:
    __OS2__   -  (16-bit or 32-bit OS/2)
@@ -516,7 +573,8 @@ int qq(void)
 #  define HAS_SPAWNVP 1
 
 /* End: WATCOM C/C++ for OS/2 */
-#elif defined(__WATCOMC__) && defined(__NT__)
+/*#elif defined(__WATCOMC__) && defined(__NT__)*/
+#elif defined(__WATCOMC__NT__)
 /* WATCOM C/C++ for Windows NT */
 
 /* Predefined:
@@ -727,6 +785,7 @@ int qq(void)
 
 /* End: DJGPP for MS-DOS (DPMI)*/
 #elif defined(__TURBOC__) && defined(__MSDOS__)
+#elif defined(__TURBOC__DOS__)
 /* Borland Turbo C/C++ & Borland C/C++ for MS-DOS */
 
 #ifndef INTEL
@@ -754,7 +813,8 @@ int qq(void)
 #  define mode_t int
 
 /* Borland Turbo C/C++ for MS-DOS */
-#elif defined(__TURBOC__) && defined(__WIN32__)
+/*#elif defined(__TURBOC__) && defined(__WIN32__)*/
+#elif defined(__TURBOC__WIN32__)
 /* Borland C/C++ for Win32 */
 
 #  define _stdc cdecl
@@ -775,7 +835,8 @@ int qq(void)
 #  define strncasecmp strncmpi
 
 /* End: Borland C/C++ for Win32 */
-#elif defined(__TURBOC__) && defined(__OS2__)
+/*#elif defined(__TURBOC__) && defined(__OS2__)*/
+#elif defined(__TURBOC__OS2__)
 /* Borland C/C++ for OS/2 */
 
 #  define _stdc cdecl
@@ -803,6 +864,7 @@ int qq(void)
 
 /* End: Borland C/C++ for OS/2 */
 #elif defined(__IBMC__) && !defined(UNIX)
+#elif defined(__IBMC__OS2__)
 /* IBM C/Set++ for OS/2 */
 
 #  define _stdc
