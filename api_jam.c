@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "dr.h"
 
 #if !defined(UNIX) && !defined(SASC)
 #include <io.h>
@@ -24,6 +23,7 @@
 #define MSGAPI_HANDLERS
 
 #include <errno.h>
+#include "dr.h"
 #include "prog.h"
 #include "stamp.h"
 #include "alc.h"
