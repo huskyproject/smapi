@@ -342,10 +342,12 @@ int lock(int handle, long ofs, long length);
 #define sleep _sleep
 #define write _write
 #define read _read
+#if !defined(__CYG__)
 #define stat _stat
 
 #define stricmp _strcmpi
 #define strcmpi _strcmpi
+#endif
 
 /*extern int __mkdir (__const__ char *name);*/
 
