@@ -391,6 +391,9 @@ extern int __mkdir (__const__ char *name);
 int unlock(int handle, long ofs, long length);
 int lock(int handle, long ofs, long length);
 
+#define strcasecmp stricmp
+#define strncasecmp strnicmp
+
 #define EXPENTRY
 
 #elif defined(__TURBOC__) && defined(WINNT)
