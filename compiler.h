@@ -256,6 +256,18 @@ int qq(void)
 #    define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #  endif
 #  define mode_t int
+/* define constants for _access function */
+#  ifndef F_OK
+#    define F_OK 0
+#  endif
+
+#  ifndef R_OK
+#    define R_OK 04
+#  endif
+
+#  ifndef W_OK
+#    define W_OK 02
+#  endif
 
 #  define snprintf    _snprintf
 #  define vsnprintf   _vsnprintf
