@@ -453,7 +453,7 @@ static sword EXPENTRY SquishWriteMsg(MSGH * msgh, word append, XMSG * msg, byte 
 
         if (!sq->locked)
         {
-            didlock = _SquishLock(sq);
+            didlock = _SquishLock(sq, 1);
         }
 
         msgh->totlen = totlen;
@@ -987,7 +987,7 @@ static sword EXPENTRY SquishLock(MSG * sq)
 
     /* And lock the file */
 
-    if (!_SquishLock(sq))
+    if (!_SquishLock(sq, 0))
     {
         farpfree(Sqd->idxbuf);
         return -1;
@@ -2088,7 +2088,7 @@ static sword near _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen, dwo
             if (!didlock && !sq->locked)
             {
                 /* Lock the SQD for greater performance */
-                didlock = SquishLock(msgh->sq);
+                didlock = (SquishLock(msgh->sq) == 0);
             }
 
             if (SquishKillMsg(msgh->sq, MsghSqd->skip_msg + 1L) == -1)
@@ -2295,9 +2295,10 @@ dword EXPENTRY SquishHash(byte * f)
     return (dword) (hash & 0x7fffffffL);
 }
 
-static int near _SquishLock(MSG * sq)
+static int near _SquishLock(MSG * sq, int force)
 {
-    return !(mi.haveshare && lock(Sqd->sfd, 0L, 1L) == -1);
+    return !(mi.haveshare && ((force) ? waitlock(Sqd->sfd, 0L, 1L)
+                                      :     lock(Sqd->sfd, 0L, 1L) == -1));
 }
 
 static void near _SquishUnlock(MSG * sq)

@@ -172,6 +172,9 @@
 #define _fast pascal
 #define _loadds
 
+#include <conio.h>
+#define mysleep(x) delay(x);
+
 #elif defined(__WATCOMC__) && defined(MSDOS)
 
 /* WATCOM C/C++ for MS-DOS */
@@ -220,6 +223,7 @@
 #define farread read
 #define farwrite write
 #define EXPENTRY pascal far
+#define mysleep(x) DosSleep(1000L*(x))
 #endif
 
 #elif defined(__WATCOMC__) && defined(__OS2__)
@@ -238,6 +242,7 @@
 #define farwrite write
 
 #define EXPENTRY _System
+#define mysleep(x) DosSleep(1000*(x))
 
 #elif defined(__WATCOMC__) && defined(__NT__)
 
@@ -273,6 +278,9 @@
 
 #define farread read
 #define farwrite write
+
+#define mysleep(x) DosSlep(1000L*(x))
+
 #define unlock(a,b,c) unused(a)
 #define lock(a,b,c) 0
 #error "Don't know how to implement record locking."
@@ -313,7 +321,6 @@ extern int __mkdir (__const__ char *name);
 int unlock(int handle, long ofs, long length);
 int lock(int handle, long ofs, long length);
 
-
 #define EXPENTRY
 
 #elif defined(__TURBOC__) && defined(__OS2__)
@@ -335,6 +342,7 @@ int lock(int handle, long ofs, long length);
 #define farwrite write
 
 #define EXPENTRY _syscall
+#define mysleep(x) DosSleep(1000L*(x))
 
 #elif defined(__IBMC__)
 
@@ -356,15 +364,7 @@ int lock(int handle, long ofs, long length);
 
 #define farread read
 #define farwrite write
-#define unlock(a,b,c) unused(a)
-#define lock(a,b,c) 0
-#error "Don't know how to implement record locking."
-/* Using an executable that does no support record locking is
-   discouraged in a multitasking environment. If you want to
-   do it anyway, you may uncomment this line. Record lokcing is used
-   to obtain a lock on the very first byte of a SQD file which
-   indicates that no other program should use the message area now.
-*/
+#define mysleep(x) DosSleep(1000L*(x))
 
 #define EXPENTRY pascal far
 
@@ -434,6 +434,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 
 #include <unistd.h>
 #include <io.h>
+#define mysleep(x) unused(x)
 
 #elif defined(SASC)
 
@@ -457,6 +458,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 
 #define unlock(a,b,c) unused(a)
 #define lock(a,b,c) 0
+#define mysleep(x) unused(x)
 
 #error "Don't know how to implement record locking."
 /* Using an executable that does no support record locking is
@@ -484,4 +486,14 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define NO_MKTIME
 #define NO_STRFTIME
 
+ /* waitlock works like lock, but blocks until the lock can be
+    performed. */
+#ifndef mysleep
+#define mysleep(x)
 #endif
+extern int waitlock(int, long, long);
+
+#endif
+
+
+

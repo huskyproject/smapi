@@ -17,6 +17,7 @@ OBJS=	1stchar.obj  \
 	ffind.obj    \
 	flush.obj    \
 	flushasm.obj \
+	locking.obj  \
 	months.obj   \
 	msgapi.obj   \
 	parsenn.obj  \
