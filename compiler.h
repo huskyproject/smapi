@@ -1401,7 +1401,7 @@ int qq(void)
 
 #  define mymkdir(a) mkdir((a), 0)
 
-#  if defined(__dj_include_fcntl_h_) !defined( SH_DENYNONE)
+#  if defined(__dj_include_fcntl_h_) && !defined( SH_DENYNONE)
 #    ifdef  SH_DENYNO
 #      define SH_DENYNONE SH_DENYNO
 #    else
