@@ -189,6 +189,10 @@ int read_xmsg(sword handle, XMSG *pxmsg)
         pbuf += 4;
     }
 
+                                /* 4 bytes "umsgid" */
+    pxmsg->umsgid = get_dword(pbuf);
+    pbuf += 4;
+    
                                 /* 20 times FTSC date stamp */
     memmove(pxmsg->__ftsc_date, pbuf, 20);
     pbuf += 20;
@@ -276,6 +280,10 @@ int write_xmsg(sword handle, XMSG *pxmsg)
         put_dword(pbuf, pxmsg->replies[i]);
         pbuf += 4;
     }
+                                /* 4 bytes "umsgid" */
+    put_dword(pbuf, pxmsg->umsgid);
+    pbuf += 4;
+    
 
                                 /* 20 times FTSC date stamp */
     memmove(pbuf, pxmsg->__ftsc_date, 20);
@@ -388,7 +396,7 @@ int read_sqidx(sword handle, SQIDX *psqidx, dword n)
     byte buf[SQIDX_SIZE], *pbuf = NULL;
     byte *accel_buffer = NULL;
     dword i, maxbuf = 0, rd;
-
+    
     if (n > 1)
     {
         maxbuf = n;

@@ -1,24 +1,30 @@
-/*
- *  SMAPI; Modified Squish MSGAPI
- *
- *  Squish MSGAPI0 is copyright 1991 by Scott J. Dudley.  All rights reserved.
- *  Modifications released to the public domain.
- *
- *  Use of this file is subject to the restrictions contain in the Squish
- *  MSGAPI0 licence agreement.  Please refer to licence.txt for complete
- *  details of the licencing restrictions.  If you do not find the text
- *  of this agreement in licence.txt, or if you do not have this file,
- *  you should contact Scott Dudley at FidoNet node 1:249/106 or Internet
- *  e-mail Scott.Dudley@f106.n249.z1.fidonet.org.
- *
- *  In no event should you proceed to use any of the source files in this
- *  archive without having accepted the terms of the MSGAPI0 licensing
- *  agreement, or such other agreement as you are able to reach with the
- *  author.
- */
+/***************************************************************************
+ *                                                                         *
+ *  Squish Developers Kit Source, Version 2.00                             *
+ *  Copyright 1989-1994 by SCI Communications.  All rights reserved.       *
+ *                                                                         *
+ *  USE OF THIS FILE IS SUBJECT TO THE RESTRICTIONS CONTAINED IN THE       *
+ *  SQUISH DEVELOPERS KIT LICENSING AGREEMENT IN SQDEV.PRN.  IF YOU DO NOT *
+ *  FIND THE TEXT OF THIS AGREEMENT IN THE AFOREMENTIONED FILE, OR IF YOU  *
+ *  DO NOT HAVE THIS FILE, YOU SHOULD IMMEDIATELY CONTACT THE AUTHOR AT    *
+ *  ONE OF THE ADDRESSES LISTED BELOW.  IN NO EVENT SHOULD YOU PROCEED TO  *
+ *  USE THIS FILE WITHOUT HAVING ACCEPTED THE TERMS OF THE SQUISH          *
+ *  DEVELOPERS KIT LICENSING AGREEMENT, OR SUCH OTHER AGREEMENT AS YOU ARE *
+ *  ABLE TO REACH WITH THE AUTHOR.                                         *
+ *                                                                         *
+ *  You can contact the author at one of the address listed below:         *
+ *                                                                         *
+ *  Scott Dudley       FidoNet     1:249/106                               *
+ *  777 Downing St.    Internet    sjd@f106.n249.z1.fidonet.org            *
+ *  Kingston, Ont.     CompuServe  >INTERNET:sjd@f106.n249.z1.fidonet.org  *
+ *  Canada  K7M 5N3    BBS         1-613-634-3058, V.32bis                 *
+ *                                                                         *
+ ***************************************************************************/
 
-#ifndef __API_SQ_H__
-#define __API_SQ_H__
+/* $Id$ */
+
+#ifndef __API_SQ_H_DEFINED
+#define __API_SQ_H_DEFINED
 
 struct _sqhdr;
 struct _sqidx;
@@ -27,109 +33,236 @@ typedef struct _sqidx SQIDX;
 typedef struct _sqhdr SQHDR;
 typedef long FOFS;
 
-#define NULL_FRAME    ((FOFS)0L)
-#define FRAME_normal  0x00
-#define FRAME_free    0x01
-#define FRAME_rle     0x02    /* not implemented */
-#define FRAME_lzw     0x03    /* not implemented */
 
-#define EVERYTHING    0xffffu
+/* Try to access a locked Squish base up to five times */
 
-#define SFB_LEN       2048
-#define IFB_LEN       1024
+#define SQUISH_LOCK_RETRY 5
 
-#define EXTRA_BUF     16
 
-#define SQHDRID       0xAFAE4453UL
+/* Expand the Squish index by 64 records at a time */
+
+#define SQUIQSH_IDX_EXPAND    64
+
+
+/* No frame offset */
+
+#define NULL_FRAME      ((FOFS)0L)
+
+
+/* Frame types for sqhdr.frame_type */
+
+#define FRAME_NORMAL    0x00  /* Normal text frame */
+#define FRAME_FREE      0x01  /* Part of the free chain */
+#define FRAME_LZSS      0x02  /* Not implemented */
+#define FRAME_UPDATE    0x03  /* Frame is being updated by another task */
+
+/* BItmask for sqidx.hash to indicate that the msg was received */
+
+#define IDXE_MSGREAD    0x80000000Lu
+
+/* Macros for accessing the hidden parts of data structures */
+
+#define Sqd ((SQDATA *)(ha->apidata))
+#define HSqd ((SQDATA *)(((struct _msgh *)hmsg)->ha->apidata))
+
+
+/* Squish frame header.  This comes before each and every message in a      *
+ * Squish message base.                                                     */
 
 struct _sqhdr
 {
-    dword id;         /* id must always equal SQHDRID */
+  #define SQHDRID       0xafae4453L
 
-    FOFS next_frame;
-    FOFS prev_frame;
+  dword id;             /* sqhdr.id must always equal SQHDRID */
 
-    dword frame_length;
-    dword msg_length;
-    dword clen;
+  FOFS next_frame;      /* Next frame in the linked list */
+  FOFS prev_frame;      /* Prior frame in the linked list */
 
-    word frame_type;
-    word rsvd;
+  dword frame_length;   /* Length of this frame */
+  dword msg_length;     /* Length used in this frame by XMSG, ctrl and text */
+  dword clen;           /* Length used in this frame by ctrl info only */
+
+  word frame_type;      /* Type of frame -- see above FRAME_XXXX */
+  word rsvd;            /* Reserved for future use */
 };
-#define SQHDR_SIZE 28
 
-struct _msgh
-{
-    MSG *sq;
-    dword id;                   /* Must always equal MSGH_ID */
 
-    dword bytes_written;
-    dword cur_pos;
 
-    /* For SQUISH only! */
-
-    dword cur_len;
-    dword clen;
-    dword msgnum;
-    dword totlen;
-
-    SQHDR *hdr;
-
-    FOFS seek_frame;
-
-    word mode;
-    
-    HMSG hmsgnext;
-};
+/* An individual index entry in <area>.SQI */
 
 struct _sqidx
 {
-    FOFS ofs;
-    UMSGID umsgid;
-    dword hash;
+  FOFS ofs;                   /* Offset of the frame relating to this msg */
+  UMSGID umsgid;              /* Unique message identifier of this msg */
+  dword hash;                 /* SquishHash of msg.to for this msg */
 };
-#define SQIDX_SIZE 12
 
-/* Used for buffering index writes within API_SQ.C */
 
-struct _bufidx
+/* Header block at offset 0 of <area>.SQD */
+
+typedef struct _sqbase
 {
-    struct _sqidx ix;
-    dword idx_ofs;
-};
+  word len;               /* LENGTH OF THIS STRUCTURE! */           /*   0 */
+  word rsvd1;             /* reserved */                            /*   2 */
 
-struct _sqbase
+  dword num_msg;          /* Number of messages in area */          /*   4 */
+  dword high_msg;         /* Highest msg in area. Same as num_msg*/ /*   8 */
+  dword skip_msg;         /* Skip killing first x msgs in area */   /*  12 */
+  dword high_water;       /* Msg# (not umsgid) of HWM */            /*  16 */
+
+  dword uid;              /* Number of the next UMSGID to use */    /*  20 */
+
+  byte base[80];          /* Base name of SquishFile */             /*  24 */
+
+  FOFS begin_frame;       /* Offset of first frame in file */       /* 104 */
+  FOFS last_frame;        /* Offset to last frame in file */        /* 108 */
+  FOFS free_frame;        /* Offset of first FREE frame in file */  /* 112 */
+  FOFS last_free_frame;   /* Offset of last free frame in file */   /* 116 */
+  FOFS end_frame;         /* Pointer to end of file */              /* 120 */
+
+  dword max_msg;          /* Max # of msgs to keep in area */       /* 124 */
+  word keep_days;         /* Max age of msgs in area (SQPack) */    /* 128 */
+  word sz_sqhdr;          /* sizeof(SQHDR) */                       /* 130 */
+  byte rsvd2[124];        /* Reserved by Squish for future use*/    /* 132 */
+                                                             /* total: 256 */
+} SQBASE;
+
+
+typedef struct
 {
-    word len;              /* LENGTH OF THIS STRUCTURE! */             /* 0 */
-    word rsvd1;            /* reserved */                              /* 2 */
+  dword dwUsed;             /* Number of entries used in this seg */
+  dword dwMax;              /* Number of entries allocated in this seg */
 
-    dword num_msg;         /* Number of messages in area */            /* 4 */
-    dword high_msg;        /* Highest msg in area. Same as num_msg */  /* 8 */
-    dword skip_msg;        /* Skip killing first x msgs in area */    /* 12 */
-    dword high_water;      /* Msg# (not umsgid) of HWM */             /* 16 */
+  SQIDX far *psqi;          /* Pointer to index entries for this segment */
+} SQIDXSEG;
 
-    dword uid;             /* Number of the next UMSGID to use */     /* 20 */
 
-    byte base[80];         /* Base name of SquishFile */              /* 24 */
+/* Handle to a Squish index file */
 
-    FOFS begin_frame;      /* Offset of first frame in file */       /* 104 */
-    FOFS last_frame;       /* Offset to last frame in file */        /* 108 */
-    FOFS free_frame;       /* Offset of first FREE frame in file */  /* 112 */
-    FOFS last_free_frame;  /* Offset of last free frame in file */   /* 116 */
-    FOFS end_frame;        /* Pointer to end of file */              /* 120 */
+typedef struct
+{
+  #define ID_HIDX 0x9fee
 
-    dword max_msg;         /* Max # of msgs to keep in area */       /* 124 */
-    word keep_days;        /* Max age of msgs in area (SQPack) */    /* 128 */
-    word sz_sqhdr;         /* sizeof(SQHDR) */                       /* 130 */
-    byte rsvd2[124];       /* Reserved by Squish for future use */   /* 132 */
+  word id;                            /* Must be ID_HIDX */
+  HAREA ha;                           /* Area to which this index belongs */
 
-                                                              /* total: 256 */
+  long lAllocatedRecords;             /* Space allocated in idx file */
+  long lDeltaLo;                      /* Low # of changed msg */
+  long lDeltaHi;                      /* High # of changed msg */
+
+  int fBuffer;                        /* Use index buffer? */
+  int cSeg;                           /* Number of segments used */
+  SQIDXSEG *pss;                      /* Segments containing messages */
+} *HIDX;
+
+
+
+/* Private data in handle passed among API functions which handle message   *
+ * areas.                                                                   */
+
+typedef struct _sqdata
+{
+  word cbSqbase;          /* Length of the .SQD file header */
+  word cbSqhdr;           /* Length of a .SQD frame header */
+
+  dword dwMaxMsg;         /* Max number of msgs in area */
+  word wMaxDays;          /* Max age (in days) of msgs in area */
+  word wSkipMsg;          /* Number of msgs to skip before keeping wMaxMsg */
+
+  dword dwHighWater;      /* High water message NUMBER */
+  UMSGID uidNext;         /* Next UMSGID to assign */
+
+  FOFS foFirst;           /* Offset of first frame in file */
+  FOFS foLast;            /* Offset to last frame in file */
+  FOFS foFree;            /* Offset of first FREE frame in file */
+  FOFS foLastFree;        /* Offset of last free frame in file */
+  FOFS foEnd;             /* Pointer to end of file */
+
+  FOFS foNext;            /* Next frame in the linked list */
+  FOFS foPrev;            /* Prior frame in the linked list */
+  FOFS foCur;             /* Current frame position */
+
+  word fHaveExclusive;    /* Are we currently updating the base header? */
+  word fLocked;           /* Do we have byte 0 locked? */
+  word fLockFunc;         /* Number of times we have called Lock w/o Unlock */
+
+  int sfd;                /* SquishFile handle */
+  int ifd;                /* SquishIndex handle */
+
+  SQBASE sqbDelta;        /* Last _sqbase read from .SQD file */
+
+  /* Linked lists indicating open resources */
+
+  HAREA haNext;           /* Next area in the list of open areas */
+  HMSG hmsgOpen;          /* List of open messages */
+  HIDX hix;               /* Index handle for current base */
+} SQDATA;
+
+
+/* Message handle.  This is passed back and forth between all of the        *
+ * API functions that handle specific messages.                             */
+
+struct _msgh
+{
+  HAREA ha;                   /* Area to which this message belongs */
+  dword id;                   /* Must always equal MSGH_ID */
+
+  dword bytes_written;        /* Bytes written to this msg so far */
+  dword cur_pos;              /* Current read posn within msg */
+
+  /* Squish-specific information starts here */
+
+  dword dwMsg;                /* This message number */
+
+  /* Frame offset of this message, IF we are reading a message.             *
+   *                                                                        *
+   * However, if we are writing a message, this may hold one of             *
+   * several things, depending on the value of wMode:                       *
+   *                                                                        *
+   *                                                                        *
+   * wMode==MOPEN_CREATE:  If we are writing a completely new message,      *
+   *                       this field is zero.  Otherwise, if we are        *
+   *                       creating a message on top of an existing         *
+   *                       message, this will hold the frame offset of      *
+   *                       the old message.                                 *
+   * wMode==MOPEN_RW       This holds the offset of the message that        *
+   *    or  MOPEN_WRITE    we are rewriting (same as foWrite)               */
+
+  FOFS foRead;
+
+  /* SQHDR used when reading.                                               *
+   *                                                                        *
+   * If writing, this will hold the frame header of the message that we     *
+   * replaced.  (We only replaced a message if foRead != NULL_FRAME)        */
+
+  SQHDR sqhRead;
+
+  /* If we are writing a message, this holds the offset of the current      *
+   * frame header.  If no frame header has been allocated for the message   *
+   * yet, this field will be NULL_FRAME.                                    */
+
+  FOFS foWrite;
+
+  /* If we are writing a message, this holds the frame that we wrote.  This *
+   * SQHDR is only valid when foWrite != NULL_FRAME.                        */
+
+  SQHDR sqhWrite;
+
+  /* If we know the UMSGID for this message, uidUs is non-zero */
+
+  UMSGID uidUs;
+
+  dword dwWritePos;           /* Current write position */
+  word wMode;                 /* MOPEN_READ, MOPEN_WRITE, or MOPEN_RW */
+  word fDiskErr;              /* Has a disk error occurred? */
+  word fWritten;              /* Have we already written to this message? */
+  HMSG hmsgNext;              /* Next msg in the list of open msgs */
 };
+
+#define SQHDR_SIZE  28
+#define SQIDX_SIZE  12
 #define SQBASE_SIZE 256
 
-#define SF_STATIC 0x0001   /* Perform static (not dynamic) renumbering */
-
-#include "api_sqd.h"
 
 int read_xmsg(sword handle, XMSG *pxmsg);
 int write_xmsg(sword handle, XMSG *pxmsg);
@@ -140,4 +273,5 @@ int write_sqidx(sword, SQIDX *, dword);
 int read_sqbase(sword handle, struct _sqbase *psqbase);
 int write_sqbase(sword handle, struct _sqbase *psqbase);
 
-#endif
+#endif /* __API_SQ_H_DEFINED */
+

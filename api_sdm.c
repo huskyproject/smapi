@@ -1317,3 +1317,38 @@ static void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate,
         *todate = *fromdate;
     }
 }
+
+static dword EXPENTRY SdmGetHash(HAREA mh, dword msgnum)
+{
+  XMSG xmsg;
+  HMSG msgh;
+  dword rc = 0l; 
+
+  if ((msgh=SdmOpenMsg(mh, MOPEN_READ, msgnum))==NULL)
+    return (dword) 0l;
+  
+  if (SdmReadMsg(msgh, &xmsg, 0L, 0L, NULL, 0L, NULL)!=(dword)-1)
+  {
+    rc = SquishHash(xmsg.to) | (xmsg.attr & MSGREAD) ? 0x80000000l : 0;
+  }
+
+  SdmCloseMsg(msgh);
+
+  msgapierr=MERR_NONE;
+  return rc;
+}
+
+static UMSGID EXPENTRY SdmGetNextUid(HAREA ha)
+{
+  if (InvalidMh(ha))
+    return 0L;
+
+  if (!ha->locked)
+  {
+    msgapierr=MERR_NOLOCK;
+    return 0L;
+  }
+
+  msgapierr=MERR_NONE;
+  return ha->high_msg+1;
+}

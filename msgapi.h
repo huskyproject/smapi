@@ -17,6 +17,8 @@
  *  author.
  */
 
+#pragma pack(1)
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -27,6 +29,10 @@ extern "C" {
 #include "compiler.h"
 #include "typedefs.h"
 #include "stamp.h"
+
+#ifdef __BEOS__
+#include <OS.h>
+#endif
 
 #define MSGAREA_NORMAL  0x00
 #define MSGAREA_CREATE  0x01
@@ -124,6 +130,7 @@ typedef struct _xmsg
 #define MSGURQ     0x8000
 #define MSGSCANNED 0x00010000L
 #define MSGLOCKED  0x40000000L /* this seems to be a feature of golded */
+#define MSGUID     0x00020000L /* xmsg.uid field contains umsgid of msg */
 
     dword attr;
 
@@ -143,10 +150,13 @@ typedef struct _xmsg
     sword utc_ofs;              /* Offset from UTC of message writer, in
                                  * minutes. */
 
-#define MAX_REPLY 10            /* Max number of stored replies to one msg */
+#define MAX_REPLY 9            /* Max number of stored replies to one msg */
 
     UMSGID replyto;
     UMSGID replies[MAX_REPLY];
+    dword umsgid;               /* UMSGID of this message, if (attr&MSGUID) */
+                                /* This field is only stored on disk -- it  *
+                                 * is not read into memory.                 */
 
     byte __ftsc_date[20];       /* Obsolete date information.  If it weren't
                                  * for the fact that FTSC standards say that
@@ -193,24 +203,27 @@ struct _msgapi
 
     struct _apifuncs
     {
-        sword(EXPENTRY * CloseArea) (MSG * mh);
-        MSGH *(EXPENTRY * OpenMsg) (MSG * mh, word mode, dword n);
+        sword(EXPENTRY * CloseArea) (HAREA mh);
+        MSGH *(EXPENTRY * OpenMsg) (HAREA mh, word mode, dword n);
         sword(EXPENTRY * CloseMsg) (MSGH * msgh);
         dword(EXPENTRY * ReadMsg) (MSGH * msgh, XMSG * msg, dword ofs, dword bytes, byte * text, dword cbyt, byte * ctxt);
         sword(EXPENTRY * WriteMsg) (MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt);
-        sword(EXPENTRY * KillMsg) (MSG * mh, dword msgnum);
-        sword(EXPENTRY * Lock) (MSG * mh);
-        sword(EXPENTRY * Unlock) (MSG * mh);
+        sword(EXPENTRY * KillMsg) (HAREA mh, dword msgnum);
+        sword(EXPENTRY * Lock) (HAREA mh);
+        sword(EXPENTRY * Unlock) (HAREA mh);
         sword(EXPENTRY * SetCurPos) (MSGH * msgh, dword pos);
         dword(EXPENTRY * GetCurPos) (MSGH * msgh);
-        UMSGID(EXPENTRY * MsgnToUid) (MSG * mh, dword msgnum);
-        dword(EXPENTRY * UidToMsgn) (MSG * mh, UMSGID umsgid, word type);
-        dword(EXPENTRY * GetHighWater) (MSG * mh);
-        sword(EXPENTRY * SetHighWater) (MSG * mh, dword hwm);
+        UMSGID(EXPENTRY * MsgnToUid) (HAREA mh, dword msgnum);
+        dword(EXPENTRY * UidToMsgn) (HAREA mh, UMSGID umsgid, word type);
+        dword(EXPENTRY * GetHighWater) (HAREA mh);
+        sword(EXPENTRY * SetHighWater) (HAREA mh, dword hwm);
         dword(EXPENTRY * GetTextLen) (MSGH * msgh);
         dword(EXPENTRY * GetCtrlLen) (MSGH * msgh);
-    }
-    *api;
+        /* Version 1 Functions */
+        UMSGID (EXPENTRY * GetNextUid)(HAREA harea);
+        /* Version 2 Functions */
+        dword  (EXPENTRY * GetHash)(HAREA harea, dword msgnum);
+    } *api;
 
     /*
      *  Pointer to application-specific data.  API_SQ.C and API_SDM.C use
@@ -219,6 +232,14 @@ struct _msgapi
      */
 
     void *apidata;
+    
+    #ifdef __BEOS__
+     sem_id sem;
+    #elif defined(__IBMC__)
+     short sem;
+    #elif defined(UNIX)
+      int sem;
+    #endif
 };
 
 
@@ -273,6 +294,11 @@ extern struct _minf _stdc mi;
 #define MERR_NOENT  5           /* File/message does not exist */
 #define MERR_BADA   6           /* Bad argument passed to msgapi function */
 #define MERR_EOPEN  7           /* Couldn't close - messages still open */
+#define MERR_NOLOCK 8     /* Base needs to be locked to perform operation   */
+#define MERR_SHARE  9     /* Resource in use by other process               */
+#define MERR_EACCES 10    /* Access denied (can't write to read-only, etc)  */
+#define MERR_BADMSG 11    /* Bad message frame (Squish)                     */
+#define MERR_TOOBIG 12    /* Too much text/ctrlinfo to fit in frame (Squish)*/
 
 /*
  *  Now, a set of macros, which call the specified API function.  These
@@ -298,6 +324,7 @@ extern struct _minf _stdc mi;
 #define MsgSetHighWater(mh,n)               (*(mh)->api->SetHighWater)(mh,n)
 #define MsgGetTextLen(msgh)                 (*(((struct _msgh *)msgh)->sq->api->GetTextLen))(msgh)
 #define MsgGetCtrlLen(msgh)                 (*(((struct _msgh *)msgh)->sq->api->GetCtrlLen))(msgh)
+#define MsgGetNextUid(ha)                   (*(ha)->api->GetNextUid)(ha)
 
 /*
  *  These don't actually call any functions, but are macros used to access
@@ -310,6 +337,19 @@ extern struct _minf _stdc mi;
 #define MsgGetCurMsg(mh)   ((mh)->cur_msg)
 #define MsgGetNumMsg(mh)   ((mh)->num_msg)
 #define MsgGetHighMsg(mh)  ((mh)->high_msg)
+
+#define MsgStripDebris(str)          StripNasties(str)
+#define MsgCreateCtrlBuf(t, n, l)    CopyToControlBuf(t, n, l)
+#define MsgGetCtrlToken(where, what) GetCtrlToken(where, what)
+#define MsgCvt4D(c, o, d)            ConvertControlInfo(c, o, d)
+#define MsgCvtCtrlToKludge(ctrl)     CvtCtrlToKludge(ctrl)
+#define MsgRemoveToken(c, w)         RemoveFromCtrl(c, w)
+#define MsgGetNumKludges(txt)        NumKludges(txt)
+#define MsgWrite4D(msg, wf, ctrl)    WriteZPInfo(msg, wf, ctrl)
+#define MsgInvalidHmsg(mh)           InvalidMsgh(mh)
+#define MsgInvalidHarea(mh)          InvalidMh(mh)
+
+#define MsgCvtFTSCDateToBinary(a, b) ASCII_Date_To_Binary(a,b)
 
 sword EXPENTRY MsgOpenApi(struct _minf *minf);
 sword EXPENTRY MsgCloseApi(void);

@@ -31,7 +31,17 @@ endif
 
 OBJS=	1stchar$(OBJ)  \
 	api_sdm$(OBJ)  \
-	api_sq$(OBJ)   \
+	sq_area$(OBJ) \
+	sq_hash$(OBJ) \
+	sq_help$(OBJ) \
+	sq_idx$(OBJ) \
+	sq_kill$(OBJ) \
+	sq_lock$(OBJ) \
+	sq_misc$(OBJ) \
+	sq_msg$(OBJ) \
+	sq_read$(OBJ) \
+	sq_uid$(OBJ) \
+	sq_write$(OBJ) \
 	api_jam$(OBJ)  \
 	cvtdate$(OBJ)  \
 	date2bin$(OBJ) \
@@ -51,7 +61,9 @@ OBJS=	1stchar$(OBJ)  \
 	structrw$(OBJ) \
 	trail$(OBJ)    \
 	weekday$(OBJ) \
-	semaphor$(OBJ)
+	tdelay$(OBJ) \
+	setfsize$(OBJ)
+
 
 all: $(TARGET)
 

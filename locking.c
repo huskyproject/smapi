@@ -316,6 +316,10 @@ int sopen(const char *name, int oflag, int ishared, int mode)
 #include <dos.h>
 #endif
 
+#ifdef UNIX 
+#include <unistd.h>
+#endif
+
 int waitlock(int handle, long ofs, long length)
 {
     while (lock(handle, ofs, length) == -1)

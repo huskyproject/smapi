@@ -1680,3 +1680,38 @@ dword Jam_Crc32(unsigned char* buff, dword len)
     return crc;
 }
 
+
+static dword EXPENTRY JamGetHash(HAREA mh, dword msgnum)
+{
+  XMSG xmsg;
+  HMSG msgh;
+  dword rc = 0l; 
+
+  if ((msgh=JamOpenMsg(mh, MOPEN_READ, msgnum))==NULL)
+    return (dword) 0l;
+  
+  if (JamReadMsg(msgh, &xmsg, 0L, 0L, NULL, 0L, NULL)!=(dword)-1)
+  {
+    rc = SquishHash(xmsg.to) | (xmsg.attr & MSGREAD) ? 0x80000000l : 0;
+  }
+
+  JamCloseMsg(msgh);
+
+  msgapierr=MERR_NONE;
+  return rc;
+}
+
+static UMSGID EXPENTRY JamGetNextUid(HAREA ha)
+{
+  if (InvalidMh(ha))
+    return 0L;
+
+  if (!ha->locked)
+  {
+    msgapierr=MERR_NOLOCK;
+    return 0L;
+  }
+
+  msgapierr=MERR_NONE;
+  return ha->high_msg+1;
+}

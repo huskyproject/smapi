@@ -1,99 +1,87 @@
-/*
- *  SMAPI; Modified Squish MSGAPI
- *
- *  Squish MSGAPI0 is copyright 1991 by Scott J. Dudley.  All rights reserved.
- *  Modifications released to the public domain.
- *
- *  Use of this file is subject to the restrictions contain in the Squish
- *  MSGAPI0 licence agreement.  Please refer to licence.txt for complete
- *  details of the licencing restrictions.  If you do not find the text
- *  of this agreement in licence.txt, or if you do not have this file,
- *  you should contact Scott Dudley at FidoNet node 1:249/106 or Internet
- *  e-mail Scott.Dudley@f106.n249.z1.fidonet.org.
- *
- *  In no event should you proceed to use any of the source files in this
- *  archive without having accepted the terms of the MSGAPI0 licensing
- *  agreement, or such other agreement as you are able to reach with the
- *  author.
- */
+/***************************************************************************
+ *                                                                         *
+ *  Squish Developers Kit Source, Version 2.00                             *
+ *  Copyright 1989-1994 by SCI Communications.  All rights reserved.       *
+ *                                                                         *
+ *  USE OF THIS FILE IS SUBJECT TO THE RESTRICTIONS CONTAINED IN THE       *
+ *  SQUISH DEVELOPERS KIT LICENSING AGREEMENT IN SQDEV.PRN.  IF YOU DO NOT *
+ *  FIND THE TEXT OF THIS AGREEMENT IN THE AFOREMENTIONED FILE, OR IF YOU  *
+ *  DO NOT HAVE THIS FILE, YOU SHOULD IMMEDIATELY CONTACT THE AUTHOR AT    *
+ *  ONE OF THE ADDRESSES LISTED BELOW.  IN NO EVENT SHOULD YOU PROCEED TO  *
+ *  USE THIS FILE WITHOUT HAVING ACCEPTED THE TERMS OF THE SQUISH          *
+ *  DEVELOPERS KIT LICENSING AGREEMENT, OR SUCH OTHER AGREEMENT AS YOU ARE *
+ *  ABLE TO REACH WITH THE AUTHOR.                                         *
+ *                                                                         *
+ *  You can contact the author at one of the address listed below:         *
+ *                                                                         *
+ *  Scott Dudley       FidoNet     1:249/106                               *
+ *  777 Downing St.    Internet    sjd@f106.n249.z1.fidonet.org            *
+ *  Kingston, Ont.     CompuServe  >INTERNET:sjd@f106.n249.z1.fidonet.org  *
+ *  Canada  K7M 5N3    BBS         1-613-634-3058, V.32bis                 *
+ *                                                                         *
+ ***************************************************************************/
 
-#ifndef __API_SQP_H__
-#define __API_SQP_H__
+/* $Id$ */
 
-static sword EXPENTRY SquishCloseArea(MSG * sq);
-static MSGH *EXPENTRY SquishOpenMsg(MSG * sq, word mode, dword msgnum);
-static sword EXPENTRY SquishCloseMsg(MSGH * msgh);
-static dword EXPENTRY SquishReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt);
-static sword EXPENTRY SquishWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt);
-static sword EXPENTRY SquishKillMsg(MSG * sq, dword msgnum);
-static sword EXPENTRY SquishLock(MSG * sq);
-static sword EXPENTRY SquishUnlock(MSG * sq);
-static sword EXPENTRY SquishSetCurPos(MSGH * msgh, dword pos);
-static dword EXPENTRY SquishGetCurPos(MSGH * msgh);
-static UMSGID EXPENTRY SquishMsgnToUid(MSG * sq, dword msgnum);
-static dword EXPENTRY SquishUidToMsgn(MSG * sq, UMSGID umsgid, word type);
-static dword EXPENTRY SquishGetHighWater(MSG * mh);
-static sword EXPENTRY SquishSetHighWater(MSG * sq, dword hwm);
-static dword EXPENTRY SquishGetTextLen(MSGH * msgh);
-static dword EXPENTRY SquishGetCtrlLen(MSGH * msgh);
-static sword MSGAPI _OpenSquish(MSG * sq, word * mode);
-static SQHDR *MSGAPI _SquishGotoMsg(MSG * sq, dword msgnum, FOFS * seek_frame, SQIDX * idx, word updptrs);
-static MSGH *_SquishOpenMsgRead(MSG * sq, word mode, dword msgnum);
-static sword MSGAPI _SquishReadHeader(MSG * sq, dword ofs, SQHDR * hdr);
-static sword MSGAPI _SquishWriteHeader(MSG * sq, dword ofs, SQHDR * hdr);
-static sword MSGAPI _SquishUpdateHeaderNext(MSG * sq, dword ofs, SQHDR * hdr, dword newval);
-static sword MSGAPI _SquishUpdateHeaderPrev(MSG * sq, dword ofs, SQHDR * hdr, dword newval);
-static sword MSGAPI _SquishWriteSq(MSG * sq);
-static sword MSGAPI _SquishUpdateSq(MSG * sq, word force);
-static void MSGAPI Init_Hdr(SQHDR * sh);
-static void SqbaseToSq(struct _sqbase *sqbase, MSG * sq);
-static void SqToSqbase(MSG * sq, struct _sqbase *sqbase);
-static sword near AddIndex(MSG * sq, SQIDX * ix, dword msgnum);
-static sword near Add_To_Free_Chain(MSG * sq, FOFS killofs, SQHDR * killhdr);
-static sword near _SquishReadIndex(MSG * sq);
-static sword near _SquishWriteIndex(MSG * sq);
-static sword near _SquishGetIdxFrame(MSG * sq, dword num, SQIDX * idx);
-static void far *near farmemmove(void far * destin, const void far * source, unsigned n);
-static void far *near farmemset(void far * s, int c, size_t length);
-static int near _SquishLock(MSG * sq, int force);
-static void near _SquishUnlock(MSG * sq);
-static sword near _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen, dword clen, SQHDR * freehdr, FOFS * last_frame, SQHDR * lhdr, MSGH * msgh);
-static unsigned _SquishCloseAreaMsgs(HAREA sq);
-
-void _SquishCloseOpenAreas(void);
+#ifndef __API_SQP_H_DEFINED
+#define __API_SQP_H_DEFINED
 
 
-#define fop_wpb (O_CREAT | O_TRUNC | O_RDWR | O_BINARY)
-#define fop_rpb (O_RDWR | O_BINARY)
+sword EXPENTRY SquishCloseArea(HAREA sq);
+HMSG  EXPENTRY SquishOpenMsg(HAREA sq,word mode,dword msgnum);
+sword EXPENTRY SquishCloseMsg(HMSG msgh);
+dword EXPENTRY SquishReadMsg(HMSG msgh, PXMSG msg, dword offset, dword bytes,
+                              byte  *szText, dword clen, byte  *ctxt);
+sword EXPENTRY SquishWriteMsg(HMSG msgh,word append,PXMSG msg,byte  *text,dword textlen,dword totlen,dword clen,byte  *ctxt);
+sword EXPENTRY SquishKillMsg(HAREA sq,dword msgnum);
+sword EXPENTRY SquishLock(HAREA sq);
+sword EXPENTRY SquishUnlock(HAREA sq);
+sword EXPENTRY SquishSetCurPos(HMSG msgh,dword pos);
+dword EXPENTRY SquishGetCurPos(HMSG msgh);
+UMSGID EXPENTRY SquishMsgnToUid(HAREA sq,dword msgnum);
+dword EXPENTRY SquishUidToMsgn(HAREA sq,UMSGID umsgid,word type);
+dword EXPENTRY SquishGetHash(HAREA sq,dword msgnum);
+dword EXPENTRY SquishGetHighWater(HAREA mh);
+sword EXPENTRY SquishSetHighWater(HAREA sq,dword hwm);
+dword EXPENTRY SquishGetTextLen(HMSG msgh);
+dword EXPENTRY SquishGetCtrlLen(HMSG msgh);
+UMSGID EXPENTRY SquishGetNextUid(HAREA ha);
 
-#define Sqd ((struct _sqdata *)(sq->apidata))
-#define SqdSQ(sq) ((struct _sqdata *)(sq->apidata))
-#define MsghSqd ((struct _sqdata *)(((struct _msgh far *)msgh)->sq->apidata))
+/* Private functions */
+short _fast _SquishBaseThreadLock(HAREA ha);
+short _fast _SquishBaseThreadUnlock(HAREA ha);
+unsigned _SquishReadMode(HMSG hmsg);
+unsigned _SquishWriteMode(HMSG hmsg);
+unsigned _SquishCopyBaseToData(HAREA ha, SQBASE *psqb);
+unsigned _SquishWriteBaseHeader(HAREA ha, SQBASE *psqb);
+unsigned _SquishReadBaseHeader(HAREA ha, SQBASE *psqb);
+unsigned _SquishExclusiveBegin(HAREA ha);
+unsigned _SquishExclusiveEnd(HAREA ha);
+unsigned _SquishCopyDataToBase(HAREA ha, SQBASE *psqb);
+unsigned _SquishReadHdr(HAREA ha, FOFS fo, SQHDR *psqh);
+unsigned _SquishWriteHdr(HAREA ha, FOFS fo, SQHDR *psqh);
+/*unsigned _SquishReadIndexRecord(HAREA ha, dword dwMsg, SQIDX *psqi);*/
+/*unsigned _SquishWriteIndexRecord(HAREA ha, dword dwMsg, SQIDX *psqi);*/
+FOFS _SquishGetFrameOfs(HAREA ha, dword dwMsg);
+/*unsigned _SquishRemoveIndex(HAREA ha, dword dwMsg, SQIDX *psqiOut, SQHDR *psqh);*/
+unsigned _SquishSetFrameNext(HAREA ha, FOFS foModify, FOFS foValue);
+unsigned _SquishSetFramePrev(HAREA ha, FOFS foModify, FOFS foValue);
+unsigned _SquishInsertFreeChain(HAREA ha, FOFS fo, SQHDR *psqh);
+/*SQIDX * _SquishAllocIndex(HAREA ha, dword dwMsg, dword *pdwIdxSize);*/
+/*unsigned _SquishFreeIndex(HAREA ha, dword dwMsg, SQIDX *psqi,
+                          dword dwIdxSize, unsigned fWrite);*/
 
-static struct _apifuncs sq_funcs =
-{
-    SquishCloseArea,
-    SquishOpenMsg,
-    SquishCloseMsg,
-    SquishReadMsg,
-    SquishWriteMsg,
-    SquishKillMsg,
-    SquishLock,
-    SquishUnlock,
-    SquishSetCurPos,
-    SquishGetCurPos,
-    SquishMsgnToUid,
-    SquishUidToMsgn,
-    SquishGetHighWater,
-    SquishSetHighWater,
-    SquishGetTextLen,
-    SquishGetCtrlLen
-};
+HIDX _SquishOpenIndex(HAREA ha);
+int _SquishBeginBuffer(HIDX hix);
+int SidxGet(HIDX hix, dword dwMsg, SQIDX *psqi);
+int SidxPut(HIDX hix, dword dwMsg, SQIDX *psqi);
+unsigned _SquishRemoveIndexEntry(HIDX hix, dword dwMsg, SQIDX *psqiOut,
+                                 SQHDR *psqh, int fFixPointers);
+unsigned _SquishCloseIndex(HIDX hix);
+int _SquishEndBuffer(HIDX hix);
+int _SquishFreeBuffer(HIDX hix);
+dword _SquishIndexSize(HIDX hix);
+unsigned _SquishFixMemoryPointers(HAREA ha, dword dwMsg, SQHDR *psqh);
 
-static byte *ss_sqd = (byte *) "%s.sqd";
-static byte *ss_sqi = (byte *) "%s.sqi";
-static byte *ss_sql = (byte *) "%s.sql";
+#endif /* __API_SQP_H_DEFINED */
 
-static struct _sqdata *_junksq;
-
-#endif

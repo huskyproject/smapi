@@ -36,6 +36,9 @@ static dword EXPENTRY SdmGetHighWater(MSG * mh);
 static sword EXPENTRY SdmSetHighWater(MSG * sq, dword hwm);
 static dword EXPENTRY SdmGetTextLen(MSGH * msgh);
 static dword EXPENTRY SdmGetCtrlLen(MSGH * msgh);
+static UMSGID EXPENTRY SdmGetNextUid(HAREA ha);
+static dword  EXPENTRY SdmGetHash(HAREA mh, dword msgnum);
+
 
 static void Convert_Fmsg_To_Xmsg(struct _omsg *fmsg, XMSG * msg, word def_zone);
 static void Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg);
@@ -72,7 +75,9 @@ static struct _apifuncs sdm_funcs =
     SdmGetHighWater,
     SdmSetHighWater,
     SdmGetTextLen,
-    SdmGetCtrlLen
+    SdmGetCtrlLen,
+    SdmGetNextUid,
+    SdmGetHash
 };
 
 #endif
