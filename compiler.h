@@ -31,6 +31,19 @@
   #endif
 #endif
 
+/*
+ Cygwin is win32
+*/
+#if !defined(__NT__) && defined(__CYGWIN__)
+# define __NT__
+#endif
+
+/* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option */
+#if !defined(__NT__) && defined(__MINGW32__)
+# define __NT__
+#endif
+
+
 #if defined ( __WATCOMC__ )
 #include <direct.h>
 #include <io.h>
