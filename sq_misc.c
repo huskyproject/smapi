@@ -41,9 +41,11 @@ static char rcs_id[]="$Id$";
 #ifdef HAS_SHARE_H
 #include <share.h>
 #endif
+#ifdef HAS_MALLOC_H
+#include <malloc.h>
+#endif
 
 #include "prog.h"
-#include "alc.h"
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"

@@ -26,9 +26,11 @@
 #include "typedefs.h"
 #include "stamp.h"
 
-#ifdef __FARDATA__
+#ifdef HAS_MALLOC_H
+#include <malloc.h>
+#endif
 
-#include "alc.h"
+#ifdef __FARDATA__
 
 #ifndef ZREE
 #define malloc(n)     farmalloc(n)

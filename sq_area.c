@@ -49,7 +49,10 @@ static char rcs_id[]="$Id$";
 
 #include <errno.h>
 #include "prog.h"
-#include "alc.h"
+#ifdef HAS_MALLOC_H
+#include <malloc.h>
+#endif
+
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"

@@ -19,10 +19,13 @@
 
 #include <string.h>
 #include <stdlib.h>
-#ifdef __UNIX__
+
+#include "compiler.h"
+
+#ifdef HAS_SIGNAL_H
 #include <signal.h>
 #endif
-#include "alc.h"
+
 #include "prog.h"
 #include "msgapi.h"
 #include "apidebug.h"
