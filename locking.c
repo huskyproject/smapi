@@ -15,7 +15,7 @@
  *   sopen: provided by the RSX RTL
  *
  * UNIX:
- *   lock, unlock: implemented as calls to 
+ *   lock, unlock: implemented as calls to
  *   sopen: implemented as open with subsequent shared lock
  *
  * OTHER:
@@ -28,7 +28,7 @@
 
 #include "compiler.h"
 
-#if (defined(__EMX__) || defined(__IBMC__)) && defined(OS2)
+#if (defined (__WATCOMC__) || defined(__EMX__) || defined(__IBMC__)) && defined(OS2)
 
 #include <os2.h>
 
@@ -170,11 +170,11 @@ int sopen(const char *name, int oflag, int ishared, int mode)
 {
     int fd = open(name, oflag, mode);
     if (fcntl(fd, F_SETLK,
-	      file_lock((ishared == SH_DENYNONE) ? F_RDLCK : F_WRLCK, 0, 0)))
+              file_lock((ishared == SH_DENYNONE) ? F_RDLCK : F_WRLCK, 0, 0)))
 
     {
-	close(fd);
-	return -1;
+        close(fd);
+        return -1;
     }
     return fd;
 }
