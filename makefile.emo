@@ -1,49 +1,39 @@
-# makefile for PGCC/EMX 1.1.1
+# Makefile for EMX on OS/2 with OMF-Style linkage
+# No support for the Husky build environment
 
-# include Husky-Makefile-Config
-include ../huskymak.cfg
-
-include makefile.common
-
-CC=     gcc
-
-ifeq ($(DEBUG), 1)
-  CFLAGS= -Wall -g
-else
-  CFLAGS= -Wall -s
-endif
-
-CDEFS=  -DOS2
-COPT=   -O3 -fomit-frame-pointer -fstrength-reduce -mpentium -Zomf -Zsys
-LIB=    emxomfar
+CC=	gcc
+CFLAGS=	-Wall -Zomf -Zsys
+CDEFS=	-DOS2
+COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
+LIB=	emxomfar
 
 .SUFFIXES:
 .SUFFIXES: .c .obj
 
-TARGET= smapiemo.lib
+TARGET=	smapiemo.lib
 
-OBJS=   1stchar.obj  \
-        api_sdm.obj  \
-        api_sq.obj   \
-        api_jam.obj  \
-        cvtdate.obj  \
-        date2bin.obj \
-        dosdate.obj  \
-        fexist.obj   \
-        ffind.obj    \
-        flush.obj    \
-        locking.obj  \
-        months.obj   \
-        msgapi.obj   \
-        parsenn.obj  \
-        qksort.obj   \
-        strftim.obj  \
-        strocpy.obj  \
-        structrw.obj \
-        trail.obj    \
-        weekday.obj
+OBJS=	1stchar.obj  \
+	api_sdm.obj  \
+	api_sq.obj   \
+	api_jam.obj  \
+	cvtdate.obj  \
+	date2bin.obj \
+	dosdate.obj  \
+	fexist.obj   \
+	ffind.obj    \
+	flush.obj    \
+	locking.obj  \
+	months.obj   \
+	msgapi.obj   \
+	parsenn.obj  \
+	qksort.obj   \
+	strftim.obj  \
+	strocpy.obj  \
+	structrw.obj \
+	trail.obj    \
+	weekday.obj
 
-all: $(TARGET)
+# Thunderbirds are go!
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
@@ -52,14 +42,5 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 
 clean:
-	-del *.obj
-	-del *.bak
-
-distclean:
-	-del $(TARGET)
-
-install: $(TARGET)
-	copy $(TARGET) $(LIBDIR)
-	copy msgapi.h $(INCDIR)
-	copy smapi.pas $(INCDIR)
-
+	-DEL *.obj
+	-DEL $(TARGET)

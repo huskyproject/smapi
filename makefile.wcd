@@ -1,16 +1,8 @@
-# include Husky-Makefile-Config
-!include ..\huskymak.cfg
-
-!include makefile.common
+# Makefile for Building SMAPI with Watcom C for 16 Bit DOS
+# No support for Husky build environment.
 
 CC=	wcl
-
-!IF $(DEBUG) == 1
-  CFLAGS=	-zq -wx -ml -d2
-!ELSE
-  CFLAGS=	-zq -wx -ml
-!ENDIF
-
+CFLAGS=	-zq -wx -ml
 CDEFS=
 COPT=	-oneatx
 LIB=	wlib
@@ -41,7 +33,7 @@ OBJS=	1stchar.obj  \
 	trail.obj    \
 	weekday.obj
 
-all: $(TARGET)
+# Thunderbirds are go!
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
@@ -54,14 +46,6 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 
 clean:
-	del *.obj
-	del *.bak
-
-distclean: clean
-	del $(TARGET)
-
-install: $(TARGET)
-	copy $(TARGET) $(LIBDIR)
-	copy msgapi.h $(INCDIR)
-	copy smapi.pas $(INCDIR)
+	-DEL *.OBJ
+	-DEL $(TARGET)
 

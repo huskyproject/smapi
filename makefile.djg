@@ -1,19 +1,12 @@
-# include Husky-Makefile-Config
-include ../huskymak.cfg
-
-include makefile.common
+# Legacy makefile for DJGPP
+# No support for the Husky build environment.
 
 CC=	gcc
-CFLAGS= -Wall
+CFLAGS= -Wall -s
 CDEFS=	-D__FLAT__
-
-ifeq ($(DEBUG), 1)
-  COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -g
-else
-  COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -s
-endif
-
+COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486
 LIB=	ar
+RANLIB= ranlib
 
 TARGET= smapidjg.a
 
@@ -40,23 +33,15 @@ OBJS=	1stchar.o  \
 	trail.o    \
 	weekday.o
 
-all: $(TARGET)
+# Thunderbirds are go!
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
+	$(RANLIB) $(TARGET)
 
 clean:
-	del *.o
-	del *.bak
-
-distclean: clean
-	del $(TARGET)
-
-install: $(TARGET)
-	copy $(TARGET) $(LIBDIR)
-	copy msgapi.h $(INCDIR)
-	copy smapi.pas $(INCDIR)
-
+	-DEL *.o
+	-DEL $(TARGET)

@@ -1,16 +1,8 @@
-# include Husky-Makefile-Config
-!include ..\huskymak.cfg
-
-!include makefile.common
+# Makefile for High C for OS/2
+# No support for the Husky build environment
 
 CC=	hc
-
-!IF $(DEBUG) == 1
-  CFLAGS=	-w4 -Hmscerr -g
-!ELSE
-  CFLAGS=	-w4 -Hmscerr -s
-!ENDIF
-
+CFLAGS=	-w4 -Hmscerr
 CDEFS=	-DOS2
 COPT=	-O3
 LIB=	lib
@@ -20,7 +12,6 @@ TARGET=	smapihco.lib
 OBJS=	1stchar.obj  \
 	api_sdm.obj  \
 	api_sq.obj   \
-	api_jam.obj  \
 	cvtdate.obj  \
 	date2bin.obj \
 	dosdate.obj  \
@@ -38,7 +29,7 @@ OBJS=	1stchar.obj  \
 	trail.obj    \
 	weekday.obj
 
-all: $(TARGET)
+# Thunderbirds are go!
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
@@ -47,14 +38,6 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 
 clean:
-	del *.obj
-	del *.bak
-
-distclean:
-	del $(TARGET)
-
-install: $(TARGET)
-	copy $(TARGET) $(LIBDIR)
-	copy msgapi.h $(INCDIR)
-	copy smapi.pas $(INCDIR)
+	-DEL *.OBJ
+	-DEL $(TARGET)
 

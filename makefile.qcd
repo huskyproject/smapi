@@ -1,16 +1,8 @@
-# include Husky-Makefile-Config
-!include ..\huskymak.cfg
-
-!include makefile.common
+# Makefile for building SMAPI with Quick C for DOS
+# No support for the Husky build environment
 
 CC=	qcl
-
-!IF $(DEBUG) == 1
-  CFLAGS=	-nologo -W4 -AL -g
-!ELSE
-  CFLAGS=	-nologo -W4 -AL -s
-!ENDIF
-
+CFLAGS=	-nologo -W4 -AL
 CDEFS=	-DMSDOS
 COPT=	-Ox
 LIB=	lib
@@ -41,7 +33,7 @@ OBJS=	1stchar.obj  \
 	trail.obj    \
 	weekday.obj
 
-all: $(TARGET)
+# Thunderbirds are go!
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
@@ -54,14 +46,6 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 
 clean:
-	del *.obj
-	del *.bak
-
-distclean: clean
-	del $(TARGET)
-
-install: $(TARGET)
-	copy $(TARGET) $(LIBDIR)
-	copy msgapi.h $(INCDIR)
-	copy smapi.pas $(INCDIR)
+	-DEL *.obj
+	-DEL $(TARGET)
 

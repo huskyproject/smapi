@@ -1,41 +1,44 @@
-# include Husky-Makefile-Config
-!include ..\huskymak.cfg
+# Makefile for Building SMAPI with Watcom C for Windows.
+# No support for Husky build environment.
 
-!include makefile.common
-
-CC=     wcl386
-
-!IF $(DEBUG) == 1
-  CFLAGS= -zq -wx -bt=nt -l=nt -d2
-!ELSE
-  CFLAGS= -zq -wx -bt=nt -l=nt
-!ENDIF
-
+CC=	wcl386
+CFLAGS=	-zq -wx -bt=nt -l=nt
 CDEFS=
-COPT=   -oneatx -5
-LIB=    wlib
+COPT=	-oneatx -5
+LIB=	wlib
 
-TARGET= smapiwcw.lib
+TARGET=	smapiwcw.lib
 
-OBJS=   1stchar.obj api_sdm.obj api_sq.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj
+OBJS=	1stchar.obj  \
+	api_sdm.obj  \
+	api_sq.obj   \
+	api_jam.obj  \
+	cvtdate.obj  \
+	date2bin.obj \
+	dosdate.obj  \
+	fexist.obj   \
+	ffind.obj    \
+	flush.obj    \
+	locking.obj  \
+	months.obj   \
+	msgapi.obj   \
+	parsenn.obj  \
+	qksort.obj   \
+	strftim.obj  \
+	strocpy.obj  \
+	structrw.obj \
+	trail.obj    \
+	weekday.obj
 
-all: $(TARGET)
+# Thunderbirds are go!
 
 .c.obj:
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-        $(LIB) -b -q $(TARGET) -+$@
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) -b -q $(TARGET) -+$@
 
 $(TARGET): $(OBJS)
 
 clean:
-	del *.obj
-	del *.bak
-
-distclean: clean
-	del $(TARGET)
-
-install: $(TARGET)
-	copy $(TARGET) $(LIBDIR)
-	copy msgapi.h $(INCDIR)
-	copy smapi.pas $(INCDIR)
+        -DEL *.OBJ
+        -DEL $(TARGET)
 

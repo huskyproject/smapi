@@ -1,18 +1,8 @@
 # Makefile for IBM CSet for OS/2
-
-# include Husky-Makefile-Config
-include ..\huskymak.cfg
-
-include makefile.common
+# No support for the Husky build environment
 
 CC=	icc
-
-ifeq ($(DEBUG), 1)
-  CFLAGS=	-Sp1 -W2 -Q
-else
-  CFLAGS=	-Sp1 -W2 -Q
-endif
-
+CFLAGS=	-Sp1 -W2 -Q
 CDEFS=	-DOS2
 COPT=	-O
 #LIB=	ilib
@@ -41,7 +31,7 @@ OBJS=	1stchar.obj  \
 	trail.obj    \
 	weekday.obj
 
-all: $(TARGET)
+# Thunderbirds are go!
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
@@ -50,14 +40,6 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 
 clean:
-	del *.obj
-	del *.bak
-
-distclean: clean
-	del $(TARGET)
-
-install: $(TARGET)
-	copy $(TARGET) $(LIBDIR)
-	copy msgapi.h $(INCDIR)
-	copy smapi.pas $(INCDIR)
+	-DEL *.obj
+	-DEL $(TARGET)
 

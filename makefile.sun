@@ -1,19 +1,12 @@
-# include Husky-Makefile-Config
-include ../huskymak.cfg
-
-include makefile.common
+# Legacy Makefile for Solaris.
+# No support for the Husky build environment.
 
 CC=	gcc
-
-ifeq ($(DEBUG), 1)
-  CFLAGS=	-Wall -g
-else
-  CFLAGS=	-Wall -s
-endif
-
+CFLAGS=	-Wall
 CDEFS=	-DUNIX -D_POSIX_C_SOURCE
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce 
+COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
 LIB=	ar
+RANLIB= ranlib
 
 TARGET=	smapisun.a
 
@@ -45,17 +38,10 @@ all: $(TARGET)
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
-    
+
 $(TARGET): $(OBJS)
+        $(RANLIB) $(TARGET)
 
 clean:
 	rm *.o *~
-
-distclean: clean
-	rm $(TARGET)
-
-install: $(TARGET)
-	install $(ILOPT) $(TARGET) $(LIBDIR)
-	install $(IIOPT) msgapi.h $(INCDIR)
-	install $(IIOPT) smapi.pas $(INCDIR)
-
+        rm $(TARGET)
