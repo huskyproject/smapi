@@ -130,9 +130,10 @@ dword _XPENTRY apiSquishUidToMsgn(HAREA ha, UMSGID uid, word wType)
 
   /* Read the index into memory */
 
-  if (! _SquishBeginBuffer(Sqd->hix))
+  if (apiSquishLock(ha) == -1)
   {
-    return (dword)0;
+      apiSquishUnlock(ha);
+      return (dword)0;
   }
 
   /* Set up intial bounds (inclusive) */
@@ -201,7 +202,7 @@ dword _XPENTRY apiSquishUidToMsgn(HAREA ha, UMSGID uid, word wType)
   _SquishExclusiveEnd(ha);
 */
 
-  if (! _SquishFreeBuffer(Sqd->hix))
+  if ((apiSquishUnlock(ha) == -1) || (! _SquishFreeBuffer(Sqd->hix)))
     rc=(dword)0;
 
   return rc;
