@@ -1,3 +1,80 @@
+2003-01-15 Wednesday 11:20  stas_degteff
+
+	* compiler.h (1.143): fix DJGPP compilation
+
+2003-01-15 Wednesday 11:03  stas_degteff
+
+	* msgapi.h (1.64), old_msg.h (1.3): Add comments about XMSG_SIZE
+	and OMSG_SIZE: this is sizes of data on disk
+
+2003-01-15 Wednesday 09:42  stas_degteff
+
+	* compiler.h (1.142): Fix #if-#else-#endif
+
+2003-01-15 Wednesday 09:23  stas_degteff
+
+	* makefile.bsd (1.30), makefile.inc (1.8): Update FreeBSD makefile
+
+2003-01-15 Wednesday 09:22  stas_degteff
+
+	* compiler.h (1.141): More accuracy defines P_WAIT & SH_DENYNONE
+
+2003-01-15 Wednesday 09:20  mche
+
+	* genmsgid.c (1.16), gnmsgid.c (1.6): patch by [Alexander Reznikov 
+			2:4600/220]
+
+2003-01-15 Wednesday 08:33  mche
+
+	* compiler.h (1.140): fix macro redefenition for MSVC
+
+2003-01-15 Wednesday 08:25  mche
+
+	* compiler.h (1.139): fix macro redefenition for MSVC probably
+	other compilers have the same problem with compilation smapi
+
+2003-01-15 Wednesday 06:28  stas_degteff
+
+	* api_jam.c (1.101), api_sdm.c (1.37): Replace '#include  "alc.h"'
+	with it;s code: '#include <malloc.h>'
+
+2003-01-15 Wednesday 05:56  stas_degteff
+
+	* BUGS (1.9), VERSION (1.5): Update documentation
+
+2003-01-15 Wednesday 05:43  stas_degteff
+
+	* alc.h (1.4): Remove unused header file 'alc.h'
+
+2003-01-15 Wednesday 05:42  stas_degteff
+
+	* 1stchar.c (1.3): include compiler.h evidently
+
+2003-01-15 Wednesday 05:40  stas_degteff
+
+	* msgapi.c (1.37), prog.h (1.9), sq_area.c (1.26), sq_hash.c (1.7),
+	sq_help.c (1.9), sq_idx.c (1.10), sq_kill.c (1.7), sq_lock.c
+	(1.23), sq_msg.c (1.9), sq_read.c (1.10), sq_uid.c (1.8),
+	sq_write.c (1.12), sq_misc.c (1.8): Replace '#include  "alc.h"'
+	with it;s code: '#include <malloc.h>'
+
+2003-01-15 Wednesday 05:35  stas_degteff
+
+	* makefile.wcd (1.26), makefile.wco (1.23), makefile.wcw (1.28),
+	makefile.wcx (1.23): Fix gnmsgid.exe build for Watcom C
+
+2003-01-15 Wednesday 05:34  stas_degteff
+
+	* makefile.sun (1.23): Remove obsoleted defines
+
+2003-01-15 Wednesday 05:32  stas_degteff
+
+	* setfsize.c (1.16): Fix DJGPP compilation
+
+2003-01-15 Wednesday 05:32  stas_degteff
+
+	* compiler.h (1.138): Update defines
+
 2003-01-14 Tuesday 13:28  stas_degteff
 
 	* makefile.mvcdll (1.16): Remove obsolete macro
@@ -665,9 +742,8 @@
 	locking.c (1.29), msgapi.c (1.27), msgapi.h (1.45), sq_area.c
 	(1.22), sq_hash.c (1.5), sq_kill.c (1.4), sq_lock.c (1.19),
 	sq_misc.c (1.5), sq_msg.c (1.6), sq_read.c (1.7), sq_uid.c (1.5),
-	sq_write.c (1.8), huskylib/compiler.h (1.2), huskylib/locking.c
-	(1.2): global defines are changed to prevent conflicts with
-	<windows.h>
+	sq_write.c (1.8): global defines are changed to prevent conflicts
+	with <windows.h>
 	
 	MSG -->MSGA EXPENTRY --> _XPENTRY
 
@@ -1507,12 +1583,6 @@
 
 	* Makefile (1.18): Debian specific changes. Included in
 	ifeq...else...endif
-
-2001-03-18 Sunday 08:34  oliver.grimm
-
-	* huskylib/: Makefile (1.1), compiler.h (1.1), locking.c (1.1),
-	locking.h (1.1) (utags: smapi-2_2_1-release, smapi-2_2_2-release,
-	smapi-2_0_0-release, smapi-2_0_1-release): OG: Initial release.
 
 2001-03-15 Thursday 22:59  tobi
 
