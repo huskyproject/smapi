@@ -1,5 +1,24 @@
-The following is a list of bug fixes and new features since SMAPI 1.1.
+smapi 1.6.1
+-----------
 
+----- cvs ci ------
+Thu Oct 16 13:40:00 MET DST 1999
+sms:
+- reorganized Makefiles, please read README.Makefiles in the husky-common
+  package!
+
+
+----- cvs ci ------
+Tue Oct 19 20:22:22 CEST 1999 
+mtt:
+- fixed bug in cvtddate which leads to wrong date line.(Oleg)
+
+	
+The following list is the old whatsnew file. I renamed it to make it conform
+with husky Styleguides.
+	
+The following is a list of bug fixes and new features since SMAPI 1.1.
+	
 SMAPI 1.2
 ---------
 
@@ -63,11 +82,3 @@ SMAPI 1.6.0
 ----------
 
 - Adapted msgapi for Jam message base. Need check and test.
-
------ cvs ci ------
-Thu Oct 16 13:40:00 MET DST 1999
-sms:
-- reorganized Makefiles, please read README.Makefiles in the husky-common
-  package!
-
-

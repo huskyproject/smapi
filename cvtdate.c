@@ -76,7 +76,7 @@ char *_fast sc_time(union stamp_combo *sc, char *string)
     }
     else
     {
-        sprintf(string, "%2d %s %d  %02d:%02d:%02d", sc->msg_st.date.da,
+        sprintf(string, "%02d %s %d  %02d:%02d:%02d", sc->msg_st.date.da,
           months_ab[sc->msg_st.date.mo - 1], (sc->msg_st.date.yr + 80) % 100,
           sc->msg_st.time.hh, sc->msg_st.time.mm, sc->msg_st.time.ss << 1);
     }
