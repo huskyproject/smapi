@@ -51,8 +51,8 @@ static char rcs_id[]="$Id$";
 #include <malloc.h>
 #endif
 
-//#include "prog.h"
-//#include "progprot.h"
+/* #include "prog.h" */
+/* #include "progprot.h" */
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"
