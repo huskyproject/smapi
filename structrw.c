@@ -64,8 +64,6 @@
 
 #define get_dword(ptr)		(*(dword *)(ptr))
 #define get_word(ptr)		(*(word *)(ptr))
-#define put_dword(ptr, val)	(*(dword *)(ptr) = (val))
-#define put_word(ptr, val)	(*(word *)(ptr) = (val))
 
 #else
 
