@@ -16,13 +16,13 @@ COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -fPIC
 VERH =  1
 VER  =  1.6.2
 
+TARGET=	libsmapi$(LIB)
+
 ifeq ($(DYNLIBS), 1)
 ALL: $(TARGET) libsmapi.so.$(VER)
 else
 ALL: $(TARGET)
 endif
-
-TARGET=	libsmapi$(LIB)
 
 OBJS=	1stchar$(OBJ)  \
 	api_sdm$(OBJ)  \
