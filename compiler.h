@@ -22,6 +22,7 @@
 
 #if defined ( __WATCOMC__ )
 #include <direct.h>
+#include <io.h>
 #endif
 
 #if defined(OS2) && !defined(_MSC_VER)
