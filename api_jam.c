@@ -389,63 +389,77 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       return -1L;
    }
 
-   if (msgh->mode != MOPEN_CREATE && msgh->mode != MOPEN_WRITE && msgh->mode != MOPEN_RW) {
+   if (msgh->mode != MOPEN_CREATE && msgh->mode != MOPEN_WRITE && msgh->mode != MOPEN_RW) 
       return -1L;
-   } /* endif */
-
+   
    jm = msgh->sq;
 
    memset(&jamidxNew, '\0', sizeof(JAMIDXREC));
    memset(&jamhdrNew, '\0', sizeof(JAMHDR));
 
-   if (!ctxt) clen = 0L;
+   if (!ctxt) 
+     clen = 0L;
 
-   if (!text) textlen = 0L;
+   if (!text) 
+     textlen = 0L;
 
-   if (textlen == 0L) text = NULL;
+   if (textlen == 0L) 
+     text = NULL;
 
-   if (clen == 0L) ctxt = NULL;
+   if (clen == 0L) 
+     ctxt = NULL;
 
 /*   if (msgh->mode != MOPEN_CREATE) {
       msgh->bytes_written = 0L;
       append = TRUE;
    }*/
 
-   if (msgh->mode != MOPEN_CREATE) {
+   if (msgh->mode != MOPEN_CREATE) 
+   {
       if (clen) clen = 0;
       if (ctxt) ctxt = NULL;
    }
 
 
-   if (clen && ctxt) {
+   if (clen && ctxt) 
+   {
        x = strlen((char*)ctxt);
        if (clen < x) clen = x+1;
    }
 
    subfieldNew = NULL;
-   if (msg) ConvertXmsgToJamHdr(msgh, msg, &jamhdrNew, &subfieldNew);
-   else if (msgh->mode != MOPEN_CREATE) {
-      JamReadMsg(msgh, &msg_old, 0, 0, NULL, 0, NULL);
-      ConvertXmsgToJamHdr(msgh, &msg_old, &jamhdrNew, &subfieldNew);
-   }
+   if (msg) 
+     ConvertXmsgToJamHdr(msgh, msg, &jamhdrNew, &subfieldNew);
+   else 
+     if (msgh->mode != MOPEN_CREATE) 
+     {
+        JamReadMsg(msgh, &msg_old, 0, 0, NULL, 0, NULL);
+        ConvertXmsgToJamHdr(msgh, &msg_old, &jamhdrNew, &subfieldNew);
+     }
 
-   if (!jm->locked) {
+   if (!jm->locked) 
       didlock = Jam_Lock(jm, 1);
-   } else {
-   } /* endif */
 
-   if (clen && ctxt) ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, clen, ctxt);
+   if (clen && ctxt) 
+     ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, clen, ctxt);
 
-   if (textlen && text) onlytext = DelimText(&jamhdrNew, &subfieldNew, text, textlen);
-   else if (msgh->mode != MOPEN_CREATE) {
-      DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl, msgh->lclen);
-      jamhdrNew.TxtOffset = msgh->Hdr.TxtOffset;
-      jamhdrNew.TxtLen = msgh->Hdr.TxtLen;
-   }
-   if (msgh->mode == MOPEN_CREATE) {
+   if (textlen && text) 
+     onlytext = DelimText(&jamhdrNew, &subfieldNew, text, textlen);
+   else 
+     if (msgh->mode != MOPEN_CREATE) 
+     {
+        DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl, msgh->lclen);
+        jamhdrNew.TxtOffset = msgh->Hdr.TxtOffset;
+        jamhdrNew.TxtLen = msgh->Hdr.TxtLen;
+     }
+     
+   if (msgh->mode == MOPEN_CREATE) 
+   {
       /* no logic if msg not present */
-      if (msg) {
-         if (msgh->msgnum == 0) {
+      if (msg) 
+      {
+         if (msgh->msgnum == 0) 
+         {
             /* new message in end of position */
             lseek(Jmd->IdxHandle, 0, SEEK_END);
             lseek(Jmd->HdrHandle, 0, SEEK_END);
@@ -467,7 +481,9 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             Jmd->HdrInfo.ModCounter++;
             Jam_WriteHdrInfo(Jmd);
             jm->high_msg++;
-         } else {
+         } 
+         else 
+         {
             /* new messgae instead of old message position */
             msgh->Hdr.TxtLen = 0;
             msgh->Hdr.Attribute |= JMSG_DELETED;
@@ -502,25 +518,26 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
          /* pfree(subfieldNew); */
 				 freejamsubfield(subfieldNew);
       } /* endif */
-   } else {
+   } 
+   else 
+   {
       /* change text and SEEN_BY, PATH, VIA kludges posible only (message != create)*/
       ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, msgh->clen, msgh->ctrl);
 
-      if (msg) {
+      if (msg) 
          jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen(msg->to));
-      } else {
+      else 
          jamidxNew.UserCRC = msgh->Idx.UserCRC;
-      } /* endif */
 
-      if (jamhdrNew.SubfieldLen > msgh->Hdr.SubfieldLen) {
+      if (jamhdrNew.SubfieldLen > msgh->Hdr.SubfieldLen) 
+      {
          msgh->Hdr.TxtLen = 0;
          msgh->Hdr.Attribute |= JMSG_DELETED;
          lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
          write_hdr(Jmd->HdrHandle, &(msgh->Hdr));
          lseek(Jmd->HdrHandle, 0, SEEK_END);
          msgh->seek_hdr = tell(Jmd->HdrHandle);
-      } else {
-      } /* endif */
+      }
 
       jamhdrNew.MsgNum = msgh->Hdr.MsgNum;
       jamidxNew.HdrOffset = msgh->seek_hdr;
@@ -620,10 +637,8 @@ static sword EXPENTRY JamLock(MSG * jm)
       return 0;
    }
 
-   if (!Jam_Lock(jm, 0)) {
-
+   if (!Jam_Lock(jm, 0)) 
       return -1;
-   }
 
    jm->locked = TRUE;
 
