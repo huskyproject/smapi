@@ -4,7 +4,6 @@
  *
  */
 
-#include "compiler.h"
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -13,7 +12,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#if !defined(__UNIX__) && !defined(SASC)
+#include "compiler.h"
+#ifdef HAS_IO_H
 #   include <io.h>
 #endif
 
