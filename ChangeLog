@@ -1,11 +1,23 @@
+2003-03-01 Saturday 18:54  stas_degteff
+
+	* compiler.h (1.171): Move defines from prog.h into compiler.h
+
 2003-02-27 Thursday 13:33  stas_degteff
 
-	* compiler.h (smapi-2_4-stable.1): Fix BeOS and unixes declarations
+	* compiler.h (1.170): Fix unixes declarations
+
+2003-02-27 Thursday 13:21  stas_degteff
+
+	* compiler.h (1.169): Fix BeOS declarations
 
 2003-02-25 Tuesday 09:48  sfpavel
 
 	* debian/changelog (smapi-2_4-stable.5): New debian version:
 	2.4-beta2
+
+2003-02-21 Friday 19:20  stas_degteff
+
+	* compiler.h (1.168): Add some info about BeOS defines
 
 2003-02-21 Friday 07:51  sfpavel
 
