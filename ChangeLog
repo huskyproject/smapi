@@ -1,3 +1,8 @@
+2003-02-21 Friday 07:51  sfpavel
+
+	* debian/: changelog, docs (smapi-2_4-stable.[4,1]): Add HISTORY to
+	debian package
+
 2003-02-20 Thursday 12:07  stas_degteff
 
 	* HISTORY (smapi-2_4-stable.1): Change version number to 2.4-stable
