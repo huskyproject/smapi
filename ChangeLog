@@ -1,3 +1,7 @@
+2002-03-07 Thursday 14:35  pavel.gulchouck
+
+	* compiler.h (1.81): mingw32 _sleep() fix
+
 2002-03-05 Tuesday 01:27  joerg.jaspert
 
 	* debian/: changelog (1.10), huskymak.cfg (1.9): New Debian Package
