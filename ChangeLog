@@ -1,3 +1,16 @@
+2002-07-29 Monday 12:45  quetschke
+
+	* semaphor.h (1.10): Added __CYGWIN__ to the definition of macro
+	NOSEMAPHORES and added check to prevent definition if the macro is
+	already defined. (2:2411/12.99)
+
+2002-07-29 Monday 12:39  quetschke
+
+	* compiler.h (1.88): Removed definition of __NT__ for cygwin. This
+	partly (only for cygwin) reverts stas patch from the 2002-07-13.
+	Added __CYGWIN__ to the definition of macro mymkdir(a).
+	(2:2411/12.99)
+
 2002-07-22 Monday 17:25  pavel.gulchouck
 
 	* api_jam.c (1.85): Jam_OpenFile() bugfix
