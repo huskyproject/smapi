@@ -413,8 +413,6 @@ HUSKYEXT byte *_XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *
 void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
 word _XPENTRY NumKludges(char *txt);
 HUSKYEXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
-HUSKYEXT dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun);
-HUSKYEXT dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dword (*altGenMsgId)(void), char **errstr);
 
 /* Check version of fidoconfig library
  * return zero if test passed
