@@ -16,7 +16,7 @@ Changes after smapi 2.2
    - change license terms to LGPL in agreement with Scott Dudley
 
 2. IMPORTANT bugfixes:
-   - remove obsolete code for semaphores support;
+   - remove obsolete/buggy code for semaphores support;
    - fixes for reading corrupted jam areas.
 
 
