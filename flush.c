@@ -25,7 +25,7 @@
 #include <io.h>
 #endif
 
-#ifdef UNIX || defined(__DJGPP__)
+#if defined(UNIX) || defined(__DJGPP__)
 #include <unistd.h>
 #endif
 
