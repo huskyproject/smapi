@@ -1,3 +1,11 @@
+2002-10-29 Tuesday 12:01  stas_degteff
+
+	* makefile.djg (1.19): Add 'all' tag for DJGPP build
+
+2002-10-29 Tuesday 07:08  mche
+
+	* genmsgid.c (1.6): fix MSVC compilation
+
 2002-10-25 Friday 12:36  mche
 
 	* smapiDll.dsp (1.4): no message
