@@ -38,15 +38,15 @@ extern char genmsgid_date[];
 int outrunparse(char *line, unsigned long *seqoutrun)
 {
     char *p;
-    while (isspace(*line)) line++;
-    if (!isdigit(*line))
+    while (isspace((int)(*line))) line++;
+    if (!isdigit((int)(*line)))
     {
         fprintf(stderr, "Bad SeqOutrun value '%s'!\n", line);
         return 1;
     }
     *seqoutrun = (unsigned long)atol(line);
     p = line;
-    while (isdigit(*p)) p++;
+    while (isdigit((int)(*p))) p++;
     if (*p == '\0') return 0;
     if (p[1]) {
         fprintf(stderr, "Bad SeqOutrun value '%s'!\n", line);
@@ -209,7 +209,7 @@ int main(int argc, char *argv[])
         }
         s = argv[i];
         for(j=strlen(argv[i]); j>0; j--, s++)
-            if (!isdigit(*s))
+            if (!isdigit((int)(*s)))
             {
                 fprintf(stderr, "Invalid <num> parameter ('%s')!\n", argv[i]);
                 perr = 1;
