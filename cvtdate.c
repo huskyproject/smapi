@@ -116,4 +116,9 @@ char *_fast sc_time(union stamp_combo *sc, char *string)
     return string;
 }
 
+char *_fast fts_time(char *string, struct tm *tmdate)
+{
+    union stamp_combo *dosdate;
+    return sc_time(TmDate_to_DosDate(tmdate, dosdate), string);
+}
 
