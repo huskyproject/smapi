@@ -25,6 +25,7 @@
 static char rcs_id[]="$Id$";
 #pragma on(unreferenced)
 */
+#include "compiler.h"
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
 
