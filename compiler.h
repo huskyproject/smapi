@@ -417,6 +417,8 @@ int qq(void)
 #    define rmdir        _rmdir
 #    define fstat        _fstat
 #    define strdup       _strdup
+#    define strupr       _strupr
+#    define strlwr       _strlwr
 #    define stat         _stat
 #    define getpid       _getpid
 #    define chsize       _chsize
@@ -426,6 +428,9 @@ int qq(void)
 #    define dup          _dup
 #    define mktemp       _mktemp
 #    define fdopen       _fdopen
+#   define chdir         _chdir
+#   define getcwd        _getcwd
+#   define isatty        _isatty
 
 #  else  /* ifdef _MAKE_DLL */
 #    define SMAPI_EXT extern
