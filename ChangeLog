@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Wed Sep 13 14:40:01 NOVST 2000
+max (patches from Pavel Gulchouk):
+* JAM linking with empty msg subjects
+
+----- cvs ci ------
 Mon Sep 11 10:56:46 NOVST 2000
 max (patches from Pavel Gulchouk):
 * JAM fix - "Path:" changed to "PATH:"
