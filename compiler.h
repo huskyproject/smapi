@@ -38,12 +38,17 @@
    * _XPENTRY  - system procedures calling (conversion) modifyer
    *             ("pascal", "_system" & etc)
    *
+   *
+   *======================
+   * HAS_* please set to 1 for usage: #if HAS_...
+   *======================
    * HAS_SNPRINTF        - snprintf() presents
    * HAS_VSNPRINTF       - vsnprintf() presents
    * HAS_SPAWNVP         - spawnwp() presents
-   * HAS_MKTIME          - mktime() presents
-   * HAS_STRFTIME        - strftime() presents
+   * HAS_mktime          - mktime() presents or defined here
+   * HAS_strftime        - strftime() presents
    * HAS_sopen           - sopen() presents
+   * HAS_sleep           - sleep() presents or defined here
    *
    * HAS_MALLOC_H        - may be used "#include <malloc.h>" for malloc() etc.
    * HAS_DOS_H           - may be used "#include <dos.h>"
@@ -52,9 +57,13 @@
    * HAS_IO_H            - may be used "#include <io.h>"
    * HAS_UNISTD_H        - may be used "#include <unistd.h>"
    * HAS_SHARE_H         - may be used "#include <share.h>" for sopen() etc.
+   * HAS_UTIME_H         - may be used "#include <utime.h>"
+   * HAS_SYS_UTIME_H     - #include <sys/utime.h> in alternate to <utime.h>
    *
    * USE_SYSTEM_COPY     - OS have system call for files copiing (see
    *                       copy_file() and move_file() functions)
+   * USE_SYSTEM_COPY_WIN32  - Windows 9x/NT system copy routine
+   * USE_SYSTEM_COPY_OS2    - OS/2 system copy routine
    * USE_STAT_MACROS     - may use stat() macro and non-POSIX (important!)
    *                       S_ISREG and S_ISDIR macros. (See fexist.c)
    *
@@ -704,6 +713,7 @@ int qq(void)
 #  define strncasecmp strnicmp
 
 #  define sleep(x)    Sleep(1000L*(x))
+#  define mysleep(x)  Sleep(1000L*(x))
 #  define farread     read
 #  define farwrite    write
 
@@ -740,16 +750,19 @@ int qq(void)
 #  define HAS_SNPRINTF  1     /* snprintf() presents */
 #  define HAS_VSNPRINTF 1     /* vsnprintf() presents */
 #  define HAS_SPAWNVP   1     /* spawnwp() presents */
-#  define HAS_STRFTIME  1
-#  define HAS_MKTIME    1
+#  define HAS_strftime  1
+#  define HAS_mktime    1
 #  define HAS_sopen     1
+#  define HAS_sleep     1
 
 #  define USE_SYSTEM_COPY     /* OS have system call for files copiing */
+#  define USE_SYSTEM_COPY_WIN32
 #  define USE_STAT_MACROS     /* S_ISDIR, S_ISREG and stat() presents */
 
-#  define HAS_IO_H     1  /* may use "#include <io.h> */
-#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
-#  define HAS_MALLOC_H        /* use "#include <malloc.h>" for malloc() etc. */
+#  define HAS_IO_H        1 /* may use "#include <io.h> */
+#  define HAS_SHARE_H     1 /* may use "#include <share.h> */
+#  define HAS_MALLOC_H    1 /* use "#include <malloc.h>" for malloc() etc. */
+#  define HAS_SYS_UTIME_H 1 /* #include <sys/utime.h> in alternate to <utime.h> */
 #  define HAS_DIRECT_H
 #  include <direct.h>
 
@@ -785,6 +798,8 @@ int qq(void)
 #    define farwrite write
 #    define _XPENTRY pascal far
 #    define mysleep(x) DosSleep(1000L*(x))
+#    define sleep(x) DosSleep(1000L*(x))
+#    define HAS_sleep     1
 #  else
 #    define _XPENTRY
 #  endif
@@ -816,13 +831,14 @@ int qq(void)
 #  define HAS_VSNPRINTF 1
 #  define HAS_SPAWNVP   1
 #  define HAS_GETPID    1
-#  define HAS_STRFTIME  1  /* strftime() in time.h  */
-#  define HAS_MKTIME    1  /* mktime() in time.h */
+#  define HAS_strftime  1  /* strftime() in time.h  */
+#  define HAS_mktime    1  /* mktime() in time.h */
 
-#  define HAS_MALLOC_H  1  /* may be used "#include <malloc.h>"  (see alc.h) */
-#  define HAS_IO_H      1  /* may use "#include <io.h> */
-#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
-#  define HAS_DIRECT_H  1
+#  define HAS_MALLOC_H    1 /* may be used "#include <malloc.h>"  (see alc.h) */
+#  define HAS_IO_H        1 /* may use "#include <io.h> */
+#  define HAS_SHARE_H     1 /* may use "#include <share.h> */
+#  define HAS_DIRECT_H    1
+#  define HAS_SYS_UTIME_H 1 /* #include <sys/utime.h> in alternate to <utime.h> */
 
 #  define mymkdir(x)    mkdir(x) /*<direct.h>*/
 
@@ -837,6 +853,7 @@ int qq(void)
 
 #    define _XPENTRY   pascal
 #    define mysleep(x) sleep(x) /* dos.h */
+#    define HAS_sleep     1
 
 /* End: WATCOM C/C++ for MS-DOS */
 #  elif defined(__WATCOMC__OS2__)
@@ -850,6 +867,8 @@ int qq(void)
 
 #    define _XPENTRY   _System
 #    define mysleep(x) sleep(x)  /* dos.h */
+#    define HAS_sleep     1
+
 /*#  define mysleep(x) DosSleep(x*1000)*/  /* os2/bsedos.h */
 
 /* End: WATCOM C/C++ for OS/2 */
@@ -865,6 +884,7 @@ int qq(void)
 #    define _XPENTRY pascal
 
 #    define mysleep(x) sleep(x)      /* dos.h */
+#    define HAS_sleep     1
 /*#  define mysleep(x) Sleep(x*1000) */ /* winbase.h */
 
 /* End: WATCOM C/C++ for Windows NT */
@@ -891,6 +911,8 @@ int qq(void)
 #  define farwrite write
 
 #  define mysleep(x) DosSlep(1000L*(x))
+#  define sleep(x)   DosSlep(1000L*(x))
+#  define HAS_sleep     1
 
 #  define unlock(a,b,c) unused(a)
 #  define lock(a,b,c) 0
@@ -946,8 +968,10 @@ int qq(void)
 #  define read _read
 
 #  define sleep(sec) _sleep((sec)*1000l)
-#  define mkdir _mkdir
 #  define mysleep(sec) _sleep((sec)*1000l)
+#  define HAS_sleep     1
+
+#  define mkdir _mkdir
 #  define mymkdir _mkdir
 /*#  define strcasecmp  stricmp*/
 /*#  define strncasecmp strnicmp*/
@@ -972,14 +996,15 @@ int qq(void)
 #  endif
 
 #  define HAS_SPAWNVP  1  /* spawnvp() present */
-#  define HAS_MKTIME   1  /* time.h */
-#  define HAS_STRFTIME 1  /* time.h */
+#  define HAS_mktime   1  /* time.h */
+#  define HAS_strftime 1  /* time.h */
 #  define HAS_ACCESS   1  /* access() in io.h */
 #  define HAS_sopen    1
 
 #  define HAS_MALLOC_H 1  /* may use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_IO_H     1  /* may use "#include <io.h> */
 #  define HAS_SHARE_H  1  /* may use "#include <share.h> */
+#  define HAS_SYS_UTIME_H 1 /* #include <sys/utime.h> in alternate to <utime.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1020,8 +1045,8 @@ int qq(void)
 #  define HAS_VSNPRINTF 1
 #  define HAS_GETPID    1  /* getpid() in process.h */
 #  define HAS_SPAWNVP   1  /* spawnvp() in process.h */
-#  define HAS_STRFTIME  1  /* strftime() in time.h  */
-#  define HAS_MKTIME    1  /* mktime() in time.h */
+#  define HAS_strftime  1  /* strftime() in time.h  */
+#  define HAS_mktime    1  /* mktime() in time.h */
 
 #  define HAS_DIRENT_H  1  /* use "#include <dirent.h>" for opendir() etc. */
 #  define HAS_IO_H      1  /* use "#include <io.h>" */
@@ -1069,10 +1094,11 @@ int qq(void)
 #  include <unistd.h>
 #  include <io.h>
 #  define mysleep(x) sleep(x)
+#  define HAS_sleep     1
 
 #  define HAS_SPAWNVP   1   /* spawnvp() in process.h */
-#  define HAS_STRFTIME  1   /* strftime() in time.h  */
-#  define HAS_MKTIME    1   /* mktime() in time.h */
+#  define HAS_strftime  1   /* strftime() in time.h  */
+#  define HAS_mktime    1   /* mktime() in time.h */
 
 #  define HAS_DIR_H     1   /* use "#include <dir.h>" for findfirst() etc. */
 #  define HAS_IO_H      1   /* use "#include <io.h> */
@@ -1091,6 +1117,11 @@ int qq(void)
 #  define HAS_IO_H     1      /* access(), open(), ... */
 #  define HAS_SHARE_H  1  /* may use "#include <share.h> */
 
+#if __TURBOC__ == 0x0295
+#  define HAS_strftime
+#  define HAS_mktime
+#endif
+
 #  if defined(__TURBOC__DOS__)/* Turbo C/C++ & Borland C/C++ for MS-DOS */
 
    /* for BC++ 3.1 */
@@ -1106,6 +1137,8 @@ int qq(void)
 
      /* #include <conio.h> */
 #    define mysleep(x) delay(x);
+#    define sleep(x) delay(x);
+#    define HAS_sleep     1
 
 #    ifndef _XPENTRY
 #      define _XPENTRY
@@ -1156,6 +1189,7 @@ int qq(void)
 #      define _XPENTRY __syscall
 #    endif
 #    define mysleep(x) sleep(x);
+#    define HAS_sleep     1
 
 #    include <io.h>
 #    include <dos.h>
@@ -1184,6 +1218,8 @@ int qq(void)
 #  define farread read
 #  define farwrite write
 #  define mysleep(x) DosSleep(1000L*(x))
+#  define sleep(x)   DosSleep(1000L*(x))
+#  define HAS_sleep     1
 
 #  define _XPENTRY pascal far
 
@@ -1259,8 +1295,12 @@ int qq(void)
 
 #  ifdef __BEOS__
 #    define mysleep(x) snooze(x*1000000l)
+#    define sleep(x) snooze(x*1000000l)
+#    define HAS_sleep     1
 #  elif defined(__linux__) || defined(__sun__)
 #    define mysleep(x) usleep(x*1000000l)
+#    define sleep(x)   usleep(x*1000000l)
+#    define HAS_sleep     1
 #  endif
 
 #  define HAS_SNPRINTF  1
@@ -1321,6 +1361,11 @@ int qq(void)
 #endif
 #endif
 
+#ifndef O_BINARY
+# define O_BINARY 0 /* If O_BINARY is not defined - we're under UNIX
+                       where this flag has no effect */
+#endif
+
 /* File open and share modes */
 #if !defined(O_BINARY) && defined(_O_BINARY)
 #  define O_BINARY    _O_BINARY
@@ -1335,11 +1380,13 @@ int qq(void)
 #  define S_IFDIR     _S_IFDIR
 #endif
 
-#if !defined(__MSVC__) /* remove usless warnings for MSVC */
-
 #ifndef mymkdir
-#  warning mkdir() call set to default value. Please check your compiler documentation for it and write define into compiler.h
-#  define mymkdir mkdir
+#   ifdef __MSVC__
+#       pragma message("mymkdir() call undefined. Please check your compiler documentation for it and write define into compiler.h")
+#   else
+#       warning mymkdir() call set to default value. Please check your compiler documentation for it and write define into compiler.h
+#   endif
+#   define mymkdir mkdir
 #endif
 
 #ifndef mysleep
@@ -1352,84 +1399,95 @@ int qq(void)
 #endif
 
 #ifndef SMAPI_EXT
-#   warning Please set SMAPI_EXT to extern or proprietary token
-#  define SMAPI_EXT extern
+#   ifdef __MSVC__
+#       pragma message("Please set SMAPI_EXT to extern or proprietary token")
+#   else
+#       warning Please set SMAPI_EXT to extern or proprietary token
+#   endif
+#   define SMAPI_EXT extern
 #endif
 
 #ifndef _XPENTRY
-#  warning Please check your compiler to system functions call modifyer and define _XPENTRY
-#  define _XPENTRY
+#   ifdef __MSVC__
+#       pragma message("Please check your compiler to system functions call modifyer and define _XPENTRY")
+#   else
+#       warning Please check your compiler to system functions call modifyer and define _XPENTRY
+#   endif
+#   define _XPENTRY
 #endif
 
 #ifndef _stdc
-#   warning Please check your compiler to standard C code modifyer and define _stdc in compiler.h
+#   error Please check your compiler to standard C code modifyer and define _stdc in compiler.h
 #endif
 
 #ifndef _intr
-#   ifndef __MSVC__
-#       warning Please check your compiler to interrupt handler modifyer and define _intr in compiler.h
-#   else
-#       pragma message("Please check your compiler to interrupt handler modifyer and define _intr in compiler.h")
-#   endif
+#   error Please check your compiler to interrupt handler modifyer and define _intr in compiler.h
 #endif
 
 #ifndef _intcast
-#   ifndef __MSVC__
-#       warning Please check your compiler to int. cast modifyer and define _intcast in compiler.h
-#   else
-#       pragma message("Please check your compiler to int. cast modifyer and define _intcast in compiler.h")
-#   endif
+#   error Please check your compiler to int. cast modifyer and define _intcast in compiler.h
 #endif
 
 #ifndef _veccast
-#   ifndef __MSVC__
-#       warning Please check your compiler to vector cast modifyer and define _veccast in compiler.h
-#   else
-#       pragma message("Please check your compiler to vector cast modifyer and define _veccast in compiler.h")
-#   endif
+#   error Please check your compiler to vector cast modifyer and define _veccast in compiler.h
 #endif
 
 #ifndef _fast
-#warning Please check your compiler to fast functions call modifyer and define _fast in compiler.h
+#   ifdef __MSVC__
+#       pragma message("Please check your compiler to fast functions call modifyer and define _fast in compiler.h")
+#   else
+#       warning Please check your compiler to fast functions call modifyer and define _fast in compiler.h
+#   endif
+#   define _fast
 #endif
 
 #ifndef _loadds
-#   ifndef __MSVC__
-#       warning Please check your compiler to "load data segment" code modifyer and define _loadds in compiler.h
-#   else
-#       pragma message("Please check your compiler to 'load data segment' code modifyer and define _loadds in compiler.h")
-#   endif
+#   error message("Please check your compiler to 'load data segment' code modifyer and define _loadds in compiler.h")
 #endif
 
 #ifndef cdecl
-#   ifndef __MSVC__
-#       warning Please check your compiler to C declarations modifyer and define cdecl in compiler.h
-#   else
-#       pragma message("Please check your compiler to C declarations modifyer and define cdecl in compiler.h")
-#   endif
+#   error Please check your compiler to C declarations modifyer and define cdecl in compiler.h
 #endif
 
 #ifndef pascal
-#warning Please check your compiler to pascal style calling conversion code modifyer and define pascal in compiler.h
+#   error Please check your compiler to pascal style calling conversion code modifyer and define pascal in compiler.h
 #endif
 
 #ifndef near
-#warning Please check your compiler to near functions call modifyer and define near in compiler.h
+#   error Please check your compiler to near functions call modifyer and define near in compiler.h
 #endif
 
 #ifndef far
-#warning Please check your compiler to far functions call modifyer and define far in compiler.h
+#   error Please check your compiler to far functions call modifyer and define far in compiler.h
 #endif
 
 #ifndef farread
-#warning Please check your compiler to far calling implementation of read() function and define farread in compiler.h
+#   error Please check your compiler to far calling implementation of read() function and define farread in compiler.h
 #endif
 
 #ifndef farwrite
-#warning Please check your compiler to far calling implementation of write() function and define farwrite in compiler.h
+#   error Please check your compiler to far calling implementation of write() function and define farwrite in compiler.h
 #endif
 
-#endif /* #if !defined(__MSVC__) */
+
+#if defined(INTEL) && !defined(__LITTLE_ENDIAN__)
+#   ifdef __MSVC__
+#       pragma message("Define __LITTLE_ENDIAN__ instead INTEL please: INTEL is obsoleted")
+#   else
+#       warning Define __LITTLE_ENDIAN__ instead INTEL please: INTEL is obsoleted
+#   endif
+#   define __LITTLE_ENDIAN__
+#endif
+
+#if defined(__INTEL__) && !defined(__LITTLE_ENDIAN__)
+#   ifdef __MSVC__
+#       pragma message("Define __LITTLE_ENDIAN__ instead __INTEL__ please: __INTEL__ is obsoleted")
+#   else
+#       warning Define __LITTLE_ENDIAN__ instead __INTEL__ please: __INTEL__ is obsoleted
+#   endif
+#define __LITTLE_ENDIAN__
+#endif
+
 
  /* waitlock works like lock, but blocks until the lock can be
   * performed.
@@ -1438,7 +1496,7 @@ int qq(void)
 extern int waitlock(int, long, long);
 extern int waitlock2(int, long, long, long);
 
-#if !defined(HAS_MKTIME)
+#if !defined(HAS_mktime)
 
 /* If compiler doesn't include a mktime(), we need our own */
 /* But our own mktime not implemented yet...
@@ -1449,30 +1507,25 @@ time_t _stdc mktime(struct tm *tm_ptr);
 #endif
 
 /* If compiler doesn't include a strftime(), we need our own (see strftim.c) */
-#if !defined(HAS_STRFTIME)
+#if !defined(HAS_strftime)
 
 #define strftime(str,max,fmt,tm) strftim(str,max,fmt,tm)
-size_t _stdc strftim(char *str, size_t maxsize, const char *fmt,
-  const struct tm *tm_ptr);
+size_t _stdc strftim( char *str, size_t maxsize, const char *fmt,
+                      const struct tm *tm_ptr );
 
 #endif
 
+
+/* Some implementations not include the min() macro or function. Usually C++ */
 #ifndef min
 #  define min(a,b)              (((a) < (b)) ? (a) : (b))
+#endif
+#ifndef max
+#  define max(a,b)              (((a) > (b)) ? (a) : (b))
 #endif
 
 #if !defined(P_WAIT) && defined(_P_WAIT) /*for spawn* in process.h*/
 #define P_WAIT          _P_WAIT
-#endif
-
-#if defined(INTEL) && !defined(__LITTLE_ENDIAN__)
-#warning Define __LITTLE_ENDIAN__ instead INTEL please: INTEL is obsoleted
-#define __LITTLE_ENDIAN__
-#endif
-
-#if defined(__INTEL__) && !defined(__LITTLE_ENDIAN__)
-#warning Define __LITTLE_ENDIAN__ instead __INTEL__ please: __INTEL__ is obsoleted
-#define __LITTLE_ENDIAN__
 #endif
 
 #endif

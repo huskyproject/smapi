@@ -57,13 +57,6 @@ void far *farcalloc(int n, int m);
 
 #endif /* defined(ZREE) */
 
-#elif defined(__TURBOC__)
-
-#if __TURBOC__ == 0x0295
-#define HAS_STRFTIME
-#define HAS_MKTIME
-#endif
-
 #endif
 
 #undef farcalloc
@@ -106,12 +99,6 @@ void far *farcalloc(int n, int m);
 #define eqstri(str1,str2)     (stricmp(str1,str2)==0)
 #define eqstrn(str1,str2,n)   (strncmp(str1,str2,n)==0)
 
-/* Moved to compiler.h
-#ifndef min
-#define min(a,b)              (((a) < (b)) ? (a) : (b))
-#endif
-*/
-
 extern char _stdc months[][10];
 extern char _stdc weekday[][10];
 
@@ -119,37 +106,5 @@ extern char _stdc months_ab[][4];
 extern char _stdc weekday_ab[][4];
 
 #include "progprot.h"
-
-/* If compiler doesn't include a strftime(), we need our own */
-/* Moved to compiler.h
-#ifndef NO_STRFTIME
-
-#include <time.h>
-#include <sys/types.h>
-
-size_t _stdc strftime(char *str, size_t maxsize, const char *fmt,
-  const struct tm *tm_ptr);
-
-#endif
-*/
-
-/* If compiler doesn't include a mktime(), we need our own */
-/* Moved to compiler.h
-#ifndef NO_MKTIME
-
-#include <time.h>
-#include <sys/types.h>
-
-time_t _stdc mktime(struct tm *tm_ptr);
-
-#endif
-*/
-/* Moved to compiler.h
-#ifdef SH_DENYNO
-#ifndef SH_DENYNONE
-#define SH_DENYNONE SH_DENYNO
-#endif
-#endif
-*/
 
 #endif
