@@ -2083,11 +2083,11 @@ void parseAddr(NETADDR *netAddr, const unsigned char *str, dword len)
 
    memset(netAddr, '\0', sizeof(NETADDR));
 
-   if(ptr = memchr(str, ' ', addrLen))
-        addrLen = ptr - str;
+   if ((ptr = memchr(str, ' ', addrLen)) != NULL)
+        addrLen = (char*)ptr - (char*)str;
 
-   if(ptr = memchr(str, '@', addrLen))
-        addrLen = ptr - str;
+   if ((ptr = memchr(str, '@', addrLen)) != NULL)
+        addrLen = (char*)ptr - (char*)str;
 
    strAddr = (char*)malloc(addrLen+1);
    if (!strAddr) {
