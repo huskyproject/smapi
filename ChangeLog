@@ -1,3 +1,25 @@
+2003-02-05 Wednesday 11:49  sfpavel
+
+	* msgapi.c (1.40), msgapi.h (1.65): Add CheckSmapiVersion() into
+	msgapi.h
+
+2003-02-05 Wednesday 11:09  sfpavel
+
+	* Makefile (1.38), debian/changelog (1.20), debian/control (1.9),
+	debian/huskymak.cfg (1.12): New debian package
+
+2003-02-05 Wednesday 07:52  sfpavel
+
+	* Makefile (1.37): Revert 1.31 patch - it's wrong
+
+2003-02-05 Wednesday 06:28  stas_degteff
+
+	* msgapi.c (1.39): New function: CheckSmapiVersion()
+
+2003-02-04 Tuesday 22:13  os2tobi
+
+	* compiler.h (1.164): remove bogus warning
+
 2003-02-01 Saturday 22:14  stas_degteff
 
 	* api_jam.c (1.102), makefile.cyg (1.12), msgapi.c (1.38),
