@@ -202,6 +202,9 @@
 #define farwrite write
 #endif
 
+#define strcasecmp stricmp
+#define strncasecmp strnicmp
+
 #elif (defined(_MSC_VER) && (_MSC_VER < 1200))
 
 /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
@@ -228,7 +231,7 @@ int lock(int handle, long ofs, long length);
 #define mysleep(x) DosSleep(1000L*(x))
 #endif
 
-#elif defined(__WATCOMC__) && defined(__OS2__)
+#elif defined(__WATCOMC__) && (defined(__OS2__) || defined(OS2))
 
 /* WATCOM C/C++ for OS/2 */
 
@@ -240,6 +243,9 @@ int lock(int handle, long ofs, long length);
 
 #define farread read
 #define farwrite write
+
+#define strcasecmp stricmp
+#define strncasecmp strnicmp
 
 #define EXPENTRY _System
 #define mysleep(x) DosSleep(1000*(x))
