@@ -1,3 +1,9 @@
+2002-12-27 Friday 12:52  sfpavel
+
+	* Makefile, file_id.diz, msgapi.h, debian/changelog,
+	debian/libsmapi2.files (smapi-2_2-stable.[7,6,3,11,3]): smapi 2.2.2
+	release
+
 2002-12-26 Thursday 12:30  stas_degteff
 
 	* Makefile, makefile.bco, makefile.be, makefile.hco, makefile.ibo,
