@@ -54,7 +54,7 @@ install: libsmapilnx.so.$(VER)
 	install $(ILOPT) libsmapilnx.so.$(VER) $(LIBDIR)
 	ln -sf $(LIBDIR)/libsmapilnx.so.$(VER) $(LIBDIR)/libsmapilnx.so.$(VERH)
 	ln -sf $(LIBDIR)/libsmapilnx.so.$(VERH) $(LIBDIR)/libsmapilnx.so
-        $(LDCONFIG)
+	$(LDCONFIG)
 
 clean:
 	-rm *.o
