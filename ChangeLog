@@ -1,3 +1,39 @@
+2003-03-24 Monday 12:06  stas_degteff
+
+	* smapi/api_sdmp.h (1.4), src/api_sdm.c (1.8): Prepare change SDM
+	message number var from 16 bit to 32 bit
+
+2003-03-24 Monday 08:36  stas_degteff
+
+	* src/api_sdm.c (1.7): Check pointers before use
+
+2003-03-24 Monday 07:24  stas_degteff
+
+	* src/msgapi.c (1.6): Use #ifdef HAS_SIGNAL_H instead #ifdef
+	__UNIX__ to use signal handling always if allowed
+
+2003-03-24 Monday 06:01  stas_degteff
+
+	* smapi/api_brow.h (1.2), smapi/api_jam.h (1.2), smapi/api_jamp.h
+	(1.4), smapi/api_sdm.h (1.2), smapi/api_sdmp.h (1.3),
+	smapi/api_sq.h (1.4), smapi/api_sqp.h (1.2), smapi/msgapi.h (1.5),
+	smapi/old_msg.h (1.3), src/api_jam.c (1.4), src/api_sdm.c (1.6),
+	src/msgapi.c (1.5), src/sq_area.c (1.5), src/sq_hash.c (1.5),
+	src/sq_help.c (1.4), src/sq_idx.c (1.4), src/sq_kill.c (1.4),
+	src/sq_lock.c (1.4), src/sq_misc.c (1.4), src/sq_msg.c (1.4),
+	src/sq_read.c (1.4), src/sq_uid.c (1.4), src/sq_write.c (1.4),
+	src/structrw.c (1.4): Reorder includes from huskylib ; always use
+	HAS_*_H defines
+
+2003-03-24 Monday 05:43  stas_degteff
+
+	* src/msgapi.c (1.4): Comment unused variable
+
+2003-03-24 Monday 05:43  stas_degteff
+
+	* smapi/api_sdmp.h (1.2), src/api_sdm.c (1.5): Remove unused
+	variable '_junksqd'
+
 2003-03-20 Thursday 13:22  stas_degteff
 
 	* VERSION (1.8): Update version of required library
