@@ -1,3 +1,9 @@
+2003-12-27 Saturday 21:26  d_sergienko
+
+	* ffind.c, locking.c, msgapi.c, sq_help.c
+	(smapi-2_4-stable.[3,2,2,1]): fix compiler warnings about unused
+	wariables
+
 2003-10-01 Wednesday 08:41  pgul
 
 	* tdelay.c (smapi-2_4-stable.3): Remove obsoleted comment
