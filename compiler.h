@@ -1675,6 +1675,7 @@ int qq(void)
 
 /* Cygwin defines O_BINARY in sys/fcntl.h. */
 #  if !defined(__BEOS__) && !defined(__CYGWIN__)
+#    include <fcntl.h>
 #    ifndef O_BINARY
 #      define O_BINARY 0
 #    endif
@@ -1795,20 +1796,28 @@ int qq(void)
 
 /**** Test defines and/or set default values *********************************/
 
-#ifdef SH_DENYNO
-#  ifndef SH_DENYNONE
-#    define SH_DENYNONE SH_DENYNO
+#ifdef HAS_SHARE_H
+#  include <share.h>
+#  if !defined(SH_DENYNO) && defined(_SH_DENYNO)
+#    define SH_DENYNO _SH_DENYNO
+#  endif
+#  ifdef SH_DENYNO
+#    ifndef SH_DENYNONE
+#      define SH_DENYNONE SH_DENYNO
+#    endif
 #  endif
 #endif
 
-/* File open and share modes */
+/* File open and file modes */
+#include <fcntl.h>
 #if !defined(O_BINARY) && defined(_O_BINARY)
 #  define O_BINARY    _O_BINARY
 #endif
-
 #if !defined(O_RDWR) && defined(_O_RDWR)
 #  define O_RDWR      _O_RDWR
 #endif
+
+#include <sys/stat.h>
 #if !defined(S_IFMT) && defined(_S_IFMT)
 #  define S_IFMT      _S_IFMT
 #endif
@@ -1916,8 +1925,11 @@ char *strupr(char *str);
 #  define max(a,b)              (((a) > (b)) ? (a) : (b))
 #endif
 
+#ifdef HAS_PROCESS_H
+#  include <process.h>
+#endif
 #if !defined(P_WAIT) && defined(_P_WAIT) /*for spawn* in process.h*/
-#define P_WAIT          _P_WAIT
+#  define P_WAIT          _P_WAIT
 #endif
 
 #ifdef NEED_trivial_farread
