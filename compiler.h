@@ -658,6 +658,10 @@ int qq(void)
 #    define W_OK 02
 #  endif
 
+#  ifndef INTEL
+#    define INTEL  /* using to select functions/macroses for read & write binary values */
+#  endif
+
 #  define mymkdir       _mkdir
 #  define snprintf      _snprintf
 #  define vsnprintf     _vsnprintf
