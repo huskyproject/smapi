@@ -92,10 +92,9 @@ LINK32=link.exe
 
 # Name "smapiDll - Win32 Release"
 # Name "smapiDll - Win32 Debug"
-# Begin Source File
+# Begin Group "headerz"
 
-SOURCE=.\1stchar.c
-# End Source File
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\alc.h
@@ -106,19 +105,11 @@ SOURCE=.\api_brow.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\api_jam.c
-# End Source File
-# Begin Source File
-
 SOURCE=.\api_jam.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\api_jamp.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\api_sdm.c
 # End Source File
 # Begin Source File
 
@@ -150,6 +141,63 @@ SOURCE=.\cvsdate.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\dr.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ffind.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\msgapi.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\old_msg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\patmat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\prog.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\progprot.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\stamp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\strextra.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\typedefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\unused.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\1stchar.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\api_jam.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\api_sdm.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\cvtdate.c
 # End Source File
 # Begin Source File
@@ -162,19 +210,11 @@ SOURCE=.\dosdate.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\dr.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\fexist.c
 # End Source File
 # Begin Source File
 
 SOURCE=.\ffind.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\ffind.h
 # End Source File
 # Begin Source File
 
@@ -194,31 +234,11 @@ SOURCE=.\msgapi.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\msgapi.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\old_msg.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\parsenn.c
 # End Source File
 # Begin Source File
 
 SOURCE=.\patmat.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\patmat.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\prog.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\progprot.h
 # End Source File
 # Begin Source File
 
@@ -274,15 +294,7 @@ SOURCE=.\sq_write.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\stamp.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\strextra.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\strextra.h
 # End Source File
 # Begin Source File
 
@@ -303,14 +315,6 @@ SOURCE=.\tdelay.c
 # Begin Source File
 
 SOURCE=.\trail.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\typedefs.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\unused.h
 # End Source File
 # Begin Source File
 
