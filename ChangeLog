@@ -1,3 +1,8 @@
+2002-05-27 Monday 13:48  ml
+
+	* cvtdate.c (1.7.2.1), msgapi.h (1.34.2.5), progprot.h (1.9.2.3):
+	fts_time() added and version updated to 2.0.3
+
 2002-05-02 Thursday 11:44  pavel.gulchouck
 
 	* fexist.c (1.15.2.4), setfsize.c (1.4.2.6), tdelay.c (1.6.2.5):
