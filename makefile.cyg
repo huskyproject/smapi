@@ -34,7 +34,7 @@ default: $(TARGET)
 
 include makefile.inc
 
-all: $(TARGET)
+all: $(TARGET) gnmsgid.exe
 
 .c.o:
 	$(CC) $(DEBUG) $(CFLAGS) $(CDEFS) $(COPT) -c $<
@@ -42,9 +42,13 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
+	
+gnmsgid.exe: $(MGOBJS)
+	$(CC) -Wall $(CFLAGS) $(COPT) gnmsgid.c -o$@ $(TARGET)
 
 clean:
 	-$(RM) *.o
 
 distclean:
 	-$(RM) $(TARGET)
+	-$(RM) gnmsgid.exe

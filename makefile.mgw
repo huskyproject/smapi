@@ -36,7 +36,7 @@ $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
 gnmsgid.exe: $(OBJS)
-	$(CC) -Wall $(CDEFS) $(COPT) gnmsgid.c -o$@ $(OBJS)
+	$(CC) -Wall $(CDEFS) $(COPT) gnmsgid.c -o$@ $(MGOBJS)
 clean:
 	-$(RM) *.o
 
