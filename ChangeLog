@@ -1,3 +1,9 @@
+----- cvs ci ------
+Mi 1 Nov 2000 13:08:51 CET
+tobi:
+* portability fix for compilers that don't like // in c code, like ibm cset
+
+
 smapi 1.6.4b
 ============
 (release on Di  31 Okt 2000 23:28:29 CET)
