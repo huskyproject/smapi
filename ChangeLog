@@ -1,3 +1,8 @@
+2005-03-27 Sunday 12:37  nick_voronin
+
+	* src/api_jam.c (1.19): Write correct ReplyCRC in message header if
+	no REPLYID string exists.
+
 2005-02-03 Thursday 18:53  val_khokhlov
 
 	* src/api_jam.c (1.18): move gettz() function to huskylib
