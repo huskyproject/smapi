@@ -67,11 +67,11 @@
  *  independent manner
  */
 
-#define get_dword(ptr)           \
-   (dword)((ptr)[0]) |           \
-   (((dword)((ptr)[1])) << 8)  | \
-   (((dword)((ptr)[2])) << 16) | \
-   (((dword)((ptr)[3])) << 24);  \
+#define get_dword(ptr)            \
+   ((dword)((ptr)[0]) |           \
+    (((dword)((ptr)[1])) << 8)  | \
+    (((dword)((ptr)[2])) << 16) | \
+    (((dword)((ptr)[3])) << 24))  \
 
 /*
  *  get_word
@@ -81,9 +81,9 @@
  *  independent manner
  */
 
-#define get_word(ptr)        \
-    (word)(ptr)[0] |         \
-    (((word)(ptr)[1]) << 8 )
+#define get_word(ptr)         \
+    ((word)(ptr)[0] |         \
+     (((word)(ptr)[1]) << 8 ))
 
 
 /*
@@ -472,10 +472,7 @@ int write_sqidx(sword handle, SQIDX *psqidx, dword n)
         {
             pbuf = buf;
         }
-        else
-        {
-            pbuf = accel_buffer + (i * (dword) SQIDX_SIZE);
-        }
+ 
                                 /* 4 bytes "ofs" */
         put_dword(pbuf, psqidx[i].ofs);
         pbuf += 4;
@@ -499,9 +496,10 @@ int write_sqidx(sword handle, SQIDX *psqidx, dword n)
         {
             if (i == n - 1 || (!((i + 1) % maxbuf)))
             {
-                wr = (i == n - 1) ? (n % maxbuf) : maxbuf;
+                wr = (!((i + 1) % maxbuf)) ? maxbuf : (n % maxbuf);
+                
                 if (write(handle, accel_buffer, wr * SQIDX_SIZE) !=
-                    (int)(wr * SQIDX_SIZE))
+                    (wr * SQIDX_SIZE))
                 {
                     free(accel_buffer);
                     return 0;
