@@ -34,12 +34,12 @@
 /*
  Cygwin is win32
 */
-#ifdef __CYGWIN__
+#if !defined(__NT__) && defined(__CYGWIN__)
 # define __NT__
 #endif
 
 /* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option */
-#ifdef __MINGW32__
+#if !defined(__NT__) && defined(__MINGW32__)
 # define __NT__
 #endif
 
