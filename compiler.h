@@ -1555,6 +1555,8 @@ int qq(void)
 #  define HAS_sopen     1   /* sopen() : in io.h */
 
 #  define HAS_DIR_H     1   /* use "#include <dir.h>" for findfirst() etc. */
+#  define HAS_DIRENT_H  1   /* use "#include <dirent.h>" for DIR, opendir() etc. */
+#  define HAS_DIRECT_H  1   /* use "#include <direct.h>" for DIR, opendir() etc. */
 #  define HAS_DOS_H     1
 #  define HAS_DPMI_H    1
 #  define HAS_IO_H      1   /* use "#include <io.h> */
