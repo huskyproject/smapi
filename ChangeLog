@@ -1,3 +1,8 @@
+2001-12-17 Monday 11:08  ml
+
+	* api_jam.c (1.58.2.4): check write operations and return MERR_NODS
+	if needed
+
 2001-12-16 Sunday 12:01  mche
 
 	* api_jam.c (1.58.2.3), api_sdm.c (1.22.2.2), fexist.c (1.15.2.1),
