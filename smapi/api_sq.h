@@ -266,14 +266,14 @@ struct _msgh
 #define SQBASE_SIZE 256
 
 
-HUSKYEXT int read_xmsg(int handle, XMSG *pxmsg);
-HUSKYEXT int write_xmsg(int handle, XMSG *pxmsg);
-HUSKYEXT int read_sqhdr(int, SQHDR *);
-HUSKYEXT int write_sqhdr(int, SQHDR *);
-HUSKYEXT int read_sqidx(int, SQIDX *, dword);
-HUSKYEXT int write_sqidx(int, SQIDX *, dword);
-HUSKYEXT int read_sqbase(int handle, struct _sqbase *psqbase);
-HUSKYEXT int write_sqbase(int handle, struct _sqbase *psqbase);
+SMAPI_EXT int read_xmsg(int handle, XMSG *pxmsg);
+SMAPI_EXT int write_xmsg(int handle, XMSG *pxmsg);
+SMAPI_EXT int read_sqhdr(int, SQHDR *);
+SMAPI_EXT int write_sqhdr(int, SQHDR *);
+SMAPI_EXT int read_sqidx(int, SQIDX *, dword);
+SMAPI_EXT int write_sqidx(int, SQIDX *, dword);
+SMAPI_EXT int read_sqbase(int handle, struct _sqbase *psqbase);
+SMAPI_EXT int write_sqbase(int handle, struct _sqbase *psqbase);
 
 #endif /* __API_SQ_H_DEFINED */
 

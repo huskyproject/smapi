@@ -24,8 +24,28 @@ extern "C" {
 #ifndef MSGAPI
 #define MSGAPI
 
-#include <huskylib/compiler.h>
-#include <huskylib/cvtdate.h>
+#include <huskylib/huskylib.h>
+/*
+ * This is compiler-specific stuff for smapi only:
+ *
+ * SMAPI_EXT - external variables & external functions call modifier
+ *             (usualy 'extern' for static linkage)
+ */
+
+#ifdef _MAKE_DLL
+#  if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#      ifndef _SMAPI_EXT
+#          define SMAPI_EXT __declspec(dllimport)
+#      else
+#          define SMAPI_EXT __declspec(dllexport)
+#      endif /* _SMAPI_EXT */
+#  else
+#      define SMAPI_EXT extern
+#  endif
+#else
+#  define SMAPI_EXT extern
+#endif
+
 
 #ifdef __BEOS__
 #include <OS.h>
@@ -293,7 +313,7 @@ struct _msgh
  *  functions.  If msgapierr == 0, then no error occurred.
  */
 #if defined(_MAKE_DLL_MVC_) || defined (DO_PERL)
-HUSKYEXT word msgapierr;
+SMAPI_EXT word msgapierr;
 #else
 extern word _stdc msgapierr;
 #endif
@@ -379,11 +399,11 @@ extern struct _minf _stdc mi;
 
 #define MsgCvtFTSCDateToBinary(a, b) ASCII_Date_To_Binary(a,b)
 
-HUSKYEXT sword _XPENTRY MsgOpenApi(struct _minf *minf);
-HUSKYEXT sword _XPENTRY MsgCloseApi(void);
+SMAPI_EXT sword _XPENTRY MsgOpenApi(struct _minf *minf);
+SMAPI_EXT sword _XPENTRY MsgCloseApi(void);
 
-HUSKYEXT MSGA *_XPENTRY MsgOpenArea(byte * name, word mode, word type);
-HUSKYEXT int MsgDeleteBase(char * name, word type);
+SMAPI_EXT MSGA *_XPENTRY MsgOpenArea(byte * name, word mode, word type);
+SMAPI_EXT int MsgDeleteBase(char * name, word type);
 sword _XPENTRY MsgValidate(word type, byte * name);
 sword _XPENTRY MsgBrowseArea(BROWSE * b);
 
@@ -392,7 +412,7 @@ sword MSGAPI InvalidMh(MSGA * mh);
 sword MSGAPI InvalidMsg(XMSG * msg);
 
 void _XPENTRY SquishSetMaxMsg(MSGA * sq, dword max_msgs, dword skip_msgs, dword age);
-HUSKYEXT dword _XPENTRY SquishHash(byte * f);
+SMAPI_EXT dword _XPENTRY SquishHash(byte * f);
 
 MSGA *MSGAPI SdmOpenArea(byte * name, word mode, word type);
 sword MSGAPI SdmValidate(byte * name);
@@ -407,12 +427,12 @@ sword MSGAPI JamValidate(byte * name);
 int JamDeleteBase(char * name);
 void JamCloseOpenAreas();
 
-HUSKYEXT byte *_XPENTRY CvtCtrlToKludge(byte * ctrl);
-HUSKYEXT byte *_XPENTRY GetCtrlToken(byte * where, byte * what);
-HUSKYEXT byte *_XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length);
+SMAPI_EXT byte *_XPENTRY CvtCtrlToKludge(byte * ctrl);
+SMAPI_EXT byte *_XPENTRY GetCtrlToken(byte * where, byte * what);
+SMAPI_EXT byte *_XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length);
 void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
 word _XPENTRY NumKludges(char *txt);
-HUSKYEXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
+SMAPI_EXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
 
 /* Check version of fidoconfig library
  * return zero if test passed
@@ -424,15 +444,15 @@ HUSKYEXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
   }
   CheckSmapiVersion( ..., smapidate());
  */
-HUSKYEXT int _XPENTRY CheckSmapiVersion( int need_major, int need_minor,
+SMAPI_EXT int _XPENTRY CheckSmapiVersion( int need_major, int need_minor,
                 	    int need_patch, const char *cvs_date_string );
 
 /*  Return MSGAPI error text (string constant).
  */
-HUSKYEXT char * _XPENTRY  strmerr(int msgapierr);
+SMAPI_EXT char * _XPENTRY  strmerr(int msgapierr);
 
 
-HUSKYEXT void _fast qksort(int a[], size_t n);
+SMAPI_EXT void _fast qksort(int a[], size_t n);
 
 
 #if !defined(__OS2__) && !defined(__FLAT__) && !defined(__UNIX__) && !defined(__NT__)

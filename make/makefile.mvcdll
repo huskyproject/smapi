@@ -3,7 +3,7 @@
 
 CC=     cl
 CFLAGS= -nologo -MD -Zp1
-CDEFS=  -I..\smapi -I..\..\huskylib -D_CONSOLE -D_MAKE_DLL -D_HUSKYEXT
+CDEFS=  -I..\smapi -I..\..\huskylib -D_CONSOLE -D_MAKE_DLL -D_SMAPI_EXT
 COPT=   -Ob2
 LINK=	link
 LINKOPTS= /nologo /opt:nowin98 /dll /nodefaultlib

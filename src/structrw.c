@@ -50,7 +50,6 @@
 
 #define MSGAPI_HANDLERS
 
-#include <huskylib/compiler.h>
 #include <huskylib/huskylib.h>
 
 #ifdef HAS_UNISTD_H

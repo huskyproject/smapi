@@ -26,12 +26,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <huskylib/compiler.h>
-#include <huskylib/calendar.h>
 #include <huskylib/huskylib.h>
-#include <huskylib/strext.h>
-#include <huskylib/ffind.h>
-#include <huskylib/unused.h>
 
 #ifdef HAS_IO_H
 #include <io.h>

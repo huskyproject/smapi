@@ -36,7 +36,7 @@ static char rcs_id[]="$Id$";
 #include <assert.h>
 #include <string.h>
 
-#include <huskylib/compiler.h>
+#include <huskylib/huskylib.h>
 
 #ifdef HAS_IO_H
 #  include <io.h>

@@ -25,7 +25,6 @@
 static char rcs_id[]="$Id$";
 #pragma on(unreferenced)
 */
-#include <huskylib/compiler.h>
 #include <huskylib/huskylib.h>
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES

@@ -32,8 +32,7 @@ static char rcs_id[]="$Id$";
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
-#include <huskylib/compiler.h>
+#include <huskylib/huskylib.h>
 
 #ifdef HAS_UNISTD_H
 #include <unistd.h>

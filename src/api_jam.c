@@ -12,10 +12,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <fcntl.h>
-#include <huskylib/compiler.h>
 #include <huskylib/huskylib.h>
-#include <huskylib/unused.h>
-#include <huskylib/cvtdate.h>
 
 #ifdef HAS_IO_H
 #include <io.h>

@@ -36,7 +36,6 @@ static char rcs_id[]="$Id$";
 #include <string.h>
 #include <limits.h>
 
-#include <huskylib/compiler.h>
 #include <huskylib/huskylib.h>
 
 #ifdef HAS_UNISTD_H
