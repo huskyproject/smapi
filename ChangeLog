@@ -1,3 +1,7 @@
+2003-10-27 Monday 13:12  stas_degteff
+
+	* src/api_jam.c (1.10): Fix warnings
+
 2003-10-17 Friday 07:11  andr_lukyanov
 
 	* make/: makefile.cyg (1.4), makefile.djg (1.4), makefile.emx
