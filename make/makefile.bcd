@@ -17,7 +17,7 @@ RM=	del
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -I..\smapi -I..\..\huskylib -w -ml -O1
+CFLAGS	= -w -ml -O1
 # options for compile only (link is off)
 OBJOPT	= -c
 # options for build static library
@@ -56,14 +56,12 @@ DLLSUFFIX=
 
 SRCDIR=..\src\
 
+CFLAGS+=-I..\smapi -I..\..\huskylib 
+
 # Thunderbirds are go!
 
 {$(SRCDIR)}$(_C)$(_OBJ):
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $<
-	$(AR) $(ARFLAGS) $(TARGETLIB) -+$@
-
-{$(SRCDIR)}.asm$(_OBJ):
-	$(ASM) $(AFLAGS) $<
 	$(AR) $(ARFLAGS) $(TARGETLIB) -+$@
 
 #$(TARGETLIB): $(OBJS1) $(OBJS2) $(OBJS3)
@@ -73,5 +71,5 @@ $(TARGETLIB): $(OBJS)
 clean:
 	-$(RM) $(RMOPT) *$(_OBJ)
 
-distclean:
+distclean: clean
 	-$(RM) $(RMOPT) $(TARGETLIB)

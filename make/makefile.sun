@@ -1,32 +1,162 @@
 # $Id$
-# Legacy Makefile for Solaris (i386 or sparc) and gcc.
+#
+# Makefile to build husky with GNU C on SunOS (Solaris)
 # No support for the Husky build environment.
+#
+# Tested on SunOS 5.6 sun4m sparc SUNW,SPARCstation-20 (`uname -srmpi` output)
+#
 
-CC=	gcc
-CFLAGS=	-Wall -I../smapi -I../../huskylib
-CDEFS=	-D__SUN__
-#CDEFS+= -DHAS_SEMUN_UNDECL
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
-LIB=	ar
-RANLIB= ranlib
-OBJ=	.o
+# Uncomment this for compile info for gdb and display more compiler warnings
+#DEBUG	= -g -pedantic
 
-TARGET=	libsmapisun.a
+# Uncomment this for strip all simbols from binaries to reduce file sizes
+#STRIP	= -s
+
+
+## programs ##
+
+# compiler
+CC	= gcc
+# library tool
+AR	= ar
+# library indexer
+RANLIB	= ranlib
+# linker program
+LINK	= ld
+# archiver program
+ARCHIVER= tar
+# file removing command
+RM	= rm
+# create directory command
+MKDIR	= mkdir
+# remove directory command
+RMDIR	= rm
+# copy/move command
+INSTALL	= install
+
+## file suffixes ##
+
+_C	= .c
+_OBJ	= .o
+_LIB	= .a
+_EXE	=
+_DLL	= .dll
+
+## program options ##
+
+# compiler defines
+CDEFS	=
+# common compiler options
+CFLAGS	= -Wall -O3 -fomit-frame-pointer -fstrength-reduce
+# linker options
+LFLAGS	=
+# options for compile only (link is off)
+OBJOPT	= -c
+# options for build static library
+LIBOPT	= -static
+# options for build dll
+DLLOPT  = -shared
+# option for specify output file name
+NAMEOPT	= -o
+# options for $(AR) program
+ARFLAGS	= rs
+# options for $(RM) program
+RMFLAGS	= -f
+# options for archiver
+ARCFLAGS= -c -z -f
+# create directory command options
+MKDIROPT= -p
+# remove directory command options
+RMDIROPT= -rf
+# copy/move command options
+INSTOPT	= -c
+
+## Library filename elements ##
+
+# Prefix to construct static library name
+LIBPREFIX=lib
+# Prefix to construct dll name
+DLLPREFIX=
+# Suffix to construct library name
+LIBSUFFIX=sun
+# Suffix to construct dll name
+DLLSUFFIX=
+
+## Binary package name ##
+PACKAGENAME=$(LIBNAME)$(LIBPREFIX)-$(LIBSUFFIX)-$(VER).tgz
+
+## make directives ##
+
+# rules without dependencies and (possible) actions - prevent warnings
+.PHONY:	distclean clean all static dll programs default doc package
+
+## Default make rule ##
+
+default:
+#	@echo Run 'make dll' to build dll version \($(TARGETDLL)\)
+	@echo Run 'make static' to build static version of library \($(TARGETLIB)\)
+#	@echo Run 'make dllprograms' to build dll version of programs \($(PROGRAMS)\)
+#	@echo Run 'make programs' to build static version of programs \($(PROGRAMS)\)
+	@echo Run 'make all' to build all above
+
+## include common makefiles part ##
 
 include makefile.inc
 
+# libraries need to build binary file
+LIBS	+=
 
-all: $(TARGET)
+## other, usualy not modify below ##
 
-.c.o:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
+## Additions (add into end of strings) ##
+CFLAGS	+= -I$(H_DIR) -I../../huskylib $(DEBUG)
 
-$(TARGET): $(OBJS)
-	$(RANLIB) $(TARGET)
+## make rules ##
+
+all:	static programs
+
+static:	$(TARGETLIB)
+dll:	$(TARGETDLL)
+programs: $(TARGETLIB) $(PROGRAMS)
+dllprograms: $(TARGETDLL) $(PROGRAMS)
+
+$(PROGRAMS): $(TARGETLIB)
+	$(CC) $(STRIP) $(DEBUG) $(CFLAGS) $(CDEFS) $(NAMEOPT)$@ $(SRC_DIR)$@$(_C) $(TARGETLIB) $(LIBS)
+
+%$(_OBJ): $(SRC_DIR)%$(_C)
+	$(CC) $(CFLAGS) $(DEBUG) $(CDEFS) $(OBJOPT) $<
+
+$(TARGETLIB):	$(OBJS)
+	$(AR) $(ARFLAGS) $@ $?
+#	$(RANLIB) $@   # 'ar rs' doing this
+	
+$(TARGETDLL):	$(OBJS)
+	$(CC) $(DLLOPT) $(DEBUG) $(CFLAGS) $(NAMEOPT)$@ $^
+
 
 clean:
-	-rm *.o
+	-$(RM) $(RMOPT) *$(_OBJ)
 
 distclean: clean
-	-rm $(TARGET)
+	-$(RM) $(RMOPT) $(TARGETDLL)
+	-$(RM) $(RMOPT) $(TARGETLIB)
+	-$(RM) $(RMOPT) $(PROGRAMS)
+	-$(RM) $(RMOPT) $(PACKAGENAME)
+	-$(RM) $(RMOPT) file_id.diz
+	-$(RMDIR) $(RMDIROPT) huskylib
+
+doc:
+	cd ../doc ; make html
+
+package: static programs
+	@echo smapi library v.$(VERH) for Sun OS platform > file_id.diz
+	@echo "(Part of HUSKY Fidonet Software Project)" >> file_id.diz
+	@echo See http://husky.sourceforge.net and/or >> file_id.diz
+	@echo http://sourceforge.net/projects/husky >> file_id.diz
+	$(MKDIR) $(MKDIROPT) smapi
+	$(INSTALL) $(INSTOPT) $(TARGETLIB) $(PROGRAMS) ../VERSION smapi
+	$(INSTALL) $(INSTOPT) ../COPYING ../cvsdate.h ../INSTALL ../LICENSE smapi
+	$(INSTALL) $(INSTOPT) ../HISTORY file_id.diz ../ChangeLog  smapi
+	$(MKDIR) $(MKDIROPT) smapi/smapi/
+	$(INSTALL) $(INSTOPT) ../smapi/*.h smapi/smapi
+	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) smapi/*

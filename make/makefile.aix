@@ -96,5 +96,5 @@ $(TARGETLIB): $(OBJS)
 clean:
 	-$(RM) $(RMFLAGS) *$(_OBJ)
 
-distclean:
+distclean: clean
 	-$(RM) $(RMFLAGS) $(TARGETLIB)

@@ -1,28 +1,128 @@
 # $Id$
-# Microsoft Visual C++ Makefile for build static library
+# Microsoft Visual C++ Makefile for build static library or dll
+# and program(s)
+# No support for the Husky build environment.
+#
+# Tested on MS Visual C 6.0
+#
 
-CC=     cl
-CFLAGS= -nologo -Zp1
-CDEFS=  -I..\smapi -I..\..\huskylib -D_CONSOLE
-COPT=   -O2
-TLIB=    lib -nologo
-_OBJ=	.obj
-_LIB=	.lib
+# Uncomment this for compile info for debugger and display more compiler warnings
+#DEBUG	= /D_DEBUG /Zi
+
+# Uncomment this for strip all simbols from binaries to reduce file sizes
+#STRIP	=
+
+
+## programs ##
+
+CC	= cl
+AR	= lib
+LINK	= link
+RANLIB	=
+RM	= del
+
+## file suffixes ##
+
+_C	= .c
+_OBJ	= .obj
+_LIB	= .lib
+_EXE	= .exe
+_DLL	= .dll
+_EXP	= .exp
+_ILK	= .ilk
+_PDB	= .pdb
+
+## program options ##
+
+# compiler defines
+CDEFS	= -D_CONSOLE
+# common compiler options
+CFLAGS	= -nologo -Zp1 -O2
+# additional compiler options to build DLL
+DLCFLAGS= -D_MAKE_DLL -MD
+# compiler options for build binary from source
+LFLAGS	= /link /opt:nowin98
+# options for compile only (link is off)
+OBJOPT	= -c
+# option for specify output file name
+EXENAMEOPT= -Fe
+OBJNAMEOPT= -Fo
+LIBNAMEOPT= /out:
+# options for $(AR) program
+ARFLAGS	= -nologo
+# options for linker
+LINKFLAGS= msvcrt.lib Kernel32.lib ..\..\huskylib\make\huskymvc.lib /nologo \
+	/opt:nowin98 /dll /nodefaultlib /implib:$(TARGETLIB)
+# options for $(RM) program
+RMFLAGS	=
+
+
+## Library filename elements ##
+
+# Prefix to construct static library name
+LIBPREFIX=
+# Prefix to construct dll name
+DLLPREFIX=
+# Suffix to construct library name
 LIBSUFFIX=mvc
+# Suffix to construct dll name
+DLLSUFFIX=mvc-$(VERH)
+
+## make directives ##
+
+## include common makefiles part ##
 
 include makefile.inc
 
-{$(SRC_DIR)}.c$(_OBJ):
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+## make rules ##
 
-all: $(TARGETLIB)
+default:
+	@echo Run 'make dll' to build dll version of library ($(TARGETDLL))
+	@echo Run 'make static' to build static version of library ($(TARGETLIB))
+#	@echo Run 'make dllprograms' to build dll version of library and programs
+#	@echo "   ($(TARGETDLL) $(PROGRAMS))"
+#	@echo Run 'make programs' to build static version of library and programs
+#	@echo "   ($(TARGETLIB) $(PROGRAMS))"
 
-$(TARGETLIB): $(OBJS)
-	$(TLIB) /out:$@ $(OBJS)
 
+# libraries need to build binary file
+#LIBS	= $(LIBS)
+#DLLS	= $(LIBS)
+
+DLLIMPORTLIB=$(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)$(_LIB)
+
+## Additions (add into end of strings) ##
+CFLAGS	= $(CFLAGS) -I$(H_DIR) -I../../huskylib $(DEBUG)
+
+## make rules ##
+
+all:	static programs
+
+static:	$(TARGETLIB)
+programs: $(TARGETLIB) $(PROGRAMS)
+dllprograms: dll $(PROGRAMS)
+
+
+{$(SRC_DIR)}$(_C)$(_OBJ):
+	$(CC) $(CFLAGS) $(CDEFS) $(OBJOPT) $(OBJNAMEOPT)$@ $<
+
+{$(SRC_DIR)}$(_C)$(_EXE):
+	$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(EXENAMEOPT)$@ $< $(LFLAGS) $(LIBS) $(TARGETLIB)
+
+$(TARGETLIB):	$(OBJS)
+	$(AR) $(ARFLAGS) $(LIBNAMEOPT)$@ $**
+
+dll:
+	!$(MAKE) -f makefile.mvc CFLAGS="$(CFLAGS) $(DLCFLAGS)" $(OBJS)
+	$(LINK) $(LINKFLAGS) $(LIBNAMEOPT)$(TARGETDLL) $(DLLS) $(OBJS)
 
 clean:
-	-del *$(_OBJ)
+	-$(RM) $(RMOPT) *$(_OBJ)
+	-$(RM) $(RMOPT) *$(_ILK)
+	-$(RM) $(RMOPT) *$(_PDB)
 
 distclean: clean
-	-del $(TARGETLIB)
+	-$(RM) $(RMOPT) *$(_EXE)
+	-$(RM) $(RMOPT) *$(_EXP)
+	-$(RM) $(RMOPT) $(TARGETLIB)
+	-$(RM) $(RMOPT) $(TARGETDLL)
