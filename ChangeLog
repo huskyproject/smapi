@@ -1,6 +1,19 @@
+2002-03-01 Friday 10:08  ml
+
+	* .cvsignore (1.2.2.1), makefile.mvc (1.4.2.1), makeperl.mvc
+	(1.1.2.3): .cvsignore + makefile updates
+
 2002-02-26 Tuesday 09:30  ml
 
 	* makeperl.mvc (1.1.2.2): cleanup
+
+2002-02-24 Sunday 12:23  mche
+
+	* .cvsignore (1.2): *.obj
+
+2002-02-20 Wednesday 10:50  ml
+
+	* .cvsignore (1.1): add .cvsignore file
 
 2002-02-15 Friday 08:58  ml
 
