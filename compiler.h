@@ -276,6 +276,7 @@ int lock(int handle, long ofs, long length);
 #define strncasecmp strnicmp
 
 #define EXPENTRY pascal
+#define mode_t int
 
 #elif defined(__HIGHC__)
 
