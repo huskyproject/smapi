@@ -508,12 +508,10 @@ int qq(void)
 #ifdef PROCESSOR_ARCHITECTURE
 #  if PROCESSOR_ARCHITECTURE == "ALPHA"
 #    define __ALPHA__
-#  elif
+#  endif
 #  if PROCESSOR_ARCHITECTURE == "x86"
 #    define __386__
 #  endif
-#else
-#pragma message( PROCESSOR_ARCHITECTURE )
 #endif
 
 #ifdef __ALPHA__
