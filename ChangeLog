@@ -1,3 +1,8 @@
+2005-04-01 Friday 10:27  nick_voronin
+
+	* src/api_jam.c (1.20): Null reserved HiID in jam subfield
+	structure
+
 2005-03-27 Sunday 12:37  nick_voronin
 
 	* src/api_jam.c (1.19): Write correct ReplyCRC in message header if
