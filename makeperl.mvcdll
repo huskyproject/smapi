@@ -3,7 +3,7 @@
 CC=     cl
 CFLAGS= -nologo -MD -Zp1
 CDEFS=  -D__NT__ -DNT -DWINNT -DWIN32 -D_CONSOLE -DUSE_STAT_MACROS -D_MAKE_DLL -DDO_PERL -D_SMAPI_EXT -DNO_STRICT -DHAVE_DES_FCRYPT -DPERL_IMPLICIT_CONTEXT -DPERL_IMPLICIT_SYS -DPERL_MSVCRT_READFIX
-COPT=   -O1 -DNDEBUG
+COPT=   -O2 -DNDEBUG
 LINK=   link
 LINKOPTS = msvcrt.lib Kernel32.lib /nologo /opt:nowin98 /dll  /nodefaultlib /out:"smapimvc.dll" /implib:"smapimvc.lib"
 
