@@ -1,3 +1,27 @@
+2002-09-30 Monday 09:43  mche
+
+	* api_brow.h (1.2), api_jam.c (1.88), api_jamp.h (1.18), api_sdm.c
+	(1.31), api_sdm.h (1.5), api_sdmp.h (1.4), api_sqp.h (1.8),
+	compiler.h (1.98), fexist.c (1.24), ffind.c (1.14), flush.c (1.11),
+	locking.c (1.29), msgapi.c (1.27), msgapi.h (1.45), sq_area.c
+	(1.22), sq_hash.c (1.5), sq_kill.c (1.4), sq_lock.c (1.19),
+	sq_misc.c (1.5), sq_msg.c (1.6), sq_read.c (1.7), sq_uid.c (1.5),
+	sq_write.c (1.8), huskylib/compiler.h (1.2), huskylib/locking.c
+	(1.2): global defines are changed to prevent conflicts with
+	<windows.h>
+	
+	MSG -->MSGA EXPENTRY --> _XPENTRY
+
+2002-09-30 Monday 08:42  mche
+
+	* progprot.h (1.17), structrw.c (1.31): use macro get_dword &
+	get_word in sqpack
+
+2002-09-30 Monday 08:31  mche
+
+	* fexist.c (1.23), makefile.mvc (1.5), makefile.mvcdll (1.6):
+	USE_STAT_MACROS defined in code, INTEL defined for msvc makefiles
+
 2002-09-29 Sunday 13:35  d_sergienko
 
 	* compiler.h (1.97): added alias strnicmp for strncasecmp() under
