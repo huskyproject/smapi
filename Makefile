@@ -119,6 +119,24 @@ install: instdyn
 	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
 	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
 
+uninstall:
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)alc.h 
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_brow.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)compiler.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)ffind.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)msgapi.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)patmat.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)prog.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)progprot.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)stamp.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)typedefs.h
+	-$(RM) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)unused.h
+	-$(RM) $(LIBDIR)$(DIRSEP)$(TARGET)
+	-$(RM) $(LIBDIR)$(DIRSEP)patmat$(OBJ)
+	-$(RM) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
+	-$(RM) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERH)
+	-$(RM) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so
+
 clean:
 	-$(RM) *$(OBJ)
 	-$(RM) *~
@@ -128,3 +146,4 @@ distclean: clean
 	-$(RM) $(LIBPREFIX)smapi.so.$(VER)
 
 all: $(TARGET)
+
