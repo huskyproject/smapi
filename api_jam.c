@@ -1289,38 +1289,38 @@ static JAMSUBFIELD2ptr StrToSubfield(unsigned char *str, dword *len)
       else break;
    } /* endfor */
 
-   if (strstr(str, "INTL ")) return NULL;
-   else if (strstr(str, "FMPT ")) return NULL;
-   else if (strstr(str, "TOPT ")) return NULL;
-   else if (strstr(str, "SEEN-BY: ")) {
+   if (strncmp(str, "INTL ", 5)==0) return NULL;
+   else if (strncmp(str, "FMPT ", 5)==0) return NULL;
+   else if (strncmp(str, "TOPT ", 5)==0) return NULL;
+   else if (strncmp(str, "SEEN-BY: ", 10)==0) {
       kludge = str+9;
       subtypes = JAMSFLD_SEENBY2D;
    }
-   else if (strstr(str, "PATH: ")) {
+   else if (strncmp(str, "PATH: ", 6)==0) {
       kludge = str+6;
       subtypes = JAMSFLD_PATH2D;
    }
-   else if (strstr(str, "MSGID: ")) {
+   else if (strncmp(str, "MSGID: ", 7)==0) {
       kludge = str+7;
       subtypes = JAMSFLD_MSGID;
    }
-   else if (strstr(str, "REPLY: ")) {
+   else if (strncmp(str, "REPLY: ", 7)==0) {
       kludge = str+7;
       subtypes = JAMSFLD_REPLYID;
    }
-   else if (strstr(str, "PID: ")) {
+   else if (strncmp(str, "PID: ", 5)==0) {
       kludge = str+5;
       subtypes = JAMSFLD_PID;
    }
-   else if (strstr(str, "Via ")) {
+   else if (strncmp(str, "Via ", 3)==0) {
       kludge = str+4;
       subtypes = JAMSFLD_TRACE;
    }
-   else if (strstr(str, "FLAGS ")) {
+   else if (strncmp(str, "FLAGS ", 6)==0) {
       kludge = str+6;
       subtypes = JAMSFLD_FLAGS;
    }
-   else if (strstr(str, "TZUTC: ")) {
+   else if (strncmp(str, "TZUTC: ", 7)==0) {
       kludge = str+7;
       subtypes = JAMSFLD_TZUTCINFO;
    }
