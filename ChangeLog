@@ -1,3 +1,13 @@
+2002-03-01 Friday 14:11  mche
+
+	* makefile.mvcdll (1.4), makeperl.mvcdll (1.3): makefile updates
+	(change optimization)
+
+2002-03-01 Friday 09:29  ml
+
+	* makeperl.mvc (1.3), makeperl.mvcdll (1.2): makefile updates
+	(change optimization)
+
 2002-02-27 Wednesday 16:07  pavel.gulchouck
 
 	* api_sdm.c (1.26): Work with MsgNums but not MsgUids
