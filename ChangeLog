@@ -1,3 +1,10 @@
+2001-12-24 Monday 08:55  mche
+
+	* compiler.h (1.72), msgapi.c (1.20), msgapi.h (1.36), patmat.c
+	(1.4), patmat.h (1.2), progprot.h (1.12), makefile.mvcdll (1.1):
+	conversion from static library to dynamic under win32 makes
+	smapimvc.dll under windows with MSVC compiler
+
 2001-12-23 Sunday 21:08  pavel.gulchouck
 
 	* progprot.h (1.11), structrw.c (1.26): minor bugfix for -DINTEL=1
