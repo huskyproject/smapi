@@ -1,3 +1,7 @@
+2002-08-30 Friday 12:15  mche
+
+	* compiler.h (1.90), makefile.mgw (1.12): minGW makefiles corrected
+
 2002-08-26 Monday 07:18  sfpavel
 
 	* readme.txt (1.6), debian/README.Debian (1.5), debian/changelog
