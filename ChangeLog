@@ -1,3 +1,8 @@
+2002-01-10 Thursday 19:09  tobi
+
+	* makefile.wcx (1.12.2.2), setfsize.c (1.4.2.3): fixes for dos386;
+	nt no longer broken (Watcom)
+
 2002-01-08 Tuesday 17:06  ml
 
 	* makefile.bsd (1.15.2.3), makefile.bsd4 (1.1.2.2): makefile.bsd4 &
