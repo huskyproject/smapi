@@ -968,7 +968,7 @@ static dword _XPENTRY SdmGetHighWater(MSGA * mh)
     }
 
     if (SdmReadMsg(msgh, &msg, 0L, 0L, NULL, 0L, NULL) == (dword) - 1 ||
-      !eqstr((char *) msg.from, (char *) hwm_from))
+      (strcmp((char *) msg.from, (char *) hwm_from)!=0) )
     {
         mh->high_water = 0L;
     }

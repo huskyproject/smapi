@@ -56,7 +56,7 @@ void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written)
       fts_time(msgdate, tim);
 
       StandardDate(d_written);
-    }  
+    }
     else /* If msgdate = '' & yr > 1980, date_written seems to be ok ! */
     {
       if (d_written->msg_st.date.mo == 0 ||
@@ -104,7 +104,7 @@ void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written)
 
         for (x = 0; x < 12; x++)
         {
-            if (eqstri(temp, months_ab[x]))
+            if (stricmp(temp, months_ab[x])==0)
             {
                 d_written->msg_st.date.mo = x + 1;
                 break;

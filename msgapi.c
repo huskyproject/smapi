@@ -450,7 +450,7 @@ byte *_XPENTRY CvtCtrlToKludge(byte * ctrl)
     {
         /* Only copy out the ^a if it's NOT the area: line */
 
-        if (!eqstrn((char *) from + 1, (char *) area_colon, 5))
+        if (strncmp((char *) from + 1, (char *) area_colon, 5)!=0)
         {
             *to++ = *from;
         }
