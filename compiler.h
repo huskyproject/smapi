@@ -241,6 +241,9 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
+#define strcasecmp stricmp
+#define strncasecmp strnicmp
+
 #define EXPENTRY _System
 #define mysleep(x) DosSleep(1000*(x))
 
