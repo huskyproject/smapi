@@ -30,12 +30,12 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ffind.h"
+#include "prog.h"
 #ifdef USE_STAT_MACROS
 #include <sys/types.h>
 #include <sys/stat.h>
 #else
-#include "ffind.h"
-#include "prog.h"
 #if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__)
 #include <dos.h>
 #endif
