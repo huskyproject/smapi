@@ -221,7 +221,7 @@ static word near _CopyToBuf(byte * p, byte * out, byte ** end)
 
     len++;
 
-    while (*p == '\015' || *p == '\012' || *p == (byte) '\215')
+    while (*p == '\015' || *p == '\012')
     {
         p++;
     }
@@ -235,7 +235,7 @@ static word near _CopyToBuf(byte * p, byte * out, byte ** end)
             p++;
         }
 
-        while (*p && *p != '\015' && *p != '\012' && *p != (byte) '\215')
+        while (*p && *p != '\015' && *p != '\012')
         {
             if (out)
             {
@@ -253,7 +253,7 @@ static word near _CopyToBuf(byte * p, byte * out, byte ** end)
 
         len++;
 
-        while (*p == '\015' || *p == '\012' || *p == (byte) '\215')
+        while (*p == '\015' || *p == '\012')
         {
             p++;
         }
