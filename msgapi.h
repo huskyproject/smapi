@@ -51,6 +51,10 @@ extern "C" {
 #define MOPEN_WRITE     2
 #define MOPEN_RW        3
 
+#if defined (__WATCOMC__) || defined(__DJGPP__)
+#pragma pack(1)
+#endif
+
 struct _msgapi;
 struct _msgh;
 struct _xmsg;
@@ -356,10 +360,8 @@ sword far pascal shareloaded(void);
 #define shareloaded() FALSE
 #endif
 
-#if defined(__IBMC__) || defined(__EMX__) || defined(__WATCOMC__) || defined(__HIGHC__) || defined(UNIX) || defined(__DJGPP__)
+#if defined (__WATCOMC__) || defined(__DJGPP__)
 #pragma pack()
-#elif defined(__TURBOC__)
-#pragma option -a.
 #endif
 
 #endif
