@@ -530,7 +530,6 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
 
    memset(&jamidxNew, '\0', sizeof(JAMIDXREC));
    memset(&jamhdrNew, '\0', sizeof(JAMHDR));
-   jamhdrNew.ReplyCRC = jamhdrNew.MsgIdCRC = 0xFFFFFFFFUL;
 
    if (!ctxt)
      clen = 0L;
@@ -573,6 +572,8 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
          return -1;
       }
    }
+
+   jamhdrNew.ReplyCRC = jamhdrNew.MsgIdCRC = 0xFFFFFFFFUL;
 
    if (clen && ctxt)
      ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, clen, ctxt);
