@@ -1,3 +1,11 @@
+2003-02-20 Thursday 12:01  stas_degteff
+
+	* HISTORY (1.2): Update bugfixes list
+
+2003-02-20 Thursday 09:52  sfpavel
+
+	* HISTORY (1.1): Add HISTORY file
+
 2003-02-19 Wednesday 13:53  stas_degteff
 
 	* compiler.h (1.167): Bugfix in defines
