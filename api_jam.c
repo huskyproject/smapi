@@ -489,8 +489,12 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
         ConvertXmsgToJamHdr(msgh, &msg_old, &jamhdrNew, &subfieldNew);
      }
 
-   if (!jm->locked) 
-      didlock = Jam_Lock(jm, 1);
+   if (!jm->locked) {
+      if (!(didlock = Jam_Lock(jm, 1))) {
+         msgapierr = MERR_SHARE;
+         return -1;
+      }
+   }
 
    if (clen && ctxt) 
      ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, clen, ctxt);
