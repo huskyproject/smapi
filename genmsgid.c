@@ -83,13 +83,12 @@ dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dword (*altGen
 		max_fname[0] = '\0';
 		strcpy(pname, "*.*");
 		ff = FFindOpen(seqpath, 0);
-		if (ff == NULL) {
+		if (ff == NULL) { /* file not found */
 			*pname = '\0';
 			if (try == 0 && !direxist(seqpath))
-				if (_createDirectoryTree(seqpath) == 0)
-					continue;
-			if (try == 0 && direxist(seqpath))
-				goto emptydir;
+				if (_createDirectoryTree(seqpath) == 0) {
+					goto emptydir; /* directory created */
+				}
 			free(seqpath);
 			if (new_fname) free(new_fname);
 			GenMsgIdErr("can't open/create SEQDIR directory");
