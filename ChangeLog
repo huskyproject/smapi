@@ -1,3 +1,30 @@
+2003-03-01 Saturday 19:28  stas_degteff
+
+	* 1stchar.c (1.4), api_jam.c (1.105), api_sdm.c (1.40), cvtdate.c
+	(1.13), date2bin.c (1.10), dosdate.c (1.2), fexist.c (1.32),
+	flush.c (1.18), genmsgid.c (1.21), gnmsgid.c (1.7), locking.c
+	(1.37), msgapi.c (1.42), parsenn.c (1.3), prog.h (1.11), qksort.c
+	(1.2), setfsize.c (1.17), sq_area.c (1.30), sq_hash.c (1.8),
+	sq_help.c (1.10), sq_idx.c (1.11), sq_kill.c (1.8), sq_lock.c
+	(1.24), sq_misc.c (1.9), sq_msg.c (1.10), sq_read.c (1.11),
+	sq_uid.c (1.9), sq_write.c (1.14), strftim.c (1.8), strocpy.c
+	(1.2), structrw.c (1.38), tdelay.c (1.15), trail.c (1.2): Divide
+	prog.h, stamp.h & progprot.h
+
+2003-03-01 Saturday 18:57  stas_degteff
+
+	* api_sdm.c (1.39), date2bin.c (1.9), fexist.c (1.31), msgapi.c
+	(1.41): Replace eqstr? with str?cmp
+
+2003-03-01 Saturday 18:57  stas_degteff
+
+	* api_jam.c (1.104): replace include progprot.h with include prog.h
+
+2003-03-01 Saturday 18:54  stas_degteff
+
+	* compiler.h (1.171), prog.h (1.10): Move defines from prog.h into
+	compiler.h
+
 2003-02-27 Thursday 13:33  stas_degteff
 
 	* compiler.h (1.170): Fix unixes declarations
