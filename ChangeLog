@@ -59,7 +59,7 @@ SMAPI 1.4
 
 - rights patch for created directories and files.
 
-SMAPI 1.4J
+SMAPI 1.6.0
 ----------
 
 - Adapted msgapi for Jam message base. Need check and test.
