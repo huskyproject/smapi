@@ -1,3 +1,14 @@
+2002-01-07 Monday 21:09  tobi
+
+	* fexist.c (1.18), makefile.wcx (1.13), setfsize.c (1.6), tdelay.c
+	(1.10): Fixes for wcx (Watcom C in flat DOS-extended mode), merged
+	from -stable
+
+2002-01-07 Monday 20:26  tobi
+
+	* dirtree.h (1.1): file dirtree.h was initially added on branch
+	smapi-2_0-stable.
+
 2002-01-05 Saturday 14:15  mche
 
 	* compiler.h (1.76): added some defines for MSVC
