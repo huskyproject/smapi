@@ -333,22 +333,21 @@ int unlock(int handle, long ofs, long length)
 #include <fcntl.h>
 #include <unistd.h>
 
-static struct flock* file_lock(short type, long ofs, long length)
+static struct flock* file_lock(short type, long ofs, long length, struct flock *ret)
 {
-    static struct flock ret;
-
-    ret.l_type = type;
-    ret.l_start = ofs;
-    ret.l_whence = SEEK_SET;
-    ret.l_len = length;
-    ret.l_pid = getpid();
-    return &ret;
+    ret->l_type = type;
+    ret->l_start = ofs;
+    ret->l_whence = SEEK_SET;
+    ret->l_len = length;
+    ret->l_pid = getpid();
+    return ret;
 }
 
 int lock(int handle, long ofs, long length)
 {
 #ifndef __BEOS__
-    return fcntl(handle, F_SETLK, file_lock(F_WRLCK, ofs, length));
+    struct flock fl;
+    return fcntl(handle, F_SETLK, file_lock(F_WRLCK, ofs, length, &fl));
 #else
 	return 0;
 #endif   
@@ -357,7 +356,8 @@ int lock(int handle, long ofs, long length)
 int waitlock(int handle, long ofs, long length)
 {
 #ifndef __BEOS__
-    return fcntl(handle, F_SETLKW, file_lock(F_WRLCK, ofs, length));
+    struct flock fl;
+    return fcntl(handle, F_SETLKW, file_lock(F_WRLCK, ofs, length, &fl));
 #else
     return 0;
 #endif
@@ -371,9 +371,10 @@ int waitlock2(int handle, long ofs, long length, long t)
 {
 #ifndef __BEOS__
 	int rc;
+	struct flock fl;
 	
 	alarm(t);
-	rc = fcntl(handle, F_SETLKW, file_lock(F_WRLCK, ofs, length));
+	rc = fcntl(handle, F_SETLKW, file_lock(F_WRLCK, ofs, length, &fl));
 	alarm(0);
 	
 	return rc;
@@ -386,7 +387,8 @@ int waitlock2(int handle, long ofs, long length, long t)
 int unlock(int handle, long ofs, long length)
 {
 #ifndef __BEOS__
-    return fcntl(handle, F_SETLK, file_lock(F_UNLCK, ofs, length));
+    struct flock fl;
+    return fcntl(handle, F_SETLK, file_lock(F_UNLCK, ofs, length, &fl));
 #else
     return 0;
 #endif
@@ -403,8 +405,9 @@ int sopen(const char *name, int oflag, int ishared, int mode)
      */
 /*
 #ifndef NO_LOCKING
+    struct flock fl;
     if (fd != -1 && fcntl(fd, F_SETLK,
-              file_lock((ishared == SH_DENYNONE) ? F_RDLCK : F_WRLCK, 0, 0)))
+            file_lock((ishared == SH_DENYNONE) ? F_RDLCK : F_WRLCK, 0, 0, &fl)))
 
     {
         close(fd);
