@@ -20,6 +20,8 @@
 #ifndef __COMPILER_H__
 #define __COMPILER_H__
 
+#define SMAPI_EXT
+
 /*
   BeOS is NOT Unix, but sometime it seem's to Be ... ;)
 */
@@ -612,8 +614,10 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define EXPENTRY
 
 #elif defined(_MSC_VER) && (_MSC_VER >= 1200)
+#undef SMAPI_EXT
 #ifdef _MAKE_DLL
 #	define _MAKE_DLL_MVC_
+
 #   ifndef _SMAPI_EXT
 #	   define SMAPI_EXT __declspec(dllimport)
 #   else
@@ -690,6 +694,7 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define getpid		_getpid
 #define chsize		_chsize
 #define open		_open
+#define access		_access
 
 #endif
 

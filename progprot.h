@@ -32,10 +32,10 @@ void _fast qksort(int a[], size_t n);
 SMAPI_EXT int _fast direxist(char *directory);
 SMAPI_EXT void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written);
 union stamp_combo *_fast Get_Dos_Date(union stamp_combo *st);
-struct tm *_fast DosDate_to_TmDate(union stamp_combo *dosdate, struct tm *tmdate);
+SMAPI_EXT struct tm *_fast DosDate_to_TmDate(union stamp_combo *dosdate, struct tm *tmdate);
 SMAPI_EXT union stamp_combo *_fast TmDate_to_DosDate(struct tm *tmdate, union stamp_combo *dosdate);
 SMAPI_EXT char *_fast Strip_Trailing(char *str, char strip);
-char *_fast Add_Trailing(char *str, char add);
+SMAPI_EXT char *_fast Add_Trailing(char *str, char add);
 void _fast Parse_NetNode(char *netnode, word * zone, word * net, word * node, word * point);
 void _fast ParseNN(char *netnode, word * zone, word * net, word * node, word * point, word all);
 SMAPI_EXT char *_fast sc_time(union stamp_combo *sc, char *string);
@@ -47,7 +47,7 @@ int _fast setfsize(int fd, long size);
 #define put_word(ptr, val)	(*(word *)(ptr) = (val))
 #else
 SMAPI_EXT void put_word(byte *ptr, word value);
-void put_dword(byte *ptr, dword value);
+SMAPI_EXT void put_dword(byte *ptr, dword value);
 #endif
 
 SMAPI_EXT int  _createDirectoryTree(const char *pathName);
