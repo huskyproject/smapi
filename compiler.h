@@ -1744,6 +1744,10 @@ int qq(void)
 #  define HAS_DIRENT_H  /* <dirent.h> */
 #endif
 
+#if defined(__CYGWIN__)
+#  define HAS_strupr	/* <string.h> from libc (newlib) */
+#endif
+
 #  define HAS_popen_close  /* popen(); pclose() */
 
 /* End: Unix clones **********************************************************/
