@@ -403,6 +403,13 @@ int lock(int handle, long ofs, long length);
 #define SH_DENYNONE 0
 #define SH_DENYNO 0
 #define SH_DENYALL 1
+#ifndef O_EXLOCK
+#define O_EXLOCK 0
+#endif
+#ifndef O_SHLOCK
+#define O_SHLOCK 0
+#endif
+
 #define sopen(a,b,c,d) open((a),(b)|(((c)==SH_DENYALL)?O_EXLOCK:O_SHLOCK),(d))
 
 #define EXPENTRY
