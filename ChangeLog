@@ -1,3 +1,11 @@
+2002-09-27 Friday 09:20  mche
+
+	* makefile.mvcdll (1.5): a little correction of makefiles
+
+2002-09-27 Friday 07:45  mche
+
+	* compiler.h (1.95): HAS_VSNPRINTF defined for MSVC
+
 2002-09-25 Wednesday 10:46  stas_degteff
 
 	* makefile.mgw (1.13), semaphor.h (1.11): Remove unused and
