@@ -56,7 +56,6 @@
 
 #define MSGAPI_HANDLERS
 
-/* #include "progprot.h" */
 #include "msgapi.h"
 #include "old_msg.h"
 #include "api_sdm.h"
