@@ -1,3 +1,21 @@
+2002-06-10 Monday 14:59  mche
+
+	* api_jam.c (1.82), api_jamp.h (1.17), api_sdm.c (1.30), api_sdm.h
+	(1.4), api_sq.h (1.6), sq_help.c (1.6), sq_idx.c (1.7), sq_read.c
+	(1.6), sq_write.c (1.7), structrw.c (1.28): roll back previos
+	changes
+
+2002-06-10 Monday 13:44  mche
+
+	* api_jam.c (1.81), api_sdm.c (1.29), ffind.c (1.13), msgapi.c
+	(1.26), patmat.c (1.6), sq_help.c (1.5), sq_idx.c (1.6), sq_read.c
+	(1.5), sq_write.c (1.6), structrw.c (1.27): fix type mismatch
+	(under msvc compiler)
+
+2002-06-10 Monday 13:19  pavel.gulchouck
+
+	* api_jam.c (1.80): avoid warnings
+
 2002-05-31 Friday 09:50  pavel.gulchouck
 
 	* api_jam.c (1.79): Check waitlock() retcode in JamWriteMsg
