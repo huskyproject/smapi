@@ -160,10 +160,26 @@ sword MSGAPI InvalidMh(MSGA * mh)
     return FALSE;
 }
 
+/* Check to ensure that a message handle is valid. */
+
+sword MSGAPI InvalidMsg(XMSG * msg)
+{
+    if (msg == NULL)
+    {
+        msgapierr = MERR_BADA;
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+
 byte *StripNasties(byte * str)
 {
-    byte *p;
+  byte *p;
 
+  if(str)
+  {
     p = str;
     while (*p != '\0')
     {
@@ -173,8 +189,8 @@ byte *StripNasties(byte * str)
         }
         p++;
     }
-
-    return str;
+  }
+  return str;
 }
 
 /* Copy the text itself to a buffer, or count its length if out==NULL */

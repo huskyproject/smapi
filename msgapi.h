@@ -317,6 +317,7 @@ extern struct _minf _stdc mi;
 #define MERR_EACCES 10    /* Access denied (can't write to read-only, etc)  */
 #define MERR_BADMSG 11    /* Bad message frame (Squish)                     */
 #define MERR_TOOBIG 12    /* Too much text/ctrlinfo to fit in frame (Squish)*/
+#define MERR_BADNAME 13   /* Bad area name or file name */
 
 /*
  *  Now, a set of macros, which call the specified API function.  These
@@ -379,6 +380,7 @@ sword _XPENTRY MsgBrowseArea(BROWSE * b);
 
 sword MSGAPI InvalidMsgh(MSGH * msgh);
 sword MSGAPI InvalidMh(MSGA * mh);
+sword MSGAPI InvalidMsg(XMSG * msg);
 
 void _XPENTRY SquishSetMaxMsg(MSGA * sq, dword max_msgs, dword skip_msgs, dword age);
 SMAPI_EXT dword _XPENTRY SquishHash(byte * f);

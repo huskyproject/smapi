@@ -23,17 +23,17 @@
 
 char *_fast firstchar(char *strng, char *delim, int findword)
 {
-    int x, isw, sl_d, sl_s, wordno = 0;
-    char *string, *oldstring;
+    int isw=0, sl_s, wordno = 0;
+    register int sl_d, x;
+    register char *string=strng;
+    char *oldstring=strng;
 
-    /* We can't do *anything* if the string is blank... */
+    /* We can't do *anything* if the string or delim is NULL or blank... */
 
-    if (!*strng)
+    if ( !string || !*strng || !delim || !*delim )
     {
         return NULL;
     }
-
-    string = oldstring = strng;
 
     sl_d = strlen(delim);
 

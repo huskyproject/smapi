@@ -36,11 +36,12 @@ static void near InitCvt(void)
 
 struct tm *_fast DosDate_to_TmDate(union stamp_combo *dosdate, struct tm *tmdate)
 {
-    if (is_dst == -1)
-    {
-        InitCvt();
-    }
-    
+  if (is_dst == -1)
+  {
+      InitCvt();
+  }
+  if (dosdate)
+  {
     if (dosdate->ldate == 0)
     {	time_t t=0;
 	struct tm *tm;
@@ -49,17 +50,20 @@ struct tm *_fast DosDate_to_TmDate(union stamp_combo *dosdate, struct tm *tmdate
 	return tmdate;
     }
 
-    tmdate->tm_mday = dosdate->msg_st.date.da;
-    tmdate->tm_mon = dosdate->msg_st.date.mo - 1;
-    tmdate->tm_year = dosdate->msg_st.date.yr + 80;
+    if (tmdate)
+    {
+      tmdate->tm_mday = dosdate->msg_st.date.da;
+      tmdate->tm_mon = dosdate->msg_st.date.mo - 1;
+      tmdate->tm_year = dosdate->msg_st.date.yr + 80;
 
-    tmdate->tm_hour = dosdate->msg_st.time.hh;
-    tmdate->tm_min = dosdate->msg_st.time.mm;
-    tmdate->tm_sec = dosdate->msg_st.time.ss << 1;
+      tmdate->tm_hour = dosdate->msg_st.time.hh;
+      tmdate->tm_min = dosdate->msg_st.time.mm;
+      tmdate->tm_sec = dosdate->msg_st.time.ss << 1;
 
-    tmdate->tm_isdst = is_dst;
-
-    return tmdate;
+      tmdate->tm_isdst = is_dst;
+    }
+  }
+  return tmdate;
 }
 
 /* Convert a 'struct tm'-type date into an Opus/DOS bitmapped date */
@@ -81,12 +85,17 @@ union stamp_combo *_fast TmDate_to_DosDate(struct tm *tmdate, union stamp_combo 
 
 static void print02d(char **str, int i)
 {
-  *(*str)++=i/10+'0';
-  *(*str)++=i%10+'0';
+  if(str && *str)
+  {
+    *(*str)++=i/10+'0';
+    *(*str)++=i%10+'0';
+  }
 }
 
 char *_fast sc_time(union stamp_combo *sc, char *string)
 {
+  if(sc && string)
+  {
     if (sc->msg_st.date.yr == 0)
     {
         *string = '\0';
@@ -114,8 +123,8 @@ char *_fast sc_time(union stamp_combo *sc, char *string)
         *string = '\0';
 #endif
     }
-
-    return string;
+  }
+  return string;
 }
 
 char *_fast fts_time(char *string, struct tm *tmdate)
