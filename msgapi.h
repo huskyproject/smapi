@@ -62,7 +62,7 @@ extern "C" {
 #define MOPEN_WRITE     2
 #define MOPEN_RW        3
 
-#ifdef UNIX
+#ifdef __UNIX__
 #define FILEMODE_NETMAIL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
 #define FILEMODE_ECHOMAIL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
 #else
@@ -418,7 +418,7 @@ SMAPI_EXT dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dwor
  */
 SMAPI_EXT char * _XPENTRY  strmerr(int msgapierr);
 
-#if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__NT__)
+#if !defined(OS2) && !defined(__FLAT__) && !defined(__UNIX__) && !defined(__NT__)
 sword far pascal farread(sword handle, byte far * buf, word len);
 sword far pascal farwrite(sword handle, byte far * buf, word len);
 #endif
@@ -428,7 +428,7 @@ byte *StripNasties(byte * str);
 
 #if defined(__DOS__)
 sword far pascal shareloaded(void);
-#elif defined(OS2) || defined(__NT__) || defined(UNIX)
+#elif defined(OS2) || defined(__NT__) || defined(__UNIX__)
 #define shareloaded() TRUE
 #else
 #define shareloaded() FALSE

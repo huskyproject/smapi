@@ -92,7 +92,7 @@ void far *farcalloc(int n, int m);
 
 /* Default separator for path specification */
 
-#if defined(__UNIX__)
+#if defined(__UNIX__) || defined(__AMIGA__)
 #define PATH_DELIM  '/'
 #else
 #define PATH_DELIM  '\\'
