@@ -1,3 +1,7 @@
+2002-02-27 Wednesday 16:07  pavel.gulchouck
+
+	* api_sdm.c (1.26): Work with MsgNums but not MsgUids
+
 2002-02-26 Tuesday 09:18  ml
 
 	* makeperl.mvc (1.2), makeperl.mvcdll (1.1), msgapi.h (1.41):
