@@ -1,3 +1,17 @@
+2004-01-10 Saturday 14:54  d_sergienko
+
+	* api_jam.c (smapi-2_4-stable.3): fixed bug with reading messages
+	from JAM base
+
+2004-01-09 Friday 04:46  andr_lukyanov
+
+	* ffind.h, makefile.mvc, makefile.mvcdll
+	(smapi-2_4-stable.[2,1,1]): Fix MSVC compilation
+
+2004-01-07 Wednesday 23:40  d_sergienko
+
+	* api_jam.c (smapi-2_4-stable.2): fix warning
+
 2004-01-07 Wednesday 16:38  d_sergienko
 
 	* api_jam.c (smapi-2_4-stable.1): fix activemsgs if JAM header is
