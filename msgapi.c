@@ -428,12 +428,7 @@ word EXPENTRY NumKludges(char *txt)
     word nk = 0;
     char *p;
 
-    p = strchr(txt, '\x01');
-    while (p != NULL)
-    {
-        nk++;
-        p = strchr(p, '\x01');
-    }
+    for(p=txt; ((p=strchr(p, '\x01'))!=NULL); p++) nk++;
 
     return nk;
 }
