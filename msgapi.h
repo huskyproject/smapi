@@ -17,6 +17,10 @@
  *  author.
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef MSGAPI
 #define MSGAPI
 
@@ -358,3 +362,8 @@ sword far pascal shareloaded(void);
 #endif
 
 #endif
+
+#ifdef __cplusplus
+}
+#endif
+

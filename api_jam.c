@@ -84,6 +84,7 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
       pfree(jm->api);
       pfree((char*)jm->apidata);
       pfree(jm);
+      msgapierr = MERR_BADF;
       return NULL;
    }
 
@@ -151,7 +152,8 @@ static MSGH *EXPENTRY JamOpenMsg(MSG * jm, word mode, dword msgnum)
          msgh = Jam_OpenMsg(jm, mode, msgnum);
 
          if (msgh == NULL) {
-          return NULL;
+            msgapierr = MERR_NOENT;
+            return NULL;
          }
       } else {
          msgh = palloc(sizeof(struct _msgh));
@@ -177,7 +179,8 @@ static MSGH *EXPENTRY JamOpenMsg(MSG * jm, word mode, dword msgnum)
    } else {
       msgh = Jam_OpenMsg(jm, mode, msgnum);
       if (msgh == NULL) {
-          return NULL;
+         msgapierr = MERR_NOENT;
+         return NULL;
       }
    }
 
@@ -526,10 +529,12 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
    if (jm->locked) return -1L;
 
    if (msgnum == 0 || msgnum > jm->num_msg) {
+      msgapierr = MERR_NOENT;
       return -1L;
    } /* endif */
 
    if (!Jam_PosHdrMsg(jm, msgnum-1, &jamidx, &jamhdr)) {
+      msgapierr = MERR_BADF;
       return -1L;
    } /* endif */
 
@@ -921,14 +926,15 @@ JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, dword what)
 {
    JAMSUBFIELDptr SubField;
 
-   while (1) {
-      if (*SubPos > msgh->Hdr.SubfieldLen) return NULL;
-      SubField = (JAMSUBFIELD*)((char*)(msgh->SubFieldPtr)+(*SubPos));
+   while (*SubPos < msgh->Hdr.SubfieldLen) {
+      SubField = (JAMSUBFIELDptr)((char*)(msgh->SubFieldPtr)+(*SubPos));
       *SubPos += (SubField->DatLen+sizeof(JAMBINSUBFIELD));
       if (SubField->LoID == what) {
          return SubField;
       } /* endif */
    } /* endwhile */
+
+   return NULL;
 }
 
 dword Jam_HighMsg(JAMBASEptr jambase)
@@ -1393,23 +1399,28 @@ void DecodeSubf(MSGH *msgh)
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS))) {
          makeKludge(&dest, "", SubField->Buffer, "", SubField->DatLen);
       }
-      ptr = strchr(orig, '@');
-      if (ptr) *ptr = '\0';
-      ptr = strchr(orig, '.');
-      if (ptr) {
-         *(ptr++) = '\0';
-         if (atoi(ptr) != 0) fmpt = ptr;
+      if (orig) {
+         ptr = strchr(orig, '@');
+         if (ptr) *ptr = '\0';
+         ptr = strchr(orig, '.');
+         if (ptr) {
+            *(ptr++) = '\0';
+            if (atoi(ptr) != 0) fmpt = ptr;
+         }
       }
-      ptr = strchr(dest, '@');
-      if (ptr) *ptr = '\0';
-      ptr = strchr(dest, '.');
+      if (dest) {
+         ptr = strchr(dest, '@');
+         if (ptr) *ptr = '\0';
+         ptr = strchr(dest, '.');
          if (ptr) {
             *(ptr++) = '\0';
             if (atoi(ptr) != 0) topt = ptr;
          }
-
-      intl = (char*)palloc(strlen(orig)+strlen(dest)+7);
-      sprintf(intl, "\x01INTL %s %s", dest, orig);
+      }
+      if (orig && dest) {
+         intl = (char*)palloc(strlen(orig)+strlen(dest)+8);
+         sprintf(intl, "%cINTL %s %s", '\x01', dest, orig);
+      }
    } else {
    } /* endif */
       SubPos = 0;
