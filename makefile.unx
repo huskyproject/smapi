@@ -5,7 +5,13 @@ COPT=
 LIB=	ar
 RANLIB= ranlib
 
-TARGET=	libsmapiunix.a
+TARGET=	libsmapiunix
+
+LIBDIR=$(HOME)/fido/lib
+INCDIR=$(HOME)/fido/include
+
+
+default: $(TARGET).a $(TARGET).so
 
 OBJS=	1stchar.o  \
 	api_sdm.o  \
@@ -35,5 +41,13 @@ OBJS=	1stchar.o  \
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
-$(TARGET): $(OBJS)
-	$(RANLIB) $(TARGET)
+$(TARGET).a: $(OBJS)
+	$(RANLIB) $(TARGET).a
+
+$(TARGET).so: $(OBJS)
+	ld -shared -o $(TARGET).so $(OBJS) -lc
+
+install:
+	cp -f $(TARGET).so $(LIBDIR)
+	cpp -DUNIX msgapi.h > $(INCDIR)/msgapi.h 
+	
