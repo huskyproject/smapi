@@ -6,3 +6,8 @@ in some messages.
 Max Levenkov (sackett@mail.ru):
 
 Damaged end parts of messages in JAM netmail after packing (see .out packets)
+
+
+Oliver Grimm (attila@attila-products.de):
+
+File-Locking doesn't work under BeOS ! Must compiled with -DNOLOCKING to work !
