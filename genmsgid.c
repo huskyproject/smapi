@@ -62,6 +62,9 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 		else max_outrun = MAX_OUTRUN;
 	}
 	for (try=0;;try++) {
+		curtime = time(NULL);
+		seq = 0;
+		max_fname[0] = '\0';
 		strcpy(pname, "*.*");
 		ff = FFindOpen(seqpath, 0);
 		if (ff == NULL) {
@@ -69,13 +72,12 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 			if (try == 0 && !direxist(seqpath))
 				if (_createDirectoryTree(seqpath) == 0)
 					continue;
+			if (try == 0 && direxist(seqpath))
+				goto emptydir;
 			free(seqpath);
 			if (new_fname) free(new_fname);
 			return oldGenMsgId();
 		}
-		curtime = time(NULL);
-		seq = 0;
-		max_fname[0] = '\0';
 		do {
 			for (p=ff->ff_name; isxdigit(*p); p++);
 			if (stricmp(p, ".seq") != 0) continue;
@@ -99,7 +101,8 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 				unlink(seqpath);
 			}
 		} while (FFindNext(ff) == 0);
-		FFindClose(ff);
+		if (ff) FFindClose(ff);
+emptydir:
 		if (seq < curtime) seq = curtime;
 		if (new_fname == NULL)
 			new_fname = malloc(strlen(seqpath) + 13);
