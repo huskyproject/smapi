@@ -8,6 +8,10 @@
  *   lock, unlock: implemented as OS/2 API calls
  *   sopen: provided by the EMX RTL
  *
+ * EMX GCC on Windows 32 bit using RSXNT:
+ *   lock, unlock: implemented as Win32 API calls
+ *   sopen: provided by the RSX RTL
+ *
  * UNIX:
  *   lock, unlock: implemented as calls to fcntl
  *   sopen: implemented as open with subsequent shared lock
@@ -19,6 +23,8 @@
 #include "compiler.h"
 
 #ifdef __EMX__
+
+#if defined(OS2)
 
 #include <os2.h>
 
@@ -56,6 +62,34 @@ int unlock(int handle, long ofs, long length)
     }
     return 0;
 }
+
+#elif defined(__NT__)
+
+#include <windows.h>
+
+int lock(int handle, long ofs, long length)
+{
+    if (LockFile(handle, (DWORD)ofs, 0L, (DWORD)length, 0L) == FALSE)
+    {
+        return -1;
+    }
+    return 0;
+}
+
+int unlock(int handle, long ofs, long length)
+{
+    if (UnlockFile(handle, (DWORD)ofs, 0L, (DWORD)length, 0L) == FALSE)
+    {
+        return -1;
+    }
+    return 0;
+}
+
+
+#else
+#error EMX compiler found, but operating system is neither OS/2 nor NT.
+#endif
+
 
 #elif defined(UNIX)
 

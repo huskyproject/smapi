@@ -1,7 +1,7 @@
 # Makefile for building a Windows 95 / NT console application
 # with RSXNT and EMX GCC for Win32
 CC=     gcc
-CFLAGS= -w -g
+CFLAGS= -w
 CDEFS=  -D__NT__ -DWINNT -D__RSXNT__
 COPT=   -O2
 LIB=    ar
@@ -17,6 +17,7 @@ OBJS=   1stchar.o  \
 	fexist.o   \
 	ffind.o    \
 	flush.o    \
+	locking.o  \
 	months.o   \
 	msgapi.o   \
 	parsenn.o  \
@@ -31,6 +32,7 @@ OBJS=   1stchar.o  \
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
+	$(LIB) r $(TARGET) $(OBJS)
+
