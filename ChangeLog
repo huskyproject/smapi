@@ -1,3 +1,12 @@
+2002-09-28 Saturday 08:49  pgul
+
+	* compiler.h (1.96): add HAS_VSNPRINTF for MAKE_DLL_MVC
+
+2002-09-28 Saturday 08:20  stas_degteff
+
+	* fexist.c (1.22), progprot.h (1.16): Add const modifier to
+	fexist(), fsize() and direxists() parameter
+
 2002-09-27 Friday 09:20  mche
 
 	* makefile.mvcdll (1.5): a little correction of makefiles
