@@ -359,7 +359,7 @@
    _M_MRX000 = 10000 - R10000 (/QMR10000)
 
    ===================================================================
-   Microsoft C or Microsoft QuickC for MS-DOS or OS/2
+   Microsoft C for MS-DOS or OS/2
    -------------------------------------------------------------------
    _MSC_VER    value is less 1200
    ===================================================================
@@ -543,7 +543,29 @@ int qq(void)
 #  if !defined(__LINUX__)
 #    define __LINUX__
 #  endif
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
 #endif
+
+#if defined( __svr4__ ) || defined( __SVR4 )
+#  if !defined(__SVR4__)
+#    define __SVR4__
+#  endif
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
+#endif
+
+#if defined(BSD)
+#  if !defined(__BSD__)
+#    define __BSD__
+#  endif
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
+#endif
+
 
 #if defined(__DOS4G__) /* DOS4G/W dos-dpmi extender */
 #ifndef __DPMI__
@@ -1616,7 +1638,6 @@ int qq(void)
 
 #if !defined(USG)
 #define HAS_SYS_PARAM_H
-#include <sys/param.h>
 #endif
 
 #if (defined(BSD) && (BSD >= 199103))
@@ -1632,7 +1653,7 @@ int qq(void)
 #endif
 #endif
 
-#if defined (__linux__) && !defined(__GLIBC__)
+#if defined (__LINUX__) && !defined(__GLIBC__)
 #define HAS_SYS_VFS_H
 #endif
 
@@ -1762,37 +1783,37 @@ int qq(void)
 #endif
 
 #ifndef mymkdir
-#   ifdef __MSVC__
-#       pragma message("mymkdir() call undefined. Please check your compiler documentation for it and write define into compiler.h")
-#   else
+#   ifdef __GNUC__
 #       warning mymkdir() call set to default value. Please check your compiler documentation for it and write define into compiler.h
+#   else
+#       pragma message("mymkdir() call undefined. Please check your compiler documentation for it and write define into compiler.h")
 #   endif
 #   define mymkdir mkdir
 #endif
 
 #ifndef mysleep
-#   ifndef __MSVC__
-#       warning sleep() call undefined. Please check your compiler documentation for it and write "#define mysleep" into compiler.h
-#   else
+#   ifdef __GNUC__
 #       pragma message("sleep() call undefined. Please check your compiler documentation for it and write define into compiler.h")
+#   else
+#       warning sleep() call undefined. Please check your compiler documentation for it and write "#define mysleep" into compiler.h
 #   endif
 #   define mysleep(x)
 #endif
 
 #ifndef SMAPI_EXT
-#   ifdef __MSVC__
-#       pragma message("Please set SMAPI_EXT to extern or proprietary token")
-#   else
+#   ifdef __GNUC__
 #       warning Please set SMAPI_EXT to extern or proprietary token
+#   else
+#       pragma message("Please set SMAPI_EXT to extern or proprietary token")
 #   endif
 #   define SMAPI_EXT extern
 #endif
 
 #ifndef _XPENTRY
-#   ifdef __MSVC__
-#       pragma message("Please check your compiler to system functions call modifyer and define _XPENTRY")
-#   else
+#   ifdef __GNUC__
 #       warning Please check your compiler to system functions call modifyer and define _XPENTRY
+#   else
+#       pragma message("Please check your compiler to system functions call modifyer and define _XPENTRY")
 #   endif
 #   define _XPENTRY
 #endif
@@ -1802,36 +1823,16 @@ int qq(void)
 #endif
 
 #ifndef _intr
-#   error Please check your compiler to interrupt handler modifyer and define _intr in compiler.h
-#endif
-
-#ifndef _intcast
-#   error Please check your compiler to int. cast modifyer and define _intcast in compiler.h
-#endif
-
-#ifndef _veccast
-#   error Please check your compiler to vector cast modifyer and define _veccast in compiler.h
+#   error Please check your compiler to interrupt handler modifyer (usually 'interrupt') and define _intr in compiler.h
 #endif
 
 #ifndef _fast
-#   ifdef __MSVC__
-#       pragma message("Please check your compiler to fast functions call modifyer and define _fast in compiler.h")
-#   else
+#   ifdef __GNUC__
 #       warning Please check your compiler to fast functions call modifyer and define _fast in compiler.h
+#   else
+#       pragma message("Please check your compiler to fast functions call modifyer and define _fast in compiler.h")
 #   endif
 #   define _fast
-#endif
-
-#ifndef _loadds
-#   error Please check your compiler to 'load data segment' code modifyer and define _loadds in compiler.h
-#endif
-
-#ifndef near
-#   error Please check your compiler to near modifyer and define near in compiler.h
-#endif
-
-#ifndef far
-#   error Please check your compiler to far modifyer and define far in compiler.h
 #endif
 
 #ifndef farread
