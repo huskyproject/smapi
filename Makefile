@@ -132,8 +132,8 @@ install: instdyn
 	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) unused.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) api_jam.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
-	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
+	$(INSTALL) $(ISLOPT) $(TARGET) $(LIBDIR)
+	$(INSTALL) $(ISLOPT) patmat$(OBJ) $(LIBDIR)
 
 uninstall:
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)alc.h 
