@@ -326,8 +326,8 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
              *  why we do it here.
              */
 
-// mtt: DO NOT CHANGE THE MSGTEXT!!!
-//            RemoveFromCtrl(ctrl, intl);
+/* mtt: DO NOT CHANGE THE MSGTEXT!!!      */
+/*            RemoveFromCtrl(ctrl, intl); */
         }
     }
 
@@ -338,8 +338,8 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
     {
         orig->point = (word) atoi((char *) s + 5);
         pfree(s);
-        // mtt: DO NO CHANGE THE MSGTEXT!!!!
-        //RemoveFromCtrl(ctrl, fmpt);
+        /* mtt: DO NO CHANGE THE MSGTEXT!!!! */
+        /* RemoveFromCtrl(ctrl, fmpt);       */
     }
 
     /* Handle TOPT too */
@@ -349,8 +349,8 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
     {
         dest->point = (word) atoi((char *) s + 5);
         pfree(s);
-        // mtt: DO NOT CHANGE THE MSGTEXT!!!
-        //RemoveFromCtrl(ctrl, topt);
+        /* mtt: DO NOT CHANGE THE MSGTEXT!!! */
+        /* RemoveFromCtrl(ctrl, topt);       */
     }
 }
 
