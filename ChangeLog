@@ -1,3 +1,14 @@
+2002-10-25 Friday 11:38  stas_degteff
+
+	* progprot.h (smapi-2_2-stable.1): Bugfix: include required header
+	files into progprot.h
+
+2002-10-25 Friday 06:00  stas_degteff
+
+	* structrw.c (smapi-2_2-stable.2): Change file handle (open() etc)
+	type to int: prevent compiler warnings about assgnments short to
+	int on 32bit platform
+
 2002-10-24 Thursday 14:06  stas_degteff
 
 	* compiler.h (smapi-2_2-stable.5): Insert warning about unofficial
