@@ -8,6 +8,8 @@ else
 include ../huskymak.cfg
 endif
 
+include makefile.inc
+
 ifeq ($(DEBUG), 1)
   CFLAGS=	$(WARNFLAGS) $(DEBCFLAGS)
 # CFLAGS=	$(WARNFLAGS) $(DEBCFLAGS) -DNO_LOCKING
@@ -26,13 +28,13 @@ CDEFS=	-D$(OSTYPE) $(ADDCDEFS)
 
 TARGET=	$(LIBPREFIX)smapi$(LIB)
 
+
 ifeq ($(DYNLIBS), 1)
 ALL: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
 else
 ALL: $(TARGET)
 endif
 
-include makefile.inc
 
 ifeq ($(DYNLIBS), 1)
 all: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
@@ -47,7 +49,7 @@ $(TARGET): $(OBJS)
 	$(AR) $(AR_R) $(TARGET) $?
 ifdef RANLIB
 	$(RANLIB) $(TARGET)
-endif
+endif                                                             
 
 ifeq ($(DYNLIBS), 1)
   ifeq (~$(MKSHARED)~,~ld~)
@@ -79,35 +81,24 @@ instdyn: $(TARGET)
 
 endif
 
-install: instdyn
+FORCE:
+
+install-h-dir: FORCE
 	-$(MKDIR) $(MKDIROPT) $(INCDIR)
 	-$(MKDIR) $(MKDIROPT) $(INCDIR)$(DIRSEP)smapi
+
+%.h: FORCE
+	-$(INSTALL) $(IIOPT) $@ $(INCDIR)$(DIRSEP)smapi
+        
+install-h: install-h-dir $(HEADERS)
+
+install: install-h instdyn
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
-	$(INSTALL) $(IIOPT) api_brow.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) compiler.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) ffind.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) msgapi.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) patmat.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) prog.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) progprot.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) stamp.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) unused.h $(INCDIR)$(DIRSEP)smapi
-	$(INSTALL) $(IIOPT) api_jam.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(ISLOPT) $(TARGET) $(LIBDIR)
 
 uninstall:
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_brow.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)compiler.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)ffind.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)msgapi.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)patmat.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)prog.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)progprot.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)stamp.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)typedefs.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)unused.h
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_jam.h
+	cd $(INCDIR)$(DIRSEP)smapi$(DIRSEP)
+	$(RM) $(RMOPT) $(HEADERS)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERH)
