@@ -17,8 +17,6 @@
  *  author.
  */
 
-#pragma pack(1)
-
 #ifdef __cplusplus
 extern "C" {
 #endif
