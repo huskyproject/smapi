@@ -1,3 +1,7 @@
+2003-03-20 Thursday 13:22  stas_degteff
+
+	* VERSION (1.8): Update version of required library
+
 2003-03-19 Wednesday 12:18  sfpavel
 
 	* debian/: changelog (1.23), control (1.11), libsmapi2-dev.files
