@@ -499,7 +499,7 @@ int qq(void)
 
 /***** Platforms *************************************************************/
 
-#if defined(__alpha)
+#if defined(__alpha) || defined(_M_ALPHA)
 #  ifndef __ALPHA__
 #    define __ALPHA__
 #  endif
