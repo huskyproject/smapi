@@ -1,3 +1,7 @@
+2002-05-01 Wednesday 16:34  pavel.gulchouck
+
+	* compiler.h (1.65.2.5): minor fix for mingw32
+
 2002-03-21 Thursday 08:53  ml
 
 	* api_sdm.c (1.22.2.4): Read *.msg >64K fixed
