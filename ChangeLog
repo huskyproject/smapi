@@ -1,3 +1,8 @@
+2002-07-04 Thursday 08:09  stas
+
+	* debian/: changelog (1.12), control (1.7), rules (1.6), shlibs
+	(1.9): new Debian version [patch from Pavel Andreew]
+
 2002-07-02 Tuesday 15:51  stas
 
 	* debian/: changelog (1.11), control (1.6), huskymak.cfg (1.10),
