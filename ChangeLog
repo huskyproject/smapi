@@ -1,3 +1,7 @@
+2002-11-01 Friday 23:51  stas_degteff
+
+	* msgapi.h (1.50): Fix version number (now informational only)
+
 2002-11-01 Friday 20:24  stas_degteff
 
 	* makefile.bsd (1.27), makefile.bsd4 (1.8): Small fix makefiles for
