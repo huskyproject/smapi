@@ -363,6 +363,8 @@ int lock(int handle, long ofs, long length);
 
 #define EXPENTRY
 
+#define strcasecmp stricmp
+#define strncasecmp strncmpi
 
 
 #elif defined(__EMX__)
