@@ -150,7 +150,7 @@
    *             - 64K data
    *
    ***************************************************************************
-   * Platforms (binary targets)
+   * Platforms & OS (binary targets)
    *
    * __NT__    - Windows NT/2000/XP target
    * __WIN32__ - Windows 95/98/Me/NT/2000/XP target
@@ -160,6 +160,8 @@
    * __DPMI__  - DOS 32 bit (extenders: dos4g, farcall, rsx, ...)
    * __MACOS__ - MacOS (Unix clone)
    * __UNIX__  - All unix-like OS
+   * __BSD__   - BSD UNIX clones (BSDI, BSD/OS, FreeBSD, NetBSD, OpenBSD & etc)
+   * __LINUX__ - GNU/Linux (unix clone)
    * __AMIGA__ - AmigaOS
    * __ALPHA__ - The Alpha CPU
    * __X86__   - Intel's x86 series CPU
@@ -550,7 +552,7 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__Linux__) || defined(linux) || defined(LINUX)
 #  if !defined(__LINUX__)
 #    define __LINUX__
 #  endif
@@ -641,6 +643,9 @@ int qq(void)
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
 #  if !defined(__UNIX__)
 #    define __UNIX__
+#  endif
+#  if !defined(__BSD__)
+#    define __BSD__
 #  endif
 #endif
 
