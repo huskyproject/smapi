@@ -55,8 +55,16 @@
 /* IBM OS2 semaphores */
 #elif defined(OS2)
 
+#if 0
+/*
+we don't want to pollute our name space with all the fucking stuff from os.h,
+so we simply KNOW that a HMTX is a ULONG.
+*/
 #define INCL_DOS
 #include <os2.h>
+#else
+typedef unsigned long HMTX;
+#endif
 
 #define SEMAPHORE HMTX
 
