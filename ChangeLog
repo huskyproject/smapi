@@ -1,4 +1,10 @@
 ----- cvs ci ------
+Tue Oct  3 00:19:14 MEZ 2000
+tobi:
+* Support Jam Direct flag (JMSG_DIRECT) via MSGXX1 Squish flag, which is
+  already used for "Direct" flagging by a lot of Squish programs.
+
+----- cvs ci ------
 Fri Sep 15 10:57:04 MSD 2000
 max (patch from Serguei Revtov):
 * core dump on Solaris (create_semaphore)
