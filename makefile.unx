@@ -4,12 +4,15 @@
 
 CC=	cc
 LD=	ld
-CFALGS=
+CFLAGS= -I../huskylib
 CDEFS=	-DUNIX
 COPT=
 LIB=	ar
 RANLIB=	ranlib
 OBJ=	.o
+_OBJ=.o
+_LIB=.a
+_DLL=.so
 
 TARGET=	libsmapiunix.a
 all: $(TARGET)
