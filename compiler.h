@@ -635,18 +635,17 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define _XPENTRY
 
 #elif defined(_MSC_VER) && (_MSC_VER >= 1200)
-#undef SMAPI_EXT
-#ifdef _MAKE_DLL
-#	define _MAKE_DLL_MVC_
-
-#   ifndef _SMAPI_EXT
-#	   define SMAPI_EXT __declspec(dllimport)
+#   undef SMAPI_EXT
+#   ifdef _MAKE_DLL
+#       define _MAKE_DLL_MVC_
+#       ifndef _SMAPI_EXT
+#           define SMAPI_EXT __declspec(dllimport)
+#       else
+#           define SMAPI_EXT __declspec(dllexport)
+#       endif //_SMAPI_EXT
 #   else
-#      define SMAPI_EXT __declspec(dllexport)
-#  endif //_SMAPI_EXT
-#else
-#   define SMAPI_EXT
-#endif
+#       define SMAPI_EXT
+#   endif
 
 #define _stdc
 #ifdef pascal
@@ -659,6 +658,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define _XPENTRY
 #define strcasecmp stricmp
 #define strncasecmp strnicmp
+#define vsnprintf _vsnprintf
 #define sleep(x) Sleep(1000L*(x))
 #define farread read
 #define farwrite write
@@ -720,7 +720,7 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define snprintf	_snprintf
 #define vsnprintf	_vsnprintf
 #define spawnvp		_spawnvp
-#define dup		_dup
+#define dup		    _dup
 #define mktemp		_mktemp
 #define fdopen		_fdopen
 #define O_BINARY	_O_BINARY
