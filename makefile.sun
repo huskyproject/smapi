@@ -42,16 +42,6 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
-	install alc.h $(INCDIR)/smapi
-	install api_brow.h $(INCDIR)/smapi
-	install compiler.h $(INCDIR)/smapi
-	install ffind.h $(INCDIR)/smapi
-	install msgapi.h $(INCDIR)/smapi
-	install patmat.h $(INCDIR)/smapi
-	install prog.h $(INCDIR)/smapi
-	install progprot.h $(INCDIR)/smapi
-	install stamp.h $(INCDIR)/smapi
-	install typedefs.h $(INCDIR)/smapi
 
 clean:
 	rm *.o *~
