@@ -661,18 +661,17 @@ static UMSGID EXPENTRY JamMsgnToUid(MSG * jm, dword msgnum)
 {
     if (InvalidMh(jm))
     {
-        return (UMSGID) - 1;
+        return (UMSGID) -1;
     }
 
     msgapierr = MERR_NONE;
-    return (UMSGID) (msgnum + Jmd->HdrInfo.BaseMsgNum - 1);
+    if (msgnum > jm->num_msg) return (UMSGID) -1;
+    return (UMSGID) (Jmd->actmsg[msgnum - 1].IdxOffset / 8 + Jmd->HdrInfo.BaseMsgNum);
 }
 
 static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
 {
-   JAMIDXREC idxmsg;
-   JAMHDR hdrmsg;
-   dword  msgnum;
+   dword  msgnum, left, right, new;
 
    if (InvalidMh(jm)) {
       return -1L;
@@ -681,20 +680,22 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    msgnum = umsgid - Jmd->HdrInfo.BaseMsgNum + 1;
    if (msgnum <= 0)
       return 0;
-   if (msgnum > jm->num_msg)
-      return jm->num_msg;
-
-   while (1) {
-      if (!Jam_PosHdrMsg(jm, msgnum-1, &idxmsg, &hdrmsg)) {
-         if (type == UID_EXACT) return 0;
-         else if (msgnum != 0 && type == UID_PREV) msgnum--;
-         else if (msgnum <= jm->num_msg && type == UID_NEXT) msgnum++;
-         if ((msgnum == 0 && type == UID_PREV) ||
-            (msgnum > jm->num_msg && type == UID_NEXT)) return 0;
-      } else {
-         return msgnum;
-      } /* endif */
-   } /* endwhile */
+   left = 1;
+   right = jm->num_msg;
+   while (left <= right)
+   {
+     new = (right + left) / 2;
+     if (JamMsgnToUid(jm, new) > msgnum)
+       left = new + 1;
+     else if (JamMsgnToUid(jm, new) < msgnum)
+       right = new - 1;
+     else
+       return new;
+   }
+   if (type == UID_EXACT) return 0;
+   if (type == UID_PREV)
+     return (right <= 0) ? 1 : right;
+   return (left > jm->num_msg) ? jm->num_msg : left;
 }
 
 static dword EXPENTRY JamGetHighWater(MSG * jm)

@@ -1,6 +1,8 @@
 ----- cvs ci ------
 Sat Oct 21 23:26:54 MEZ 2000
 tobi (patch from max):
+* JAM fix: sqpack don't crashes on areas when msgs deleted from golded
+* JAM fix: hpt link works good after deleting msgs from golded
 * fixed bug in FFindOpen() (path like "/*")
 
 ----- cvs ci ------
