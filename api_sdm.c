@@ -598,17 +598,19 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
      *  requested a read operation, we'll need to do one anyway.
      */
 
-    if (need_ctrl && (text == NULL || bytes < MAX_SDM_CLEN))
+    if (need_ctrl && text == NULL)
     {
-        text = fake_msgbuf = palloc(MAX_SDM_CLEN + 1);
+	struct stat st;
+	fstat(msgh->fd, &st);
+        text = fake_msgbuf = palloc(st.st_size - OMSG_SIZE + 1);
         if (text == NULL)
         {
             msgapierr = MERR_NOMEM;
             return -1;
         }
 
-        text[MAX_SDM_CLEN] = '\0';
-        bytes = MAX_SDM_CLEN;
+        text[st.st_size - OMSG_SIZE] = '\0';
+        bytes = st.st_size - OMSG_SIZE;
     }
 
     /* If we need to read in some text... */
