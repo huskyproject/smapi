@@ -961,10 +961,10 @@ int read_hdr(sword handle, JAMHDR *Hdr)
    return 1;
 }
 
-int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword *SubfieldLen)
+int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen)
 {
    char *buf, *pbuf;
-   JAMSUBFIELDptr subfieldNext;
+   JAMSUBFIELD2ptr subfieldNext, subfieldNew;
    dword datlen;
 
    buf = (char*)palloc(*SubfieldLen);
@@ -976,9 +976,19 @@ int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword *SubfieldLen)
       return 0;
    } /* endif */
 
-   subfieldNext = *subfield;
+   subfieldNext = *subfield = 0;
 
-   while ((pbuf - buf + 8) < *SubfieldLen) {
+   while ((pbuf - buf + 8) < *SubfieldLen) 
+	 {
+      subfieldNew = (JAMSUBFIELD2ptr) palloc(sizeof(JAMSUBFIELD2));
+			subfieldNew->next = 0;
+			if (subfieldNext)
+			  subfieldNext->next = subfieldNew;
+			subfieldNext = subfieldNew;
+			
+			if (!*subfield)
+			  *subfield = subfieldNext;
+			
       /* 02 bytes LoID */
       subfieldNext->LoID = get_word(pbuf);
       pbuf += 2;
@@ -997,13 +1007,15 @@ int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword *SubfieldLen)
       /* DatLen bytes Buffer */
       if ((long)datlen >= 0 && datlen < *SubfieldLen)
       { subfieldNext->DatLen = datlen;
+			  subfieldNext->Buffer = malloc(datlen+1);
         memmove(subfieldNext->Buffer, pbuf, datlen);
       }
       else
         break;
       pbuf += datlen;
 
-      subfieldNext = (JAMSUBFIELDptr)((char *)subfieldNext + sizeof(JAMBINSUBFIELD) + datlen);
+/*      subfieldNext = (JAMSUBFIELDptr)((char *)subfieldNext + sizeof(JAMBINSUBFIELD) + datlen);
+*/
 
    } /* endwhile */
 
@@ -1207,41 +1219,39 @@ int write_hdr(sword handle, JAMHDR *Hdr)
    return (farwrite(handle, (byte far *)buf, HDR_SIZE) == HDR_SIZE);
 }
 
-int write_subfield(sword handle, JAMSUBFIELDptr *subfield, dword SubfieldLen)
+int write_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword SubfieldLen)
 {
    unsigned char *buf, *pbuf;
    dword datlen;
-   JAMSUBFIELDptr subfieldNext;
+   JAMSUBFIELD2ptr subfieldNext;
+	 int rc;
+
 
    buf = (unsigned char*)palloc(SubfieldLen);
    pbuf = buf;
    subfieldNext = *subfield;
-
-   while ((pbuf - buf) < SubfieldLen) {
-
+   while (subfieldNext) {
       /* 02 bytes LoID */
       put_word(pbuf, subfieldNext->LoID);
       pbuf += 2;
-
       /* 02 bytes HiID */
       put_word(pbuf, subfieldNext->HiID);
       pbuf += 2;
-
       /* 04 bytes DatLen */
       put_dword(pbuf, subfieldNext->DatLen);
+      
       datlen = subfieldNext->DatLen;
       pbuf += 4;
-
       /* DatLen bytes Buffer */
       memmove(pbuf, subfieldNext->Buffer, datlen);
       pbuf += datlen;
-
-      subfieldNext = (JAMSUBFIELDptr)((char *)subfieldNext + sizeof(JAMBINSUBFIELD) + datlen);
+/*      subfieldNext = (JAMSUBFIELDptr)((char *)subfieldNext + sizeof(JAMBINSUBFIELD) + datlen);*/
+      subfieldNext = subfieldNext->next;
 
    } /* endwhile */
-
-   return (farwrite(handle, (byte far *)buf, SubfieldLen) == SubfieldLen);
+   rc =(farwrite(handle, (byte far *)buf, SubfieldLen) == SubfieldLen);
+	 
+   pfree(buf);
+	 
+   return rc;
 }
-
-
-

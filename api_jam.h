@@ -148,6 +148,17 @@ typedef struct
 /*
 **  Message header subfield
 */
+
+typedef struct JAMSUBFIELD2struct
+{
+	word  LoID;
+	word  HiID;
+	dword DatLen;
+	byte *Buffer;
+	struct JAMSUBFIELD2struct *next;
+} JAMSUBFIELD2, *JAMSUBFIELD2ptr;
+
+
 typedef struct
     {
     word  LoID;                      /* Field ID, 0 - 0xffff */
@@ -155,7 +166,7 @@ typedef struct
     dword DatLen;                    /* Length of buffer that follows */
     byte  Buffer[1];                 /* DatLen bytes of data */
     }
-    JAMSUBFIELD, *JAMSUBFIELDptr;
+    JAMSUBFIELD1, *JAMSUBFIELD1ptr;
 
 typedef struct
     {
