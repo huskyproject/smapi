@@ -431,8 +431,13 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
+#ifndef EXPENTRY
 #define EXPENTRY _syscall
-#define mysleep(x) _sleep(x);
+#endif
+#define mysleep(x) sleep(x);
+
+#include <io.h>
+#include <dos.h>
 
 #define strcasecmp stricmp
 #define strncasecmp strncmpi

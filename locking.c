@@ -15,7 +15,7 @@
  *   sopen: provided by the RSX RTL
  *
  * UNIX:
- *   lock, unlock: implemented as calls to
+ *   lock, unlock: implemented as calls to fcntl
  *   sopen: implemented as open with subsequent shared lock
  *
  * OTHER:
@@ -250,6 +250,9 @@ int sopen(const char *name, int oflag, int ishared, int mode)
 
 #ifdef OS2
 #define INCL_DOSDATETIME
+#ifdef EXPENTRY
+#undef EXPENTRY
+#endif
 #include <os2.h>
 #endif
 
