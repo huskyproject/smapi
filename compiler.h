@@ -956,6 +956,13 @@ int qq(void)
 #       pragma message("Please set SH_DENYNONE to proprietary value: used for file locking")
 #     endif
 #   endif
+#   ifndef SH_DENYNO
+#     ifdef SH_DENYNONE
+#       define SH_DENYNO SH_DENYNONE
+#     else
+#       pragma message("Please set SH_DENYNO to proprietary value: used for file locking")
+#     endif
+#   endif
 /*   must be included before function redefenition '#define P_WAIT _P_WAIT'  */
 #   include <process.h>
 #   ifndef P_WAIT
