@@ -730,8 +730,8 @@ int qq(void)
 #    define W_OK 02
 #  endif
 
-#  ifndef INTEL
-#    define INTEL  /* using to select functions/macroses for read & write binary values */
+#  ifndef __LITTLE_ENDIAN__
+#    define __LITTLE_ENDIAN__  /* using to select functions/macroses for read & write binary values */
 #  endif
 
 #  define mymkdir       _mkdir
