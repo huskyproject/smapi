@@ -106,7 +106,7 @@ instdyn: $(LIBPREFIX)smapi.so.$(VER)
 # Better so :)
 	cd $(LIBDIR) ;\
 	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so.$(VERH) ;\
-	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VERH) $(LIBPREFIX)smapi.so
+	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so
 ifneq (~$(LDCONFIG)~, ~~)
 	$(LDCONFIG)
 endif
@@ -133,7 +133,7 @@ install: instdyn
 	$(INSTALL) $(IIOPT) unused.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) api_jam.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(ISLOPT) $(TARGET) $(LIBDIR)
-	$(INSTALL) $(ISLOPT) patmat$(OBJ) $(LIBDIR)
+#	$(INSTALL) $(ISLOPT) patmat$(OBJ) $(LIBDIR)
 
 uninstall:
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)alc.h 
@@ -149,7 +149,7 @@ uninstall:
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)unused.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_jam.h
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)patmat$(OBJ)
+#	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)patmat$(OBJ)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERH)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so
