@@ -1,4 +1,10 @@
 ----- cvs ci ------
+Thu Aug 24 12:15:35 UTC 2000
+sms:
+* init semaphores for squish routines in MsgOpenApi, destroy them in 
+  MsgCloseApi
+
+----- cvs ci ------
 Sun Aug 20 10:00:00 CET 2000
 oliver grimm ():
 * fix problems compiling smapi on 'newer' linux-systems

@@ -662,3 +662,14 @@ sword MSGAPI SquishValidate(byte  *szName)
   return fexist(szFile);
 }
 
+void _SquishInit()
+{
+  _SquishInitSem();
+}
+
+void _SquishDeInit()
+{
+  _SquishCloseOpenAreas();
+  _SquishFreeSem();
+}
+

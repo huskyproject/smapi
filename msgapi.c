@@ -43,25 +43,28 @@ word _stdc msgapierr = 0;
 
 struct _minf _stdc mi;
 
-sword EXPENTRY MsgOpenApi(struct _minf *minf)
+void _MsgCloseApi(void)
 {
-
 /*
-  TODO: Here is a good place to make an atexit()-call to close open areas 
-  if the app aborts.
+  TODO: DeInit (close open areas etc.) for all msgbase types
 */
 
+    _SquishDeInit();
+}
+
+sword EXPENTRY MsgOpenApi(struct _minf *minf)
+{
     unused(copyright);
     mi = *minf;
     mi.haveshare = shareloaded();
-    
-    atexit(_SquishCloseOpenAreas);
+
+    atexit(_MsgCloseApi);
     return 0;
 }
 
 sword EXPENTRY MsgCloseApi(void)
 {
-	_SquishCloseOpenAreas();
+    _MsgCloseApi();
     return 0;
 }
 
