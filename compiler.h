@@ -74,6 +74,12 @@
    * HAS_dos_read        - dos_read() presents or defined here
    * HAS_popen_close     - popen(); pclose() ("pipe open" and "pipe close")
    * HAS_strupr		 - strupr() presents
+   * HAS_strcasecmp      - strcasecmp()   usualy in <string.h>
+   * HAS_strncasecmp     - strncasecmp()  usualy in <string.h>
+   * HAS_stricmp         - stricmp()   eq strcasecmp()
+   * HAS_strnicmp        - strnicmp()  eq strncasecmp()
+   * HAS_strlwr          - strlwr()   lower string (string.h)
+   * HAS_strupr          - strupr()   upper string (string.h)
    *
    * HAS_MALLOC_H        - may be used "#include <malloc.h>" for malloc() etc.
    * HAS_DOS_H           - may be used "#include <dos.h>"
@@ -240,6 +246,7 @@
    GNU C on BeOS 5
    -------------------------------------------------------------------
    __BEOS__ __i386__ _X86_ __i386 i386  __ELF__ __INTEL__ __PIC__ __pic__
+   Values:
    __declspec(x) __attribute__((x))
    __cdecl __attribute__((__cdecl__))
    __stdcall __attribute__((__stdcall__))
@@ -1668,7 +1675,82 @@ int qq(void)
 #  define HAS_PROCESS_H   /* may use "#include <process.h> */
 
 /* End: IBM C/Set++ for OS/2 */
-#elif defined(__UNIX__) /* Unix clones: Linux, FreeBSD, SUNOS (Solaris), BeOS, MacOS etc. */
+#elif defined(__BEOS__)    /* BeOS (Unix clone, GNU C) */
+
+#  define _XPENTRY
+#  define SMAPI_EXT extern
+#  define _intr
+#  define _intcast
+#  define _veccast
+#  define _fast
+#  define _loadds
+#  ifndef _stdc
+#    define _stdc     __stdcall
+#  endif
+#  ifndef cdecl
+#    define cdecl     __cdecl
+#  endif
+
+#  define pascal
+#  define near
+#  undef  far
+#  define far
+
+#  define farread read
+#  define farwrite write
+
+#  define mymkdir(a) mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
+
+   int lock(int handle, long ofs, long length);   /* in locking.c */
+   int unlock(int handle, long ofs, long length);
+   int sopen(const char *name, int oflag, int ishared, int mode);
+
+#  define tell(a) lseek((a),0,SEEK_CUR)
+
+#  include <fcntl.h>
+
+#  ifndef SH_DENYNONE
+#    define SH_DENYNONE 0
+#  endif
+#  ifndef SH_DENYNO
+#    define SH_DENYNO 0
+#  endif
+#  ifndef SH_DENYALL
+#    define SH_DENYALL 1
+#  endif
+
+#  define mysleep(x) snooze(x*1000000l)
+#  define sleep(x) snooze(x*1000000l)
+#  define HAS_sleep     1
+#  define HAS_mktime	1  /* in <time.h> */
+#  define HAS_strftime	1  /* in <time.h> */
+#  define HAS_snprintf  1
+#  define HAS_vsnprintf 1
+#  define HAS_popen_close 1 /* popen(); pclose() */
+#  define HAS_strcasecmp  1
+#  define HAS_strncasecmp 1
+#  define HAS_strlwr      1
+#  define HAS_strupr      1
+
+#  define stricmp(s1,s2) strcasecmp(s1,s2)
+#  define strnicmp(s1,s2,z) strncasecmp(s1,s2,z)
+
+#  define HAS_DIRENT_H         1  /* <dirent.h> */
+#  define HAS_UNISTD_H         1  /* <unistd.h> */
+#  define HAS_PWD_H            1  /* <pwd.h> */
+#  define HAS_GRP_H            1  /* may be used "#include <grp.h>" */
+#  define HAS_SIGNAL_H         1  /* <signal.h> */
+#  define USE_STAT_MACROS      1
+#  define HAS_SYS_PARAM_H      1
+#  define HAS_SYS_SYSEXITS_H   1  /*  <sys/sysexits.h> */
+#  define HAS_SYS_WAIT_H       1  /* <sys/wait.h> */
+#  define HAS_SYS_STATVFS_H    1
+
+/* END: BeOS (Unix clone, GNU C) */
+
+#elif defined(__UNIX__) && !defined(__BEOS__) 
+/* Unix clones: Linux, FreeBSD, SUNOS (Solaris), MacOS etc. */
+
 #  define SMAPI_EXT extern
 #  define _stdc
 #  define _intr
@@ -1686,7 +1768,7 @@ int qq(void)
 #  define farread read
 #  define farwrite write
 
-#  if (defined(__APPLE__) && defined(__MACH__)) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(_AIX) || defined(__SUN__) || defined(__LINUX__) || defined(__osf__) || defined(__hpux) || defined(__BEOS__) || defined(__OpenBSD__) || defined(__CYGWIN__)
+#  if (defined(__APPLE__) && defined(__MACH__)) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(_AIX) || defined(__SUN__) || defined(__LINUX__) || defined(__osf__) || defined(__hpux) || defined(__OpenBSD__) || defined(__CYGWIN__)
 #    define mymkdir(a) mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
 #  else
 #    define mymkdir(a) __mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
@@ -1728,20 +1810,6 @@ int qq(void)
 #define HAS_SYS_VFS_H
 #endif
 
-
-/* Cygwin defines O_BINARY in sys/fcntl.h. */
-#  if !defined(__BEOS__) && !defined(__CYGWIN__)
-#    include <fcntl.h>
-#    ifndef O_BINARY
-#      define O_BINARY 0
-#    endif
-#  else                               /* VERY STRANGE !!!  */
-#    include <fcntl.h>
-#    ifndef O_BINARY
-#      define O_BINARY 0
-#    endif
-#  endif
-
 #  ifndef SH_DENYNONE
 #    define SH_DENYNONE 0
 #  endif
@@ -1761,6 +1829,7 @@ int qq(void)
 #    define sleep(x) snooze(x*1000000l)
 #    define HAS_sleep     1
 #    define HAS_SYS_SYSEXITS_H     1  /*  <sys/sysexits.h> */
+#    define HAS_mktime    1
 #  elif defined(__SUN__)
 #    define mysleep(x) usleep(x*1000000l)
 #    define sleep(x)   usleep(x*1000000l)
