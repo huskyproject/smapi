@@ -1,4 +1,11 @@
 ----- cvs ci ------
+Sun Aug 20 10:00:00 CET 2000
+oliver grimm ():
+* fix problems compiling smapi on 'newer' linux-systems
+* add -DHAS_SEMUN in huskymak.cfg for older systems, witch has "union semun"
+* fix broken SquishDeleteBase()
+
+----- cvs ci ------
 Sun Aug 13 21:25:00 CET 2000
 oliver grimm ():
 * remove api_sq.* (MSGAPI 0)
