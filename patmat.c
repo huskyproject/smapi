@@ -37,6 +37,7 @@
  */
 
 #include <string.h>
+#include "patmat.h"
 
 int patmat(char *raw, char *pat)
 {

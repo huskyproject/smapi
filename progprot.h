@@ -24,21 +24,21 @@
 void pascal far flush_handle2(int fd);
 #endif
 void _fast flush_handle(FILE * fp);
-int _fast fexist(char *filename);
-long _fast fsize(char *filename);
+SMAPI_EXT int _fast fexist(char *filename);
+SMAPI_EXT long _fast fsize(char *filename);
 char *_fast firstchar(char *strng, char *delim, int findword);
 char *_fast stristr(char *string, char *search);
 void _fast qksort(int a[], size_t n);
-int _fast direxist(char *directory);
-void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written);
+SMAPI_EXT int _fast direxist(char *directory);
+SMAPI_EXT void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written);
 union stamp_combo *_fast Get_Dos_Date(union stamp_combo *st);
 struct tm *_fast DosDate_to_TmDate(union stamp_combo *dosdate, struct tm *tmdate);
-union stamp_combo *_fast TmDate_to_DosDate(struct tm *tmdate, union stamp_combo *dosdate);
-char *_fast Strip_Trailing(char *str, char strip);
+SMAPI_EXT union stamp_combo *_fast TmDate_to_DosDate(struct tm *tmdate, union stamp_combo *dosdate);
+SMAPI_EXT char *_fast Strip_Trailing(char *str, char strip);
 char *_fast Add_Trailing(char *str, char add);
 void _fast Parse_NetNode(char *netnode, word * zone, word * net, word * node, word * point);
 void _fast ParseNN(char *netnode, word * zone, word * net, word * node, word * point, word all);
-char *_fast sc_time(union stamp_combo *sc, char *string);
+SMAPI_EXT char *_fast sc_time(union stamp_combo *sc, char *string);
 char *_fast strocpy(char *d, char *s);
 void _fast tdelay(int);
 int _fast setfsize(int fd, long size);
@@ -46,11 +46,11 @@ int _fast setfsize(int fd, long size);
 #define put_dword(ptr, val)	(*(dword *)(ptr) = (val))
 #define put_word(ptr, val)	(*(word *)(ptr) = (val))
 #else
-void put_word(byte *ptr, word value);
+SMAPI_EXT void put_word(byte *ptr, word value);
 void put_dword(byte *ptr, dword value);
 #endif
 
-int  _createDirectoryTree(const char *pathName);
+SMAPI_EXT int  _createDirectoryTree(const char *pathName);
 /*DOC
   Input:  a pointer to a \0 terminated string
   Output: 0 if successfull, 1 else

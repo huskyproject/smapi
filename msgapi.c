@@ -493,3 +493,9 @@ word EXPENTRY NumKludges(char *txt)
 
     return nk;
 }
+
+#ifdef _MAKE_DLL
+#   if defined(_MSC_VER) && (_MSC_VER >= 1200)
+word GetMsgapiErr() { return msgapierr; }
+#   endif
+#endif

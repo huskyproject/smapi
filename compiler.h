@@ -659,6 +659,21 @@ int lock(int handle, long ofs, long length);
 #define mysleep(x)
 #endif
 
+#ifdef _MAKE_DLL
+#   if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#       ifndef _SMAPI_EXT
+#           define SMAPI_EXT __declspec(dllimport)
+#       else
+#           define SMAPI_EXT __declspec(dllexport)
+#       endif //_SMAPI_EXT
+#   else 
+#       define SMAPI_EXT
+#   endif
+#else 
+#   define SMAPI_EXT
+#endif
+
+
 extern int waitlock(int, long, long);
 extern int waitlock2(int, long, long, long);
 

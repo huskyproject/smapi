@@ -291,6 +291,13 @@ struct _msgh
  */
 
 extern word _stdc msgapierr;
+
+#ifdef _MAKE_DLL
+#   if defined(_MSC_VER) && (_MSC_VER >= 1200)
+SMAPI_EXT  word GetMsgapiErr();
+#   endif
+#endif
+
 extern struct _minf _stdc mi;
 
 #define palloc(s)     malloc(s)
@@ -371,11 +378,11 @@ extern struct _minf _stdc mi;
 
 #define MsgCvtFTSCDateToBinary(a, b) ASCII_Date_To_Binary(a,b)
 
-sword EXPENTRY MsgOpenApi(struct _minf *minf);
-sword EXPENTRY MsgCloseApi(void);
+SMAPI_EXT sword EXPENTRY MsgOpenApi(struct _minf *minf);
+SMAPI_EXT sword EXPENTRY MsgCloseApi(void);
 
-MSG *EXPENTRY MsgOpenArea(byte * name, word mode, word type);
-int MsgDeleteBase(char * name, word type);
+SMAPI_EXT MSG *EXPENTRY MsgOpenArea(byte * name, word mode, word type);
+SMAPI_EXT int MsgDeleteBase(char * name, word type);
 sword EXPENTRY MsgValidate(word type, byte * name);
 sword EXPENTRY MsgBrowseArea(BROWSE * b);
 
@@ -397,9 +404,9 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type);
 sword MSGAPI JamValidate(byte * name);
 int JamDeleteBase(char * name);
 
-byte *EXPENTRY CvtCtrlToKludge(byte * ctrl);
-byte *EXPENTRY GetCtrlToken(byte * where, byte * what);
-byte *EXPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length);
+SMAPI_EXT byte *EXPENTRY CvtCtrlToKludge(byte * ctrl);
+SMAPI_EXT byte *EXPENTRY GetCtrlToken(byte * where, byte * what);
+SMAPI_EXT byte *EXPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length);
 void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
 word EXPENTRY NumKludges(char *txt);
 void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
