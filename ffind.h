@@ -51,7 +51,11 @@ struct ffind
     unsigned short ff_ftime;
     unsigned short ff_fdate;
     long ff_fsize;
+#if defined (__WATCOMC__) && ( defined(__OS2__) || defined(__NT__) )
+    char ff_name[256];                                              
+#else                                                               
     char ff_name[13];  /* urks! */
+#endif
 
 #ifdef OS2
 #if defined(__386__) || defined(__FLAT__)

@@ -20,6 +20,10 @@
 #ifndef __COMPILER_H__
 #define __COMPILER_H__
 
+#if defined ( __WATCOMC__ )
+#include <direct.h>
+#endif
+
 #if defined(OS2) && !defined(_MSC_VER)
 #ifndef __386__
 #define __386__
