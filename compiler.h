@@ -81,9 +81,14 @@
    * HAS_IO_H            - may be used "#include <io.h>"
    * HAS_UNISTD_H        - may be used "#include <unistd.h>"
    * HAS_SHARE_H         - may be used "#include <share.h>" for sopen() etc.
+   * HAS_PWD_H           - may be used "#include <pwd.h>"
    * HAS_UTIME_H         - may be used "#include <utime.h>"
    * HAS_SYS_UTIME_H     - #include <sys/utime.h> in alternate to <utime.h>
-   * HAS_PWD_H           - may be used "#include <pwd.h>
+   * HAS_SYS_PARAM_H     - #include <sys/params.h>
+   * HAS_SYS_MOUNT_H     - #include <sys/mount.h>
+   * HAS_SYS_WAIT_H      - #include <sys/wait.h>
+   * HAS_SYS_STATVFS_H   - #include <sys/statvfs.h>
+   * HAS_SYS_VFS_H       - #include <sys/vfs.h>
    *
    * USE_SYSTEM_COPY     - OS have system call for files copiing (see
    *                       copy_file() and move_file() functions)
@@ -111,6 +116,7 @@
    *                         instead farread() (implemented in structrw.c)
    * NEED_trivial_farwrite - macro-flag: need use my own trivial_farwrite()
    *                         instead farwrite() (implemented in structrw.c)
+   * MAXPATHLEN         - max path len value for disk i/o functions
    *
    ***************************************************************************
    * Memory and platforms
@@ -947,6 +953,11 @@ int qq(void)
 #    define SMAPI_EXT    extern
 #  endif /* ifdef _MAKE_DLL */
 
+#   include <limits.h>
+#   ifndef MAXPATHLEN
+#     define MAXPATHLEN _MAX_PATH
+#   endif
+
 /*   must be included before macro redefenition '# define SH_DENYNONE _SH_DENYNO' */
 #   include <share.h>
 #   ifndef SH_DENYNONE
@@ -1042,8 +1053,10 @@ int qq(void)
 #  define HAS_IO_H         /* may use "#include <io.h> */
 #  define HAS_SHARE_H      /* may use "#include <share.h> */
 #  define HAS_MALLOC_H     /* use "#include <malloc.h>" for malloc() etc. */
-#  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
 #  define HAS_DIRECT_H
+#  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
+#  define HAS_DIRECT_H     /* #include <direct.h> */
+#  define HAS_SYS_WAIT_H   /* #include <sys/wait.h> */
 
    SMAPI_EXT int unlock(int handle, long ofs, long length);
    SMAPI_EXT int lock(int handle, long ofs, long length);
@@ -1194,6 +1207,11 @@ int qq(void)
 #    define _XPENTRY pascal
 
 /*#  define mysleep(x) Sleep(x*1000) */ /* winbase.h */
+
+#    include <limits.h>
+#    ifndef MAXPATHLEN
+#      define MAXPATHLEN NAME_MAX
+#    endif
 
 /* End: WATCOM C/C++ for Windows NT */
 #  endif
@@ -1588,6 +1606,29 @@ int qq(void)
 #  ifndef strnicmp
 #    define strnicmp strncasecmp
 #  endif
+
+#if !defined(USG)
+#define HAS_SYS_PARAM_H
+#include <sys/param.h>
+#endif
+
+#if (defined(BSD) && (BSD >= 199103))
+  /* now we can be sure we are on BSD 4.4 */
+#define HAS_SYS_MOUNT_H
+#endif
+  /* we are not on any BSD-like OS */
+  /* list other UNIX os'es without getfree mechanism here */
+#if defined( __svr4__ ) || defined( __SVR4 ) || defined (__linux__) && defined (__GLIBC__)
+#define HAS_SYS_STATVFS_H
+#if !defined (__BEOS__)  /* Strange... BeOS is not SVR4, and not linux*/
+#define HAS_SYS_VFS_H
+#endif
+#endif
+
+#if defined (__linux__) && !defined(__GLIBC__)
+#define HAS_SYS_VFS_H
+#endif
+
 
 /* Cygwin defines O_BINARY in sys/fcntl.h. */
 #  if !defined(__BEOS__) && !defined(__CYGWIN__)
