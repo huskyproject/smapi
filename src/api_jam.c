@@ -1059,21 +1059,6 @@ void Jam_CloseFile(JAMBASE *jambase)
    } /* endif */
 }
 
-static int gettz(void)
-{
-   struct tm *tm;
-   time_t t, gt;
-
-   t = time(NULL);
-   tzset();
-   tm = gmtime (&t);
-   tm->tm_isdst = 0;
-   gt = mktime(tm);
-   tm = localtime (&t);
-   tm->tm_isdst = 0;
-   return (int)(((long)mktime(tm)-(long)gt));
-}
-
 /*  Return values:
  *  0 = error
  *  1 = success
