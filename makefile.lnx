@@ -6,7 +6,7 @@ LIB=	ar
 
 ALL: $(TARGET) libsmapilnx.so.2.0
 
-TARGET=	smapilnx.a
+TARGET=	libsmapilnx.a
 
 OBJS=	1stchar.o  \
 	api_sdm.o  \
