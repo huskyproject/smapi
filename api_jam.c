@@ -860,13 +860,14 @@ static dword _XPENTRY JamUidToMsgn(MSGA * jm, UMSGID umsgid, word type)
      if (umsg < msgnum)
        left = new + 1;
      else if (umsg > msgnum)
-       right = new - 1;
+       if( new>0 ) right = new - 1;
+       else right = 0;
      else
        return new;
    }
    if (type == UID_EXACT) return 0;
    if (type == UID_PREV)
-     return (right < 0) ? 0 : right;
+     return right;
    return (left > jm->num_msg) ? jm->num_msg : left;
 }
 
