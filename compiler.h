@@ -734,11 +734,19 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define dup		    _dup
 #define mktemp		_mktemp
 #define fdopen		_fdopen
-#define O_BINARY	_O_BINARY
-#define O_RDWR		_O_RDWR
-#define S_IFMT		_S_IFMT
-#define S_IFDIR		_S_IFDIR
 
+#if !defined(O_BINARY) && defined(_O_BINARY)
+#define O_BINARY	_O_BINARY
+#endif
+#if !defined(O_RDWR) && defined(_O_RDWR)
+#define O_RDWR		_O_RDWR
+#endif
+#if !defined(S_IFMT) && defined(_S_IFMT)
+#define S_IFMT		_S_IFMT
+#endif
+#if !defined(S_IFDIR) && defined(_S_IFDIR)
+#define S_IFDIR		_S_IFDIR
+#endif
 
 #endif
 
@@ -746,6 +754,3 @@ extern int waitlock(int, long, long);
 extern int waitlock2(int, long, long, long);
 
 #endif
-
-
-
