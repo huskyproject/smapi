@@ -1,3 +1,8 @@
+2002-11-03 Sunday 00:05  d_sergienko
+
+	* api_jam.c (1.91), api_jam.h (1.11), msgapi.c (1.28), msgapi.h
+	(1.51): Added closing all opened JAM areas on MsgCloseApi()
+
 2002-11-01 Friday 23:51  stas_degteff
 
 	* msgapi.h (1.50): Fix version number (now informational only)
