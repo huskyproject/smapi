@@ -136,16 +136,26 @@
    -------------------------------------------------------------------
     __GNUC__          Major version number (2.95.* : 2)
     __GNUC_MINOR__    Minor version number (2.95.* : 95)
+    __VERSION__       String's compiler version representation
    ===================================================================
    MINGW32 for 32-bit Windows NT on Intel and AXP; (GNU C clone)
    MINGW32 cross-compiler from unixes;             (GNU C clone)
    Cygwin GCC with option -mno-cygwin.             (GNU C clone)
    -------------------------------------------------------------------
-    __MINGW32__
+    __MINGW32__ __GNUC__  __STDC__
+   --CygWin v1.3.16-1 with gcc 3.2:-----------------------------------
+     __GNUC__=3 (0x3); __GNUC_MINOR__=2 (0x2)
+     __VERSION__=3.2 20020927 (prerelease)
+   --MinGW v1.1 with gcc-2.95.3---------------------------------------
+   __GNUC__=2 (0x2); __GNUC_MINOR__=95 (0x5F)
+   __VERSION__=2.95.3-6 (mingw special)
    ===================================================================
    DJGPP (DOS DPMI)                          (GNU C clone)
    -------------------------------------------------------------------
-    __DJGPP__ MSDOS
+    __DJGPP__ MSDOS __MSDOS__  __GNUC__  __STDC__
+   Some values:
+   __GNUC__=3 (0x3); __GNUC_MINOR__=2 (0x2)
+   __VERSION__=3.2
    ===================================================================
    EMX (OS/2)                                (GNU C clone)
    -------------------------------------------------------------------
@@ -174,7 +184,7 @@
    ===================================================================
    Watcom C: OS/2 32bit target
    -------------------------------------------------------------------
-   __WATCOMC__  __OS2__ __386__ M_I386 _M_I386
+   __WATCOMC__  __OS2__ __FLAT__ __386__ M_I386 _M_I386 __STDC__
    ===================================================================
    Watcom C: OS/2 16bit target
    -------------------------------------------------------------------
@@ -182,7 +192,7 @@
    ===================================================================
    Watcom C: Windows NT and Windows 95 target (-bt=nt)
    -------------------------------------------------------------------
-   __WATCOMC__  __NT__ __386__ M_I386 _M_I386
+   __WATCOMC__  __NT__ __FLAT__ __386__ M_I386 _M_I386
    ===================================================================
    Watcom C: Windows 16bit or 32bit target (-bt=windows), not win95/nt
    -------------------------------------------------------------------
@@ -203,9 +213,9 @@
    ===================================================================
    Watcom C: DOS/4G destination (-bt=dos4g) - from WatcomC help
    -------------------------------------------------------------------
-   __WATCOMC__  __DOS__ _DOS  MSDOS __386__ __DOS4G__ M_I386 _M_I386
+   __WATCOMC__ __DOS4G__  __FLAT__ __386__ __DOS4G__ M_I386 _M_I386
    ===================================================================
-   Watcom C other - from WatcomC help
+   Watcom C other - from WatcomC help & test program
    -------------------------------------------------------------------
    The __NETWARE__ and __NETWARE_386__ macros are defined when the build
    target is "NETWARE" (Novell NetWare)
@@ -215,6 +225,7 @@
    as a C++ compiler. Also __WATCOM_CPLUSPLUS
    -------------------------------------------------------------------
    __WATCOMC__ value is compiler_version*100
+   __WATCOMC__=1100 (0x44C) - Watcom C 11.0c
    ===================================================================
    Watcom C compiler options macros - from WatcomC help
    -------------------------------------------------------------------
@@ -245,7 +256,8 @@
    ===================================================================
    Borland C and Turbo C
    -------------------------------------------------------------------
-   __TURBOC__  is 397 (0x18D) for TurboC 2.0
+   __TURBOC__  = 397 (0x18D) for TurboC 2.0
+   __TURBOC__  =1360 (0x550) for Borland C++ 5.5
    ===================================================================
    Borland C and Turbo C for DOS
    -------------------------------------------------------------------
@@ -253,7 +265,7 @@
    ===================================================================
    Borland C for Win32
    -------------------------------------------------------------------
-   __TURBOC__ __WIN32__
+   __TURBOC__ __WIN32__ __FLAT__
    ===================================================================
    Borland C for OS/2
    -------------------------------------------------------------------
@@ -264,6 +276,8 @@
    Microsoft Visual C/C++
    -------------------------------------------------------------------
    _MSC_VER    value is greated or eq 1200
+   _MSC_VER=1200 (0x4B0) - MS Visual C++ v6.0 sp5:
+   --------
    _WIN32      Defined for applications for Win32. Always defined.
    _CHAR_UNSIGNED Default char type is unsigned. Defined when /J is specified.
    __cplusplus Defined for C++ programs only.
