@@ -340,9 +340,14 @@ int lock(int handle, long ofs, long length);
 #define lseek _lseek
 #define tell _tell
 #define sleep _sleep
+#define write _write
+#define read _read
+#if !defined(__CYG__)
+#define stat _stat
 
 #define stricmp _strcmpi
 #define strcmpi _strcmpi
+#endif
 
 /*extern int __mkdir (__const__ char *name);*/
 
@@ -624,6 +629,10 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #define mode_t int
+
+int unlock(int handle, long ofs, long length);
+int lock(int handle, long ofs, long length);
+
 #include <direct.h>
 #define mymkdir _mkdir
 
