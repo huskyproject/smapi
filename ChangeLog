@@ -1,3 +1,48 @@
+2003-01-16 Thursday 16:58  gerritkuehn
+
+	* strftim.c (1.5): Comment out not available function.
+
+2003-01-16 Thursday 16:57  gerritkuehn
+
+	* locking.c (1.36): Fixed typo: HAS_INUSTD_H -> HAS_UNISTD_H.
+
+2003-01-16 Thursday 16:56  gerritkuehn
+
+	* genmsgid.c (1.17), sq_area.c (1.27): Added inclusion of
+	compiler.h.
+
+2003-01-16 Thursday 16:56  gerritkuehn
+
+	* compiler.h (1.149): Added defines for FreeBSD and Linux
+	(HAS_sleep, HAS_strftime).  Fixed syntax error (define <fcntl.h> ->
+	include <fcntl.h>).  Fixed pragma/warning cut&paste error.
+
+2003-01-16 Thursday 14:53  mche
+
+	* compiler.h (1.148): undef HAS_SYS_WAIT_H for __MSVC__
+
+2003-01-16 Thursday 13:13  stas_degteff
+
+	* compiler.h (1.147): New defines: HAS_SYS_SYSEXITS_H 
+	HAS_SYSEXITS_H	HAS_GRP_H
+
+2003-01-16 Thursday 10:10  stas_degteff
+
+	* compiler.h (1.146): Remove obsoleted checks; add defines for some
+	unixes
+
+2003-01-16 Thursday 08:07  stas_degteff
+
+	* compiler.h (1.145): Information about Microsoft Quick C
+
+2003-01-16 Thursday 08:04  stas_degteff
+
+	* compiler.h (1.144): New declaration for header files
+
+2003-01-16 Thursday 03:53  andr_lukyanov
+
+	* makefile.mgw (1.20): fix Mingw32 compilation
+
 2003-01-15 Wednesday 11:20  stas_degteff
 
 	* compiler.h (1.143): fix DJGPP compilation
