@@ -1,3 +1,15 @@
+2003-03-07 Friday 07:21  sfpavel
+
+	* compiler.h (1.173), cvtdate.c (1.14), fexist.c (1.33), ffind.c
+	(1.24), ffind.h (1.21), genmsgid.c (1.22), gnmsgid.c (1.9),
+	msgapi.h (1.71), parsenn.c (1.4), patmat.c (1.8), setfsize.c
+	(1.18), tdelay.c (1.17), typedefs.h (1.7): Remove old files
+
+2003-03-07 Friday 07:08  sfpavel
+
+	* makefile.mvc (1.15), makefile.mvcdll (1.17): Reorganize makefiles
+	for MS VC
+
 2003-03-05 Wednesday 16:31  sfpavel
 
 	* msgapi.h (1.70), old_msg.h (1.5), prog.h (1.13), stamp.h (1.7),
