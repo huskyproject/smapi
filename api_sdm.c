@@ -22,20 +22,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if !defined(__UNIX__) && !defined(SASC)
-#include <io.h>
-#endif
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#if !defined(__UNIX__) && !defined(SASC)
+#include "compiler.h"
+
+#ifdef HAS_IO_H
+#include <io.h>
+#endif
+
+#ifdef HAS_SHARE_H
 #include <share.h>
 #endif
 
-#ifdef __TURBOC__
+#ifdef HAS_DOS_H
 #include <dos.h>
+#endif
+
+#ifdef HAS_MALLOC_H
+#include <malloc.h>
 #endif
 
 #ifdef __BEOS__
@@ -47,7 +53,6 @@
 
 #include "prog.h"
 #include "dr.h"
-#include "alc.h"
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sdm.h"

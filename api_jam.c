@@ -7,26 +7,29 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-
-#if !defined(__UNIX__) && !defined(SASC)
-#include <io.h>
-#endif
-
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "compiler.h"
 
-#if !defined(__UNIX__) && !defined(SASC)
+#ifdef HAS_IO_H
+#include <io.h>
+#endif
+
+#ifdef HAS_SHARE_H
 #include <share.h>
+#endif
+
+#ifdef HAS_MALLOC_H
+#include <malloc.h>
 #endif
 
 #define MSGAPI_HANDLERS
 
-#include <errno.h>
 #include "dr.h"
 #include "prog.h"
 #include "stamp.h"
-#include "alc.h"
 #include "msgapi.h"
 #include "api_jam.h"
 #include "api_jamp.h"
