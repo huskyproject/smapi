@@ -402,7 +402,7 @@ int read_sqidx(sword handle, SQIDX *psqidx, dword n)
     {
         if (accel_buffer == NULL)
         {
-            if (read(handle, buf, SQIDX_SIZE) != SQIDX_SIZE)
+            if (farread(handle, buf, SQIDX_SIZE) != SQIDX_SIZE)
             {
                 return 0;
             }
@@ -413,7 +413,7 @@ int read_sqidx(sword handle, SQIDX *psqidx, dword n)
             if (!(i % maxbuf))
             {
                 rd = (i + maxbuf > n) ? (n - i) : maxbuf;
-                if (read(handle, accel_buffer, rd * SQIDX_SIZE) !=
+                if (farread(handle, accel_buffer, rd * SQIDX_SIZE) !=
                     (int)(rd * SQIDX_SIZE))
                 {
                     free(accel_buffer);
@@ -472,7 +472,7 @@ int write_sqidx(sword handle, SQIDX *psqidx, dword n)
         {
             pbuf = buf;
         }
- 
+
                                 /* 4 bytes "ofs" */
         put_dword(pbuf, psqidx[i].ofs);
         pbuf += 4;
@@ -487,7 +487,7 @@ int write_sqidx(sword handle, SQIDX *psqidx, dword n)
 
         if (accel_buffer == NULL)
         {
-            if (write(handle, buf, SQIDX_SIZE) != SQIDX_SIZE)
+            if (farwrite(handle, buf, SQIDX_SIZE) != SQIDX_SIZE)
             {
                 return 0;
             }
@@ -497,8 +497,8 @@ int write_sqidx(sword handle, SQIDX *psqidx, dword n)
             if (i == n - 1 || (!((i + 1) % maxbuf)))
             {
                 wr = (!((i + 1) % maxbuf)) ? maxbuf : (n % maxbuf);
-                
-                if (write(handle, accel_buffer, wr * SQIDX_SIZE) !=
+
+                if (farwrite(handle, accel_buffer, wr * SQIDX_SIZE) !=
                     (wr * SQIDX_SIZE))
                 {
                     free(accel_buffer);

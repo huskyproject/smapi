@@ -29,7 +29,7 @@
 #include <unistd.h>
 #endif
 
-#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX)
+#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__)
 #include <dos.h>
 #endif
 

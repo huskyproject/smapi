@@ -137,6 +137,53 @@ int unlock(int handle, long ofs, long length)
     return 0;
 }
 
+#elif defined(__MINGW32__)
+
+#include <io.h>
+
+int waitlock(int handle, long ofs, long length)
+{
+    long offset = tell(handle);
+
+    if (offset == -1)
+        return -1;
+
+    _locking(handle, 1, length);
+    lseek(handle, offset, SEEK_SET);
+
+    return 0;
+}
+
+int lock(int handle, long ofs, long length)
+{
+    long offset = tell(handle);
+    int r;
+
+    if (offset == -1)
+        return -1;
+
+    r = _locking(handle, 2, length);
+    lseek(handle, offset, SEEK_SET);
+
+    if  (r)
+       return -1;
+
+    return 0;
+}
+
+int unlock(int handle, long ofs, long length)
+{
+    long offset = tell(handle);
+
+    if (offset == -1)
+        return -1;
+
+    _locking(handle, 0, length);
+    lseek(handle, offset, SEEK_SET);
+
+    return 0;
+}
+
 #elif defined(UNIX)
 
 #include <fcntl.h>

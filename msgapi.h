@@ -50,6 +50,10 @@ struct _msgh;
 struct _xmsg;
 struct _netaddr;
 
+#ifdef __MINGW32__
+#define MSG MSGAPIMSG
+#endif
+
 typedef struct _msgapi MSG;
 typedef struct _msgapi *HAREA;
 typedef struct _msgh MSGH;

@@ -306,6 +306,80 @@
 
 #define EXPENTRY
 
+#elif defined(__MINGW32__)
+
+/* MINGW32 for 32-bit Windows NT on Intel and AXP */
+
+#pragma pack(1)
+
+#define _stdc
+#define _intr
+#define _intcast
+#define _veccast
+#define _fast
+#define _loadds
+#define cdecl
+#define pascal
+#define near
+#define far
+
+#define farread _read
+#define farwrite _write
+#define mymkdir _mkdir
+#define fdopen _fdopen
+#define close _close
+#define open _open
+#define lseek _lseek
+#define tell _tell
+
+#define stricmp _strcmpi
+#define strcmpi _strcmpi
+
+/*extern int __mkdir (__const__ char *name);*/
+
+int unlock(int handle, long ofs, long length);
+int lock(int handle, long ofs, long length);
+#define sopen _sopen
+
+/* older mingw headers are too lazy ... */
+#include <share.h>
+#ifndef SH_DENYRW
+#define SH_DENYRW 0x10
+#endif
+#ifndef SH_DENYWR
+#define SH_DENYWR 0x20
+#endif
+#ifndef SH_DENYRD
+#define SH_DENYRD 0x30
+#endif
+#ifndef SH_DENYNO
+#define SH_DENYNO 0x40
+#endif
+
+#define EXPENTRY
+
+#elif defined(__TURBOC__) && defined(WINNT)
+
+/* Borland C/C++ for Win32 */
+
+#pragma option -a1
+
+#define _stdc cdecl
+#define _intr
+#define _intcast
+#define _veccast
+#define _fast pascal
+#define _loadds
+#define near
+#define far
+
+#define farread read
+#define farwrite write
+
+#define EXPENTRY
+
+
+
 #elif defined(__EMX__)
 
 /* EMX for 32-bit OS/2 and RSX for Windows NT */

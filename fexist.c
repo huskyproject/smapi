@@ -24,7 +24,7 @@
 #include "ffind.h"
 #include "prog.h"
 
-#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX)
+#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__)
 #include <dos.h>
 #endif
 
@@ -107,13 +107,27 @@ int _fast direxist(char *directory)
 
 #elif defined(OS2) || defined(__NT__)
 
-#include <io.h>
+#ifdef OS2
+#ifdef EXPENTRY
+#undef EXPENTRY
+#endif
+
+#define INCL_DOSFILEMGR
+#include <os2.h>
+#else
+#include <windows.h>
+#endif
 
 int _fast direxist(char *directory)
 {
-    int ret;
-    char *tempstr;
+    char *tempstr, *p;
     size_t l;
+#ifdef __NT__
+    DWORD attr;
+#else
+    FILESTATUS3 s;
+#endif
+
 
     tempstr = strdup(directory);
     if (tempstr == NULL)
@@ -137,10 +151,32 @@ int _fast direxist(char *directory)
         tempstr[l - 1] = '\0';
     }
 
-    ret = !access(tempstr, 06);
+    for (p=tempstr; *p; p++)
+    {
+        if (*p == '/')
+          *p='\\';
+    }
 
+#ifdef OS2
+    if (DosQueryPathInfo((PSZ)tempstr, FIL_STANDARD,
+                         (PVOID)&s, sizeof(s)) == 0)
+    {
+       free (tempstr);
+       if (s.attrFile & FILE_DIRECTORY)
+          return TRUE;
+       else
+          return FALSE;
+    }
+    free (tempstr);
+    return FALSE;
+#else
+    attr = GetFileAttributes(tempstr);
     free(tempstr);
-    return ret;
+    if ((attr != 0xFFFFFFFF) && (attr & FILE_ATTRIBUTE_DIRECTORY))
+       return TRUE;
+    else
+       return FALSE;
+#endif
 }
 
 #elif defined(UNIX) || defined(SASC)

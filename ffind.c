@@ -26,7 +26,7 @@
 #include <dir.h>
 #endif
 
-#if !defined( __IBMC__) && !defined(UNIX)
+#if !defined( __IBMC__) && !defined(UNIX) && !defined(__MINGW32__)
 #include <dos.h>
 #endif
 
@@ -191,7 +191,7 @@ FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
             ff = NULL;
         }
 
-#elif defined(__RSXNT__)
+#elif defined(__RSXNT__) || defined(__MINGW32__)
 
         ff->hDirA = FindFirstFile(filespec, &(ff->InfoBuf));
         ff->attrib_srch = attribute;
@@ -315,7 +315,7 @@ int _fast FFindNext(FFIND * ff)
             strcat(ff->ff_name, ff->info.fib_FileName);
             rc = 0;
         }
-#elif defined(__RSXNT__)
+#elif defined(__RSXNT__) || defined(__MINGW32__)
 
         do
         {
@@ -329,10 +329,11 @@ int _fast FFindNext(FFIND * ff)
             }
             else
             {
+
                 if (strlen(ff->InfoBuf.cFileName) < sizeof(ff->ff_name))
                 {
-                    if ((!ff->InfoBuf.dwFileAttributes &
-                         FILE_ATTRIBUTE_DIRECTORY) ||
+                    if ((!(ff->InfoBuf.dwFileAttributes &
+                          FILE_ATTRIBUTE_DIRECTORY)) ||
                         (ff->attrib_srch & MSDOS_SUBDIR))
                     {
                         break;
@@ -343,6 +344,7 @@ int _fast FFindNext(FFIND * ff)
 
         if (ff->hDirA != INVALID_HANDLE_VALUE)
         {
+
             strcpy(ff->ff_name, ff->InfoBuf.cFileName);
             ff->ff_fsize = ff->InfoBuf.nFileSizeLow;
             ff->ff_attrib = 0;
@@ -352,6 +354,7 @@ int _fast FFindNext(FFIND * ff)
             }
             rc = 0;
         }
+
 #else
 #error Unable to determine compiler and target operating system!
 #endif
@@ -378,7 +381,7 @@ void _fast FFindClose(FFIND * ff)
         }
 #endif
 
-#ifdef __RSXNT__
+#if defined(__RSXNT__) || defined(__MINGW32__)
         if (ff->hDirA != INVALID_HANDLE_VALUE)
         {
             FindClose(ff->hDirA);

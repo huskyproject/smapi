@@ -33,7 +33,7 @@
 #include <dos.h>
 #endif
 
-#ifdef __RSXNT__
+#if defined(__RSXNT__) || defined(__MINGW32__)
 #define NOUSER
 #include <windows.h>
 #endif
@@ -52,8 +52,8 @@ struct ffind
     unsigned short ff_fdate;
     long ff_fsize;
 #if defined (__WATCOMC__) && ( defined(__OS2__) || defined(__NT__) )
-    char ff_name[256];                                              
-#else                                                               
+    char ff_name[256];
+#else
     char ff_name[13];  /* urks! */
 #endif
 
@@ -77,14 +77,14 @@ struct ffind
     char prefix[FILENAME_MAX];
 #endif
 
-#ifdef __RSXNT__
+#if defined(__RSXNT__) || defined(__MINGW32__)
     WIN32_FIND_DATA InfoBuf;
     HANDLE hDirA;
     char attrib_srch;
 #endif
 };
 
-/* 
+/*
  * I prefixed the functions below with an additional F in order to
  * prevent name clashes with the Win32 API
  */

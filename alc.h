@@ -22,7 +22,7 @@
 
 #include "compiler.h"
 
-#if defined(_MSC_VER) || defined(__TURBOC__) || defined(__EMX__) || defined(__IBMC__) || defined(__WATCOMC__) || defined(__HIGHC__)
+#if defined(_MSC_VER) || defined(__TURBOC__) || defined(__EMX__) || defined(__IBMC__) || defined(__WATCOMC__) || defined(__HIGHC__) || defined(__MINGW32__)
 #include <malloc.h>
 #elif defined(UNIX) || defined(SASC) || defined(__DJGPP__)
 #else
