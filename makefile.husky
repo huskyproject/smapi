@@ -93,8 +93,8 @@ install: instdyn
 	$(INSTALL) $(IIOPT) progprot.h $(INCDIR)/smapi
 	$(INSTALL) $(IIOPT) stamp.h $(INCDIR)/smapi
 	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)/smapi
-	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.a $(LIBDIR)
-	$(INSTALL) $(ILOPT) patmat.o $(LIBDIR)
+	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
+	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
 
 clean:
 	-$(RM) *$(OBJ) *~
