@@ -544,6 +544,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 
 #ifndef stricmp
 #define stricmp strcasecmp
+#define strnicmp strncasecmp
 #endif
 
 /* Cygwin defines O_BINARY in sys/fcntl.h. Why different from other UNIXES? */
