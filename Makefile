@@ -54,6 +54,7 @@ OBJS=	1stchar$(OBJ)  \
 	fexist$(OBJ)   \
 	ffind$(OBJ)    \
 	flush$(OBJ)    \
+	genmsgid$(OBJ) \
 	locking$(OBJ)  \
 	months$(OBJ)   \
 	msgapi$(OBJ)   \
