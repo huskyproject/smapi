@@ -958,12 +958,11 @@ int qq(void)
 #  endif
 
   /*
-   *  Code is really "near", but "far" in this context means that we
-   *  want a 32-bit pointer (vice 16-bit).
+   *  Code is really "near"
    */
 
-#  define __FARCODE__
-#  define __FARDATA__
+#  undef __FARCODE__
+#  undef __FARDATA__
 
 /* Everything should be "near" in the flat model */
 
@@ -974,12 +973,12 @@ int qq(void)
 
 #  ifdef far
 #    undef far
-#    define far near
+#    define far
 #  endif
 
 #  ifdef huge
 #    undef huge
-#    define huge near
+#    define huge
 #  endif
 
 #endif  /* ifdef __FLAT__ */
@@ -1178,6 +1177,16 @@ int qq(void)
 #    define _fast _fastcall
 #  else
 #    define _fast pascal
+#  endif
+
+#  define farmalloc(n)    _fmalloc(n)
+#  define farfree(p)      _ffree(p)
+#  define farrealloc(p,n) _frealloc(p,n)
+
+#  if _MSC_VER >= 600
+#    define farcalloc(a,b) _fcalloc(a,b)
+#  else
+     void far *farcalloc(int n, int m);
 #  endif
 
   int unlock(int handle, long ofs, long length);
@@ -1685,7 +1694,7 @@ int qq(void)
 #  define _fast
 #  define _loadds
 #  ifndef _stdc
-#    define _stdc     __stdcall
+#    define _stdc     /*__stdcall*/ /* produce compiler warnings */
 #  endif
 #  ifndef cdecl
 #    define cdecl     __cdecl
@@ -1736,7 +1745,7 @@ int qq(void)
 #  define strnicmp(s1,s2,z) strncasecmp(s1,s2,z)
 
 #  define HAS_DIRENT_H         1  /* <dirent.h> */
-#  define HAS_UNISTD_H         1  /* <unistd.h> */
+/*#  define HAS_UNISTD_H         1*/  /* <unistd.h> can't use because of conflicts with be/kernel/OS.h */
 #  define HAS_PWD_H            1  /* <pwd.h> */
 #  define HAS_GRP_H            1  /* may be used "#include <grp.h>" */
 #  define HAS_SIGNAL_H         1  /* <signal.h> */
@@ -1748,7 +1757,7 @@ int qq(void)
 
 /* END: BeOS (Unix clone, GNU C) */
 
-#elif defined(__UNIX__) && !defined(__BEOS__) 
+#elif defined(__UNIX__) && !defined(__BEOS__)
 /* Unix clones: Linux, FreeBSD, SUNOS (Solaris), MacOS etc. */
 
 #  define SMAPI_EXT extern
@@ -1916,6 +1925,42 @@ int qq(void)
 #endif   /* End compiler-specific decrarations */
 
 /**** Test defines and/or set default values *********************************/
+
+#if defined(__FLAT__)      /* 32 bit or 64 bit  = moved from smapi/prog.h */
+
+  #define farcalloc  calloc
+  #define farmalloc  malloc
+  #define farrealloc realloc
+  #define farfree    free
+  #define _fmalloc   malloc
+
+#elif defined(__FARDATA__)  /* 16 bit (possible obsolete?) - moved from smapi/prog.h */
+
+  #define malloc(n)     farmalloc(n)
+  #define calloc(n,u)   farcalloc(n,u)
+  #define free(p)       farfree(p)
+  #define realloc(p,n)  farrealloc(p,n)
+
+#endif /* defined(__FARDATA__) */
+
+/* Default separator for path specification */
+
+#ifndef PATH_DELIM   /* moved from smapi/prog.h */
+ #if defined(__UNIX__) || defined(__AMIGA__)
+  #define PATH_DELIM  '/'
+ #else
+  #define PATH_DELIM  '\\'
+ #endif
+#endif
+
+#ifndef PATHLEN
+ #ifdef MAXPATHLEN
+  #define PATHLEN   MAXPATHLEN
+ #else                    /* moved from smapi/prog.h */ /* OS-depended vallue! */
+  #define PATHLEN   120   /* Max. length of path */
+ #endif
+#endif
+
 
 #ifdef HAS_SHARE_H
 #  include <share.h>

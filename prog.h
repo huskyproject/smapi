@@ -26,80 +26,24 @@
 #include "typedefs.h"
 #include "stamp.h"
 
-#ifdef HAS_MALLOC_H
-#include <malloc.h>
-#endif
-
-#ifdef __FARDATA__
-
-#ifndef ZREE
-#define malloc(n)     farmalloc(n)
-#define calloc(n,u)   farcalloc(n,u)
-#define free(p)       farfree(p)
-#define realloc(p,n)  farrealloc(p,n)
-#endif /* defined(ZREE) */
-
-#endif /* defined(__FARDATA__) */
-
-#if defined(__MSVC__)
-
-#ifndef ZREE
-
-#define farmalloc(n)    _fmalloc(n)
-#define farfree(p)      _ffree(p)
-#define farrealloc(p,n) _frealloc(p,n)
-
-void far *farcalloc(int n, int m);
-
-#ifdef _MSC_VER
-#if _MSC_VER >= 600
-#define farcalloc(a,b) _fcalloc(a,b)
-#endif
-#endif
-
-#endif /* defined(ZREE) */
-
-#endif
-
-#undef farcalloc
-#undef farmalloc
-#undef farrealloc
-#undef farfree
-#undef _fmalloc
-
-#define farcalloc  calloc
-#define farmalloc  malloc
-#define farrealloc realloc
-#define farfree    free
-#define _fmalloc   malloc
-
 #ifndef TRUE
-#define FALSE 0
 #define TRUE 1
 #endif
 
-#ifdef PATHLEN
-#undef PATHLEN
+#ifndef FALSE
+#define FALSE 0
 #endif
-
-/* Default separator for path specification */
-
-#if defined(__UNIX__) || defined(__AMIGA__)
-#define PATH_DELIM  '/'
-#else
-#define PATH_DELIM  '\\'
-#endif
-
-#define PATHLEN           120   /* Max. length of a path */
 
 #define ZONE_ALL  56685u
 #define NET_ALL   56685u
 #define NODE_ALL  56685u
 #define POINT_ALL 56685u
 
+/* Not used
 #define eqstr(str1,str2)      (strcmp(str1,str2)==0)
 #define eqstri(str1,str2)     (stricmp(str1,str2)==0)
 #define eqstrn(str1,str2,n)   (strncmp(str1,str2,n)==0)
+*/
 
 extern char _stdc months[][10];
 extern char _stdc weekday[][10];
