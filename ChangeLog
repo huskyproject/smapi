@@ -1,3 +1,7 @@
+2002-09-12 Thursday 11:13  stas_degteff
+
+	* compiler.h (1.93): Fix declarations for cygwin "-mno-cygwin"
+
 2002-09-11 Wednesday 11:57  mche
 
 	* makefile.aix (1.2): make fidoconf compilable under AIX
