@@ -20,6 +20,13 @@
 #ifndef __COMPILER_H__
 #define __COMPILER_H__
 
+
+#if defined(__GNUC__) && (__GNUC__==2) && (__GNUC_MINOR__>95)
+#warning Latest GNU C branch 2 is 2.95.*. Your version is not GNU C and not supported. You may use it for your risk.
+#warning Download and install GNU C release from www.gnu.org only, please.
+#endif
+
+
 #define SMAPI_EXT
 
 /*
