@@ -71,8 +71,6 @@ MSGA *MSGAPI SdmOpenArea(byte * name, word mode, word type)
 {
     MSGA *mh;
 
-    unused(_junksqd);
-
     mh = palloc(sizeof(MSGA));
     if (mh == NULL)
     {

@@ -51,12 +51,6 @@ static void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate,
 static int statfd;  /* file handle for WriteToFd */
 static byte *sd_msg = (byte *) "%s%u.msg";
 
-/*
- *  Pointer to 'struct _sdmdata' so we can get Turbo Debugger to use
- *  the _sdmdata structure...
- */
-
-static struct _sdmdata *_junksqd;
 
 static struct _apifuncs sdm_funcs =
 {
