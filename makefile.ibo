@@ -3,7 +3,7 @@
 
 CC=	icc
 CFLAGS=	-Sp1 -W2 -Q
-CDEFS=	-DOS2
+CDEFS=	-DOS2 -DNOSEMAPHORES
 COPT=	-O
 #LIB=	ilib
 LIB=   lib

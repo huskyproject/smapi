@@ -3,7 +3,7 @@
 
 CC=	hc
 CFLAGS=	-w4 -Hmscerr
-CDEFS=	-DOS2
+CDEFS=	-DOS2 -DNOSEMAPHORES
 COPT=	-O3
 LIB=	lib
 

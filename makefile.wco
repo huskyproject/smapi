@@ -3,7 +3,7 @@
 
 CC=	wcl386
 CFLAGS=	-zq -wx -bt=os2v2
-CDEFS=  -DOS2
+CDEFS=  -DOS2 -DNOSEMAPHORES
 COPT=	-oneatx -5
 LIB=	wlib
 

@@ -3,7 +3,7 @@
 
 CC=	gcc
 CFLAGS=	-Wall
-CDEFS=	-DUNIX
+CDEFS=	-DUNIX -DNOSEMAPHORES
 COPT=	-O3
 
 # on i386, you may add this
