@@ -65,9 +65,12 @@ endif
 
 ifeq ($(DYNLIBS), 1)
 $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
-	$(CC) -shared -Wl,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
-          -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
-
+#	$(CC) -shared -Wl,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
+#          -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
+#
+	$(LD) -s -shared \
+	      -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
+	
 instdyn: $(LIBPREFIX)smapi.so.$(VER)
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
