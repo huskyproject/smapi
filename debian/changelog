@@ -1,3 +1,9 @@
+smapi (2.2.0-20020815-3) stable; urgency=low
+
+  * debian/copyright: new http-location of sources
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Mon, 26 Aug 2002 10:59:36 +0600
+
 smapi (2.2.0-20020815-2) stable; urgency=low
 
   * Correct debian/shlibs

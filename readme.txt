@@ -97,7 +97,7 @@ above channels.
 OBTAINING SMAPI
 
 Latest version of the Husky Smapi available at the Husky homepage:
-http://husky.physcip.uni-stuttgart.de.
+http://husky.sourceforge.net.
 
 The latest release of original SMAPI is available for file request (FREQ) from
 FidoNet node 3:635/728.  It can also be downloaded from Internet site
