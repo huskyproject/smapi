@@ -32,11 +32,11 @@ int _fast fexist(char *filename)
 {
     FFIND *ff;
 
-    ff = FindOpen(filename, 0);
+    ff = FFindOpen(filename, 0);
 
     if (ff)
     {
-        FindClose(ff);
+        FFindClose(ff);
         return TRUE;
     }
     else
@@ -50,12 +50,12 @@ long _fast fsize(char *filename)
     FFIND *ff;
     long ret = -1L;
 
-    ff = FindOpen(filename, 0);
+    ff = FFindOpen(filename, 0);
 
     if (ff)
     {
         ret = ff->ff_fsize;
-        FindClose(ff);
+        FFindClose(ff);
     }
 
     return ret;
@@ -90,13 +90,13 @@ int _fast direxist(char *directory)
     {
         Strip_Trailing(tempstr, '\\');
 
-        ff = FindOpen(tempstr, MSDOS_SUBDIR | MSDOS_HIDDEN | MSDOS_READONLY);
+        ff = FFindOpen(tempstr, MSDOS_SUBDIR | MSDOS_HIDDEN | MSDOS_READONLY);
 
         ret = ff != NULL && (ff->ff_attrib & MSDOS_SUBDIR);
 
         if (ff)
         {
-            FindClose(ff);
+            FFindClose(ff);
         }
     }
 
@@ -137,11 +137,7 @@ int _fast direxist(char *directory)
         tempstr[l - 1] = '\0';
     }
 
-    #ifdef __IBMC__
-    ret = !access(tempstr, 0);
-    #else
     ret = !access(tempstr, 06);
-    #endif
 
     free(tempstr);
     return ret;

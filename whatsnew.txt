@@ -1,22 +1,15 @@
 The following is a list of bug fixes and new features since SMAPI 1.1.
 
-SMAPI 1.4
+SMAPI 1.2
 ---------
 
-- Bug fix: NumKludges() was not working correctly.
+- MSGAPI32.DLL and MSGAPINT.DLL have been removed from the SMAPI archive.
 
-- The following typedefs and macros were added to msgapi.h, for
-  compatibility with MsgAPI 0.4+ (SQDEV200).
+- SMAPI now supports compilation using the DJGPP compiler.  (Courtesy
+  Alexander Aganichev.)
 
-    typedef struct _msgapi *HAREA;
-    typedef struct _msgh *HMSG;
-    typedef struct _xmsg *PXMSG;
-    typedef NETADDR *PNETADDR;
-
-    #define MSGAPI_VERSION  1
-    #define SMAPI_VERSION   "1.4"
-
-- MSGAPI32.LIB and MSGAPINT.LIB have been removed from the SMAPI archive.
+- The Linux, EMX and FreeBSD makefiles now utilise compiler optimisation
+  when creating the SMAPI library.
 
 
 SMAPI 1.3
@@ -48,14 +41,17 @@ SMAPI 1.3
   Macro Assembler, MASM.  The Borland Turbo Assembler, TASM, may be used
   if you do not have MASM.
 
-
-SMAPI 1.2
+SMAPI 1.4
 ---------
 
-- MSGAPI32.DLL and MSGAPINT.DLL have been removed from the SMAPI archive.
+- Removed all structure layout and endianness dependencies.  SMAPI should
+  now work under every operating system now matter how obscure it may
+  internally represent integers or pack structures.  #pragma pack()
+  statements are no longer necessary, they are only left in for backward
+  compatibility.
 
-- SMAPI now supports compilation using the DJGPP compiler.  (Courtesy
-  Alexander Aganichev.)
+- Added a makefile for the RSXNT/EMX/GCC package and some RSXNT specific
+  code. In particular, I had to rename the FindClose routine to FFindClose
+  in order to avoid a name clash with the Windows API. I also renamed
+  FindOpen and FindNext to FFindOpen and FFindNext.
 
-- The Linux, EMX and FreeBSD makefiles now utilise compiler optimisation
-  when creating the SMAPI library.

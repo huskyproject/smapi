@@ -21,6 +21,7 @@ OBJS=	1stchar.obj  \
 	qksort.obj   \
 	strftim.obj  \
 	strocpy.obj  \
+	structrw.obj \
 	trail.obj    \
 	weekday.obj
 
@@ -29,5 +30,5 @@ OBJS=	1stchar.obj  \
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) -b -q $(TARGET) -+$@
-    
+
 $(TARGET): $(OBJS)

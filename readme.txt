@@ -39,7 +39,7 @@ Makefile       Target library   Compiler
 ------------   --------------   -------------------------------------------
 MAKEFILE.BCD   SMAPIBCD.LIB     Borland C++ for DOS 3.1
 MAKEFILE.BCO   SMAPIBCO.LIB     Borland C++ for OS/2 1.0
-MAKEFILE.BSD   SMAPIBSD.A       GNU C for FreeBSD 2.6.x
+MAKEFILE.BSD   LIBSMAPIBSD.A    GNU C for FreeBSD 2.7.x
 MAKEFILE.DJG   SMAPIDJG.A       GNU C for MS-DOS 2.7.x (DJGPP)
 MAKEFILE.EMO   SMAPIEMO.LIB     GNU C for OS/2 2.7.x (EMX 0.9)
 MAKEFILE.HCO   SMAPIHCO.LIB     MetaWare High C for OS/2 3.2
@@ -49,6 +49,7 @@ MAKEFILE.QCD   SMAPIQCD.LIB     Microsoft QuickC for DOS 2.5 (makefile
                                 requires either the Microsoft Macro
                                 Assembler, MASM, or the Borland Turbo
                                 Assembler, TASM)
+MAKEFILE.RXW   SMAPIRXW.LIB     GNU C for Windows NT 2.7.x (RSXNT/EMX)
 MAKEFILE.WCD   SMAPIWCD.LIB     WATCOM C/C++ for 16-bit DOS 10.x
 MAKEFILE.WCO   SMAPIWCO.LIB     WATCOM C/C++ for 32-bit OS/2 10.x
 MAKEFILE.WCW   SMAPIWCW.LIB     WATCOM C/C++ for 32-bit Windows NT 10.x
@@ -61,15 +62,7 @@ and MSGAPI.H.
 
 SUPPORT
 
-You can reach the distributor of the SMAPI source code, Andrew Clarke, at
-FidoNet 3:635/728.4, in the FidoNet MAXDEV (Maximus Development) or
-MSGED_ECHO (Msged Support) conferences, or via Internet e-mail at
-randy@zws.com.
-
-Please send any changes, bug reports or fixes to Andrew via the above
-channels.  When sending code changes, context diffs in UNIX diff format
-(eg. `diff -c3 oldfile.c newfile.c') are prefered.  Please include an
-explicit public domain notice in your code.
+SMAPI is no longer supported by Andrew Clarke.
 
 
 PORTING
@@ -82,7 +75,6 @@ above channels.
 OBTAINING SMAPI
 
 The latest release of SMAPI is available for file request (FREQ) from
-FidoNet node 3:635/728.  It can also be downloaded from the Internet
-using FTP from ftp.zws.com from the /pub/msged/ directory, or using
-HTTP from www.blizzard.ml.org/msged/.  The archive name for SMAPI
-release 1.5 will be named SMAPI15.ZIP, and so on.
+FidoNet node 3:635/728.  It can also be downloaded from Internet site
+ftp.zws.com from the /pub/msged/ directory.  The archive name for SMAPI
+release 1.4 will be named SMAPI14.ZIP, and so on.

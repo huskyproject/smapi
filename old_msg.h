@@ -38,14 +38,19 @@ struct _omsg
      *  A timestamp is a 32-bit integer in the UNIX flavor (ie. the number
      *  of seconds since midnight, January 1, 1970).  Timestamps in messages
      *  are always Greenwich Mean Time (UTC), never local time.
+     *
+     *  TE 05/27/98: I doubt that the comment above is true. The Opus
+     *  timestamps are in the DOS date format, not inthe UNIX stamp format.
      */
 
     struct _stamp date_written;  /* When user wrote the msg */
     struct _stamp date_arrived;  /* When msg arrived on-line */
 
-    word reply;                  /* Current msg is a reply to this msg number */
+    word reply;                  /* Current msg is a reply to this msg nr */
     word attr;                   /* Attribute (behavior) of the message */
     word up;                     /* Next message in the thread */
 };
+
+#define OMSG_SIZE 190
 
 #endif

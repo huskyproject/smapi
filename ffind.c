@@ -50,14 +50,14 @@
 #endif
 
 /*
- *  FindOpen;  Use like MSDOS "find first" function,  except be sure to
- *  release allocated system resources by caling FindClose() with the
+ *  FFindOpen;  Use like MSDOS "find first" function,  except be sure to
+ *  release allocated system resources by caling FFindClose() with the
  *  handle returned by this function.
  *
  *  Returns: NULL == File not found.
  */
 
-FFIND *_fast FindOpen(char *filespec, unsigned short attribute)
+FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
 {
     FFIND *ff;
 
@@ -127,7 +127,7 @@ FFIND *_fast FindOpen(char *filespec, unsigned short attribute)
             ff->firstbit[p - filespec] = '\0';
             strcpy(ff->lastbit, p + 1);
         }
-        ff->dir = opendir(ff->firstbit);
+        ff->dir = opendir(filespec);
         if (ff->dir != NULL)
         {
             while (!fin)
@@ -191,6 +191,47 @@ FFIND *_fast FindOpen(char *filespec, unsigned short attribute)
             ff = NULL;
         }
 
+#elif defined(__RSXNT__)
+
+        ff->hDirA = FindFirstFile(filespec, &(ff->InfoBuf));
+        ff->attrib_srch = attribute;
+        while (ff->hDirA != INVALID_HANDLE_VALUE)
+        {
+            if (strlen(ff->InfoBuf.cFileName) < sizeof(ff->ff_name))
+            {
+                if ((!(ff->InfoBuf.dwFileAttributes &
+                       FILE_ATTRIBUTE_DIRECTORY)) ||
+                    (ff->attrib_srch & MSDOS_SUBDIR))
+                {
+                    break;
+                }
+            }
+            /* skip file for some reason */
+            if (!FindNextFile(ff->hDirA, &(ff->InfoBuf)))
+            {
+                if (ff->hDirA != INVALID_HANDLE_VALUE)
+                {
+                    FindClose(ff->hDirA);
+                }
+                ff->hDirA = INVALID_HANDLE_VALUE;
+            }
+        }
+        if (ff->hDirA != INVALID_HANDLE_VALUE)
+        {
+            strcpy(ff->ff_name, ff->InfoBuf.cFileName);
+            ff->ff_fsize = ff->InfoBuf.nFileSizeLow;
+            ff->ff_attrib = 0;
+            if (ff->InfoBuf.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            {
+                ff->ff_attrib |= MSDOS_SUBDIR;
+            }
+        }
+        else
+        {
+            free(ff);
+            ff = NULL;
+        }
+
 #else
 #error Unknown compiler!
 #endif
@@ -201,10 +242,10 @@ FFIND *_fast FindOpen(char *filespec, unsigned short attribute)
 }
 
 /*
- *  FindNext: Returns 0 if next file was found, non-zero if it was not.
+ *  FFindNext: Returns 0 if next file was found, non-zero if it was not.
  */
 
-int _fast FindNext(FFIND * ff)
+int _fast FFindNext(FFIND * ff)
 {
     int rc = -1;
 
@@ -250,7 +291,6 @@ int _fast FindNext(FFIND * ff)
             if (de == NULL)
             {
                 closedir(ff->dir);
-                ff->dir = NULL;
                 fin = 1;
             }
             else
@@ -274,23 +314,58 @@ int _fast FindNext(FFIND * ff)
             strcat(ff->ff_name, ff->info.fib_FileName);
             rc = 0;
         }
+#elif defined(__RSXNT__)
 
+        do
+        {
+            if (!FindNextFile(ff->hDirA, &(ff->InfoBuf)))
+            {
+                if (ff->hDirA != INVALID_HANDLE_VALUE)
+                {
+                    FindClose(ff->hDirA);
+                }
+                ff->hDirA = INVALID_HANDLE_VALUE;
+            }
+            else
+            {
+                if (strlen(ff->InfoBuf.cFileName) < sizeof(ff->ff_name))
+                {
+                    if ((!ff->InfoBuf.dwFileAttributes &
+                         FILE_ATTRIBUTE_DIRECTORY) ||
+                        (ff->attrib_srch & MSDOS_SUBDIR))
+                    {
+                        break;
+                    }
+                }
+            }
+        } while (ff->hDirA != INVALID_HANDLE_VALUE);
+
+        if (ff->hDirA != INVALID_HANDLE_VALUE)
+        {
+            strcpy(ff->ff_name, ff->InfoBuf.cFileName);
+            ff->ff_fsize = ff->InfoBuf.nFileSizeLow;
+            ff->ff_attrib = 0;
+            if (ff->InfoBuf.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            {
+                ff->ff_attrib |= MSDOS_SUBDIR;
+            }
+            rc = 0;
+        }
 #else
 #error Unable to determine compiler and target operating system!
 #endif
-
     }
 
     return rc;
 }
 
 /*
- *  FindClose: End a directory search.  Failure to call this function
+ *  FFindClose: End a directory search.  Failure to call this function
  *  will result in unclosed file handles under OS/2, and unreleased
  *  memory in both DOS and OS/2.
  */
 
-void _fast FindClose(FFIND * ff)
+void _fast FFindClose(FFIND * ff)
 {
     if (ff != NULL)
     {
@@ -299,6 +374,13 @@ void _fast FindClose(FFIND * ff)
         if (ff->hdir)
         {
             DosFindClose(ff->hdir);
+        }
+#endif
+
+#ifdef __RSXNT__
+        if (ff->hDirA != INVALID_HANDLE_VALUE)
+        {
+            FindClose(ff->hDirA);
         }
 #endif
 
@@ -323,7 +405,7 @@ void _fast FindClose(FFIND * ff)
 FFIND *_fast FindInfo(char *filespec)
 {
 #ifndef OS2
-    return FindOpen(filespec, 0);
+    return FFindOpen(filespec, 0);
 #else
     FFIND *ff;
     FILESTATUS fs;
@@ -389,7 +471,7 @@ int walk(char *path)
     strcat(full, "*");
 #endif
 
-    ff = FindOpen(full, MSDOS_SUBDIR);
+    ff = FFindOpen(full, MSDOS_SUBDIR);
     if (ff != NULL)
     {
         done = FALSE;
@@ -410,14 +492,14 @@ int walk(char *path)
                     return FALSE;
                 }
             }
-            done = FindNext(ff) != 0;
+            done = FFindNext(ff) != 0;
         }
-        FindClose(ff);
+        FFindClose(ff);
         return TRUE;
     }
     else
     {
-        puts("FindOpen() failed!");
+        puts("FFindOpen() failed!");
     }
     return FALSE;
 }

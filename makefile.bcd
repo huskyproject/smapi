@@ -24,6 +24,7 @@ OBJS=	1stchar.obj  \
 	sqasm.obj    \
 	strftim.obj  \
 	strocpy.obj  \
+	structrw.obj \
 	trail.obj    \
 	weekday.obj
 
@@ -32,9 +33,9 @@ OBJS=	1stchar.obj  \
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) $(TARGET) -+$@
-    
+
 .asm.obj:
-	$(ASM) -ml $<    
+	$(ASM) -ml $<
 	$(LIB) $(TARGET) -+$@
 
 $(TARGET): $(OBJS)

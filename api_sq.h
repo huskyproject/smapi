@@ -56,6 +56,7 @@ struct _sqhdr
     word frame_type;
     word rsvd;
 };
+#define SQHDR_SIZE 28
 
 struct _msgh
 {
@@ -85,6 +86,7 @@ struct _sqidx
     UMSGID umsgid;
     dword hash;
 };
+#define SQIDX_SIZE 12
 
 /* Used for buffering index writes within API_SQ.C */
 
@@ -121,9 +123,19 @@ struct _sqbase
 
                                                               /* total: 256 */
 };
+#define SQBASE_SIZE 256
 
 #define SF_STATIC 0x0001   /* Perform static (not dynamic) renumbering */
 
 #include "api_sqd.h"
+
+int read_xmsg(sword handle, XMSG *pxmsg);
+int write_xmsg(sword handle, XMSG *pxmsg);
+int read_sqhdr(sword, SQHDR *);
+int write_sqhdr(sword, SQHDR *);
+int read_sqidx(sword, SQIDX *, dword);
+int write_sqidx(sword, SQIDX *, dword);
+int read_sqbase(sword handle, struct _sqbase *psqbase);
+int write_sqbase(sword handle, struct _sqbase *psqbase);
 
 #endif

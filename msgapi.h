@@ -21,8 +21,8 @@
 #define MSGAPI
 
 #include "compiler.h"
-#include "stamp.h"
 #include "typedefs.h"
+#include "stamp.h"
 
 #define MSGAREA_NORMAL  0x00
 #define MSGAREA_CREATE  0x01
@@ -149,6 +149,8 @@ typedef struct _xmsg
                                  * of the two binary datestamps, above. */
 }
 XMSG;
+
+#define XMSG_SIZE (94 + XMSG_FROM_SIZE + XMSG_TO_SIZE + XMSG_SUBJ_SIZE)
 
 /*
  *  This is a 'message area handle', as returned by MsgOpenArea(), and
@@ -324,7 +326,7 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
 word EXPENTRY NumKludges(char *txt);
 void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
 
-#if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__DJGPP__)
+#if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__DJGPP__) && !defined(__NT__)
 sword far pascal farread(sword handle, byte far * buf, word len);
 sword far pascal farwrite(sword handle, byte far * buf, word len);
 #endif

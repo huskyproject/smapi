@@ -23,6 +23,7 @@ OBJS=	1stchar.o  \
 	strextra.o \
 	strftim.o  \
 	strocpy.o  \
+	structrw.o \
 	trail.o    \
 	weekday.o
 

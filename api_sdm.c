@@ -519,8 +519,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
     {
         lseek(msgh->fd, 0L, SEEK_SET);
 
-        if (farread(msgh->fd, (byte *)&fmsg,
-           sizeof(struct _omsg)) != sizeof(struct _omsg))
+        if (!read_omsg(msgh->fd, &fmsg))
         {
             msgapierr = MERR_BADF;
             return -1L;
@@ -584,7 +583,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
         if (!msg || msgh->msgtxt_start != 0)
         {
-            lseek(msgh->fd, (dword) sizeof(struct _omsg) +
+            lseek(msgh->fd, (dword) OMSG_SIZE +
               msgh->msgtxt_start + offset, SEEK_SET);
 
             msgh->cur_pos = offset;
@@ -679,8 +678,7 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
     {
         Convert_Xmsg_To_Fmsg(msg, &fmsg);
 
-        if (farwrite(msgh->fd, (byte *)&fmsg,
-          sizeof(struct _omsg)) != sizeof(struct _omsg))
+        if (!write_omsg(msgh->fd, &fmsg))
         {
             msgapierr = MERR_NODS;
             return -1;
@@ -695,7 +693,7 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
     else if (!append || ctxt)
     {
         /* Skip over old message header */
-        lseek(msgh->fd, (dword) sizeof(struct _omsg) +
+        lseek(msgh->fd, (dword) OMSG_SIZE +
           (dword) msgh->zplen, SEEK_SET);
     }
 
@@ -705,7 +703,7 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
     {
         if (!msg)
         {
-            lseek(msgh->fd, (dword) sizeof(struct _omsg) +
+            lseek(msgh->fd, (dword) OMSG_SIZE +
               (dword) msgh->zplen, SEEK_SET);
         }
 
@@ -979,7 +977,7 @@ static dword EXPENTRY SdmGetTextLen(MSGH * msgh)
         }
         else
         {
-            msgh->msg_len = end - (dword) sizeof(struct _omsg);
+            msgh->msg_len = end - (dword) OMSG_SIZE;
         }
 
         lseek(msgh->fd, pos, SEEK_SET);
@@ -1042,7 +1040,7 @@ static sword near _SdmRescanArea(MSG * mh)
 
     sprintf((char *) temp, "%s*.msg", Mhd->base);
 
-    ff = FindOpen((char *) temp, 0);
+    ff = FFindOpen((char *) temp, 0);
     if (ff != 0)
     {
         mn = 0;
@@ -1050,16 +1048,17 @@ static sword near _SdmRescanArea(MSG * mh)
         do
         {
             /* Don't count zero-length or invalid messages */
-            #ifndef UNIX  /* unix dirent does not serve filesizes... */ 
-            if (ff->ff_fsize < sizeof(struct _omsg))
+
+#ifndef UNIX
+            if (ff->ff_fsize < OMSG_SIZE)
             {
                  continue;
             }
-            #endif
+#endif
 
             if (mn >= Mhd->msgnum_len)
             {
-                Mhd->msgnum_len += (word) SDM_BLOCK;
+            	Mhd->msgnum_len += (word) SDM_BLOCK;
                 Mhd->msgnum = realloc(Mhd->msgnum, Mhd->msgnum_len * sizeof(unsigned));
 
                 if (!Mhd->msgnum)
@@ -1090,11 +1089,11 @@ static sword near _SdmRescanArea(MSG * mh)
             }
 #else
             {
-                #ifdef __IBMC__
+#ifdef __IBMC__
                 extern void _System DosSleep(dword);
-                #else
+#else
                 extern void far pascal DosSleep(dword);
-                #endif
+#endif
                 if ((mn % 128) == 127)
                 {
                     DosSleep(1L);
@@ -1103,9 +1102,9 @@ static sword near _SdmRescanArea(MSG * mh)
 #endif
 #endif
         }
-        while (FindNext(ff) == 0);
+        while (FFindNext(ff) == 0);
 
-        FindClose(ff);
+        FFindClose(ff);
 
         /* Now sort the list of messages */
 

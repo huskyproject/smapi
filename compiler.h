@@ -273,7 +273,7 @@
 
 #elif defined(__EMX__)
 
-/* EMX for 32-bit OS/2 (MS-DOS may be supported later) */
+/* EMX for 32-bit OS/2 and RSX for Windows NT */
 
 #pragma pack(1)
 
@@ -347,7 +347,8 @@ extern int __mkdir (__const__ char *name);
 
 /* Linux, FreeBSD, etc. */
 
-#pragma pack(1)
+/* test it :-) */
+#pragma pack(4)
 
 #define _stdc
 #define _intr

@@ -1,14 +1,14 @@
-CC=	gcc
-CFLAGS=	-Wall -s
-CDEFS=	-DUNIX
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486 
-LIB=	ar
+# Makefile for building a Windows 95 / NT console application
+# with RSXNT and EMX GCC for Win32
+CC=     gcc
+CFLAGS= -w -g
+CDEFS=  -D__NT__ -DWINNT -D__RSXNT__
+COPT=   -O2
+LIB=    ar
 
-ALL: $(TARGET) libsmapilnx.so.2.0
+TARGET= smapirxw.a
 
-TARGET=	smapilnx.a
-
-OBJS=	1stchar.o  \
+OBJS=   1stchar.o  \
 	api_sdm.o  \
 	api_sq.o   \
 	cvtdate.o  \
@@ -20,12 +20,10 @@ OBJS=	1stchar.o  \
 	months.o   \
 	msgapi.o   \
 	parsenn.o  \
-	patmat.o   \
 	qksort.o   \
-	strextra.o \
 	strftim.o  \
 	strocpy.o  \
-	structrw.o \
+	structrw.o  \
 	trail.o    \
 	weekday.o
 
@@ -36,6 +34,3 @@ OBJS=	1stchar.o  \
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
-
-libsmapilnx.so.2.0: $(OBJS)
-	gcc -shared -Wl,-soname,libsmapilnx.so.2 -o libsmapilnx.so.2.0 $(OBJS)

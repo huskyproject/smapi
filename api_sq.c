@@ -101,7 +101,7 @@ MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type)
 
     if (mode == MSGAREA_CREATE)
     {
-        sqbase.len = sizeof(struct _sqbase);
+        sqbase.len = SQBASE_SIZE;
         sqbase.num_msg = 0L;
         sqbase.high_msg = 0L;
         sqbase.high_water = 0L;
@@ -115,12 +115,12 @@ MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type)
         sqbase.skip_msg = 0L;
         sqbase.keep_days = 0;
 
-        sqbase.sz_sqhdr = sizeof(SQHDR);
+        sqbase.sz_sqhdr = SQHDR_SIZE;
         sqbase.uid = 1L;
     }
     else
     {
-        if (farread(Sqd->sfd, (byte *)&sqbase, sizeof sqbase) != sizeof sqbase)
+        if (!read_sqbase(Sqd->sfd, &sqbase))
         {
             /* The base must be locked or corrupted, so return an error */
 
@@ -156,7 +156,7 @@ MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type)
 
     sq->type = MSGTYPE_SQUISH;
     *sq->api = sq_funcs;
-    sq->sz_xmsg = sizeof(XMSG);
+    sq->sz_xmsg = XMSG_SIZE;
 
     return sq;
 }
@@ -261,7 +261,8 @@ static sword EXPENTRY SquishCloseMsg(MSGH * msgh)
     {
         byte ch = '\0';
 
-        lseek(MsghSqd->sfd, msgh->seek_frame + (dword) sizeof(SQHDR) + sizeof(XMSG) + msgh->clen +
+        lseek(MsghSqd->sfd, msgh->seek_frame + (dword) SQHDR_SIZE +
+              (dword) XMSG_SIZE + msgh->clen +
           (dword) msgh->totlen - 1, SEEK_SET);
 
         farwrite(MsghSqd->sfd, &ch, 1);
@@ -293,7 +294,7 @@ static dword EXPENTRY SquishReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword
     {
         lseek(MsghSqd->sfd, msgh->seek_frame + (dword) MsghSqd->sz_sqhdr, SEEK_SET);
 
-        farread(MsghSqd->sfd, (byte *)msg, sizeof(XMSG));
+        read_xmsg(MsghSqd->sfd, msg);
 
         msg->to[sizeof(msg->to) - 1] = '\0';
         msg->from[sizeof(msg->from) - 1] = '\0';
@@ -309,15 +310,16 @@ static dword EXPENTRY SquishReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword
          *  we don't yet know about.
          */
 
-        if (msgh->sq->sz_xmsg != sizeof(XMSG))
+        if (msgh->sq->sz_xmsg != XMSG_SIZE)
         {
-            lseek(MsghSqd->sfd, msgh->sq->sz_xmsg - sizeof(XMSG), SEEK_CUR);
+            lseek(MsghSqd->sfd, msgh->sq->sz_xmsg - XMSG_SIZE, SEEK_CUR);
         }
     }
 
-    if (bytes == 0L || bytes > msgh->hdr->msg_length - sizeof(XMSG) - offset - msgh->clen)
+    if (bytes == 0L ||
+        bytes > msgh->hdr->msg_length - XMSG_SIZE - offset - msgh->clen)
     {
-        bytes = msgh->hdr->msg_length - sizeof(XMSG) - offset - msgh->clen;
+        bytes = msgh->hdr->msg_length - XMSG_SIZE - offset - msgh->clen;
     }
 
     if (!(text && bytes) && clen == 0)
@@ -605,7 +607,7 @@ static sword EXPENTRY SquishWriteMsg(MSGH * msgh, word append, XMSG * msg, byte 
         }
         else
         {
-            newhdr.frame_length = totlen + clen + (dword) sizeof(XMSG);
+            newhdr.frame_length = totlen + clen + (dword) XMSG_SIZE;
 
             /*
              *  While we're at it, since we're writing at EOF, state
@@ -613,7 +615,7 @@ static sword EXPENTRY SquishWriteMsg(MSGH * msgh, word append, XMSG * msg, byte 
              */
 
             Sqd->end_frame = this_frame + (dword) MsghSqd->sz_sqhdr +
-              (dword) sizeof(XMSG) + clen + totlen;
+              (dword) XMSG_SIZE + clen + totlen;
         }
 
         /* Tell the system that this is now the current last message */
@@ -623,7 +625,7 @@ static sword EXPENTRY SquishWriteMsg(MSGH * msgh, word append, XMSG * msg, byte 
             Sqd->last_frame = this_frame;
         }
 
-        newhdr.msg_length = (dword) sizeof(XMSG) + clen + totlen;
+        newhdr.msg_length = (dword) XMSG_SIZE + clen + totlen;
         newhdr.clen = clen;
 
         newhdr.frame_type = FRAME_normal;
@@ -663,10 +665,10 @@ static sword EXPENTRY SquishWriteMsg(MSGH * msgh, word append, XMSG * msg, byte 
             lseek(Sqd->sfd, seek, SEEK_SET);
         }
 
-        farwrite(Sqd->sfd, (byte *)msg, sizeof(XMSG));
+        write_xmsg(Sqd->sfd, msg);
     }
 
-    seek += sizeof(XMSG);
+    seek += XMSG_SIZE;
 
     if (!append)
     {
@@ -1312,7 +1314,7 @@ static SQHDR *MSGAPI _SquishGotoMsg(MSG * sq, dword msgnum, FOFS * seek_frame, S
 
     /* Read the frame header from the data file */
 
-    hdr = (SQHDR *) palloc(Sqd->sz_sqhdr);
+    hdr = (SQHDR *) palloc(sizeof(SQHDR));
     if (hdr == NULL)
     {
         msgapierr = MERR_NOMEM;
@@ -1455,7 +1457,7 @@ static MSGH *_SquishOpenMsgRead(MSG * sq, word mode, dword msgnum)
         /* Update the current pointer */
         Sqd->cur_frame = seek_frame;
 
-        hdr = palloc(Sqd->sz_sqhdr);
+        hdr = palloc(sizeof(SQHDR));
         if (hdr == NULL)
         {
             msgapierr = MERR_NOMEM;
@@ -1489,7 +1491,7 @@ static MSGH *_SquishOpenMsgRead(MSG * sq, word mode, dword msgnum)
     msgh->sq = sq;
     msgh->cur_pos = 0L;
     msgh->clen = hdr->clen;
-    msgh->cur_len = hdr->msg_length - msgh->clen - sizeof(XMSG);
+    msgh->cur_len = hdr->msg_length - msgh->clen - XMSG_SIZE;
     msgh->msgnum = msgnum;
 
     return (MSGH *) msgh;
@@ -1503,8 +1505,8 @@ static sword MSGAPI _SquishReadHeader(MSG * sq, dword ofs, SQHDR * hdr)
     }
 
     if (lseek(Sqd->sfd, ofs, SEEK_SET) == -1L ||
-      farread(Sqd->sfd, (byte *)hdr, sizeof(SQHDR)) != sizeof(SQHDR) ||
-      hdr->id != SQHDRID)
+        (!read_sqhdr(Sqd->sfd, hdr)) ||
+        hdr->id != SQHDRID)
     {
         msgapierr = MERR_BADF;
         return -1;
@@ -1523,7 +1525,7 @@ static sword MSGAPI _SquishWriteHeader(MSG * sq, dword ofs, SQHDR * hdr)
     hdr->id = SQHDRID;
 
     if (lseek(Sqd->sfd, ofs, SEEK_SET) == -1L ||
-      farwrite(Sqd->sfd, (byte *)hdr, sizeof(SQHDR)) != sizeof(SQHDR))
+        (!write_sqhdr(Sqd->sfd, hdr)))
     {
         msgapierr = MERR_BADF;
         return -1;
@@ -1589,8 +1591,7 @@ static sword MSGAPI _SquishWriteSq(MSG * sq)
 
     lseek(Sqd->sfd, 0L, SEEK_SET);
 
-    if (farwrite(Sqd->sfd, (byte *)&sqbase, sizeof(struct _sqbase)) !=
-      sizeof(struct _sqbase))
+    if (!write_sqbase(Sqd->sfd, &sqbase))
     {
         return -1;
     }
@@ -1610,8 +1611,7 @@ static sword MSGAPI _SquishReadSq(MSG * sq, struct _sqbase *sqb)
 {
     lseek(Sqd->sfd, 0L, SEEK_SET);
 
-    if (farread(Sqd->sfd, (byte *)sqb, sizeof(struct _sqbase)) !=
-      sizeof(struct _sqbase))
+    if (!read_sqbase(Sqd->sfd, sqb))
     {
         return -1;
     }
@@ -1837,9 +1837,8 @@ static sword near AddIndex(MSG * sq, SQIDX * ix, dword num)
 
                 /* Now try to write this one to the file manually */
 
-                if (lseek(Sqd->ifd, (long)num * (long)sizeof(SQIDX),
-                  SEEK_SET) == -1 || farwrite(Sqd->ifd, (byte *)ix,
-                  sizeof(SQIDX)) != sizeof(SQIDX))
+                if (lseek(Sqd->ifd, (long)num * SQIDX_SIZE, SEEK_SET) == -1 ||
+                    (!write_sqidx(Sqd->ifd, ix, 1)))
                 {
                     msgapierr = MERR_BADF;
                     return -1;
@@ -1870,8 +1869,8 @@ static sword near AddIndex(MSG * sq, SQIDX * ix, dword num)
     {
         /* otherwise write the info directly to the *.SQI file */
 
-        if (lseek(Sqd->ifd, (long)num * (long)sizeof(SQIDX), SEEK_SET) == -1 ||
-          farwrite(Sqd->ifd, (byte *)ix, sizeof(SQIDX)) != sizeof(SQIDX))
+        if (lseek(Sqd->ifd, (long)num * SQIDX_SIZE, SEEK_SET) == -1 ||
+            (!write_sqidx(Sqd->ifd, ix, 1)))
         {
             msgapierr = MERR_BADF;
             return -1;
@@ -1930,16 +1929,19 @@ static sword near Add_To_Free_Chain(MSG * sq, FOFS killofs, SQHDR * killhdr)
 static sword near _SquishReadIndex(MSG * sq)
 {
     dword ofslen;
+    int read_error = 0;
+
 
     /* Seek to end, and find length of file */
 
     lseek(Sqd->ifd, 0L, SEEK_END);
     ofslen = tell(Sqd->ifd);
 
-    Sqd->idxbuf_used = ofslen;
-    Sqd->idxbuf_write = ofslen;
-    Sqd->idxbuf_delta = ofslen;
-    Sqd->idxbuf_size = ofslen + (EXTRA_BUF * (dword) sizeof(SQIDX));
+    Sqd->idxbuf_used = (ofslen / SQIDX_SIZE) * sizeof(SQIDX);
+    Sqd->idxbuf_write = (ofslen / SQIDX_SIZE) * sizeof(SQIDX);
+    Sqd->idxbuf_delta = (ofslen / SQIDX_SIZE) * sizeof(SQIDX);
+    Sqd->idxbuf_size = ((ofslen / SQIDX_SIZE) + (EXTRA_BUF)) *
+        (dword) sizeof(SQIDX);
 
 #if (defined(MSDOS) && !defined(__FLAT__)) || defined(__MSC__)
     if (Sqd->idxbuf_size >= 65300L || (Sqd->idxbuf = farpalloc((size_t) Sqd->idxbuf_size)) == NULL)
@@ -1953,8 +1955,18 @@ static sword near _SquishReadIndex(MSG * sq)
 
     /* Seek to beginning of file, and try to read everything in */
 
-    if (ofslen && ((lseek(Sqd->ifd, 0L, SEEK_SET) == -1) ||
-      (farread(Sqd->ifd, (byte far *)Sqd->idxbuf, (size_t) ofslen) != (int)ofslen)))
+    if (ofslen)
+    {
+        if (lseek(Sqd->ifd, 0L, SEEK_SET) == -1)
+        {
+            read_error = 1;
+        }
+        if (!read_sqidx(Sqd->ifd, Sqd->idxbuf, (ofslen / SQIDX_SIZE)))
+        {
+            read_error = 1;
+        }
+    }
+    if (read_error)
     {
         farpfree(Sqd->idxbuf);
         Sqd->idxbuf = NULL;
@@ -1963,11 +1975,13 @@ static sword near _SquishReadIndex(MSG * sq)
     }
 
     return 0;
+
 }
 
 static sword near _SquishWriteIndex(MSG * sq)
 {
     sword ret = 0;
+    int write_error = 0;
 
     if (Sqd->idxbuf == NULL)
     {
@@ -1980,12 +1994,24 @@ static sword near _SquishWriteIndex(MSG * sq)
     {
         ret = 0;
     }
-    else if (lseek(Sqd->ifd, Sqd->idxbuf_delta, SEEK_SET) == -1 ||
-      farwrite(Sqd->ifd, ((byte far *)Sqd->idxbuf) + (size_t) Sqd->idxbuf_delta,
-      (size_t) (Sqd->idxbuf_write - Sqd->idxbuf_delta)) == -1)
+    else
     {
-        ret = -1;
-        msgapierr = MERR_BADF;
+        if (lseek(Sqd->ifd, Sqd->idxbuf_delta, SEEK_SET) == -1)
+        {
+            write_error = 1;
+        }
+        if (!write_sqidx(Sqd->ifd,
+                         Sqd->idxbuf + Sqd->idxbuf_delta / sizeof(SQIDX),
+                         (Sqd->idxbuf_write - Sqd->idxbuf_delta) /
+                            sizeof(SQIDX)))
+        {
+            write_error = 1;
+        }
+        if (write_error)
+        {
+            ret = -1;
+            msgapierr = MERR_BADF;
+        }
     }
 
 #if defined(MSDOS) && !defined(__NT__)
@@ -2016,8 +2042,8 @@ static sword near _SquishGetIdxFrame(MSG * sq, dword num, SQIDX * idx)
     }
     else
     {
-        if (lseek(Sqd->ifd, ofs, SEEK_SET) == -1L ||
-          farread(Sqd->ifd, (byte *)idx, sizeof(SQIDX)) != sizeof(SQIDX))
+        if (lseek(Sqd->ifd, (dword)num * (dword)SQIDX_SIZE, SEEK_SET) == -1L ||
+            (!read_sqidx(Sqd->ifd, idx, 1)))
         {
             msgapierr = MERR_BADF;
             return -1;
@@ -2111,7 +2137,7 @@ static sword near _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen, dwo
      */
 
 #ifdef DEBUG
-    fprintf(stderr, "Msg #%ld; need %ld bytes:\n", msgh->sq->num_msg, totlen + clen + (dword) sizeof(XMSG));
+    fprintf(stderr, "Msg #%ld; need %ld bytes:\n", msgh->sq->num_msg, totlen + clen + (dword) XMSG_SIZE);
 #endif
 
     while (1)
@@ -2143,7 +2169,7 @@ static sword near _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen, dwo
         fprintf(stderr, "  Frame at %08lx: %ld\n", *this_frame, freehdr->frame_length);
 #endif
 
-        if (freehdr->frame_length >= totlen + clen + (dword) sizeof(XMSG))
+        if (freehdr->frame_length >= totlen + clen + (dword) XMSG_SIZE)
         {
 #ifdef DEBUG
             fprintf(stderr, "... Got it!\n\n");
@@ -2160,7 +2186,7 @@ static sword near _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen, dwo
             *last_frame = NULL_FRAME;
 
             while (freehdr->next_frame == *this_frame + MsghSqd->sz_sqhdr +
-              freehdr->frame_length && freehdr->frame_length < totlen + clen + (dword) sizeof(XMSG))
+              freehdr->frame_length && freehdr->frame_length < totlen + clen + (dword) XMSG_SIZE)
             {
                 if (_SquishReadHeader(sq, freehdr->next_frame, lhdr) == -1)
                 {
@@ -2185,7 +2211,7 @@ static sword near _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen, dwo
                 freehdr->next_frame = lhdr->next_frame;
             }
 
-            if (freehdr->frame_length >= totlen + clen + (dword) sizeof(XMSG))
+            if (freehdr->frame_length >= totlen + clen + (dword) XMSG_SIZE)
             {
                 /*
                  *  If one of te frames in our chain was the last free frame,

@@ -31,7 +31,6 @@ static byte *topt = (byte *) "TOPT";
 static byte *area_colon = (byte *) "AREA:";
 
 static char *copyright = "MSGAPI - Copyright 1991 by Scott J. Dudley.  All rights reserved.";
-static char *smapiinfo = "SMAPI; Modified Squish MSGAPI version " SMAPI_VERSION  ".  Compiled on " __DATE__ " at " __TIME__ ".";
 
 /* Global error value for message API routines */
 
@@ -42,7 +41,6 @@ struct _minf _stdc mi;
 sword EXPENTRY MsgOpenApi(struct _minf *minf)
 {
     unused(copyright);
-    unused(smapiinfo);
     mi = *minf;
     mi.haveshare = shareloaded();
     return 0;
@@ -328,10 +326,7 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
              *  why we do it here.
              */
 
-            /*  Don't remove INTL at all! MTT980310
             RemoveFromCtrl(ctrl, intl);
-            */
-            
         }
     }
 
@@ -342,9 +337,7 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
     {
         orig->point = (word) atoi((char *) s + 5);
         pfree(s);
-        /* Don't remove FMPT! MTT980310
         RemoveFromCtrl(ctrl, fmpt);
-        */
     }
 
     /* Handle TOPT too */
@@ -354,9 +347,7 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
     {
         dest->point = (word) atoi((char *) s + 5);
         pfree(s);
-        /* Don't remove TOPT! MTT980310
         RemoveFromCtrl(ctrl, topt);
-        */
     }
 }
 
@@ -437,29 +428,12 @@ word EXPENTRY NumKludges(char *txt)
     word nk = 0;
     char *p;
 
-#ifdef OLDCODE
     p = strchr(txt, '\x01');
     while (p != NULL)
     {
         nk++;
         p = strchr(p, '\x01');
     }
-#else
-    /* new code courtesy dz@mir.glasnet.ru, July 1997 */
-    
-    if (txt != NULL)
-    {
-        p = txt;
-        while (*p != '\0')
-        {
-            if (*p == '\x01')
-            {
-                nk++;
-            }
-            p++;
-        }
-    }
-#endif
 
     return nk;
 }

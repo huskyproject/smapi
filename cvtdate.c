@@ -83,3 +83,5 @@ char *_fast sc_time(union stamp_combo *sc, char *string)
 
     return string;
 }
+
+

@@ -33,6 +33,12 @@
 #include <dos.h>
 #endif
 
+#ifdef __RSXNT__
+#define NOUSER
+#include <windows.h>
+#endif
+
+
 #define FFIND struct ffind
 
 struct ffind
@@ -45,7 +51,7 @@ struct ffind
     unsigned short ff_ftime;
     unsigned short ff_fdate;
     long ff_fsize;
-    char ff_name[13];
+    char ff_name[13];  /* urks! */
 
 #ifdef OS2
 #if defined(__386__) || defined(__FLAT__)
@@ -66,12 +72,23 @@ struct ffind
     char newfile[FILENAME_MAX];
     char prefix[FILENAME_MAX];
 #endif
+
+#ifdef __RSXNT__
+    WIN32_FIND_DATA InfoBuf;
+    HANDLE hDirA;
+    char attrib_srch;
+#endif
 };
 
-FFIND *_fast FindOpen(char *filespec, unsigned short attribute);
-FFIND *_fast FindInfo(char *filespec);
-int _fast FindNext(FFIND * ff);
-void _fast FindClose(FFIND * ff);
+/* 
+ * I prefixed the functions below with an additional F in order to
+ * prevent name clashes with the Win32 API
+ */
+
+FFIND *_fast FFindOpen(char *filespec, unsigned short attribute);
+FFIND *_fast FFindInfo(char *filespec);
+int _fast FFindNext(FFIND * ff);
+void _fast FFindClose(FFIND * ff);
 
 #define MSDOS_READONLY  0x01
 #define MSDOS_HIDDEN    0x02
