@@ -2,6 +2,11 @@ development version
 -------------------
 
 ----- cvs ci ------
+Sat Jan  8 03:08:22 NOVT 2000
+max:
+- fsize() fix
+
+----- cvs ci ------
 Thu Jan  6 19:51:30 NOVT 2000                                                   
 max (patch from Kolya Nesterov):
 - fsize() now  works correct on *NIX systems

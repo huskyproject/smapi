@@ -55,14 +55,13 @@ long _fast fsize(char *filename)
 
     if (ff)
     {
-	 if (ret != -1L) {
-		ret = ff->ff_fsize;
-	 } else {
-		fp = fopen(filename, "rb");
-		fseek(fp, 0, SEEK_END);
-		ret = ftell(fp);
-		fclose(fp);
-	 };
+	ret = ff->ff_fsize;
+	if (ret != -1L) {
+	    fp = fopen(filename, "rb");
+	    fseek(fp, 0, SEEK_END);
+	    ret = ftell(fp);
+	    fclose(fp);
+	};
         FFindClose(ff);
     }
 
