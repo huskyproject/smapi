@@ -1,3 +1,13 @@
+----- cvs ci ------
+Sun Aug 13 10:18:23 CET 2000
+oliver grimm ():
+* found locking Bug
+* added open-area list (squish only))
+* added open-message list for each area (squish only)
+* when closing an squish-area all messages will be closed 
+* MsgCloseApi() closes all open squish-areas
+* simple multithreading support added
+
 smapi 1.6.4
 -----------
 (released on Mon May 22 14:58:56 CEST 2000)
