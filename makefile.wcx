@@ -46,6 +46,8 @@ OBJS=	1stchar.obj  \
 
 $(TARGET): $(OBJS)
 
+.IGNORE
+
 clean:
 	-DEL *.OBJ
 
