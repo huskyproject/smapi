@@ -4,7 +4,7 @@
 CC=	bcc
 CFLAGS=	-w -ml
 CDEFS=	-DMSDOS -DNOSEMAPHORES
-COPT=	-O2
+COPT=	-O1
 LIB=	tlib
 ASM=	tasm
 
