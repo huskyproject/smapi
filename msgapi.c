@@ -493,6 +493,8 @@ word _XPENTRY NumKludges(char *txt)
     return nk;
 }
 
+/*  Return MSGAPI error text (string constant).
+ */
 char *_XPENTRY strmerr(int msgapierr)
 {
     switch (msgapierr) {
