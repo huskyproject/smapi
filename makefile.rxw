@@ -1,9 +1,10 @@
 # Makefile for building a Windows 95 / NT console application
 # with RSXNT and EMX GCC for Win32
+
 CC=     gcc
 CFLAGS= -w
 CDEFS=  -D__NT__ -DWINNT -D__RSXNT__
-COPT=   -O2
+COPT=   -O3
 LIB=    ar
 
 TARGET= smapirxw.a
@@ -32,7 +33,7 @@ OBJS=   1stchar.o  \
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
-	$(LIB) r $(TARGET) $(OBJS)
 
