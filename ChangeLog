@@ -1,3 +1,8 @@
+2002-12-05 Thursday 07:53  stas_degteff
+
+	* makefile.wcd (1.20), makefile.wco (1.16), makefile.wcw (1.22),
+	makefile.wcx (1.17): Update makefiles for Watcom C
+
 2002-11-28 Thursday 08:20  stas_degteff
 
 	* msgapi.c (1.35), msgapi.h (1.57): Fix MSGTYPE_* usage
