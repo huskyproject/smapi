@@ -1,126 +1,142 @@
 /*
- *  PATMAT.C - Pattern matching.
- *
- *  Written November 29, 1988 by Sreenath Chary.  Minor maintenance on
- *  December 21, 1996 by Andrew Clarke.  Released to the public domain.
- *
- *  Pass two string pointers as parameters.  The first being a raw
- *  string and the second a pattern the raw string is to be matched
- *  against.  If the raw string matches the pattern, the function returns
- *  1, otherwise it returns 0.
- *
- *      patmat("abcdefghi", "*ghi") returns 1
- *      patmat("abcdefghi", "??c??f*") returns 1
- *      patmat("abcdefghi", "*dh*") returns 0
- *      patmat("abcdefghi", "*def") returns 0
- *
- *  The asterisk is a wildcard to allow any characters from its first
- *  appearance to the next specific character.  The character ? is a
- *  wildcard for only one character in the position it appears.
- *
- *  Combinations such as "*?" or "?*" or "**" are illegal for obvious
- *  reasons, and the functions may goof, although I think it will still
- *  work.
- *
- *  The only simple way I could devise is to use recursion.  Each
- *  character in the pattern is taken and compared with the character in
- *  the raw string.  If it matches then the remaining amount of the
- *  string and the remaining amount of the pattern are passed as parameters
- *  to patmat again until the end of the pattern.  If at any stage the
- *  pattern does not match, then we go back one level and at this level
- *  if the previous character was an asterisk in the pattern, we hunt
- *  again from where we left off, otherwise we return back one more level
- *  with a not found and the process goes on till the first level call.
- *
- *  Only one character at a time is considered, except when the character
- *  is an asterisk. You'll get the logic as the program unfolds.
+ *  PATMAT.C - Pattern matching. Taken from sh sources
  */
+
+/*
+ * Copyright (c) 1991, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * This code is derived from software contributed to Berkeley by
+ * Kenneth Almquist.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *	This product includes software developed by the University of
+ *	California, Berkeley and its contributors.
+ * 4. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ */
+
 
 #include <string.h>
 #include "patmat.h"
 
-int patmat(char *raw, char *pat)
+#define CTLESC '\\'
+
+/*
+ * Returns true if the pattern matches the string.
+ */
+
+int patmat(char *string, char *pattern)
 {
+	register char *p, *q;
+	register char c;
 
-    /* if pointed to one, then match (both NULL also) */
-    if ( pat==raw )
-    {
-        return 1;
-    }
+	p = pattern;
+	q = string;
+	for (;;) {
+		switch (c = *p++) {
+		case '\0':
+			goto breakloop;
+		case CTLESC:
+			if (*q++ != *p++)
+				return 0;
+			break;
+		case '?':
+			if (*q++ == '\0')
+				return 0;
+			break;
+		case '*':
+			c = *p;
+			if (c != CTLESC && c != '?' && c != '*' && c != '[') {
+				while (*q != c) {
+					if (*q == '\0')
+						return 0;
+					q++;
+				}
+			}
+			do {
+				if (patmat(q, p))
+					return 1;
+			} while (*q++ != '\0');
+			return 0;
+		case '[': {
+			char *endp;
+			int invert, found;
+			char chr;
 
-    /* if only one is NULL, then mismatch */
-    if ( !pat || !raw )
-    {
-        return 0;
-    }
-
-    /* if it's the end of both strings, then match */
-    if (*pat == '\0' && *raw == '\0')
-    {
-        return 1;
-    }
-
-    /* if it's the end of only pat, then mismatch */
-    if (*pat == '\0')
-    {
-        return 0;
-    }
-
-    /* if pattern is a '*' */
-    if (*pat == '*')
-    {
-        unsigned int i;
-
-        /* match patterns *?****???***?? faster... */
-        while (*(++pat))
-            if (*pat == '*') {
-                /* do nothing */
-            } else if (*pat == '?') {
-                if (*raw) ++raw;
-                else return 0;
-            } else
-                break;
-
-        /* if it is the end of pat, then match */
-        if (*pat == '\0')
-        {
-            return 1;
-        }
-
-        /* else hunt for match or wildcard */
-        for (i = 0; i <= strlen(raw); i++)
-        {
-            if (*(raw + i) == *pat || *pat == '?')
-            {
-                /* if found, match rest of pat */
-                if (patmat(raw + i + 1, pat + 1) == 1)
-                {
-                    return 1;
-                }
-            }
-        }
-    }
-    else
-    {
-        /* if end of raw, then mismatch */
-        if (*raw == '\0')
-        {
-            return 0;
-        }
-
-        /* if chars match then try and match the rest of it */
-        if (*pat == '?' || *pat == *raw)
-        {
-            if (patmat(raw + 1, pat + 1) == 1)
-            {
-                return 1;
-            }
-        }
-    }
-
-    /* fell through, no match was found */
-    return 0;
+			endp = p;
+			if (*endp == '!')
+				endp++;
+			for (;;) {
+				if (*endp == '\0')
+					goto dft;	/* no matching ] */
+				if (*endp == CTLESC)
+					endp++;
+				if (*++endp == ']')
+					break;
+			}
+			invert = 0;
+			if (*p == '!') {
+				invert++;
+				p++;
+			}
+			found = 0;
+			chr = *q++;
+			c = *p++;
+			do {
+				if (c == CTLESC)
+					c = *p++;
+				if (*p == '-' && p[1] != ']') {
+					p++;
+					if (*p == CTLESC)
+						p++;
+					if (chr >= c && chr <= *p)
+						found = 1;
+					p++;
+				} else {
+					if (chr == c)
+						found = 1;
+				}
+			} while ((c = *p++) != ']');
+			if (found == invert)
+				return 0;
+			break;
+		}
+dft:	        default:
+			if (*q++ != c)
+				return 0;
+			break;
+		}
+	}
+breakloop:
+	if (*q != '\0')
+		return 0;
+	return 1;
 }
+
 
 #ifdef TEST
 
