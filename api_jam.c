@@ -1607,7 +1607,7 @@ void DecodeSubf(MSGH *msgh)
          pfree(ptr);
       }
       else if (SubField->LoID == JAMSFLD_PATH2D) {
-         makeKludge(&ptr, "\001Path: ", SubField->Buffer, "\r", SubField->DatLen);
+         makeKludge(&ptr, "\001PATH: ", SubField->Buffer, "\r", SubField->DatLen);
          addkludge(&msgh->lctrl, ptr);
          pfree(ptr);
       }

@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Mon Sep 11 10:56:46 NOVST 2000
+max (patches from Pavel Gulchouk):
+* JAM fix - "Path:" changed to "PATH:"
+
+----- cvs ci ------
 Wed Sep  6 17:36:17 NOVST 2000
 max (patch from Serguei Revtov):
 * compiling on Win9x
