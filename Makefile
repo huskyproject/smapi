@@ -89,7 +89,7 @@ endif
 ifeq ($(DYNLIBS), 1)
   ifeq (~$(MKSHARED)~,~ld~)
 $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
-	$(LD) $(OPTFLAGS) \
+	$(LD) $(OPTLFLAGS) \
 	      -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
   else
 $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
