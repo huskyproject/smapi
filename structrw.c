@@ -61,39 +61,7 @@
 
 #define MAXHDRINCORE  (1024*1024*10) /* Maximum jam hdr size for incore, 10M */
 
-#ifdef INTEL
-
-#define get_dword(ptr)		(*(dword *)(ptr))
-#define get_word(ptr)		(*(word *)(ptr))
-
-#else
-
-/*
- *  get_dword
- *
- *  Reads in a 4 byte word that is stored in little endian (Intel) notation
- *  and converts it to the local representation n an architecture-
- *  independent manner
- */
-
-#define get_dword(ptr)            \
-   ((dword)((unsigned char)(ptr)[0]) |           \
-    (((dword)((unsigned char)(ptr)[1])) << 8)  | \
-    (((dword)((unsigned char)(ptr)[2])) << 16) | \
-    (((dword)((unsigned char)(ptr)[3])) << 24))  \
-
-/*
- *  get_word
- *
- *  Reads in a 2 byte word that is stored in little endian (Intel) notation
- *  and converts it to the local representation in an architecture-
- *  independent manner
- */
-
-#define get_word(ptr)         \
-    ((word)((unsigned char)(ptr)[0]) |         \
-     (((word)((unsigned char)(ptr)[1])) << 8 ))
-
+#ifndef INTEL
 /*
  *  put_dword
  *

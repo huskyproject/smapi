@@ -44,12 +44,43 @@ char *_fast strocpy(char *d, char *s);
 void _fast tdelay(int);
 SMAPI_EXT int _fast setfsize(int fd, long size);
 #ifdef INTEL
+
 #define put_dword(ptr, val)	(*(dword *)(ptr) = (val))
 #define put_word(ptr, val)	(*(word *)(ptr) = (val))
+#define get_dword(ptr)		(*(dword *)(ptr))
+#define get_word(ptr)		(*(word *)(ptr))
+
 #else
+
 SMAPI_EXT void put_word(byte *ptr, word value);
 SMAPI_EXT void put_dword(byte *ptr, dword value);
-#endif
+/*
+ *  get_dword
+ *
+ *  Reads in a 4 byte word that is stored in little endian (Intel) notation
+ *  and converts it to the local representation n an architecture-
+ *  independent manner
+ */
+
+#define get_dword(ptr)            \
+   ((dword)((unsigned char)(ptr)[0]) |           \
+    (((dword)((unsigned char)(ptr)[1])) << 8)  | \
+    (((dword)((unsigned char)(ptr)[2])) << 16) | \
+    (((dword)((unsigned char)(ptr)[3])) << 24))  \
+
+/*
+ *  get_word
+ *
+ *  Reads in a 2 byte word that is stored in little endian (Intel) notation
+ *  and converts it to the local representation in an architecture-
+ *  independent manner
+ */
+
+#define get_word(ptr)         \
+    ((word)((unsigned char)(ptr)[0]) |         \
+     (((word)((unsigned char)(ptr)[1])) << 8 ))
+
+#endif /* INTEL */
 
 SMAPI_EXT int  _createDirectoryTree(const char *pathName);
 /*DOC
