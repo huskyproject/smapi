@@ -9,7 +9,8 @@ LINK=   link
 LINKOPTS = msvcrt.lib Kernel32.lib /nologo /opt:nowin98 /dll /nodefaultlib /out:"smapimvc.dll" /implib:"smapimvc.lib"
 OBJ=	.obj
 
-SMAPIL= smapimvc.dll
+SMAPIL= smapimvc.lib
+SMAPIDLL= smapimvc.dll
 
 include makefile.inc
 
@@ -18,13 +19,15 @@ include makefile.inc
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
 
-all: $(SMAPIL)
+all: $(SMAPIDLL)
 
-$(SMAPIL): $(OBJS)
+$(SMAPIDLL): $(OBJS)
 	$(LINK) $(LINKOPTS) $(OBJS)
 
 clean:
 	-del *.obj
 
 distclean: clean
-	-del *.lib
+	-del $(SMAPIL)
+	-del $(SMAPIDLL)
+	-del smapimvc.exp
