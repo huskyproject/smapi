@@ -57,6 +57,7 @@ static void freejamsubfield(JAMSUBFIELD2LIST *subfield)
 MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
 {
    MSGA *jm;
+   unsigned long len;
 
    jm = palloc(sizeof(MSGA));
    if (jm == NULL)
@@ -109,6 +110,15 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
       msgapierr = MERR_BADF;
       return NULL;
    }
+
+   /* fix for corrupted areas */
+   lseek(Jmd->IdxHandle, 0, SEEK_END);
+   len = tell(Jmd->IdxHandle);
+   if (Jmd->HdrInfo.ActiveMsgs > len/IDX_SIZE) {
+      Jmd->HdrInfo.ActiveMsgs = len/IDX_SIZE;
+      Jmd->modified = 1;
+   }
+   lseek(Jmd->IdxHandle, 0, SEEK_SET);
 
    /* Jam_ActiveMsgs(Jmd); */
 
