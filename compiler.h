@@ -20,6 +20,20 @@
 #ifndef __COMPILER_H__
 #define __COMPILER_H__
 
+/* small code to demonstrate gcc 2.96 bugs:
+char q[2048], *p;
+int qq(void)
+{ return p[p-q-1];
+}
+*/
+
+#if defined(__GNUC__) && (__GNUC__==2) && (__GNUC_MINOR__>95)
+#warning Latest GNU C branch 2 is 2.95.*. Your version is not GNU C and not supported. You may use it for your risk.
+#warning Download and install GNU C release from www.gnu.org only, please.
+#endif
+
+
+
 #define SMAPI_EXT extern
 
 /*
@@ -332,6 +346,7 @@ int lock(int handle, long ofs, long length);
 #elif defined(__MINGW32__)
 
 /* MINGW32 for 32-bit Windows NT on Intel and AXP */
+/* Also applied to Cygwin GCC with option -mno-cygwin */
 
 #define _stdc
 #define _intr
