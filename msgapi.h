@@ -351,10 +351,4 @@ sword far pascal shareloaded(void);
 #define shareloaded() FALSE
 #endif
 
-#if defined(__IBMC__) || defined(__EMX__) || defined(__WATCOMC__) || defined(__HIGHC__) || defined(UNIX) || defined(__DJGPP__)
-#pragma pack()
-#elif defined(__TURBOC__)
-#pragma option -a.
-#endif
-
 #endif

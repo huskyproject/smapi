@@ -168,8 +168,6 @@
 
 /* Borland Turbo C/C++ for MS-DOS */
 
-#pragma option -a-
-
 /* for BC++ 3.1 */
 #define strcasecmp stricmp
 #define strncasecmp strncmpi
@@ -188,8 +186,6 @@
 
 /* WATCOM C/C++ for MS-DOS */
 
-#pragma pack(1)
-
 #define _stdc cdecl
 #define _intr interrupt far
 #define _intcast void (_intr *)()
@@ -204,8 +200,6 @@
 #elif defined(_MSC_VER)
 
 /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
-
-#pragma pack(1)
 
 #define _stdc cdecl
 #define _intr cdecl interrupt far
@@ -239,8 +233,6 @@
 
 /* WATCOM C/C++ for OS/2 */
 
-#pragma pack(1)
-
 #define _stdc
 #define _intr
 #define _intcast
@@ -256,8 +248,6 @@
 #elif defined(__WATCOMC__) && defined(__NT__)
 
 /* WATCOM C/C++ for Windows NT */
-
-#pragma pack(1)
 
 #define _stdc
 #define _intr
@@ -275,8 +265,6 @@
 #elif defined(__HIGHC__)
 
 /* MetaWare High C/C++ for OS/2 */
-
-#pragma pack(1)
 
 #define _stdc
 #define _intr
@@ -309,8 +297,6 @@
 #elif defined(__MINGW32__)
 
 /* MINGW32 for 32-bit Windows NT on Intel and AXP */
-
-#pragma pack(1)
 
 #define _stdc
 #define _intr
@@ -362,8 +348,6 @@ int lock(int handle, long ofs, long length);
 
 /* Borland C/C++ for Win32 */
 
-#pragma option -a1
-
 #define _stdc cdecl
 #define _intr
 #define _intcast
@@ -383,8 +367,6 @@ int lock(int handle, long ofs, long length);
 #elif defined(__EMX__)
 
 /* EMX for 32-bit OS/2 and RSX for Windows NT */
-
-#pragma pack(1)
 
 #define _stdc
 #define _intr
@@ -412,8 +394,6 @@ int lock(int handle, long ofs, long length);
 
 /* Borland C/C++ for Win32 */
 
-#pragma option -a1
-
 #define _stdc cdecl
 #define _intr
 #define _intcast
@@ -431,8 +411,6 @@ int lock(int handle, long ofs, long length);
 #elif defined(__TURBOC__) && defined(__OS2__)
 
 /* Borland C/C++ for OS/2 */
-
-#pragma option -a1
 
 #define _stdc cdecl
 #define _intr
@@ -452,8 +430,6 @@ int lock(int handle, long ofs, long length);
 #elif defined(__IBMC__)
 
 /* IBM C/Set++ for OS/2 */
-
-#pragma pack(1)
 
 #define _stdc
 #define _intr
@@ -519,8 +495,6 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #elif defined(__DJGPP__)
 
 /* DJGPP for MS-DOS */
-
-#pragma pack(1)
 
 #define _stdc
 #define _intr

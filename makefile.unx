@@ -7,9 +7,7 @@ RANLIB= ranlib
 
 TARGET=	libsmapiunix
 
-LIBDIR=$(HOME)/fido/lib
-INCDIR=$(HOME)/fido/include/smapi
-
+LIBDIR=$(FIDO)/lib
 
 default: $(TARGET).a $(TARGET).so
 
