@@ -131,7 +131,7 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
    lseek(Jmd->IdxHandle, 0, SEEK_SET);
 
    if (JamStrictActiveMsgs)
-       Jam_ActiveMsgs(Jmd);
+       Jam_ActiveMsgs(jm);
 
    jm->high_water = Jmd->HdrInfo.highwater;
    /* jm->high_msg = Jam_HighMsg(Jmd); */
