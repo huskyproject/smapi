@@ -1,3 +1,17 @@
+2002-11-18 Monday 15:40  stas_degteff
+
+	* compiler.h (1.107): Allow spawnvp() for DJGPP
+
+2002-11-18 Monday 10:58  stas_degteff
+
+	* msgapi.c (1.32): Fix Watcom C compilation error (_XPENTRY is
+	pascal calling convertion Watcom C/NT!)
+
+2002-11-17 Sunday 01:54  stas_degteff
+
+	* compiler.h (1.106): Define HAS_SPAWNVP for Watcom, MSVC, Mingw32
+	& Cygwin
+
 2002-11-16 Saturday 11:44  pgul
 
 	* compiler.h (1.105): Fix compiler warning
