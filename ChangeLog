@@ -1,3 +1,7 @@
+2002-11-14 Thursday 05:34  stas_degteff
+
+	* msgapi.c (1.31), msgapi.h (1.54): Add comment
+
 2002-11-13 Wednesday 14:51  pgul
 
 	* msgapi.c (1.30), msgapi.h (1.53): Add strmerr() function
