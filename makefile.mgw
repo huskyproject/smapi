@@ -17,7 +17,7 @@ CDEFS=-D__NT__ -DWINNT -D__MINGW32__
 CFLAGS=-Wall
 COPT=-O3
 
-TARGET=smapimgw.a
+TARGET=libsmapimgw.a
 
 default: $(TARGET)
 
