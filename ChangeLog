@@ -1,3 +1,8 @@
+2003-01-23 Thursday 22:17  d_sergienko
+
+	* Makefile (1.33): install static library when invoking 'make
+	install' instead of 'make' and only then 'make install'
+
 2003-01-23 Thursday 10:37  stas_degteff
 
 	* compiler.h (1.158): Change FreeBSD macros description
