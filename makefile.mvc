@@ -3,30 +3,27 @@
 
 CC=     cl
 CFLAGS= -nologo -Zp1
-CDEFS=  -D__NT__ -D_CONSOLE -DPROCESSOR_ARCHITECTURE="$(PROCESSOR_ARCHITECTURE)"
+CDEFS=  -I.. -D__NT__ -D_CONSOLE
 COPT=   -O2
 TLIB=    lib -nologo
-OBJ=	.obj
-
-SMAPIL= smapimvc.lib
+_EXE=	.exe
+_OBJ=	.obj
+_LIB=	.lib
+LIBSUFFIX=mvc
 
 include makefile.inc
 
-
-.c.obj:
+.c$(_OBJ):
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
-all: $(SMAPIL) gnmsgid.exe
+all: $(TARGETLIB)
 
-$(SMAPIL): $(OBJS)
+$(TARGETLIB): $(OBJS)
 	$(TLIB) /out:$@ $(OBJS)
 
-gnmsgid.exe: $(SMAPIL)
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ gnmsgid.c $(GMOBJS) /link /opt:nowin98
 
 clean:
-	-del *.obj
+	-del *$(_OBJ)
 
 distclean: clean
-	-del *.lib
-	-del gnmsgid.exe
+	-del $(TARGETLIB)

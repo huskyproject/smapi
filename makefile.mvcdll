@@ -3,39 +3,33 @@
 
 CC=     cl
 CFLAGS= -nologo -MD -Zp1
-CDEFS=  -D__NT__ -D_CONSOLE -D_MAKE_DLL -D_SMAPI_EXT
+CDEFS=  -I.. -D__NT__ -D_CONSOLE -D_MAKE_DLL -D_HUSKYEXT
 COPT=   -Ob2
 LINK=   link
-LINKOPTS = msvcrt.lib Kernel32.lib /nologo /opt:nowin98 /dll /nodefaultlib /out:"smapimvc.dll" /implib:"smapimvc.lib"
-OBJ=	.obj
-
-SMAPIL= smapimvc.lib
-SMAPIDLL= smapimvc.dll
+LINKOPTS= msvcrt.lib Kernel32.lib /nologo /opt:nowin98 /dll /nodefaultlib
+_OBJ=	.obj
+_LIB=	.lib
+_DLL=	.dll
+DLLSUFFIX=mvc
+LIBSUFFIX=mvc
 
 include makefile.inc
 
 
-.c.obj:
+.c$(_OBJ):
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
 
-all: $(SMAPIDLL) gnmsgid.exe
+all: $(TARGETDLL)
         
-$(SMAPIDLL): $(OBJS)
-	$(LINK) $(LINKOPTS) $(OBJS)
+$(TARGETDLL): $(OBJS)
+	$(LINK) $(LINKOPTS) /out:$@ /implib:$(TARGETLIB) $(OBJS)
 
-gnmsgid.exe: $(OBJS)
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ gnmsgid.c $(GMOBJS) /link /opt:nowin98
-        -del gnmsgid.exp
-        -del gnmsgid.lib
 
 clean:
-	-del *.obj
-        -del gnmsgid.exp
-        -del gnmsgid.lib
+	-del *$(_OBJ)
 
 distclean: clean
-	-del $(SMAPIL)
-	-del $(SMAPIDLL)
-	-del smapimvc.exp
-        -del gnmsgid.exe
+	-del $(TARGETLIB)
+	-del $(TARGETDLL)
+	-del *.exp
