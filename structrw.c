@@ -1119,9 +1119,14 @@ int read_allidx(JAMBASEptr jmb)
       /* warning: database corrupted! */
       jmb->HdrInfo.ActiveMsgs = i;
       jmb->modified = 1;
-      if (i != allocated) {
+      if (i == 0) {
+         if (jmb->actmsg) {
+            pfree(jmb->actmsg);
+            jmb->actmsg = NULL;
+         }
+      } else if (i != allocated) {
          newptr = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*i);
-	 if (newptr) jmb->actmsg = newptr;
+         if (newptr) jmb->actmsg = newptr;
       }
    } /* endif */
 
