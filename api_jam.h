@@ -55,6 +55,8 @@ typedef struct
     }
     JAMHDRINFO,  *JAMHDRINFOptr;
 
+#define HDRINFO_SIZE (1000 + (4 * 6))
+
 /*
 **  Message status bits
 */
@@ -116,6 +118,8 @@ typedef struct
     }
     JAMHDR, *JAMHDRptr;
 
+#define HDR_SIZE (8 + (4 * 17))
+
 /*
 **  Message header subfield types
 */
@@ -170,6 +174,8 @@ typedef struct
     dword  HdrOffset;                 /* Offset of header in .JHR file */
     }
     JAMIDXREC, *JAMIDXRECptr;
+
+#define IDX_SIZE 8
 
 /*
 **  Lastread structure, one per user
