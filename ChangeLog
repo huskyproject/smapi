@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Tue Oct  3 18:22:25 MSZ 2000
+tobi:
+* introduced MSGIMM flag in XMSG for use by JAM API
+
+----- cvs ci ------
 Tue Oct  3 17:05:57 MSD 2000
 Fedor:
 * definited xmreply1st and xmreplynext for used jam linker
