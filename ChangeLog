@@ -1,3 +1,23 @@
+2002-01-07 Monday 21:07  tobi
+
+	* fexist.c (1.15.2.3), makefile.wcx (1.12.2.1), setfsize.c
+	(1.4.2.2), tdelay.c (1.6.2.4): Fixes for wcx (Watcom in flat
+	DOS-extended mode)
+
+2002-01-07 Monday 20:26  tobi
+
+	* dirtree.h (1.1): file dirtree.h was initially added on branch
+	smapi-2_0-stable.
+
+2002-01-07 Monday 20:26  tobi
+
+	* api_jam.c (1.58.2.6), api_sdm.c (1.22.2.3), dirtree.h (1.1.2.1),
+	fexist.c (1.15.2.2), progprot.h (1.9.2.2), sq_area.c (1.19.2.2):
+	_createDirectoryTree is static and only used internally in smapi,
+	in order to keep binary compatibility within the smapi 2.0 branch. 
+	_createDirectoryTree will be accessable for applications in the
+	smapi 2.2 branch.
+
 2002-01-04 Friday 15:59  ml
 
 	* msgapi.h (1.34.2.3): change version number
