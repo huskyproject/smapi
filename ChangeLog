@@ -1,3 +1,29 @@
+2003-03-05 Wednesday 12:44  stas_degteff
+
+	* gnmsgid.c (smapi-2_4-stable.1): Fix EMX warnings
+
+2003-03-05 Wednesday 12:43  stas_degteff
+
+	* compiler.h, dr.h, makefile.emx (smapi-2_4-stable.[7,1,1]): Fix
+	EXM build
+
+2003-03-05 Wednesday 08:55  stas_degteff
+
+	* compiler.h (smapi-2_4-stable.6): Fix EMX build: define macro
+	SMAPI_EXT
+
+2003-03-05 Wednesday 08:33  stas_degteff
+
+	* compiler.h (smapi-2_4-stable.5): Fix DJGPP build
+
+2003-03-05 Wednesday 07:52  stas_degteff
+
+	* compiler.h (smapi-2_4-stable.4): Fix OS/2 EMX build
+
+2003-03-05 Wednesday 06:55  stas_degteff
+
+	* compiler.h (smapi-2_4-stable.3): Fix DJGPP build
+
 2003-03-04 Tuesday 12:54  stas_degteff
 
 	* compiler.h (smapi-2_4-stable.2): Use sleep() from unistd.h in
