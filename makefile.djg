@@ -30,8 +30,8 @@ all: $(TARGET) gnmsgid$(EXE)
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
-gnmsgid$(EXE): gnmsgid$(OBJ)
-	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG)gnmsgid$(EXE) gnmsgid$(OBJ) $(LOPT) $(TARGET)
+gnmsgid$(EXE): gnmsgid$(OBJ) genmsgid$(OBJ)
+	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG)gnmsgid$(EXE) $^ $(LOPT) $(TARGET)
 
 clean:
 	-$(RM) *$(OBJ)

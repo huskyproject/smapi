@@ -710,9 +710,18 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(UNIX) || defined(_UNIX) || defined(__unix) || defined(__unix__)
+#if defined(UNIX) || defined(_UNIX) || defined(__unix)
 #  if !defined(__UNIX__)
 #    define __UNIX__
+#  endif
+#endif
+#ifdef __unix__
+#  ifdef __DJGPP__
+#    undef __UNIX__
+#  else
+#    if !defined(__UNIX__)
+#      define __UNIX__
+#    endif
 #  endif
 #endif
 
