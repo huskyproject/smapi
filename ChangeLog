@@ -1,3 +1,12 @@
+2002-10-23 Wednesday 10:06  mche
+
+	* msgapi.h (1.47): clean type redefenition for win32 compilers
+
+2002-10-23 Wednesday 09:19  pgul
+
+	* compiler.h (1.102): define SMAPI_EXT as extern for vars
+	declaration (msgapierr)
+
 2002-10-22 Tuesday 11:26  stas_degteff
 
 	* readme.txt (1.7): Update compilers list
