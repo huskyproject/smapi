@@ -40,7 +40,6 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
 	# Add here commands to install the package into debian/tmp
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 
@@ -57,12 +56,13 @@ binary-arch: build install
 #	dh_installdebconf	
 	dh_installdocs
 	dh_installexamples
-	dh_installmenu
-	dh_installcron
+#	dh_installmenu
+#	dh_installcron
 	dh_installman
 	dh_installinfo
 #	dh_undocumented
 	dh_installchangelogs ChangeLog
+	rm -rf $(CURDIR)/debian/libsmapi2-dev/usr/share/doc/libsmapi2-dev
 	dh_link
 	dh_strip
 	dh_compress
