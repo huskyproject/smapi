@@ -372,9 +372,6 @@ int lock(int handle, long ofs, long length);
 
 /* Linux, FreeBSD, etc. */
 
-/* test it :-) */
-#pragma pack(1)
-
 #define _stdc
 #define _intr
 #define _intcast
@@ -437,7 +434,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 
 #include <unistd.h>
 #include <io.h>
-#define mysleep(x) unused(x)
+#define mysleep(x) sleep(x)
 
 #elif defined(SASC)
 
