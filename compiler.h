@@ -642,9 +642,9 @@ int qq(void)
 /***** compiler-specific stuff **********************************************/
 
 #ifdef __MSVC__  /* MS Visual C/C++ *****************************************/
-
+/*   must be included before function redefenition like '#define P_WAIT		_P_WAIT'  */
+#include <process.h>
 #define P_WAIT		_P_WAIT   /* process.h */
-
 #  ifdef _MAKE_DLL
 #    define _MAKE_DLL_MVC_
 #    ifndef _SMAPI_EXT
@@ -652,7 +652,7 @@ int qq(void)
 #    else
 #      define SMAPI_EXT __declspec(dllexport)
 #    endif /* _SMAPI_EXT */
-/*   must be included before function redefenition like '#    define fileno _fileno" */
+/*   must be included before function redefenition like '#define fileno _fileno' */
 #    include <sys/stat.h>
 #    include <stdio.h>
 /* system functions substitutions for DLL build */
