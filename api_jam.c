@@ -106,9 +106,15 @@ static sword EXPENTRY JamCloseArea(MSG * jm)
       return -1;
    }
 
-/*   Jmd->HdrInfo.highwater = jm->high_water;
+   if (Jmd->msgs_open) {
+      msgapierr = MERR_EOPEN;
+      return -1;
+   }
+   
+   Jmd->HdrInfo.highwater = jm->high_water;
    Jmd->HdrInfo.ModCounter++;
-   Jam_WriteHdrInfo(Jmd);*/
+   Jam_WriteHdrInfo(Jmd);
+
    
    if (jm->locked) JamUnlock(jm);
    
@@ -646,7 +652,7 @@ static sword EXPENTRY JamSetHighWater(MSG * jm, dword hwm)
       return -1L;
    }
 
-//   if (hwm > jm->high_msg) return -1L;
+   if (hwm > jm->high_msg) return -1L;
 
    jm->high_water = hwm;
 
@@ -883,6 +889,11 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
             msgh->seek_hdr = msgh->Idx.HdrOffset;
             lseek(Jmd->HdrHandle, msgh->Idx.HdrOffset, SEEK_SET);
             farread(Jmd->HdrHandle, (&msgh->Hdr), sizeof(JAMHDR));
+            if (stricmp((char*)&msgh->Hdr, "JAM") != 0) {
+               pfree(msgh);
+               return NULL;
+            } else {
+            } /* endif */
             if(mode == MOPEN_CREATE) return (MSGH *)msgh;
             msgh->SubFieldPtr = (JAMSUBFIELDptr)palloc(msgh->Hdr.SubfieldLen);
             farread(Jmd->HdrHandle, msgh->SubFieldPtr, msgh->Hdr.SubfieldLen);
@@ -986,20 +997,20 @@ static dword Jam_MsgAttrToJam(XMSG *msg)
 {
    dword attr = 0;
 
-   if (msg->attr & MSGLOCAL) attr |= JMSG_LOCAL;
+   if (msg->attr & MSGLOCAL)   attr |= JMSG_LOCAL;
    if (msg->attr & MSGPRIVATE) attr |= JMSG_PRIVATE;
-   if (msg->attr & MSGREAD) attr |= JMSG_READ;
-   if (msg->attr & MSGSENT) attr |= JMSG_SENT;
-   if (msg->attr & MSGKILL) attr |= JMSG_KILLSENT;
-   if (msg->attr & MSGHOLD) attr |= JMSG_HOLD;
-   if (msg->attr & MSGCRASH) attr |= JMSG_CRASH;
-   if (msg->attr & MSGFRQ) attr |= JMSG_FILEREQUEST;
-   if (msg->attr & MSGFILE) attr |= JMSG_FILEATTACH;
-   if (msg->attr & MSGFWD) attr |= JMSG_INTRANSIT;
-   if (msg->attr & MSGRRQ) attr |= JMSG_RECEIPTREQ;
-   if (msg->attr & MSGORPHAN) attr |= JMSG_ORPHAN;
-   if (msg->attr & MSGCPT) attr |= JMSG_CONFIRMREQ;
-   if (msg->attr & MSGLOCKED) attr |= JMSG_LOCKED;
+   if (msg->attr & MSGREAD)    attr |= JMSG_READ;
+   if (msg->attr & MSGSENT)    attr |= JMSG_SENT;
+   if (msg->attr & MSGKILL)    attr |= JMSG_KILLSENT;
+   if (msg->attr & MSGHOLD)    attr |= JMSG_HOLD;
+   if (msg->attr & MSGCRASH)   attr |= JMSG_CRASH;
+   if (msg->attr & MSGFRQ)     attr |= JMSG_FILEREQUEST;
+   if (msg->attr & MSGFILE)    attr |= JMSG_FILEATTACH;
+   if (msg->attr & MSGFWD)     attr |= JMSG_INTRANSIT;
+   if (msg->attr & MSGRRQ)     attr |= JMSG_RECEIPTREQ;
+   if (msg->attr & MSGORPHAN)  attr |= JMSG_ORPHAN;
+   if (msg->attr & MSGCPT)     attr |= JMSG_CONFIRMREQ;
+   if (msg->attr & MSGLOCKED)  attr |= JMSG_LOCKED;
 
    return attr;
 }
