@@ -121,10 +121,11 @@
    * __OS2__   - OS/2 target (32 bit or 16 bit), 32bit is __OS2__ && __FLAT__
    * __DOS__   - MS/PC/... DOS target (32 bit or 16 bit), 32bit is __DOS__ && __FLAT__
    * __DPMI__  - DOS 32 bit (extenders: dos4g, farcall, rsx, ...)
+   * __MACOS__ - MacOS (Unix clone)
    * __UNIX__  - All unix-like OS
    * __AMIGA__ - AmigaOS
    * __ALPHA__ - The Alpha CPU
-   * __INTEL__ - Intel's x86 series CPU
+   * __X86__   - Intel's x86 series CPU
    * __PPC__   - The PowerPC CPU (Mac, ...)
    */
 
@@ -149,6 +150,12 @@
    EMX (OS/2)                                (GNU C clone)
    -------------------------------------------------------------------
     __EMX__
+    __GNUC__ __VERSION__ __STDC__
+    __CHAR_UNSIGNED__ (or __CHAR_SIGNED__)
+    Some values (EMX rev 61):
+    __GNUC__=2 (0x2); __GNUC_MINOR__=8 (0x8)
+    __VERSION__=2.8.1
+    __STDC__=1 (0x1); __STDC_VERSION__=199409 (0x30AF1);
    ===================================================================
    GNU C on FreeBSD 4.*
    -------------------------------------------------------------------
@@ -257,6 +264,41 @@
    Microsoft Visual C/C++
    -------------------------------------------------------------------
    _MSC_VER    value is greated or eq 1200
+   _WIN32      Defined for applications for Win32. Always defined.
+   _CHAR_UNSIGNED Default char type is unsigned. Defined when /J is specified.
+   __cplusplus Defined for C++ programs only.
+   _CPPRTTI Defined for code compiled with /GR (Enable Run-Time Type Information).
+   _CPPUNWIND Defined for code compiled with /GX (Enable Exception Handling).
+   _DLL Defined when /MD or /MDd (Multithread DLL) is specified.
+   _M_ALPHA Defined for DEC ALPHA platforms. It is defined as 1 by the ALPHA compiler, and it is not defined if another compiler is used.
+   _M_IX86 Defined for x86 processors. See Table 1.3 for more details.
+   _M_MPPC Defined for Power Macintosh platforms. Default is 601 (/QP601). See Table 1.4 for more details.
+   _M_MRX000 Defined for MIPS platforms. Default is 4000 (/QMR4000). See Table 1.5 for more details.
+   _M_PPC Defined for PowerPC platforms. Default is 604 (/QP604). See Table 1.6 for more details.
+   _MFC_VER Defines the MFC version. Defined as 0x0421 for Microsoft Foundation Class Library 4.21. Always defined.
+   _MSC_EXTENSIONS This macro is defined when compiling with the /Ze compiler option (the default).  Its value, when defined, is 1.
+   _MSC_VER Defines the compiler version. Defined as 1200 for Microsoft Visual C++ 6.0. Always defined.
+   _MT Defined when /MD or /MDd (Multithreaded DLL) or /MT or /MTd (Multithreaded) is specified.
+   -------------------------------------------------------------------
+   _M_IX86 = 300  - CPU 80486 (/G3)
+   _M_IX86 = 400  - CPU 80486 (/G4)
+   _M_IX86 = 500  - CPU 80486 (/G5) - default
+   _M_IX86 = 600  - CPU 80486 (/G6)
+   _M_MPPC = 601  - PowerPC 601 (/QP601) - Default
+   _M_MPPC = 603  - PowerPC 603 (/QP603)
+   _M_MPPC = 604  - PowerPC 604 (/QP604)
+   _M_MPPC = 620  - PowerPC 620 (/QP620)
+   _M_PPC = 601  - PowerPC 601 /QP601
+   _M_PPC = 603  - PowerPC 603 /QP603
+   _M_PPC = 604  - PowerPC 604 /QP604 - Default
+   _M_PPC = 620  - PowerPC 620 /QP620
+   _M_MRX000 = 4000  - R4000 (/QMR4000) - Default
+   _M_MRX000 = 4100  - R4100 (/QMR4100)
+   _M_MRX000 = 4200  - R4200 (/QMR4200)
+   _M_MRX000 = 4400  - R4400 (/QMR4400)
+   _M_MRX000 = 4600  - R4600 (/QMR4600)
+   _M_MRX000 = 10000 - R10000 (/QMR10000)
+
    ===================================================================
    Microsoft C or Microsoft QuickC for MS-DOS or OS/2
    -------------------------------------------------------------------
@@ -448,9 +490,27 @@ int qq(void)
 #  define __OS2__
 #endif
 
+#if defined(_M_MPPC)
+#  if !defined(__MACOS__)
+#    define __MACOS__
+#  endif
+#endif
+
+#if defined(_WIN32) || defined(WIN32)
+#  if !defined(__WIN32__)
+#    define __WIN32__
+#  endif
+#endif
+
 #if defined(NT) || defined(WINNT)
 #  if !defined(__NT__)
 #    define __NT__
+#  endif
+#endif
+
+#if defined(__NT__)
+#  if !defined(__WIN32__)
+#    define __WIN32__
 #  endif
 #endif
 
@@ -479,7 +539,7 @@ int qq(void)
 /*
   BeOS is NOT Unix, but sometime it seem's to Be ... ;)
 */
-#if defined (__BEOS__)
+#if defined (__BEOS__) || defined(__BeOS__)
 #  if !defined(__UNIX__)
 #    define __UNIX__
 #  endif
@@ -491,7 +551,7 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(UNIX)
+#if defined(UNIX) || defined(_UNIX)
 #  if !defined(__UNIX__)
 #    define __UNIX__
 #  endif
@@ -499,19 +559,59 @@ int qq(void)
 
 /***** Platforms *************************************************************/
 
+
+#if defined(SASC) && !defined(__AMIGA__) /* SAS C for AmigaDOS ***************/
+#  define __AMIGA__
+#endif
+
 #if defined(__alpha) || defined(_M_ALPHA)
 #  ifndef __ALPHA__
 #    define __ALPHA__
 #  endif
 #endif
 
-#ifdef PROCESSOR_ARCHITECTURE
-#  if PROCESSOR_ARCHITECTURE == "ALPHA"
-#    define __ALPHA__
+#if defined(_M_IX86)  /* MS Visual C predefined */
+#  ifndef __X86__
+#    define __X86__
 #  endif
-#  if PROCESSOR_ARCHITECTURE == "x86"
-#    define __386__
+#  if _M_IX86 >= 300
+#    ifndef __386__
+#      define __386__
+#    endif
 #  endif
+#  if _M_IX86 >= 400
+#    ifndef __486__
+#      define __486__
+#    endif
+#  endif
+#  if _M_IX86 >= 500
+#    ifndef __586__
+#      define __586__
+#    endif
+#  endif
+#  if _M_IX86 >= 600
+#    ifndef __686__
+#      define __686__
+#    endif
+#  endif
+#endif
+
+#if defined(__IX86__)
+#  ifndef __X86__
+#    define __X86__
+#  endif
+#endif
+
+#if defined(_M_MPPC) /* Power PC Macintosh */
+#endif
+
+#if defined(_M_PPC) /* Power PC */
+#  ifndef __PPC__
+#    define __PPC__
+#  endif
+#endif
+
+#if defined(_M_MRX000) /* MIPS */
 #endif
 
 #ifdef __ALPHA__
@@ -520,6 +620,12 @@ int qq(void)
 #  endif
 #  ifndef __FLAT__
 #    define __FLAT__
+#  endif
+#endif
+
+#if defined(__X86__)
+#  ifndef __LITTLE_ENDIAN__
+#    define __LITTLE_ENDIAN__
 #  endif
 #endif
 
@@ -539,7 +645,13 @@ int qq(void)
 #endif
 
 
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined(__MINGW32__)
+#  ifndef __X86__
+#    define __X86__
+#  endif
+#  ifndef __386__
+#    define __386__
+#  endif
 #  ifndef __LITTLE_ENDIAN__
 #    define __LITTLE_ENDIAN__
 #  endif
@@ -548,21 +660,10 @@ int qq(void)
 #  endif
 #endif
 
-
-#if defined(__WATCOMC__) && defined(__X86__) /* Watcom C for intel x86 platform */
-#  ifndef __LITTLE_ENDIAN__
-#    define __LITTLE_ENDIAN__
-#  endif
-#endif
-
 #if defined(__DOS__) || defined(__DPMI__)
 #  ifndef __LITTLE_ENDIAN__
 #    define __LITTLE_ENDIAN__
 #  endif
-#endif
-
-#if defined(SASC) && !defined(__AMIGA__) /* SAS C for AmigaDOS ***************/
-#  define __AMIGA__
 #endif
 
 /***** memory models *********************************************************/
