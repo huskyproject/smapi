@@ -25,20 +25,19 @@
 #include <dos.h>
 #endif
 
-#if defined(__OS2__)
-#define INCL_NOPM
-#define INCL_DOS    /* must be before prog.h */
-#endif
-
 #include "compiler.h"
 #include "prog.h"
 
 #if defined(__OS2__)
+#define INCL_NOPM
+#define INCL_DOS    /* must be before prog.h */
+
 #include <os2.h>
+#include <time.h>
 
   void _fast tdelay(int msecs)
   {
-      sleep((ULONG)msecs);
+      DosSleep((ULONG)msecs);
   }
 
 #elif defined(__DOS__)
