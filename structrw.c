@@ -1117,6 +1117,7 @@ int read_allidx(JAMBASEptr jmb)
    if (i != jmb->HdrInfo.ActiveMsgs) {
       /* warning: database corrupted! */
       jmb->HdrInfo.ActiveMsgs = i;
+      jmb->modified = 1;
       if (i != allocated) {
          newptr = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*i);
 	 if (newptr) jmb->actmsg = newptr;
