@@ -38,6 +38,11 @@
 #include <dos.h>
 #endif
 
+#ifdef __BEOS__
+#include <be/kernel/fs_attr.h>
+#include <be/support/TypeConstants.h>
+#endif
+
 #define MSGAPI_HANDLERS
 
 #include "prog.h"
@@ -158,16 +163,16 @@ int SdmDeleteBase(char *name)
 
     if (ff != 0)
     {
-	do
-	{
+      do
+	  {
 	    temp = malloc(strlen(name) + strlen(ff->ff_name) + 1);
 	    sprintf(temp, "%s%s", name, ff->ff_name);
 	    unlink(temp);
 	    free(temp);
-	}
-        while (FFindNext(ff) == 0);
+	  }
+      while (FFindNext(ff) == 0);
 
-        FFindClose(ff);
+      FFindClose(ff);
     }
     rmdir(name);
 
@@ -722,6 +727,12 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             statfd = msgh->fd;
             msgh->zplen = (word) WriteZPInfo(msg, WriteToFd, ctxt);
         }
+        
+        /* Use Attributes und BeOS */
+#ifdef __BEOS__
+        fs_write_attr(msgh->fd, "XMSG_FROM", B_CHAR_TYPE, 0l, msg->from, strlen(msg->from));
+        /* ... and so on ... not fully implemented ! (Yet) */
+#endif
     }
     else if (!append || ctxt)
     {
