@@ -636,6 +636,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define _fast
 #define near
 #define EXPENTRY
+#define strcasecmp stricmp
 #define strncasecmp strnicmp
 #define sleep(x) Sleep(1000L*(x))
 #define farread read
@@ -695,6 +696,11 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define chsize		_chsize
 #define open		_open
 #define access		_access
+#define O_BINARY	_O_BINARY
+#define O_RDWR		_O_RDWR
+#define S_IFMT		_S_IFMT
+#define S_IFDIR		_S_IFDIR
+
 
 #endif
 
