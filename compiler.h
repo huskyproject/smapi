@@ -273,6 +273,10 @@ int lock(int handle, long ofs, long length);
 #define mysleep(x) sleep(x)
 #define mode_t int
 
+#define HAS_SNPRINTF  1
+#define HAS_VSNPRINTF 1
+#define snprintf  _snprintf
+#define vsnprintf _vsnprintf
 
 #elif defined(__WATCOMC__) && defined(__NT__)
 
@@ -385,6 +389,9 @@ int lock(int handle, long ofs, long length);
 #define EXPENTRY
 #endif
 
+#define HAS_SNPRINTF  1
+#define HAS_VSNPRINTF 1
+
 #elif defined(__TURBOC__) && defined(WINNT)
 
 /* Borland C/C++ for Win32 */
@@ -433,6 +440,9 @@ int lock(int handle, long ofs, long length);
 #define strncasecmp strnicmp
 
 #define EXPENTRY
+
+#define HAS_SNPRINTF  1
+#define HAS_VSNPRINTF 1
 
 #elif defined(__TURBOC__) && defined(WINNT)
 
@@ -557,6 +567,9 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #elif defined(__linux__) || defined(__sun__)
 #define mysleep(x) usleep(x*1000000l)
 #endif
+
+#define HAS_SNPRINTF  1
+#define HAS_VSNPRINTF 1
 
 #elif defined(__DJGPP__)
 
