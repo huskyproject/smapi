@@ -1,3 +1,7 @@
+2002-11-15 Friday 05:18  stas_degteff
+
+	* makefile.inc (1.3): dos2unix
+
 2002-11-14 Thursday 05:34  stas_degteff
 
 	* msgapi.c (1.31), msgapi.h (1.54): Add comment
