@@ -29,6 +29,16 @@
 #include "compiler.h"
 #include "prog.h"
 
+#ifdef HAS_strftime
+/* Use function instead macro to prevent compiler warning or error.
+ * (If file do not content any code some compilers report about error.)
+ */
+size_t cdecl strftim(char *string, size_t maxsize, const char *format, const struct tm *current_time)
+{ return strftime(string, maxsize, format, current_time); }
+
+#else
+/* We own implementation instead strftime() */
+
 /* Note: TZ environment variable MUST be defined to use the %Z function
  * at least in form "SET TZ=XYZ"
  */
@@ -150,9 +160,11 @@ size_t cdecl strftim(char *string, size_t maxsize, const char *format, const str
                           todo2: implement full parsing TZ env.var */
                     strncpy(out, scrptr, 3);
                     out[3] = '\0';
-                    /* strupr(out);
-		       function not available under Linux / FreeBSD
-		     */
+#ifndef __UNIX__
+                    strupr(out);
+#else               /*   function not available under Linux / FreeBSD */
+                    for(scrptr=out;*scrptr;scrptr++) *scrptr = toupper(*scrptr);
+#endif
                 }
                 else
                 {
@@ -183,3 +195,4 @@ size_t cdecl strftim(char *string, size_t maxsize, const char *format, const str
 
     return strlen(string);
 }
+#endif
