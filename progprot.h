@@ -39,6 +39,7 @@ char *_fast Add_Trailing(char *str, char add);
 void _fast Parse_NetNode(char *netnode, word * zone, word * net, word * node, word * point);
 void _fast ParseNN(char *netnode, word * zone, word * net, word * node, word * point, word all);
 char *_fast sc_time(union stamp_combo *sc, char *string);
+char *_fast fts_time(char *string, struct tm *tmdate);
 char *_fast strocpy(char *d, char *s);
 void _fast tdelay(int);
 int _fast setfsize(int fd, long size);
