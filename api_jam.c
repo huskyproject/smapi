@@ -1156,6 +1156,10 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
       kludge = str+6;
       subtypes = JAMSFLD_FLAGS;
    }
+   else if (strstr(str, "TZUTC: ")) {
+      kludge = str+6;
+      subtypes = JAMSFLD_TZUTCINFO;
+   }
    else {
       kludge = str;
       subtypes = JAMSFLD_FTSKLUDGE;
@@ -1420,17 +1424,21 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned ch
 
 int makeKludge(char **buff, char *sstr, unsigned char *str, char *ent, int len)
 {
-   if (!*buff) *buff = (char*)calloc(1, sizeof(char));
+   char *p;
+   if (!*buff) {
+       *buff = (char*)malloc(strlen(sstr)+strlen(ent)+len+1);
+       if (*buff) **buff='\0';
+   }
+   else
+       *buff = (char*)realloc(*buff, strlen(*buff)+strlen(sstr)+strlen(ent)+len+1);
 
    if (!*buff) return 0;
 
-   *buff = (char*)realloc(*buff, strlen(*buff)+strlen(sstr)+strlen(ent)+len+1);
-
-   if (!*buff) return 0;
-
-   strcat(*buff, sstr);
-   strncat(*buff, str, len);
-   strcat(*buff, ent);
+   p=*buff+strlen(*buff);
+   strcpy(p, sstr);
+   p += strlen(p);
+   strncpy(p, str, len);
+   strcpy(p+len, ent);
 
    return 1;
 }
@@ -1485,16 +1493,28 @@ void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
    } /* endif */
 }
 
+static void addkludge(unsigned char **line, char *kludge)
+{
+   if (*line == NULL) {
+       *line = malloc(strlen(kludge)+1);
+       strcpy(*line, kludge);
+       return;
+   }
+   *line = realloc(*line, strlen(*line)+strlen(kludge)+1);
+   strcat(*line, kludge);
+}
+
 void DecodeSubf(MSGH *msgh)
 {
    dword  SubPos;
    JAMSUBFIELDptr SubField;
-   char *msgid, *reply, *via, *pid, *seenby, *path, *flags, *kludges;
-   char *orig, *dest, *intl, *ptr, *fmpt, *topt;
-   sdword x;
+   char *ptr, *orig, *dest, *fmpt, *topt;
+   int x;
 
-   msgid=reply=via=pid=seenby=path=flags=kludges = NULL;
-   orig=dest=intl=fmpt=topt = NULL;
+   msgh->ctrl = (unsigned char*)palloc(1);
+   msgh->lctrl = (unsigned char*)palloc(1);
+   *(msgh->ctrl)=*(msgh->lctrl)='\0';
+   orig = dest = NULL;
 
    if (!msgh->sq->isecho) {
       SubPos = 0;
@@ -1505,13 +1525,13 @@ void DecodeSubf(MSGH *msgh)
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS))) {
          makeKludge(&dest, "", SubField->Buffer, "", SubField->DatLen);
       }
+      fmpt = topt = NULL;
       if (orig) {
          ptr = strchr(orig, '@');
          if (ptr) *ptr = '\0';
          ptr = strchr(orig, '.');
          if (ptr) {
-            *ptr = '\0';
-	    ptr++;
+            *ptr++ = '\0';
 	    if (atoi(ptr) != 0) fmpt = ptr;
          }
       }
@@ -1520,110 +1540,90 @@ void DecodeSubf(MSGH *msgh)
          if (ptr) *ptr = '\0';
          ptr = strchr(dest, '.');
          if (ptr) {
-            *ptr = '\0';
-	    ptr++;
+            *ptr++ = '\0';
 	    if (atoi(ptr) != 0) topt = ptr;
          }
       }
       if (orig && dest) {
-         intl = (char*)palloc(strlen(orig)+strlen(dest)+8);
-         sprintf(intl, "%cINTL %s %s", '\x01', dest, orig);
-      }
-   } else {
-   } /* endif */
-      SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID))) {
-         makeKludge(&msgid, "\001MSGID: ", SubField->Buffer, "", SubField->DatLen);
-      }
-      SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_REPLYID))) {
-         makeKludge(&reply, "\001REPLY: ", SubField->Buffer, "", SubField->DatLen);
-      }
-      SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_PID))) {
-         makeKludge(&pid, "\001PID: ", SubField->Buffer, "", SubField->DatLen);
-      }
-      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_TRACE));) {
-         makeKludge(&via, "\001Via ", SubField->Buffer, "\r", SubField->DatLen);
-      }
-      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FTSKLUDGE));) {
-         if (strncasecmp(SubField->Buffer, "VIA", 3) == 0) {
-            makeKludge(&via, "\001", SubField->Buffer, "\r", SubField->DatLen);
-         } else {
-            makeKludge(&kludges, "\001", SubField->Buffer, "", SubField->DatLen);
-         }
-      }
-      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FLAGS));) {
-         makeKludge(&flags, "\001FLAGS ", SubField->Buffer, "", SubField->DatLen);
-      }
-      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SEENBY2D));) {
-         makeKludge(&seenby, "SEEN-BY: ", SubField->Buffer, "\r", SubField->DatLen);
-      }
-      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_PATH2D));) {
-         makeKludge(&path, "\001PATH: ", SubField->Buffer, "\r", SubField->DatLen);
-      }
-      msgh->ctrl = (unsigned char*)palloc(1);
-      msgh->lctrl = (unsigned char*)palloc(1);
-      *(msgh->ctrl)=*(msgh->lctrl)='\0';
-      if (intl) {
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(intl)+1);
-         strcat(msgh->ctrl, intl);
-      }
-      if (topt) {
          x = strlen(msgh->ctrl);
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(topt)+7);
-         sprintf(msgh->ctrl+x, "%cTOPT %s", '\x01', topt);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(orig)+strlen(dest)+8);
+         sprintf(msgh->ctrl+x, "%cINTL %s %s", '\x01', dest, orig);
       }
       if (fmpt) {
          x = strlen(msgh->ctrl);
          msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(fmpt)+7);
          sprintf(msgh->ctrl+x, "%cFMPT %s", '\x01', fmpt);
       }
-      if (msgid) {
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(msgid)+1);
-         strcat(msgh->ctrl, msgid);
+      if (topt) {
+         x = strlen(msgh->ctrl);
+         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, x+strlen(topt)+7);
+         sprintf(msgh->ctrl+x, "%cTOPT %s", '\x01', topt);
       }
-      if (reply) {
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(reply)+1);
-         strcat(msgh->ctrl, reply);
-      }
-      if (pid) {
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(pid)+1);
-         strcat(msgh->ctrl, pid);
-      }
-      if (kludges) {
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(kludges)+1);
-         strcat(msgh->ctrl, kludges);
-      }
-      if (flags) {
-         msgh->ctrl = (unsigned char*)realloc(msgh->ctrl, strlen(msgh->ctrl)+strlen(flags)+1);
-         strcat(msgh->ctrl, flags);
-      }
+      if (orig) pfree(orig);
+      if (dest) pfree(dest);
+      orig = dest = NULL;
+   }
 
-      if (seenby) {
-         msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(seenby)+1);
-         strcat(msgh->lctrl, seenby);
+   SubPos = 0;
+   while (SubPos < msgh->Hdr.SubfieldLen) {
+      SubField = (JAMSUBFIELDptr)((char*)(msgh->SubFieldPtr)+SubPos);
+      SubPos += (SubField->DatLen+sizeof(JAMBINSUBFIELD));
+      ptr = NULL;
+      if (SubField->LoID == JAMSFLD_MSGID) {
+         makeKludge(&ptr, "\001MSGID: ", SubField->Buffer, "", SubField->DatLen);
+         addkludge(&msgh->ctrl, ptr);
+         pfree(ptr);
       }
-      if (path) {
-         msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(path)+1);
-         strcat(msgh->lctrl, path);
+      else if (SubField->LoID == JAMSFLD_REPLYID) {
+         makeKludge(&ptr, "\001REPLY: ", SubField->Buffer, "", SubField->DatLen);
+         addkludge(&msgh->ctrl, ptr);
+         pfree(ptr);
       }
-      if (via) {
-         msgh->lctrl = (unsigned char*)realloc(msgh->lctrl, strlen(msgh->lctrl)+strlen(via)+1);
-         strcat(msgh->lctrl, via);
+      else if (SubField->LoID == JAMSFLD_PID) {
+         makeKludge(&ptr, "\001PID: ", SubField->Buffer, "", SubField->DatLen);
+         addkludge(&msgh->ctrl, ptr);
+         pfree(ptr);
       }
-      msgh->clen = strlen(msgh->ctrl);
-      msgh->lclen = strlen(msgh->lctrl);
-
-      pfree(kludges);
-      pfree(pid);
-      pfree(seenby);
-      pfree(path);
-      pfree(flags);
-      pfree(msgid);
-      pfree(reply);
-      pfree(intl);
-      pfree(via);
+      else if (SubField->LoID == JAMSFLD_TRACE) {
+         makeKludge(&ptr, "\001Via ", SubField->Buffer, "\r", SubField->DatLen);
+         addkludge(&msgh->lctrl, ptr);
+         pfree(ptr);
+      }
+      else if (SubField->LoID == JAMSFLD_FTSKLUDGE) {
+         if (strncasecmp(SubField->Buffer, "Via", 3) == 0 ||
+             strncasecmp(SubField->Buffer, "Recd", 4) == 0) {
+              makeKludge(&ptr, "\001", SubField->Buffer, "\r", SubField->DatLen);
+              addkludge(&msgh->lctrl, ptr);
+         }
+         else {
+              makeKludge(&ptr, "\001", SubField->Buffer, "", SubField->DatLen);
+              addkludge(&msgh->ctrl, ptr);
+         }
+         pfree(ptr);
+      }
+      else if (SubField->LoID == JAMSFLD_FLAGS) {
+         makeKludge(&ptr, "\001FLAGS ", SubField->Buffer, "", SubField->DatLen);
+         addkludge(&msgh->ctrl, ptr);
+         pfree(ptr);
+      }
+      else if (SubField->LoID == JAMSFLD_PATH2D) {
+         makeKludge(&ptr, "\001Path: ", SubField->Buffer, "\r", SubField->DatLen);
+         addkludge(&msgh->lctrl, ptr);
+         pfree(ptr);
+      }
+      else if (SubField->LoID == JAMSFLD_SEENBY2D) {
+         makeKludge(&ptr, "SEEN-BY: ", SubField->Buffer, "\r", SubField->DatLen);
+         addkludge(&msgh->lctrl, ptr);
+         pfree(ptr);
+      }
+      else if (SubField->LoID == JAMSFLD_TZUTCINFO) {
+         makeKludge(&ptr, "\001TZUTC: ", SubField->Buffer, "", SubField->DatLen);
+         addkludge(&msgh->ctrl, ptr);
+         pfree(ptr);
+      }
+   } /* endwhile */
+   msgh->clen = strlen(msgh->ctrl);
+   msgh->lclen = strlen(msgh->lctrl);
 }
 
 /***********************************************************************

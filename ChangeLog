@@ -1,3 +1,9 @@
+
+----- cvs ci ------
+Tue Sep  5 23:04:04 NOVST 2000
+max (patches from Pavel Gulchouk):
+* jam updates (TZUTC kludge processing & more...)
+
 ----- cvs ci ------
 Mon Sep 04 12:54:10 NOVST 2000
 max (patches from Pavel Gulchouk):
