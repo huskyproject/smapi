@@ -55,9 +55,11 @@
   }
 
 #elif defined(NT) || defined(__NT__)
-
+#ifndef _MSC_VER
   extern void Sleep(dword ms);
-
+#else
+  extern void __stdcall Sleep(dword ms);
+#endif
   void _fast tdelay(int msecs)
   {
     Sleep((dword)msecs);
