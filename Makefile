@@ -124,6 +124,7 @@ install: instdyn
 	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)/smapi
 	$(INSTALL) $(IIOPT) unused.h $(INCDIR)/smapi
 	$(INSTALL) $(IIOPT) semaphor.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) api_jam.h $(INCDIR)/smapi
 	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
 	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
 
