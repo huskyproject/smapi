@@ -1,3 +1,13 @@
+2004-01-07 Wednesday 16:38  d_sergienko
+
+	* api_jam.c (smapi-2_4-stable.1): fix activemsgs if JAM header is
+	broken (patch from Igor Romanovsky)
+
+2004-01-07 Wednesday 04:14  d_sergienko
+
+	* ffind.c (smapi-2_4-stable.4): backported mche's patch which fixes
+	work with hidden files on Win32.
+
 2003-12-27 Saturday 21:26  d_sergienko
 
 	* ffind.c, locking.c, msgapi.c, sq_help.c
