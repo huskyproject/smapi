@@ -13,8 +13,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\nd_d\bin"
-			IntermediateDirectory=".\..\nd_d\obj\smapi"
+			OutputDirectory="..\..\nd_d\bin"
+			IntermediateDirectory="..\..\nd_d\obj\smapi"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -22,14 +22,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..;.\smapi;..\huskylib"
+				AdditionalIncludeDirectories="..;..\smapi;..\..\huskylib"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DLL;_CONSOLE;_MAKE_DLL"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\..\nd_d\obj\smapi/SmapiDll.pch"
-				AssemblerListingLocation=".\..\nd_d\obj\smapi"
-				ObjectFile=".\..\nd_d\obj\smapi"
-				ProgramDataBaseFileName=".\..\nd_d\obj\smapi"
+				PrecompiledHeaderFile=""
+				AssemblerListingLocation=""
+				ObjectFile="..\..\nd_d\obj\smapi"
+				ProgramDataBaseFileName="..\..\nd_d\obj\smapi"
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
@@ -41,14 +41,14 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="msvcrtd.lib Kernel32.lib huskylib.lib"
-				OutputFile="..\nd_d\bin/smapi.dll"
+				OutputFile="..\..\nd_d\bin/smapi.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\nd_d\lib"
+				AdditionalLibraryDirectories="..\..\nd_d\lib"
 				IgnoreAllDefaultLibraries="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\..\nd_d\bin/smapimvc.pdb"
-				ImportLibrary="..\nd_d\lib/smapi.lib"/>
+				ProgramDatabaseFile="..\..\nd_d\bin/smapi.pdb"
+				ImportLibrary="..\..\nd_d\lib/smapi.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
@@ -73,24 +73,27 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\..\nd_r\bin"
-			IntermediateDirectory=".\..\nd_r\obj\smapi"
+			OutputDirectory="..\..\nd_r\bin"
+			IntermediateDirectory="..\..\nd_r\obj\smapi"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="0">
+			CharacterSet="0"
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="1"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
-				AdditionalIncludeDirectories="..;.\smapi;..\huskylib"
+				AdditionalIncludeDirectories="..;..\smapi;..\..\huskylib"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_DLL;_CONSOLE;_MAKE_DLL"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
-				PrecompiledHeaderFile=".\..\nd_r\obj\smapi/SmapiDll.pch"
-				AssemblerListingLocation=".\..\nd_r\obj\smapi"
-				ObjectFile=".\..\nd_r\obj\smapi"
-				ProgramDataBaseFileName=".\..\nd_r\obj\smapi"
+				PrecompiledHeaderFile=""
+				AssemblerListingLocation=""
+				ObjectFile="..\..\nd_r\obj\smapi"
+				ProgramDataBaseFileName="..\..\nd_r\obj\smapi"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -100,13 +103,13 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="msvcrt.lib Kernel32.lib huskylib.lib"
-				OutputFile="..\nd_r\bin/smapi.dll"
+				OutputFile="..\..\nd_r\bin/smapi.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="..\nd_r\lib"
+				AdditionalLibraryDirectories="..\..\nd_r\lib"
 				IgnoreAllDefaultLibraries="TRUE"
-				ProgramDatabaseFile="..\nd_r\obj/smapi.pdb"
-				ImportLibrary="..\nd_r\lib/smapi.lib"/>
+				ProgramDatabaseFile="..\..\nd_r\obj/smapi.pdb"
+				ImportLibrary="..\..\nd_r\lib/smapi.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
@@ -131,46 +134,46 @@
 	<Files>
 		<Filter
 			Name="headerz"
-			Filter="">
+			Filter="*.h">
 			<File
-				RelativePath="smapi\api_brow.h">
+				RelativePath="..\smapi\api_brow.h">
 			</File>
 			<File
-				RelativePath="smapi\api_jam.h">
+				RelativePath="..\smapi\api_jam.h">
 			</File>
 			<File
-				RelativePath="smapi\api_jamp.h">
+				RelativePath="..\smapi\api_jamp.h">
 			</File>
 			<File
-				RelativePath="smapi\api_sdm.h">
+				RelativePath="..\smapi\api_sdm.h">
 			</File>
 			<File
-				RelativePath="smapi\api_sdmp.h">
+				RelativePath="..\smapi\api_sdmp.h">
 			</File>
 			<File
-				RelativePath="smapi\api_sq.h">
+				RelativePath="..\smapi\api_sq.h">
 			</File>
 			<File
-				RelativePath="smapi\api_sqp.h">
+				RelativePath="..\smapi\api_sqp.h">
 			</File>
 			<File
-				RelativePath="smapi\apidebug.h">
+				RelativePath="..\smapi\apidebug.h">
 			</File>
 			<File
-				RelativePath="smapi\msgapi.h">
+				RelativePath="..\smapi\msgapi.h">
 			</File>
 			<File
-				RelativePath="smapi\old_msg.h">
+				RelativePath="..\smapi\old_msg.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="src"
-			Filter="">
+			Filter="*.c">
 			<File
-				RelativePath="src\api_jam.c">
+				RelativePath="..\src\api_jam.c">
 			</File>
 			<File
-				RelativePath="src\api_sdm.c">
+				RelativePath="..\src\api_sdm.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -185,7 +188,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\msgapi.c">
+				RelativePath="..\src\msgapi.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -200,7 +203,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_area.c">
+				RelativePath="..\src\sq_area.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -215,7 +218,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_hash.c">
+				RelativePath="..\src\sq_hash.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -230,7 +233,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_help.c">
+				RelativePath="..\src\sq_help.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -245,7 +248,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_idx.c">
+				RelativePath="..\src\sq_idx.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -260,7 +263,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_kill.c">
+				RelativePath="..\src\sq_kill.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -275,7 +278,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_lock.c">
+				RelativePath="..\src\sq_lock.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -290,7 +293,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_misc.c">
+				RelativePath="..\src\sq_misc.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -305,7 +308,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_msg.c">
+				RelativePath="..\src\sq_msg.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -320,7 +323,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_read.c">
+				RelativePath="..\src\sq_read.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -335,7 +338,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_uid.c">
+				RelativePath="..\src\sq_uid.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -350,7 +353,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\sq_write.c">
+				RelativePath="..\src\sq_write.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
@@ -365,7 +368,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="src\structrw.c">
+				RelativePath="..\src\structrw.c">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
