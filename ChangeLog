@@ -1496,9 +1496,9 @@
 
 2002-09-25 Wednesday 07:27  mche
 
-	* typedefs.h (1.4): feature: FileFixEchoLimit patch by <Ã€Ã«Ã¥ÃªÃ±Ã¥Ã© Ã‘Ã³ÃµÃ®Ã²Ã¨Ã­
-	<pscorporation@mail.ru>>
-        
+	* typedefs.h (1.4): feature: FileFixEchoLimit patch by <Àëåêñåé
+	Ñóõîòèí <pscorporation@mail.ru>>
+
 2002-09-22 Sunday 14:06  pgul
 
 	* api_jam.c (1.87): Update index after hdr&text, jam msgbase is in
