@@ -1387,8 +1387,8 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned
                          char *text, size_t textlen)
 {
    JAMSUBFIELDptr SubField, SubFieldCur;
-   dword sublen, clen, x;
-   unsigned char *onlytext, *first, *ptr;
+   dword sublen, clen, x, firstlen;
+   unsigned char *onlytext, *first, *ptr, *curtext;
 
    SubField = *subfield;
 
@@ -1396,17 +1396,21 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned
    
    if (textlen)
    {
-       onlytext = (unsigned char*)palloc(textlen + 1);
+       onlytext = curtext = (unsigned char*)palloc(textlen + 1);
        *onlytext = '\0';
        
        first = text;
        while (*first) {
            ptr = (unsigned char *)strchr(first, '\r');
            if (ptr) *ptr = '\0';
-           if (strstr(first, "SEEN-BY: ") == (char*)first  ||
+           firstlen = ptr ? (ptr-first) : strlen(first);
+           if ((firstlen > 9 && strncmp(first, "SEEN-BY: ", 9) == 0)  ||
                *first == '\001') {
                
-               if (*first == '\001') first++;
+               if (*first == '\001') {
+                   first++;
+                   firstlen--;
+               }
                
                if ((SubFieldCur = StrToSubfield(first, &clen))) {
                    SubField = (JAMSUBFIELDptr)
@@ -1416,15 +1420,18 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned
                    sublen += clen;
                } else {;}
            } else {
-               x = strlen(onlytext);
-               assert(x + strlen(first) + 1 <= textlen);
-               sprintf(onlytext+x, "%s\r", first);
+               x = curtext - onlytext;
+               assert(x + firstlen + 1 <= textlen);
+               strcpy(curtext, first);
+               curtext+=firstlen;
+               *curtext++ = '\r';
+               *curtext = '\0';
            } /* endif */
            if (ptr) {
                *ptr = '\r';
                first = ptr+1;
            } else {
-               first += strlen(first);
+               first += firstlen;
            } /* endif */
        } /* endwhile */
    }
