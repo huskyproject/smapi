@@ -16,6 +16,7 @@ default: $(TARGET).a $(TARGET).so
 OBJS=	1stchar.o  \
 	api_sdm.o  \
 	api_sq.o   \
+	api_jam.o  \
 	cvtdate.o  \
 	date2bin.o \
 	dosdate.o  \

@@ -187,14 +187,12 @@ typedef struct
 
 typedef struct {
    byte            *BaseName;      /* Path for message base */
-   word            Lock;           /* .JHR file is locked */
    int             HdrHandle;      /* File handle for .JHR file */
    int             TxtHandle;      /* File handle for .JDT file */
    int             IdxHandle;      /* File handle for .JDX file */
    int             LrdHandle;      /* File handle for .JLR file */
    JAMHDRINFO      HdrInfo;        /* Message header info */
    word            msgs_open;
-//   dword           msgnum;
    } JAMBASE, *JAMBASEptr;
 
 #endif /* __JAM_H__ */

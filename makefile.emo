@@ -13,6 +13,7 @@ TARGET= smapiemo.lib
 OBJS=   1stchar.obj  \
         api_sdm.obj  \
         api_sq.obj   \
+	api_jam.obj  \
         cvtdate.obj  \
         date2bin.obj \
         dosdate.obj  \
