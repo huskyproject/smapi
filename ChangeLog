@@ -1,3 +1,23 @@
+2002-09-05 Thursday 02:51  sfpavel
+
+	* debian/: libsmapi2-dev.links, libsmapi2-dev.preinst
+	(smapi-2_2-stable.[1,1]): Add for previous commit...
+
+2002-09-05 Thursday 02:51  sfpavel
+
+	* debian/libsmapi2-dev.links (1.1): file libsmapi2-dev.links was
+	initially added on branch smapi-2_2-stable.
+
+2002-09-05 Thursday 02:51  sfpavel
+
+	* debian/libsmapi2-dev.preinst (1.1): file libsmapi2-dev.preinst
+	was initially added on branch smapi-2_2-stable.
+
+2002-09-05 Thursday 02:50  sfpavel
+
+	* debian/: changelog, rules (smapi-2_2-stable.[7,2]): New debian
+	package
+
 2002-08-27 Tuesday 09:22  sfpavel
 
 	* file_id.diz (smapi-2_2-stable.2): Update release date
