@@ -741,19 +741,19 @@ sword MSGAPI JamValidate(byte * name)
 
 void Jam_CloseFile(JAMBASE *jambase)
 {
-   if (jambase->HdrHandle != 0 || jambase->HdrHandle != -1) {
+   if (jambase->HdrHandle != 0 && jambase->HdrHandle != -1) {
       close(jambase->HdrHandle);
    } /* endif */
 
-   if (jambase->TxtHandle != 0 || jambase->TxtHandle != -1) {
+   if (jambase->TxtHandle != 0 && jambase->TxtHandle != -1) {
       close(jambase->TxtHandle);
    } /* endif */
 
-   if (jambase->IdxHandle != 0 || jambase->IdxHandle != -1) {
+   if (jambase->IdxHandle != 0 && jambase->IdxHandle != -1) {
       close(jambase->IdxHandle);
    } /* endif */
 
-   if (jambase->LrdHandle != 0 || jambase->LrdHandle != -1) {
+   if (jambase->LrdHandle != 0 && jambase->LrdHandle != -1) {
       close(jambase->LrdHandle);
    } /* endif */
 }

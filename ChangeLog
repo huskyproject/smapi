@@ -2,6 +2,11 @@ development version
 -------------------
 
 ----- cvs ci ------
+Sat Apr 1 13:40:17 MSD 2000
+Fedor:
+* fixed logical error (&&, ||) in Jam_Close()
+
+----- cvs ci ------
 Fr  31 Mar 2000 17:53:23 CEST
 tobi (patches mostly from Alex S. Aganichev)
 * Modified the routines in fexist.c to use stat() if available, instead
