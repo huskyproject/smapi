@@ -8,12 +8,12 @@
 #RM=del
 
 #use this line if you are using MINGW32 CPD on a Unix box as cross compiler
-CC=i386--mingw32-gcc
-LIB=i386--mingw32-ar
-RANLIB=i386--mingw32-ranlib
+CC=i386-mingw32-gcc
+LIB=i386-mingw32-ar
+RANLIB=i386-mingw32-ranlib
 RM=rm
 
-CDEFS=-D__NT__ -DWINNT -D__MINGW32__
+CDEFS=-D__NT__ -DWINNT
 CFLAGS=-Wall
 COPT=-O3
 
