@@ -45,15 +45,4 @@ int _fast setfsize(int fd, long size);
 void put_word(byte *ptr, word value);
 void put_dword(byte *ptr, dword value);
 
-int  _createDirectoryTree(const char *pathName);
-/*DOC
-  Input:  a pointer to a \0 terminated string
-  Output: 0 if successfull, 1 else
-  FZ:     pathName is a correct directory name
-          createDirectoryTree creates the directory and all parental directories
-          if they do not exist.
-
-  was taken from hpt\fcommon
-*/
-
 #endif

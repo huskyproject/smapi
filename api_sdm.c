@@ -55,6 +55,8 @@
 #include "apidebug.h"
 #include "unused.h"
 
+#include "dirtree.h"
+
 #define SDM_BLOCK 256
 #define Mhd ((struct _sdmdata *)(mh->apidata))
 #define MsghMhd ((struct _sdmdata *)(((struct _msgh *)msgh)->sq->apidata))
@@ -110,7 +112,7 @@ MSG *MSGAPI SdmOpenArea(byte * name, word mode, word type)
     mh->high_msg = 0;
     mh->high_water = (dword) - 1L;
 
-    if (!direxist((char *) name) && (mode == MSGAREA_NORMAL 
+    if (!direxist((char *) name) && (mode == MSGAREA_NORMAL
        || _createDirectoryTree((char *) name) != 0))
     {
         msgapierr = MERR_NOENT;
@@ -730,13 +732,13 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             statfd = msgh->fd;
             msgh->zplen = (word) WriteZPInfo(msg, WriteToFd, ctxt);
         }
-        
+
         /* Use Attributes und BeOS */
 #ifdef __BEOS__
         {
         struct tm tmdate;
         time_t ttime;
-        
+
         fs_write_attr(msgh->fd, "BEOS:TYPE", B_MIME_TYPE, 0l, "message/fmsg", 13);
         fs_write_attr(msgh->fd, "XMSG:FROM", B_STRING_TYPE, 0l, msg->from, strlen(msg->from));
         fs_write_attr(msgh->fd, "XMSG:TO"  , B_STRING_TYPE, 0l, msg->to, strlen(msg->to));

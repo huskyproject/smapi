@@ -23,7 +23,7 @@
    S_ISREG and S_ISDIR macros. The problem is that while stat() is POSIX, those
    macros are not. For compilers that do not provide these macros, we revert to
    the old "ffind" method. */
-#define USE_STAT_MACROS 
+#define USE_STAT_MACROS
 #endif
 
 #include <stdio.h>
@@ -302,54 +302,6 @@ int _fast direxist(char *directory)
 #endif
 
 #endif
-
-int _createDirectoryTree(const char *pathName) {
-
-   char *start, *slash;
-   char limiter=PATH_DELIM;
-   int i;
-
-   start = (char *) malloc(strlen(pathName)+2);
-   strcpy(start, pathName);
-   i = strlen(start)-1;
-   if (start[i] != limiter) {
-      start[i+1] = limiter;
-      start[i+2] = '\0';
-   }
-   slash = start;
-
-#ifndef UNIX
-   // if there is a drivename, jump over it
-   if (slash[1] == ':') slash += 2;
-#endif
-
-   // jump over first limiter
-   slash++;
-
-   while ((slash = strchr(slash, limiter)) != NULL) {
-      *slash = '\0';
-
-      if (!direxist(start)) {
-         if (!fexist(start)) {
-            // this part of the path does not exist, create it
-            if (mymkdir(start) != 0) {
-               free(start);
-               return 1;
-            }
-         } else {
-            free(start);
-            return 1;
-         }
-      }
-
-      *slash++ = limiter;
-   }
-
-   free(start);
-
-   return 0;
-}
-
 
 #ifdef TEST
 
