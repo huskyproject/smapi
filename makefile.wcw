@@ -18,13 +18,15 @@ OBJS=	1stchar.obj api_sdm.obj	 api_jam.obj cvtdate.obj date2bin.obj dosdate.obj 
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) -b -q $(TARGET) -+$@
 
+all: $(TARGET)
+
 $(TARGET): $(OBJS)
 
 .IGNORE
 
 clean:
-	-DEL *.OBJ
+	-del *.obj
 
 distclean:
-	-DEL $(TARGET)
+	-del $(TARGET)
 
