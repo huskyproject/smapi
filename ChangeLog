@@ -1,3 +1,26 @@
+2001-11-27 Tuesday 15:34  ml
+
+	* tdelay.c (1.6.2.2): cygwin port
+
+2001-11-27 Tuesday 15:26  ml
+
+	* api_sdm.c (1.22.2.1), api_sdm.h (1.2.4.1): del MAX_SDM_CLEN size
+
+2001-11-27 Tuesday 14:45  ml
+
+	* compiler.h (1.65.2.2): cygwin & MSVC definitions
+
+2001-11-27 Tuesday 14:36  ml
+
+	* smapi.pas (1.1.4.1): updated smapi.pas with comments according to
+	Dudley's squish development kit
+
+2001-11-27 Tuesday 14:03  ml
+
+	* makefile.bsd4 (1.1.2.1), makefile.cyg (1.1.2.1), makefile.bsd
+	(1.15.2.2), makeperl.mvc (1.1.2.1): new makefiles and makefile.bsd
+	addon
+
 2001-11-26 Monday 22:05  tobi
 
 	* makefile.bcd (1.12.2.1), makefile.wcd (1.16.2.1) (utags:
@@ -7,6 +30,10 @@
 
 	* setfsize.c (1.4.2.1), tdelay.c (1.6.2.1) (utags:
 	smapi-2_0_0-release): Make smapi compile for DOS again.
+
+2001-11-06 Tuesday 08:56  ml
+
+	* makefile.cyg (1.1): cygwin adaptation
 
 2001-07-28 Saturday 11:58  ml
 
