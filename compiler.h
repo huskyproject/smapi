@@ -430,6 +430,9 @@ int lock(int handle, long ofs, long length);
 #define EXPENTRY _syscall
 #define mysleep(x) _sleep(x);
 
+#define strcasecmp stricmp
+#define strncasecmp strncmpi
+
 #elif defined(__IBMC__)
 
 /* IBM C/Set++ for OS/2 */
