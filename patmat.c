@@ -41,6 +41,19 @@
 
 int patmat(char *raw, char *pat)
 {
+
+    /* if pointed to one, then match (both NULL also) */
+    if ( pat==raw )
+    {
+        return 1;
+    }
+
+    /* if only one is NULL, then mismatch */
+    if ( !pat || !raw )
+    {
+        return 0;
+    }
+
     /* if it's the end of both strings, then match */
     if (*pat == '\0' && *raw == '\0')
     {
