@@ -1,3 +1,11 @@
+2002-11-26 Tuesday 13:30  pgul
+
+	* api_jam.c (1.97): Set high_msg to num_msg
+
+2002-11-26 Tuesday 09:47  pgul
+
+	* ffind.c (1.16): Fix EMX warning
+
 2002-11-25 Monday 09:00  mche
 
 	* semaphor.c (1.11), semaphor.h (1.12): s_addr --> hs_addr
