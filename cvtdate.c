@@ -18,6 +18,7 @@
  */
 
 #include <time.h>
+#include <string.h>             /* for memcpy */
 #include "prog.h"
 
 static int is_dst = -1;
