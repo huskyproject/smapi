@@ -948,7 +948,7 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
                } /* endif */
                if(mode == MOPEN_CREATE) return (MSGH *)msgh;
                msgh->SubFieldPtr = (JAMSUBFIELDptr)palloc(msgh->Hdr.SubfieldLen);
-               read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), msgh->Hdr.SubfieldLen);
+               read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), &(msgh->Hdr.SubfieldLen));
                DecodeSubf(msgh);
                return (MSGH *) msgh;
             }

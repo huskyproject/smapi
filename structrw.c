@@ -954,24 +954,24 @@ int read_hdr(sword handle, JAMHDR *Hdr)
    return 1;
 }
 
-int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword SubfieldLen)
+int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword *SubfieldLen)
 {
    char *buf, *pbuf;
    JAMSUBFIELDptr subfieldNext;
    dword datlen;
 
-   buf = (char*)palloc(SubfieldLen);
+   buf = (char*)palloc(*SubfieldLen);
 
    pbuf = buf;
 
-   if (farread(handle, (byte far *)buf, SubfieldLen) != SubfieldLen) {
+   if (farread(handle, (byte far *)buf, *SubfieldLen) != *SubfieldLen) {
       pfree(buf);
       return 0;
    } /* endif */
 
    subfieldNext = *subfield;
 
-   while ((pbuf - buf) < SubfieldLen) {
+   while ((pbuf - buf + 8) < *SubfieldLen) {
       /* 02 bytes LoID */
       subfieldNext->LoID = get_word(pbuf);
       pbuf += 2;
@@ -981,11 +981,19 @@ int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword SubfieldLen)
       pbuf += 2;
 
       /* 04 bytes DatLen */
-      datlen = subfieldNext->DatLen = get_dword(pbuf);
+      subfieldNext->DatLen = 0;
+      datlen = get_dword(pbuf);
       pbuf += 4;
 
+      if (pbuf - buf + datlen > *SubfieldLen)
+          break;
       /* DatLen bytes Buffer */
-      if (datlen > 0) memmove(subfieldNext->Buffer, pbuf, datlen);
+      if ((long)datlen > 0 && datlen < *SubfieldLen)
+      { subfieldNext->DatLen = datlen;
+        memmove(subfieldNext->Buffer, pbuf, datlen);
+      }
+      else
+        break;
       pbuf += datlen;
 
       subfieldNext = (JAMSUBFIELDptr)((char *)subfieldNext + sizeof(JAMBINSUBFIELD) + datlen);
@@ -993,6 +1001,7 @@ int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword SubfieldLen)
    } /* endwhile */
 
    pfree(buf);
+   *SubfieldLen = pbuf - buf;
 
    return 1;
 }
