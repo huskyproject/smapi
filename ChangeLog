@@ -1,3 +1,15 @@
+2003-03-03 Monday 07:30  d_sergienko
+
+	* Makefile (1.39), api_jam.c (1.106), api_sdm.c (1.41), api_sq.h
+	(1.7), compiler.h (1.172), flush.c (1.19), gnmsgid.c (1.8),
+	locking.c (1.38), makefile.inc (1.11), msgapi.c (1.43), msgapi.h
+	(1.68), old_msg.h (1.4), progprot.h (1.23), qksort.c (1.3),
+	sq_area.c (1.31), sq_hash.c (1.9), sq_help.c (1.11), sq_idx.c
+	(1.12), sq_kill.c (1.9), sq_lock.c (1.25), sq_misc.c (1.10),
+	sq_msg.c (1.11), sq_read.c (1.12), sq_uid.c (1.10), sq_write.c
+	(1.15), structrw.c (1.39): 
+	use new huskylib
+
 2003-03-01 Saturday 19:28  stas_degteff
 
 	* 1stchar.c (1.4), api_jam.c (1.105), api_sdm.c (1.40), cvtdate.c
