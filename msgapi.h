@@ -250,6 +250,7 @@ struct _msgapi
     SEMAPHORE sem;
     
     char  *lck_path;
+    int    lck_handle;
 };
 
 

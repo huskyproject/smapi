@@ -341,37 +341,3 @@ int waitlock(int handle, long ofs, long length)
     return 0;
 }
 #endif
-
-
-/*
-  Alternative Filelocking.
-*/
-
-#ifdef ALTLOCKING
-
-int alt_lock(const char *lck_file)
-{
-  int f = open(lck_file, O_RDWR|O_CREAT|O_EXCL, S_IREAD|S_IWRITE);
-  if (f >= 0)
-  {
-     close(f);
-     return 0;
-  }  
-  return -1;
-}
-
-int alt_unlock(const char *lck_file)
-{
-  return remove(lck_file);
-}
-
-int alt_waitlock(const char *lck_file)
-{
-    while (alt_lock(lck_file) == -1)
-    {
-        mysleep(1);
-    }
-    return 0;
-}
-
-#endif

@@ -156,12 +156,14 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
   (void)strcpy(szFile, szName);
   (void)strcat(szFile, dot_sqd);
 
+   printf("Msgapi %s\n", szFile);
   if ((Sqd->sfd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
                       FILEMODE(ha->isecho)))==-1)
   {
     msgapierr=MERR_NOENT;
     return FALSE;
   }
+  printf("Msgapi 1\n");
   (void)strcpy(szFile, szName);
   (void)strcat(szFile, dot_sqi);
 

@@ -53,6 +53,7 @@ static char rcs_id[]="$Id$";
 #include "apidebug.h"
 #include "unused.h"
 
+
 /* Base is locked for other processes */
 
 short _fast _SquishBaseThreadLock(HAREA ha)
@@ -68,17 +69,67 @@ short _fast _SquishBaseThreadUnlock(HAREA ha)
 }
 
 
-int _sqlock(int handle, long ofs, long length)
+#ifdef ALTLOCKING
+
+int _alt_lock(HAREA ha)
 {
-  // waitlock returns 0 on success
-  return !waitlock(handle, ofs, length);
+  if (ha->lck_handle > 0) return 0;
+
+  ha->lck_handle = open(ha->lck_path, O_RDWR|O_CREAT|O_EXCL, S_IREAD|S_IWRITE);
+  if (ha->lck_handle > 0)
+  {
+     printf("Locked.\n");
+     return 0;
+  }  
+  printf("Locked failed.\n");
+  return -1;
 }
 
-int _squnlock(int handle, long ofs, long length)
+int _squnlock(HAREA ha)
+{
+  if (ha->lck_handle > 0) close(ha->lck_handle);
+  ha->lck_handle = 0;
+  if (remove(ha->lck_path) == -1)
+    printf("Unlocked failed.\n");
+  else 
+    printf("Unlocked\n");
+    
+  return 1;
+}
+
+#ifdef __BEOS__
+#define _alt_sleep(x) snooze(x*1000)
+#elif defined(UNIX)
+#define _alt_sleep(x) usleep(x*1000)
+#else
+#error "Don't know how to sleep x ms (milliseconds)."
+#endif
+
+int _sqlock(HAREA ha)
+{
+    while (_alt_lock(ha) == -1)
+    {
+        _alt_sleep(1);
+    }
+    
+    return 1;
+}
+
+#else
+
+int _sqlock(HAREA ha)
+{
+  // waitlock returns 0 on success
+  return !waitlock(Sqd->sfd, 0, 1);
+}
+
+int _squnlock(HAREA ha)
 {
   // unlock returns 0 on success
-  return !unlock(handle, ofs, length);
+  return !unlock(Sqd->sfd, 0, 1);
 }
+
+#endif
 
 /* Lock the first byte of the Squish file header.  Do this up to            *
  * SQUISH_LOCK_RETRY number of times, in case someone else is using         *
@@ -94,11 +145,7 @@ static unsigned near _SquishLockBase(HAREA ha)
   /* The first step is to obtain a lock on the Squish file header.  Another *
    * process may be attempting to do the same thing, so we retry a couple   *
    * of times just in case.                                                 */
-#ifdef ALTLOCKING
-  return !alt_lock(ha->lck_path);
-#else
-  return _sqlock(Sqd->sfd, 0, 1);
-#endif
+  return _sqlock(ha);
 }
 
 /* Unlock the first byte of the Squish file */
@@ -113,11 +160,7 @@ static unsigned near _SquishUnlockBase(HAREA ha)
   /* Unlock the first byte of the file */
 
   if (mi.haveshare)
-#ifdef ALTLOCKING
-    alt_unlock(ha->lck_path);
-#else
-    (void)_squnlock(Sqd->sfd, 0L, 1L);
-#endif
+    (void)_squnlock(ha);
 
   return TRUE;
 }
