@@ -1,3 +1,7 @@
+2002-05-28 Tuesday 08:54  pavel.gulchouck
+
+	* date2bin.c (1.8): sprintf changed to fts_time
+
 2002-05-19 Sunday 11:00  pavel.gulchouck
 
 	* sq_area.c (1.21): avoid warning
