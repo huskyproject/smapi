@@ -24,7 +24,7 @@ VER  =  1.6.2
 TARGET=	$(LIBPREFIX)smapi$(LIB)
 
 ifeq ($(DYNLIBS), 1)
-ALL: $(TARGET) $(LIBPREFX)smapi.so.$(VER)
+ALL: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
 else
 ALL: $(TARGET)
 endif
@@ -60,12 +60,11 @@ $(TARGET): $(OBJS)
 ifdef RANLIB
 	$(RANLIB) $(TARGET)
 endif
-	
 
 ifeq ($(DYNLIBS), 1)
 $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
 	gcc -shared -Wl,-soname,$(LIBPREFX)smapi.so.$(VERH) \
-          -o $(LIBPREFX)smapi.so.$(VER) $(OBJS)
+          -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
 
 instdyn: $(LIBPREFIX)smapi.so.$(VER)
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
