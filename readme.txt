@@ -1,4 +1,4 @@
-SMAPI; Modified Squish MSGAPI - version 2.2
+SMAPI; Modified Squish MSGAPI - version 2.2 (release) patch 3
 
 This version of the SMAPI library is part of the HUSKY fidosoft project.
 
