@@ -352,6 +352,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
    struct tm *s_time;
    SCOMBO *scombo;
    unsigned char *ftsdate;
+   char *addrstr;
 
    if (InvalidMsgh(msgh))
    {
@@ -391,7 +392,8 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          strncpy((char*)(msg->subj), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->subj)));
       } /* endif */
 
-      if (!msgh->sq->isecho) {
+      /* try to fetch orig/dest addresses even for echomail */
+/*      if (!msgh->sq->isecho) { */
           /* get "orig address" line */
           SubPos = 0;
           if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS))) {
@@ -403,7 +405,19 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
           if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS))) {
              parseAddr(&(msg->dest), SubField->Buffer, SubField->DatLen);
           } /* endif */
-      } /* endif */
+/*      } else { */
+          /* get "orig address" from MSGID */
+          SubPos = 0;
+          if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID)))
+              if (SubField->Buffer && *SubField->Buffer &&
+                  strchr(SubField->Buffer, ' '))
+              {
+                  addrstr = strdup(SubField->Buffer);
+                  addrstr[strchr(addrstr, ' ')-addrstr] = '\0';
+                  if (!(msg->orig.zone || msg->orig.net || msg->orig.node))
+                      parseAddr(&(msg->orig), addrstr, strlen(addrstr));
+              } /* endif */
+/*      } /* endif */
 
 
       s_time = gmtime((time_t *)(&(msgh->Hdr.DateWritten)));

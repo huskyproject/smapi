@@ -2,6 +2,7 @@ SMAPI 2.5 current
 Changes after smapi 2.4
 
 1. MAJOR feature improvements:
+   - Fetch orig address from MSGID if it is not presend in header (JAM)
 
 2. IMPORTANT bugfixes:
 
