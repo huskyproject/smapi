@@ -228,7 +228,7 @@ int lock(int handle, long ofs, long length);
 #define mysleep(x) DosSleep(1000L*(x))
 #endif
 
-#elif defined(__WATCOMC__) && defined(__OS2__)
+#elif defined(__WATCOMC__) && (defined(__OS2__) || defined(OS2))
 
 /* WATCOM C/C++ for OS/2 */
 
