@@ -9,6 +9,7 @@ CC=	gcc
 CFLAGS=	-Wall
 CDEFS=	-DUNIX
 COPT=	-O3 
+NAMEOPT=-o
 LIB=	ar
 RANLIB= ranlib
 OBJ=	.o
