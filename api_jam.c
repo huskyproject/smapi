@@ -1088,7 +1088,6 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
    }
    else {
       kludge = str;
-//      printf("%s\n",kludge);
       subtypes = JAMSFLD_FTSKLUDGE;
    }
 
@@ -1100,7 +1099,6 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
    subf->LoID = subtypes;
    subf->DatLen = strlen(kludge);
    memmove(subf->Buffer, kludge, strlen(kludge));
-//   printf("%u\n",subf->LoID);
 
    return subf;
 }
