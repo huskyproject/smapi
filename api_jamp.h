@@ -34,7 +34,7 @@ void Jam_CloseFile(JAMBASE *jambase);
 static MSGH *Jam_OpenMsg(MSGA * jm, word mode, dword msgnum);
 JAMSUBFIELD2ptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what);
 dword Jam_HighMsg(JAMBASEptr jambase);
-void Jam_ActiveMsgs(JAMBASEptr jambase);
+void Jam_ActiveMsgs(MSGA *jm);
 static int near Jam_Lock(MSGA *jm, int force);
 static void near Jam_Unlock(MSGA * jm);
 dword Jam_PosHdrMsg(MSGA * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr);

@@ -1066,6 +1066,7 @@ int read_allidx(JAMBASEptr jmb)
    } else
       jmb->actmsg_read = 2;
    allocated = jmb->HdrInfo.ActiveMsgs;
+   if (allocated > len/IDX_SIZE) allocated = len/IDX_SIZE;
    if (allocated) {
       jmb->actmsg = (JAMACTMSGptr)farmalloc(allocated * sizeof(JAMACTMSG));
       if (jmb->actmsg == NULL) {

@@ -779,7 +779,7 @@ static sword _XPENTRY JamKillMsg(MSGA * jm, dword msgnum)
       Jmd->actmsg = NULL;
    }
 
-   Jam_ActiveMsgs(Jmd);
+   Jam_ActiveMsgs(jm);
    jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
 
    JamUnlock(jm);
@@ -851,7 +851,7 @@ static UMSGID _XPENTRY JamMsgnToUid(MSGA * jm, dword msgnum)
     if (msgnum > jm->num_msg) return (UMSGID) -1;
     if (msgnum <= 0) return (UMSGID) 0;
     if (!Jmd->actmsg_read) {
-       Jam_ActiveMsgs(Jmd);
+       Jam_ActiveMsgs(jm);
        if (msgnum > jm->num_msg) return (UMSGID) -1;
     }
     return (UMSGID) (Jmd->actmsg[msgnum - 1].IdxOffset / 8 + Jmd->HdrInfo.BaseMsgNum);
@@ -868,7 +868,7 @@ static dword _XPENTRY JamUidToMsgn(MSGA * jm, UMSGID umsgid, word type)
    msgnum = umsgid - Jmd->HdrInfo.BaseMsgNum + 1;
    if (msgnum <= 0)
       return 0;
-   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(jm);
    left = 1;
    right = jm->num_msg;
    while (left <= right)
@@ -1174,7 +1174,7 @@ static MSGH *Jam_OpenMsg(MSGA * jm, word mode, dword msgnum)
 /*   msgh->Idx.UserCRC   = 0xffffffff; */
 
    if (!Jmd->actmsg_read) {
-      Jam_ActiveMsgs(Jmd);
+      Jam_ActiveMsgs(jm);
       if (msgnum > jm->num_msg) {
          msgapierr = MERR_NOENT;
          return NULL;
@@ -1261,7 +1261,7 @@ char *Jam_GetKludge(MSGA *jm, dword msgnum, word what)
    }
 
    if (!Jmd->actmsg_read) {
-      Jam_ActiveMsgs(Jmd);
+      Jam_ActiveMsgs(jm);
       if (msgnum > jm->num_msg) {
          msgapierr = MERR_NOENT;
          return NULL;
@@ -1317,7 +1317,7 @@ JAMHDR *Jam_GetHdr(MSGA *jm, dword msgnum)
    }
 
    if (!Jmd->actmsg_read) {
-      Jam_ActiveMsgs(Jmd);
+      Jam_ActiveMsgs(jm);
       if (msgnum > jm->num_msg) {
          msgapierr = MERR_NOENT;
          return NULL;
@@ -1332,7 +1332,7 @@ JAMHDR *Jam_GetHdr(MSGA *jm, dword msgnum)
 
 void Jam_WriteHdr(MSGA *jm, JAMHDR *jamhdr, dword msgnum)
 {
-   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(jm);
 
    if (!Jmd->actmsg)
       return;
@@ -1350,14 +1350,15 @@ dword Jam_HighMsg(JAMBASEptr jambase)
    return (highmsg / IDX_SIZE);
 }
 
-void Jam_ActiveMsgs(JAMBASEptr jambase)
+void Jam_ActiveMsgs(MSGA *jm)
 {
-   read_allidx(jambase);
+   read_allidx(Jmd);
+   jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
 }
 
 dword Jam_PosHdrMsg(MSGA * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr)
 {
-   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(jm);
 
    jamidx->HdrOffset = Jmd->actmsg[msgnum].TrueMsg;
 
