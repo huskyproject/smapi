@@ -46,7 +46,7 @@
 #define _WINSOCK_H
 #endif
 
-#ifdef __CYG__
+#if defined(__CYG__) || defined(__MINGW32__)
 /* For HTick compatibility */
 #define _WINUSER_H
 #endif
