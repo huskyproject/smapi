@@ -1,3 +1,7 @@
+2002-01-03 Thursday 21:13  tobi
+
+	* ffind.h (1.11.4.1): cygwin define (from current by ml)
+
 2001-12-23 Sunday 13:59  ml
 
 	* tdelay.c (1.6.2.3): fix for compile under mingw32
