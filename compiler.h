@@ -71,7 +71,8 @@
    * HAS_strftime        - strftime() presents
    * HAS_sopen           - sopen() presents
    * HAS_sleep           - sleep() presents or defined here
-   * HAS_dos_read        - dos_read() presnts or defined here
+   * HAS_dos_read        - dos_read() presents or defined here
+   * HAS_popen_close     - popen(); pclose() ("pipe open" and "pipe close")
    *
    * HAS_MALLOC_H        - may be used "#include <malloc.h>" for malloc() etc.
    * HAS_DOS_H           - may be used "#include <dos.h>"
@@ -1409,6 +1410,7 @@ int qq(void)
 #  define HAS_spawnvp   1  /* spawnvp() in process.h */
 #  define HAS_strftime  1  /* strftime() in time.h  */
 #  define HAS_mktime    1  /* mktime() in time.h */
+#  define HAS_popen_close  /* popen(); pclose() */
 
 #  define HAS_DIRENT_H  1  /* use "#include <dirent.h>" for opendir() etc. */
 #  define HAS_IO_H      1  /* use "#include <io.h>" */
@@ -1466,6 +1468,7 @@ int qq(void)
 #  define HAS_spawnvp   1   /* spawnvp() in process.h */
 #  define HAS_strftime  1   /* strftime() in time.h  */
 #  define HAS_mktime    1   /* mktime() in time.h */
+#  define HAS_popen_close  /* popen(); pclose() */
 
 #  define HAS_DIR_H     1   /* use "#include <dir.h>" for findfirst() etc. */
 #  define HAS_DOS_H     1
@@ -1725,6 +1728,8 @@ int qq(void)
 #  define HAS_mktime
 #  define HAS_strftime
 #endif
+
+#  define HAS_popen_close  /* popen(); pclose() */
 
 /* End: Unix clones **********************************************************/
 
