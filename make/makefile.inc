@@ -17,8 +17,9 @@ LIBNAME	= smapi
 # Version
 VERMAJOR= 2
 VERMINOR= 5
+VERPATCH= 0
 VERH	= $(VERMAJOR).$(VERMINOR)
-VER	= $(VERH).0
+VER	= $(VERH).$(VERPATCH)
 
 OBJS1	= api_jam$(_OBJ) api_sdm$(_OBJ) msgapi$(_OBJ) sq_area$(_OBJ)
 OBJS2	= sq_hash$(_OBJ) sq_help$(_OBJ) sq_idx$(_OBJ) sq_kill$(_OBJ)

@@ -28,6 +28,7 @@ GCC	= gcc
 AR	= ar
 RANLIB	= ranlib
 INSTALL	= install
+LN	= ln
 
 ## file suffixes ##
 
@@ -107,7 +108,7 @@ include makefile.inc
 DLLOBJS:=$(OBJS)
 
 DLLPROGRAMS:=$(PROGRAMS)
-
+TARGETDLL:=$(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)-$(VER)$(_DLL)
 
 ## Additions (add into end of strings) ##
 
@@ -135,11 +136,11 @@ $(TARGETLIB):	$(LIBOBJS)
 		$(AR) $(ARFLAGS) $@ $?
 		$(RANLIB) $@
 		$(STRIPLIB) $@
-	
 
 $(TARGETDLL):	$(DLLOBJS)
 		$(CC) $(DLLOPT) $(CFLAGS) $(NAMEOPT)$@ $^
 		$(STRIPDLL) $@
+		$(LN) -s $@ $(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)$(_DLL)
 
 clean:
 	-$(RM) $(RMFLAGS) *$(_LIBOBJ) *$(_DLLOBJ) $(TARGETLIB) $(TARGETDLL) $(PROGRAMS)

@@ -56,6 +56,7 @@ makefile.qcd   smapiqcd.lib     Microsoft QuickC 2.5 for DOS (makefile
                                 requires either the Microsoft Macro
                                 Assembler, MASM, or the Borland Turbo
                                 Assembler, TASM)
+makefile.qnx   libsmapiqnx.*    GNU C 2.95.3 for QNX 6.x
 makefile.rxw   smapirxw.lib     GNU C 2.7.x for Windows NT (RSXNT/EMX)
 makefile.sun   libsmapisun.a    GNU C 2.7.x for Solaris
 makefile.unx   libsmapiunix.a   Generic Unix Makefile
