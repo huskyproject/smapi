@@ -1,3 +1,9 @@
+smapi (2.2.0-20020917-1) stable; urgency=low
+
+  * New cvs version: 2.2-RC2
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Tue, 17 Sep 2002 11:39:49 +0600
+
 smapi (2.2.0-20020905-1) stable; urgency=low
 
   * /usr/share/doc/libsmapi2-dev is symlink now

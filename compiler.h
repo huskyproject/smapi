@@ -31,14 +31,8 @@
   #endif
 #endif
 
-/*
- Cygwin is win32
-*/
-#if !defined(__NT__) && defined(__CYGWIN__)
-# define __NT__
-#endif
-
-/* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option */
+/* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option  *
+ * This is NOT needed for pure Cygwin builds, Cygwin == UNIX !! */
 #if !defined(__NT__) && defined(__MINGW32__)
 # define __NT__
 #endif
@@ -279,6 +273,10 @@ int lock(int handle, long ofs, long length);
 #define mysleep(x) sleep(x)
 #define mode_t int
 
+#define HAS_SNPRINTF  1
+#define HAS_VSNPRINTF 1
+#define snprintf  _snprintf
+#define vsnprintf _vsnprintf
 
 #elif defined(__WATCOMC__) && defined(__NT__)
 
@@ -357,7 +355,7 @@ int lock(int handle, long ofs, long length);
 #define sleep(sec) _sleep((sec)*1000l)
 #define write _write
 #define read _read
-#if !defined(__CYG__)
+#if !defined(__CYGWIN__) && !defined(__MINGW32__)
 #define stat _stat
 #define fstat _fstat
 #define chsize _chsize
@@ -415,6 +413,8 @@ int lock(int handle, long ofs, long length);
 
 #elif defined(__EMX__)
 
+#error !!!
+
 /* EMX for 32-bit OS/2 and RSX for Windows NT */
 
 #define _stdc
@@ -439,6 +439,9 @@ int lock(int handle, long ofs, long length);
 #define strncasecmp strnicmp
 
 #define EXPENTRY
+
+#define HAS_SNPRINTF  1
+#define HAS_VSNPRINTF 1
 
 #elif defined(__TURBOC__) && defined(WINNT)
 
@@ -485,7 +488,7 @@ int lock(int handle, long ofs, long length);
 #define strcasecmp stricmp
 #define strncasecmp strncmpi
 
-#elif defined(__IBMC__)
+#elif defined(__IBMC__) && !defined(UNIX)
 
 /* IBM C/Set++ for OS/2 */
 
@@ -527,7 +530,7 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
-#if defined(__NetBSD__) || defined(__FreeBSD__) || defined(_AIX) || defined(__sun__) || defined(__linux__) || defined(__osf__) || defined(__hpux) || defined(__BEOS__) || defined(__OpenBSD__)
+#if (defined(__APPLE__) && defined(__MACH__)) || defined(__NetBSD__) || defined(__FreeBSD__) || defined(_AIX) || defined(__sun__) || defined(__linux__) || defined(__osf__) || defined(__hpux) || defined(__BEOS__) || defined(__OpenBSD__) || defined(__CYGWIN__)
 #define mymkdir(a) mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
 #else
 #define mymkdir(a) __mkdir((a), S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
@@ -545,7 +548,8 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define stricmp strcasecmp
 #endif
 
-#ifndef __BEOS__
+/* Cygwin defines O_BINARY in sys/fcntl.h. Why different from other UNIXES? */
+#if !defined(__BEOS__) && !defined(__CYGWIN__)
 #define O_BINARY 0
 #endif
 
@@ -562,6 +566,9 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #elif defined(__linux__) || defined(__sun__)
 #define mysleep(x) usleep(x*1000000l)
 #endif
+
+#define HAS_SNPRINTF  1
+#define HAS_VSNPRINTF 1
 
 #elif defined(__DJGPP__)
 
@@ -638,7 +645,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #   else
 #      define SMAPI_EXT __declspec(dllexport)
 #  endif //_SMAPI_EXT
-#else 
+#else
 #   define SMAPI_EXT
 #endif
 
@@ -682,7 +689,7 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define NO_STRFTIME
 
  /* waitlock works like lock, but blocks until the lock can be
-  * performed. 
+  * performed.
   * waitlock2 works like a timed waitlock.
   */
 #ifndef mysleep
