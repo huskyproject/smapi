@@ -120,7 +120,6 @@ install: instdyn
 	-$(MKDIR) $(MKDIROPT) $(INCDIR)
 	-$(MKDIR) $(MKDIROPT) $(INCDIR)$(DIRSEP)smapi
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
-	$(INSTALL) $(IIOPT) alc.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) api_brow.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) compiler.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) ffind.h $(INCDIR)$(DIRSEP)smapi
@@ -136,7 +135,6 @@ install: instdyn
 #	$(INSTALL) $(ISLOPT) patmat$(OBJ) $(LIBDIR)
 
 uninstall:
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)alc.h 
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_brow.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)compiler.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)ffind.h
