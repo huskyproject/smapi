@@ -1,55 +1,122 @@
-2001-11-26 Monday 22:05  tobi
+2001-12-13 Thursday 16:46  mche
 
-	* makefile.bcd (1.12.2.1), makefile.wcd (1.16.2.1) (utags:
-	smapi-2_0_0-release): reduce DOS DGROUP size
+	* api_jam.c (1.63), api_sdm.c (1.25), fexist.c (1.16), progprot.h
+	(1.10), sq_area.c (1.20): fiture - createDirectoryTree moved  from
+	hpt/fcommon to smapi/fexist, now when we try to write to msgbase we
+	build DirectoryTree if needed it probably increase speed of tossing
+	to non passthrough areas.
+
+2001-11-27 Tuesday 14:44  ml
+
+	* compiler.h (1.70): MSVC definitions
+
+2001-11-26 Monday 22:06  tobi
+
+	* makefile.bcd (1.13), makefile.wcd (1.17): reduce DOS DGROUP size
 
 2001-11-26 Monday 15:52  tobi
 
-	* setfsize.c (1.4.2.1), tdelay.c (1.6.2.1) (utags:
-	smapi-2_0_0-release): Make smapi compile for DOS again.
+	* setfsize.c (1.5), tdelay.c (1.8): Make smapi compile for DOS
+	again.
 
-2001-07-28 Saturday 11:58  ml
+2001-11-06 Tuesday 08:56  ml
 
-	* api_jam.c (1.58.2.1, smapi-2_0_0-release): small jam fix
+	* compiler.h (1.68), makefile.cyg (1.1), tdelay.c (1.7): cygwin
+	adaptation
 
-2001-07-08 Sunday 20:37  joerg.jaspert
+2001-09-23 Sunday 21:25  pavel.gulchouck
 
-	* debian/: README.Debian (1.3.2.2), changelog (1.5.2.2), control
-	(1.3.2.2), copyright (1.1.2.2), docs (1.1.2.2), huskymak.cfg
-	(1.5.2.2), libsmapi2-dev.dirs (1.1.2.1), libsmapi2-dev.files
-	(1.1.2.1), libsmapi2.dirs (1.1.2.1), libsmapi2.files (1.1.2.1),
-	rules (1.3.2.2), shlibs (1.4.2.2) (utags: smapi-2_0_0-release): The
-	debian Subdir for the Stable Smapi
+	* compiler.h (1.67): small fix for mingw32
 
-2001-07-06 Friday 01:26  tobi
+2001-09-18 Tuesday 16:46  pavel.gulchouck
 
-	* debian/: README.BUILD-DEB (1.1.2.1), README.Debian (1.3.2.1),
-	changelog (1.5.2.1), control (1.3.2.1), copyright (1.1.2.1), dirs
-	(1.1.2.1), docs (1.1.2.1), huskymak.cfg (1.5.2.1), rules (1.3.2.1),
-	shlibs (1.4.2.1): these files don't apply to stable unless somebody
-	fixes them, so we remove them for the moment
+	* compiler.h (1.66): small fix for mingw32
+
+2001-09-18 Tuesday 11:18  pavel.gulchouck
+
+	* api_jam.c (1.62), api_jamp.h (1.13): bugfix: O_EXCL and O_TRUNC
+	incompartible under mingw
+
+2001-09-17 Monday 15:07  pavel.gulchouck
+
+	* api_jam.c (1.61), api_jam.h (1.8), structrw.c (1.23): JAM speedup
+
+2001-09-15 Saturday 10:56  pavel.gulchouck
+
+	* api_jam.c (1.60), api_sdm.c (1.24), msgapi.h (1.35): Sqpack saves
+	times_read and cost for Jam and Msg msgbases now
+
+2001-09-10 Monday 11:17  pavel.gulchouck
+
+	* api_sdm.c (1.23), api_sdm.h (1.3): Kludge size not limited by 512
+	bytes for msg now, read all msg for ctrl info
+
+2001-08-08 Wednesday 21:32  joerg.jaspert
+
+	* debian/: changelog (1.9), huskymak.cfg (1.8), shlibs (1.7):
+	Newest Build.
+
+2001-07-27 Friday 15:38  pavel.gulchouck
+
+	* Makefile (1.22): speedup (use '$?' var)
+
+2001-07-24 Tuesday 13:13  pavel.gulchouck
+
+	* api_jam.c (1.59): Assertation fixed when writing message not
+	terminated with \r to jam
+
+2001-07-22 Sunday 13:23  twm
+
+	* smapi.pas (1.2): As of now I will stop maintaining smapi.pas. It
+	turned out that because of the alignment of the structures passed
+	between sampi and calling programs is left to the compiler, it is
+	likely to need constant rechecking whether the fields are still in
+	sync. I am not going to do that.  So this is the last update I will
+	post.
+
+2001-07-09 Monday 22:52  joerg.jaspert
+
+	* debian/: changelog (1.8), control (1.5), docs (1.2): Smapi has a
+	very bullshit licence so i have to change the section to non-free. 
+	NO Husky Program which depend on smapi will ever be in the Main
+	Part of Debian just because of this *#censored#* licence (you may
+	not sell -> non-free :( )
+
+2001-07-09 Monday 22:51  joerg.jaspert
+
+	* debian/: libsmapi2-dev.postinst (1.1), libsmapi2-dev.postrm
+	(1.1), libsmapi2-dev.prerm (1.1), libsmapi2.postinst (1.1),
+	libsmapi2.postrm (1.1), libsmapi2.prerm (1.1): Some new files
+
+2001-07-08 Sunday 20:46  joerg.jaspert
+
+	* debian/huskymak.cfg (1.7): Enabled Perl for Debian Packages.
+
+2001-07-02 Monday 22:46  joerg.jaspert
+
+	* debian/: changelog (1.7), shlibs (1.6): Changed shlibs file.
+	SONAME of libsmapi2 is libsmapi.so.2.1 and not only libsmapi.so.2
+	:)
 
 2001-07-02 Monday 22:45  joerg.jaspert
 
-	* debian/: libsmapi2-dev.dirs (1.1), libsmapi2-dev.files (1.1): 2
-	Files with wrong name, shit
+	* debian/: libsmapi-dev.dirs (1.2), libsmapi-dev.files (1.2),
+	libsmapi2-dev.dirs (1.1), libsmapi2-dev.files (1.1): 2 Files with
+	wrong name, shit
 
 2001-07-01 Sunday 20:27  joerg.jaspert
 
-	* debian/: libsmapi2.dirs (1.1), libsmapi2.files (1.1): Rebuild the
-	Package. Now its a real library package for debian, splitted into
-	libsmapi and libsmapi-dev.
+	* debian/: README.BUILD-DEB (1.2), README.Debian (1.4), changelog
+	(1.6), control (1.4), dirs (1.2), huskymak.cfg (1.6),
+	libsmapi-dev.dirs (1.1), libsmapi-dev.files (1.1), libsmapi2.dirs
+	(1.1), libsmapi2.files (1.1), rules (1.4), shlibs (1.5): Rebuild
+	the Package. Now its a real library package for debian, splitted
+	into libsmapi and libsmapi-dev.
 
 2001-06-26 Tuesday 11:28  tobi
 
-	* makefile.bsd (1.15.2.1, smapi-2_0_0-release): removed VER and
-	VERH from makefile.bsd, which builds static libs only and hence
-	does not need this info
-
-2001-06-03 Sunday 01:28  tobi
-
-	* Makefile (1.21.2.1), msgapi.h (1.34.2.1) (utags:
-	smapi-2_0_0-release): adjusted stable version number
+	* makefile.bsd (1.16): removed VER and VERH from legacy makefile
+	(which builds static libs and hence does not need this info)
 
 2001-06-03 Sunday 01:23  tobi
 
@@ -623,7 +690,7 @@
 
 2000-08-13 Sunday 09:59  oliver.grimm
 
-	* msgapi.c (1.12): Added multithreading support
+	* api_sq.c (1.13), msgapi.c (1.12): Added multithreading support
 
 2000-08-13 Sunday 09:59  oliver.grimm
 
@@ -636,13 +703,24 @@
 
 2000-08-12 Saturday 16:31  oliver.grimm
 
-	* api_sq.h (1.3), api_sqp.h (1.5), msgapi.c (1.11): Added open-area
-	and open-message lists. When closing an area all messages will be
-	closed. MsgCloseApi will also close all open areas
+	* api_sqp.h (1.5), api_sqd.h (1.2), msgapi.c (1.11): Added
+	open-area and open-message lists. When closing an area all messages
+	will be closed. MsgCloseApi will also close all open areas
+
+2000-08-12 Saturday 16:28  oliver.grimm
+
+	* api_sq.c (1.12), api_sq.h (1.3): Added open-area and open-message
+	lists. When closing an area all messages will be closed.
+	MsgCloseApi will also close all open areas
 
 2000-08-07 Monday 21:50  oliver.grimm
 
-	* msgapi.c (1.10): Add some TODO's - no other changes
+	* api_sq.c (1.11), msgapi.c (1.10): Add some TODO's - no other
+	changes
+
+2000-08-07 Monday 21:34  oliver.grimm
+
+	* api_sq.c (1.10): Fix a REAL bug, when closing a Squish-Area
 
 2000-08-07 Monday 01:16  tobi
 
@@ -714,7 +792,8 @@
 
 2000-04-21 Friday 13:14  sms
 
-	* Makefile (1.1): renamed makefile.husky to Makefile
+	* Makefile (1.1), makefile.husky (1.22): renamed makefile.husky to
+	Makefile
 
 2000-04-16 Sunday 23:27  nestyurkin.nikolay
 
@@ -729,6 +808,10 @@
 
 	* makefile.lnx (1.21, smapi-1_6_4b-release, smapi-1_6_4a-release):
 	small fix
+
+2000-04-15 Saturday 22:47  tobi
+
+	* makefile.husky (1.21): small fixes
 
 2000-04-15 Saturday 20:09  tobi
 
@@ -752,6 +835,10 @@
 
 	* compiler.h (1.44), msgapi.h (1.19): removed remaining pragma
 	pack()'s
+
+2000-04-09 Sunday 18:30  tobi
+
+	* makefile.husky (1.20): Install unused.h
 
 2000-04-09 Sunday 18:30  tobi
 
@@ -807,6 +894,10 @@
 
 	* makefile.lnx (1.20): legacy makefile fixes
 
+2000-04-04 Tuesday 18:17  tobi
+
+	* makefile.husky (1.19): huskymak fix
+
 2000-04-04 Tuesday 18:16  tobi
 
 	* makefile.bcw (1.7), makefile.ibo (1.11): legacy makefile fix
@@ -831,8 +922,8 @@
 
 2000-04-04 Tuesday 18:09  tobi
 
-	* makefile.djg (1.10, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	legacy makefile fixes
+	* makefile.common (1.3), makefile.djg (1.10, smapi-1_6_4b-release,
+	smapi-1_6_4a-release): legacy makefile fixes
 
 2000-04-04 Tuesday 18:00  tobi
 
@@ -869,6 +960,19 @@
 	 results ...) * Accelerated patmat routine for sequences with
 	multiple wildcards.  * Added shareloaded function for DJGPP.
 
+2000-03-30 Thursday 09:33  tobi
+
+	* makefile.husky (1.18): makefile fixes by max and others
+
+2000-03-26 Sunday 13:57  tobi
+
+	* makefile.husky (1.17): Fixed a typo that cause shared library
+	problems.
+
+2000-03-26 Sunday 13:43  tobi
+
+	* makefile.husky (1.16): NetBSD fix
+
 2000-03-26 Sunday 13:37  tobi
 
 	* compiler.h (1.36): NetBSD fix.
@@ -881,10 +985,40 @@
 
 	* compiler.h (1.34): Fix for Solaris.
 
+2000-03-20 Monday 22:23  mt
+
+	* makefile.husky (1.15): fixed LIBPREFX
+
+2000-03-19 Sunday 23:02  tobi
+
+	* makefile.husky (1.14): Fixes for DYNLIBS=0
+
+2000-03-19 Sunday 22:46  tobi
+
+	* makefile.husky (1.13): Added ranlib run on libsmapi.a
+
+2000-03-19 Sunday 22:37  tobi
+
+	* makefile.husky (1.12): Bugfix to makefile
+
+2000-03-19 Sunday 21:10  tobi
+
+	* makefile.husky (1.11): Fixes for makefile.husky (.a files now
+	installed, and other things)
+
 2000-03-13 Monday 23:47  sms
 
 	* makefile.bsd (1.11), makefile.lnx (1.19), makefile.sun (1.8),
 	makefile.unx (1.11): updated legacy makefiles
+
+2000-03-09 Thursday 17:27  sms
+
+	* makefile.husky (1.10): moved smapi and fidoconfig headers to
+	INCDIR/smapi and INCDIR/fidoconfig
+
+2000-03-07 Tuesday 16:05  tobi
+
+	* makefile.husky (1.9): fixes to Husky makefile
 
 2000-03-07 Tuesday 15:34  tobi
 
@@ -894,15 +1028,48 @@
 
 	* makefile.lnx (1.18): Fixed missing TAB
 
+2000-02-18 Friday 15:23  sms
+
+	* makefile.husky (1.8): corrected missing TAB in makefile.husky
+
+2000-02-15 Tuesday 13:56  mt
+
+	* makefile.husky (1.7): huskey makefile for static libraries
+	working
+
 2000-02-10 Thursday 09:24  sms
 
-	* makefile.lnx (1.17): added ldconfig to makefile.husky and
-	makefile.lnx of smapi and fidoconfig
+	* makefile.husky (1.6), makefile.lnx (1.17): added ldconfig to
+	makefile.husky and makefile.lnx of smapi and fidoconfig
+
+2000-01-23 Sunday 00:42  sms
+
+	* makefile.husky (1.5): Updated makefile.husky and huskymak.cfg
+
+2000-01-22 Saturday 12:00  sms
+
+	* makefile.husky (1.4): Created/Updated makefile.husky and
+	huskymak.cfg
 
 2000-01-16 Sunday 14:13  sms
 
-	* INSTALL (1.6): added reference to husky-common-package to
-	INSTALL; updated makefile.husky
+	* INSTALL (1.6), makefile.husky (1.3): added reference to
+	husky-common-package to INSTALL; updated makefile.husky
+
+2000-01-13 Thursday 16:52  tobi
+
+	* api_sq.c (1.6): If FTSC date field is empty, it is now calculated
+	from the date_written time stampe before writing a Mail to the
+	Squish base.
+
+2000-01-09 Sunday 17:06  sms
+
+	* makefile.husky (1.2): small bugfix to makefile.husky \(LIBDIR and
+	ILOPT where overwritten\)
+
+2000-01-09 Sunday 16:58  sms
+
+	* makefile.husky (1.1): Added makefile.husky
 
 1999-12-31 Friday 02:01  tobi
 
@@ -920,6 +1087,10 @@
 
 	* makefile.bsd (1.10), makefile.lnx (1.16), makefile.unx (1.10):
 	more version changes added
+
+1999-12-22 Wednesday 14:09  mt
+
+	* makefile.common (1.2): version number changed
 
 1999-12-15 Wednesday 00:52  tobi
 
@@ -1014,7 +1185,8 @@
 
 1999-10-17 Sunday 16:05  tobi
 
-	* makefile.djg (1.8): Renamed Makefile.djd to Makefile.djg.
+	* makefile.djd (1.2), makefile.djg (1.8): Renamed Makefile.djd to
+	Makefile.djg.
 
 1999-10-15 Friday 13:09  tobi
 
@@ -1022,8 +1194,9 @@
 
 1999-10-14 Thursday 18:07  sms
 
-	* makefile.djg (1.7), makefile.unx (1.8): reorganized Makefiles,
-	read husky-common/README.Makefiles \!\!\!
+	* makefile.common (1.1), makefile.djd (1.1), makefile.djg (1.7),
+	makefile.lnx.nolock (1.4), makefile.unx (1.8): reorganized
+	Makefiles, read husky-common/README.Makefiles \!\!\!
 
 1999-10-14 Thursday 17:40  sms
 
@@ -1053,11 +1226,13 @@
 1999-09-27 Monday 13:48  mt
 
 	* file_id.diz (1.2, smapi-2_0_0-release, smapi-1_6_4b-release,
-	smapi-1_6_4a-release): removed whatsnew.txt, use Chengelog now
+	smapi-1_6_4a-release), whatsnew.txt (1.4): removed whatsnew.txt,
+	use Chengelog now
 
 1999-09-24 Friday 11:07  mt
 
-	* INSTALL (1.5), makefile.lnx (1.12): release updates
+	* INSTALL (1.5), makefile.lnx (1.12), makefile.lnx.nolock (1.3):
+	release updates
 
 1999-09-23 Thursday 23:05  mt
 
@@ -1081,6 +1256,10 @@
 1999-07-26 Monday 22:13  mt
 
 	* INSTALL (1.4): changed INSTALL to the right version numbers
+
+1999-07-11 Sunday 11:42  mt
+
+	* makefile.lnx.nolock (1.1): added nolock makefile
 
 1999-07-11 Sunday 11:41  mt
 
@@ -1121,8 +1300,12 @@
 
 1999-04-09 Friday 11:02  mt
 
-	* INSTALL (1.3), VERSION (1.3): removed autoconf files because they
-	do not work correct and create much confusion, sorry Michael
+	* AUTHORS (1.2), INSTALL (1.3), Makefile.am (1.3), Makefile.in
+	(1.3), NEWS (1.2), README (1.2), VERSION (1.3), aclocal.m4 (1.2),
+	config.guess (1.2), config.sub (1.2), configure (1.2), configure.in
+	(1.2), install-sh (1.2), ltconfig (1.2), ltmain.sh (1.2), missing
+	(1.2), mkinstalldirs (1.2): removed autoconf files because they do
+	not work correct and create much confusion, sorry Michael
 
 1999-03-07 Sunday 00:09  tobi
 
@@ -1141,19 +1324,34 @@
 	makefiles to generate a smapilnx with version 1.5.6 which is the
 	right value
 
+1999-02-08 Monday 20:06  me
+
+	* Makefile.am (1.2), Makefile.in (1.2) (utags: smapi-1_5_6): the
+	missing .o to compile
+
 1999-02-07 Sunday 08:20  me
 
-	* COPYING (1.1): and the rest of it
+	* COPYING (1.1), README (1.1, smapi-1_5_6), aclocal.m4 (1.1,
+	smapi-1_5_6), ltconfig (1.1, smapi-1_5_6), ltmain.sh (1.1,
+	smapi-1_5_6), mkinstalldirs (1.1, smapi-1_5_6): and the rest of it
 
 1999-02-07 Sunday 08:18  me
 
-	* VERSION (1.1): more files
+	* AUTHORS (1.1, smapi-1_5_6), Makefile.am (1.1), Makefile.in (1.1),
+	NEWS (1.1, smapi-1_5_6), VERSION (1.1), install-sh (1.1,
+	smapi-1_5_6), missing (1.1, smapi-1_5_6): more files
+
+1999-02-07 Sunday 08:14  me
+
+	* config.guess (1.1), config.sub (1.1), configure (1.1),
+	configure.in (1.1) (utags: smapi-1_5_6): A first try to get
+	autoconf up & running
 
 1999-02-01 Monday 20:51  mt
 
 	* INSTALL (1.2, smapi-1_5_6), api_sdm.c (1.9, smapi-1_5_6),
-	makefile.lnx (1.8): changed rights for created files and dirs under
-	unix
+	api_sq.c (1.5, smapi-1_5_6), makefile.lnx (1.8), whatsnew.txt (1.3,
+	smapi-1_5_6): changed rights for created files and dirs under unix
 
 1999-02-01 Monday 19:28  tobi
 
@@ -1313,14 +1511,14 @@
 
 1998-07-25 Saturday 02:07  tobi
 
-	* api_sqp.h (1.2, smapi-1_5_6), compiler.h (1.10), locking.c (1.3),
-	makefile.bcd (1.3, smapi-1_5_6), makefile.bco (1.3, smapi-1_5_6),
-	makefile.djg (1.3), makefile.hco (1.3, smapi-1_5_6), makefile.ibo
-	(1.3), makefile.qcd (1.3, smapi-1_5_6), makefile.sun (1.2),
-	makefile.wcd (1.3, smapi-1_5_6), makefile.wco (1.3, smapi-1_5_6),
-	makefile.wcw (1.3, smapi-1_5_6), makefile.wcx (1.3, smapi-1_5_6):
-	Bug fixes and enhancements on the record locking and Squish locking
-	routines.
+	* api_sq.c (1.4), api_sqp.h (1.2, smapi-1_5_6), compiler.h (1.10),
+	locking.c (1.3), makefile.bcd (1.3, smapi-1_5_6), makefile.bco
+	(1.3, smapi-1_5_6), makefile.djg (1.3), makefile.hco (1.3,
+	smapi-1_5_6), makefile.ibo (1.3), makefile.qcd (1.3, smapi-1_5_6),
+	makefile.sun (1.2), makefile.wcd (1.3, smapi-1_5_6), makefile.wco
+	(1.3, smapi-1_5_6), makefile.wcw (1.3, smapi-1_5_6), makefile.wcx
+	(1.3, smapi-1_5_6): Bug fixes and enhancements on the record
+	locking and Squish locking routines.
 
 1998-07-23 Thursday 13:00  tobi
 
@@ -1333,10 +1531,10 @@
 
 1998-07-22 Wednesday 15:54  tobi
 
-	* compiler.h (1.8), locking.c (1.1), makefile.bsd (1.3),
-	makefile.emo (1.4), makefile.lnx (1.5), makefile.unx (1.2): Rewrote
-	the record locking routines for Unix to use fcntl() instead of
-	flock() because fcntl() is more portable and also supports file
+	* compiler.h (1.8), emxlock.c (1.2), locking.c (1.1), makefile.bsd
+	(1.3), makefile.emo (1.4), makefile.lnx (1.5), makefile.unx (1.2):
+	Rewrote the record locking routines for Unix to use fcntl() instead
+	of flock() because fcntl() is more portable and also supports file
 	locking via NFS-mounted volumes. Tested on AIX and OSF only, I hope
 	this does not break the Linux version. :-). In case of problems:
 	e-mail tobi@bland.fido.de
@@ -1360,6 +1558,10 @@
 	MSGAPI-programs do not check for any return codes, it seems to be
 	the only safe way to do it.
 
+1998-07-10 Friday 00:49  tobi
+
+	* api_sq.c (1.3): Small bug fix and cosmetic change.
+
 1998-07-10 Friday 00:48  tobi
 
 	* structrw.c (1.2): Fixed a bug in structrw.c that could lead to
@@ -1374,6 +1576,11 @@
 
 	* compiler.h (1.3), makefile.emo (1.3): The UNIX version now uses
 	flock() for squish locking. Better than nothing.
+
+1998-07-01 Wednesday 00:24  tobi
+
+	* emxlock.c (1.1): Implemented record locking for the OS/2 EMX
+	version.
 
 1998-06-30 Tuesday 10:10  tobi
 
@@ -1399,18 +1606,19 @@
 1998-05-28 Thursday 00:39  tobi
 
 	* api_sdm.c (1.3), api_sdm.h (1.2, smapi-2_0_0-release,
-	smapi-1_6_4b-release, smapi-1_6_4a-release, smapi-1_5_6), api_sq.h
-	(1.2, smapi-1_6_4b-release, smapi-1_6_4a-release, smapi-1_5_6),
-	compiler.h (1.2), cvtdate.c (1.3, smapi-1_5_6), fexist.c (1.3,
-	smapi-1_5_6), ffind.c (1.3), ffind.h (1.2, smapi-1_5_6),
-	makefile.bcd (1.2), makefile.bco (1.2), makefile.bsd (1.2),
-	makefile.djg (1.2), makefile.emo (1.2), makefile.hco (1.2),
+	smapi-1_6_4b-release, smapi-1_6_4a-release, smapi-1_5_6), api_sq.c
+	(1.2), api_sq.h (1.2, smapi-1_6_4b-release, smapi-1_6_4a-release,
+	smapi-1_5_6), compiler.h (1.2), cvtdate.c (1.3, smapi-1_5_6),
+	fexist.c (1.3, smapi-1_5_6), ffind.c (1.3), ffind.h (1.2,
+	smapi-1_5_6), makefile.bcd (1.2), makefile.bco (1.2), makefile.bsd
+	(1.2), makefile.djg (1.2), makefile.emo (1.2), makefile.hco (1.2),
 	makefile.ibo (1.2), makefile.lnx (1.3), makefile.qcd (1.2),
 	makefile.rxw (1.1), makefile.wcd (1.2), makefile.wco (1.2),
 	makefile.wcw (1.2), makefile.wcx (1.2), msgapi.c (1.3), msgapi.h
 	(1.3), old_msg.h (1.2, smapi-2_0_0-release, smapi-1_6_4b-release,
 	smapi-1_6_4a-release, smapi-1_5_6), readme.txt (1.2), structrw.c
-	(1.1): Changes done on 05/28/98 by Tobias Ernst:
+	(1.1), whatsnew.txt (1.2): Changes done on 05/28/98 by Tobias
+	Ernst:
 	
 	  - Removed all structure-packing and endianness dependencies. The
 	new
@@ -1449,26 +1657,21 @@
 
 1998-05-11 Monday 09:40  tw
 
-	* alc.h (1.1), api_sdm.c (1.1), api_sdm.h (1.1), api_sdmp.h (1.1),
-	api_sq.h (1.1), api_sqp.h (1.1), compiler.h (1.1), cvtdate.c (1.1),
-	date2bin.c (1.1), fexist.c (1.1), ffind.c (1.1), ffind.h (1.1),
-	file_id.diz (1.1), flush.c (1.1), makefile.bcd (1.1), makefile.bco
-	(1.1), makefile.bsd (1.1), makefile.djg (1.1), makefile.emo (1.1),
-	makefile.hco (1.1), makefile.ibo (1.1), makefile.lnx (1.1),
-	makefile.qcd (1.1), makefile.wcd (1.1), makefile.wco (1.1),
-	makefile.wcw (1.1), makefile.wcx (1.1), msgapi.c (1.1), msgapi.h
-	(1.1), old_msg.h (1.1), parsenn.c (1.1), patmat.c (1.1), prog.h
-	(1.1), progprot.h (1.1), readme.txt (1.1), stamp.h (1.1),
-	strextra.c (1.1), strextra.h (1.1), strftim.c (1.1), typedefs.h
-	(1.1): Initial revision
-
-1998-05-11 Monday 09:40  tw
-
-	* 1stchar.c (1.1.1.1), api_brow.h (1.1.1.1), apidebug.h (1.1.1.1),
-	dosdate.c (1.1.1.1), dr.h (1.1.1.1), flushasm.asm (1.1.1.1),
-	licence.txt (1.1.1.1), months.c (1.1.1.1), patmat.h (1.1.1.1),
-	qksort.c (1.1.1.1), sqasm.asm (1.1.1.1), strocpy.c (1.1.1.1),
-	trail.c (1.1.1.1), unused.h (1.1.1.1), weekday.c (1.1.1.1) (utags:
-	smapi-1_6_4a-release, smapi_1_4, smapi-1_6_4b-release, smapi-1_5_6,
-	smapi-2_0_0-release): smapi 1.4
+	* 1stchar.c (1.1), alc.h (1.1), api_brow.h (1.1), api_sdm.c (1.1),
+	api_sdm.h (1.1), api_sdmp.h (1.1), api_sq.c (1.1), api_sq.h (1.1),
+	api_sqd.h (1.1), api_sqp.h (1.1), apidebug.h (1.1), compiler.h
+	(1.1), cvtdate.c (1.1), date2bin.c (1.1), dosdate.c (1.1), dr.h
+	(1.1), fexist.c (1.1), ffind.c (1.1), ffind.h (1.1), file_id.diz
+	(1.1), flush.c (1.1), flushasm.asm (1.1), licence.txt (1.1),
+	makefile.bcd (1.1), makefile.bco (1.1), makefile.bsd (1.1),
+	makefile.djg (1.1), makefile.emo (1.1), makefile.hco (1.1),
+	makefile.ibo (1.1), makefile.lnx (1.1), makefile.qcd (1.1),
+	makefile.wcd (1.1), makefile.wco (1.1), makefile.wcw (1.1),
+	makefile.wcx (1.1), months.c (1.1), msgapi.c (1.1), msgapi.h (1.1),
+	old_msg.h (1.1), parsenn.c (1.1), patmat.c (1.1), patmat.h (1.1),
+	prog.h (1.1), progprot.h (1.1), qksort.c (1.1), readme.txt (1.1),
+	sqasm.asm (1.1), stamp.h (1.1), strextra.c (1.1), strextra.h (1.1),
+	strftim.c (1.1), strocpy.c (1.1), trail.c (1.1), typedefs.h (1.1),
+	unused.h (1.1), weekday.c (1.1), whatsnew.txt (1.1): Initial
+	revision
 
