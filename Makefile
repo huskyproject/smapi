@@ -65,7 +65,7 @@ endif
 
 ifeq ($(DYNLIBS), 1)
 $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
-	gcc -shared -Wl,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
+	$(CC) -shared -Wl,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
           -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
 
 instdyn: $(LIBPREFIX)smapi.so.$(VER)
