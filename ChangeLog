@@ -84,10 +84,6 @@ oliver grimm ():
 * MsgCloseApi() closes all open squish-areas
 * simple multithreading support added
 
-smapi 1.6.4
------------
-(released on Mon May 22 14:58:56 CEST 2000)
-
 ----- cvs ci ------
 Mon Jul 31 12:18:23 NOVST 2000
 max (patches from Pavel Gulchouk):
@@ -102,6 +98,10 @@ max (patches from Pavel Gulchouk):
 Thu Jul 13 19:22:30 NOVST 2000
 max (patches from Pavel Gulchouk):
 * jam readsubfiled() fixes
+
+smapi 1.6.4
+-----------
+(released on Tue Jul 18 21:01:54 MEST 2000)
 
 ----- cvs ci ------
 Thu Jun 29 21:39:49 NOVST 2000
