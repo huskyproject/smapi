@@ -988,7 +988,7 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
 
    if (*mode == MSGAREA_CREATE) {
       jambase->HdrHandle = opencreatefilejm(hdr, fop_wpb, permissions);
-      /* jambase->TxtHandle = openfilejm(txt, fop_wpb, permissions); */
+      jambase->TxtHandle = openfilejm(txt, fop_wpb, permissions);
       jambase->IdxHandle = openfilejm(idx, fop_wpb, permissions);
       /* jambase->LrdHandle = openfilejm(lrd, fop_wpb, permissions);
       */ jambase->LrdHandle = 0;
@@ -1011,7 +1011,7 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
       */ jambase->LrdHandle = 0;
    } /* endif */
 
-   if (jambase->HdrHandle == -1 || /* jambase->TxtHandle == -1 || */ jambase->IdxHandle == -1) {
+   if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {
       if (*mode != MSGAREA_CRIFNEC) {
          Jam_CloseFile(jambase);
          pfree(hdr);
@@ -1023,12 +1023,12 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
       }
       *mode = MSGAREA_CREATE;
       jambase->HdrHandle = opencreatefilejm(hdr, fop_cpb, permissions);
-      /* jambase->TxtHandle = openfilejm(txt, fop_cpb, permissions); */
+      jambase->TxtHandle = openfilejm(txt, fop_cpb, permissions);
       jambase->IdxHandle = openfilejm(idx, fop_cpb, permissions);
       /* jambase->LrdHandle = openfilejm(lrd, fop_cpb, permissions);
       */ jambase->LrdHandle = 0;
 
-      if (jambase->HdrHandle == -1 || /* jambase->TxtHandle == -1 || */ jambase->IdxHandle == -1) {
+      if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {
          Jam_CloseFile(jambase);
          pfree(hdr);
          pfree(txt);
