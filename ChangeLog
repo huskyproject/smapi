@@ -1,3 +1,8 @@
+Sun Mar  4 17:20:39 NOVT 2001
+max:
+* fixed GetCtrlToken() - when gets "STR" kludge and
+  if "xxxSTR" kludge found before, it returned NULL)
+
 Sun Feb 11 17:16:00 MESZ 2001
 oliver grimm:
 * Added Filetyping & Attributes for BeOS (SDM Type Areas only)

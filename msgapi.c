@@ -286,16 +286,16 @@ byte *EXPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length)
 
 byte *EXPENTRY GetCtrlToken(byte * where, byte * what)
 {
-    byte *end, *found, *out;
+    byte *end, *out, *found=NULL;
 
-    found = NULL;
-
-    if (where != NULL)
-    {
+    if (where == NULL || what == NULL) return NULL;
+    
+    do {
         found = (byte *) strstr((char *) where, (char *) what);
-    }
+	if (found != NULL) where = found+1;
+    } while (found != NULL && found[-1] != '\001');
 
-    if (where != NULL && found != NULL && found[-1] == '\001')
+    if (found != NULL)
     {
         end = (byte *) strchr((char *) found, '\001');
 
