@@ -204,13 +204,13 @@ static unsigned near _SquishUnlinkBaseFiles(byte  *szName)
   (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sql);
 
-  if (unlink(szFile) != 0)
+  if (unlink(szFile) != 0 && errno != ENOENT)
     rc=FALSE;
 
   (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_lck);
 
-  if (unlink(szFile) != 0)
+  if (unlink(szFile) != 0 && errno != ENOENT)
     rc=FALSE;
 
   return rc;

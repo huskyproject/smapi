@@ -1068,7 +1068,7 @@ int JamDeleteBase(char *name)
    sprintf(fn, "%s%s", name, EXT_IDXFILE);
    if (unlink(fn)) rc=0; /* error */
    sprintf(fn, "%s%s", name, EXT_LRDFILE);
-   if (unlink(fn)) rc=0; /* error */
+   if (unlink(fn) && errno!=ENOENT) rc=0; /* error */
 
    pfree(fn);
    return rc;

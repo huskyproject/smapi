@@ -182,6 +182,8 @@ int SdmDeleteBase(char *name)
 
       FFindClose(ff);
     }
+    sprintf(temp, "%slastread", name);
+    unlink(temp);
     rmdir(name);
 
     return 1; /* rmdir error is ok */
