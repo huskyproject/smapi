@@ -1,3 +1,7 @@
+2003-03-09 Sunday 17:58  os2tobi
+
+	* makefile.unx (1.20): fixed unx makefile for huskylib
+
 2003-03-07 Friday 07:21  sfpavel
 
 	* compiler.h (1.173), cvtdate.c (1.14), fexist.c (1.33), ffind.c
