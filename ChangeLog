@@ -1,3 +1,9 @@
+2003-02-01 Saturday 22:14  stas_degteff
+
+	* api_jam.c (1.102), makefile.cyg (1.12), msgapi.c (1.38),
+	sq_area.c (1.28), sq_write.c (1.13): Fix warnings: differ in
+	signedness
+
 2003-02-01 Saturday 16:02  d_sergienko
 
 	* Makefile (1.36): join cd && rm into one shell execution in
