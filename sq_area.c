@@ -28,7 +28,7 @@ static char rcs_id[]="$Id$";
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
 
-#if !defined(UNIX) && !defined(SASC)
+#if !defined(__UNIX__) && !defined(SASC)
 #include <io.h>
 #endif
 
@@ -36,14 +36,14 @@ static char rcs_id[]="$Id$";
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#if !defined(UNIX) && !defined(SASC)
+#if !defined(__UNIX__) && !defined(SASC)
 #include <share.h>
 #endif
 
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef UNIX
+#ifdef __UNIX__
 #include <unistd.h>
 #endif
 
@@ -74,7 +74,7 @@ static unsigned near _SquishUnlinkBaseFiles(byte *);
 int SquishDeleteBase(char *name)
 {
   return (int) _SquishUnlinkBaseFiles((byte *) name);
-}   
+}
 
 /* Exitlist routine to make sure that all areas are closed */
 
@@ -143,7 +143,7 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
         *slash = '\0';
         _createDirectoryTree(szName);
         *slash = PATH_DELIM;
-     }    
+     }
      Sqd->sfd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
         FILEMODE(ha->isecho));
   }
@@ -167,7 +167,7 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
 #ifdef ALTLOCKING
   (void)strcpy(szFile, szName);
   (void)strcat(szFile, dot_lck);
-  
+
   ha->lck_path = strdup(szFile);
 #endif
 
@@ -182,7 +182,7 @@ static unsigned near _SquishUnlinkBaseFiles(byte  *szName)
 {
   char szFile[PATHLEN];
   unsigned rc=TRUE;
-  
+
   if ( !szName || (szName && (strlen(szName)+5>PATHLEN)) ) return FALSE;
 
   (void)strcpy(szFile, szName);
@@ -461,7 +461,7 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
   /* Fill out the function pointers for this area */
 
   *ha->api = sq_funcs;
-  
+
   /* Open the index interface for this area */
 
   if ((Sqd->hix=_SquishOpenIndex(ha))==NULL)
@@ -495,7 +495,7 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
 
     Sqd->haNext=haOpen;
     haOpen=ha;
-    
+
   }
   else
   {
@@ -506,7 +506,7 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
     return NULL;
   }
 
- 
+
 #ifdef ALTLOCKING
    ha->lck_handle = 0;
 #endif
@@ -628,7 +628,7 @@ sword _XPENTRY apiSquishCloseArea(HAREA ha)
   if (ha->lck_path)
     pfree(ha->lck_path);
 #endif
-    
+
   pfree(ha->api);
   pfree(ha->apidata);
   pfree(ha);

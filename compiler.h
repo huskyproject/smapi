@@ -43,12 +43,15 @@
    * HAS_SPAWNVP         - spawnwp() presents
    * HAS_MKTIME          - mktime() presents
    * HAS_STRFTIME        - strftime() presents
+   * HAS_sopen           - sopen() presents
+   *
    * HAS_MALLOC_H        - may be used "#include <malloc.h>" for malloc() etc.
    * HAS_DOS_H           - may be used "#include <dos.h>"
    * HAS_DIR_H           - may be used "#include <dir.h>" for findfirst() etc.
    * HAS_DIRENT_H        - may be used "#include <dirent.h>" for opendir() etc.
    * HAS_IO_H            - may be used "#include <io.h>"
    * HAS_UNISTD_H        - may be used "#include <unistd.h>"
+   * HAS_SHARE_H         - may be used "#include <share.h>" for sopen() etc.
    *
    * USE_SYSTEM_COPY     - OS have system call for files copiing (see
    *                       copy_file() and move_file() functions)
@@ -72,6 +75,9 @@
    *
    ***************************************************************************
    * Memory and platforms
+   *
+   * __BIG_ENDIAN__    - big endian bytes order in memory
+   * __LITTLE_ENDIAN__ - little endian bytes order in memory (like Intel x86)
    *
    * 16bit Intel x86 memory models (compiler-predefined)
    * __TINY__    - 64K data, 64K code, stack in code or data
@@ -102,7 +108,9 @@
    * __DPMI__  - DOS 32 bit (extenders: dos4g, farcall, rsx, ...)
    * __UNIX__  - All unix-like OS
    * __AMIGA__ - AmigaOS
-   *
+   * __ALPHA__ - The Alpha CPU
+   * __INTEL__ - Intel's x86 series CPU
+   * __PPC__   - The PowerPC CPU (Mac, ...)
    */
 
 /**************************************************************************
@@ -213,10 +221,13 @@
 
 
    ===================================================================
+   Borland C and Turbo C
+   -------------------------------------------------------------------
+   __TURBOC__  is 397 (0x18D) for TurboC 2.0
+   ===================================================================
    Borland C and Turbo C for DOS
    -------------------------------------------------------------------
    __TURBOC__ __MSDOS__
-   Values of __TURBOC__: 0x18d = TurboC 2.0
    ===================================================================
    Borland C for Win32
    -------------------------------------------------------------------
@@ -351,8 +362,10 @@ int qq(void)
 
 /* Turbo C/C++ & Borland C/C++ */
 #if defined(__TURBOC__)
-#  if defined(__MSDOS__) && !defined(__TURBOC__DOS__)
-#    define __TURBOC__DOS__   /* Turbo C/C++ & Borland C/C++ for MS-DOS */
+#  if defined(__MSDOS__)   /* Turbo C/C++ & Borland C/C++ for MS-DOS */
+#    if !defined(__TURBOC__DOS__)
+#      define __TURBOC__DOS__
+#    endif
 #  endif
 #  if defined(__WIN32__) && !defined(__TURBOC__WIN32__)
 #    define __TURBOC__WIN32__ /* Borland C/C++ for Win32 */
@@ -397,6 +410,18 @@ int qq(void)
 #  define __DOS__
 #endif
 
+#if defined(__MSDOS__) || defined(DOS) || defined(MSDOS)
+#  if !defined(__DOS__)
+#    define __DOS__
+#  endif
+#endif
+
+#if defined(NT) || defined(WINNT)
+#  if !defined(__NT__)
+#    define __NT__
+#  endif
+#endif
+
 /* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option  *
  * This is NOT needed for pure Cygwin builds, Cygwin == UNIX !! */
 #if defined(__MINGW32__) && !defined(__NT__)
@@ -422,25 +447,67 @@ int qq(void)
 /*
   BeOS is NOT Unix, but sometime it seem's to Be ... ;)
 */
-#if defined (__BEOS__) && !defined(__UNIX__)
-#  define __UNIX__
+#if defined (__BEOS__)
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
 #endif
 
-#if defined(SASC) && !defined(__UNIX__) /* SAS C for AmigaDOS ***************/
-#  define __UNIX__
+#if defined(SASC)  /* SAS C for AmigaDOS ***************/
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
+#endif
+
+#if defined(UNIX)
+#  if !defined(__UNIX__)
+#    define __UNIX__
+#  endif
 #endif
 
 /***** Platforms *************************************************************/
 
-#if defined(__WATCOMC__) && defined(__X86__) /* Watcom C for intel x86 platform */
-#  ifndef INTEL
-#    define INTEL  /* using to select functions/macroses for read & write binary values */
+#if defined(__alpha)
+#  ifndef __ALPHA__
+#    define __ALPHA__
 #  endif
 #endif
 
-#if defined(__DOS__)
-#  ifndef INTEL
-#    define INTEL  /* using to select functions/macroses for read & write binary values */
+#ifdef __ALPHA__
+#  ifndef __BIG_ENDIAN__
+#    define __BIG_ENDIAN__
+#  endif
+#  ifndef __FLAT__
+#    define __FLAT__
+#  endif
+#endif
+
+#ifdef __SUN__
+#  ifndef __FLAT__
+#    define __FLAT__
+#  endif
+#endif
+
+
+#ifdef __CYGWIN__
+#  ifndef __LITTLE_ENDIAN__
+#    define __LITTLE_ENDIAN__
+#  endif
+#  ifndef __FLAT__
+#    define __FLAT__
+#  endif
+#endif
+
+
+#if defined(__WATCOMC__) && defined(__X86__) /* Watcom C for intel x86 platform */
+#  ifndef __LITTLE_ENDIAN__
+#    define __LITTLE_ENDIAN__
+#  endif
+#endif
+
+#if defined(__DOS__) || defined(__DPMI__)
+#  ifndef __LITTLE_ENDIAN__
+#    define __LITTLE_ENDIAN__
 #  endif
 #endif
 
@@ -450,13 +517,16 @@ int qq(void)
 
 /***** memory models *********************************************************/
 
-#if defined(__DOS4G__) || defined(__WIN32S__) || defined(__WIN32__) || defined(__NT__) || defined(__UNIX__)
+#if defined(__DPMI__) || defined(__WIN32__) || defined(__NT__) || defined(__UNIX__)
 #  ifndef __FLAT__
 #    define __FLAT__
 #  endif
 #endif
 
 #if defined(__OS2__) && !defined(_MSC_VER)
+#if !defined(__386__) && !defined(__FLAT__)
+#error Please check your compiler to target: 16 bit or 32 bit and sent report to husky developers: http://sf.net/projects/husky
+#endif
 #  ifndef __386__
 #    define __386__
 #  endif
@@ -573,6 +643,8 @@ int qq(void)
 
 #ifdef __MSVC__  /* MS Visual C/C++ *****************************************/
 
+#define P_WAIT		_P_WAIT   /* process.h */
+
 #  ifdef _MAKE_DLL
 #    define _MAKE_DLL_MVC_
 #    ifndef _SMAPI_EXT
@@ -670,10 +742,13 @@ int qq(void)
 #  define HAS_SPAWNVP   1     /* spawnwp() presents */
 #  define HAS_STRFTIME  1
 #  define HAS_MKTIME    1
+#  define HAS_sopen     1
 
 #  define USE_SYSTEM_COPY     /* OS have system call for files copiing */
-#  define USE_STAT_MACROS
+#  define USE_STAT_MACROS     /* S_ISDIR, S_ISREG and stat() presents */
 
+#  define HAS_IO_H     1  /* may use "#include <io.h> */
+#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
 #  define HAS_MALLOC_H        /* use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_DIRECT_H
 #  include <direct.h>
@@ -686,8 +761,8 @@ int qq(void)
 
 #elif defined(__MSC__) /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
 
-#  ifndef INTEL
-#    define INTEL  /* using to select functions/macroses for read & write binary values */
+#  ifndef __LITTLE_ENDIAN__
+#    define __LITTLE_ENDIAN__
 #  endif
 
 #  define _stdc cdecl
@@ -715,6 +790,8 @@ int qq(void)
 #  endif
 
 #  define HAS_MALLOC_H        /* use "#include <malloc.h>" for malloc() etc. */
+#  define HAS_IO_H     1  /* may use "#include <io.h> */
+#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
 
 #  define USE_STAT_MACROS
 
@@ -743,10 +820,11 @@ int qq(void)
 #  define HAS_MKTIME    1  /* mktime() in time.h */
 
 #  define HAS_MALLOC_H  1  /* may be used "#include <malloc.h>"  (see alc.h) */
+#  define HAS_IO_H      1  /* may use "#include <io.h> */
+#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
+#  define HAS_DIRECT_H  1
 
-#  include <direct.h>
 #  define mymkdir(x)    mkdir(x) /*<direct.h>*/
-#  include <io.h>
 
 #  if defined(__WATCOMC__DOS__)
 /* WATCOM C/C++ for MS-DOS or DOS4G*/
@@ -796,8 +874,8 @@ int qq(void)
 
 #elif defined(__HIGHC__) /* MetaWare High C/C++ for OS/2 ***********************/
 
-#ifndef INTEL
-#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#ifndef __LITTLE_ENDIAN__
+#  define __LITTLE_ENDIAN__
 #endif
 
 #  define _stdc
@@ -827,6 +905,8 @@ int qq(void)
 #  define _XPENTRY
 
 #  define HAS_MALLOC_H 1      /* use "#include <malloc.h>" for malloc() etc. */
+#  define HAS_IO_H     1  /* may use "#include <io.h> */
+#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
 
 /* End: MetaWare High C/C++ for OS/2 */
 #elif defined(__MINGW32__) /* MinGW32 & cygwin's 'gcc -mno-cygwin' ***********/
@@ -837,8 +917,8 @@ int qq(void)
    - Cygwin GCC with option -mno-cygwin.
 */
 
-#ifndef INTEL
-#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#ifndef __LITTLE_ENDIAN__
+#  define __LITTLE_ENDIAN__
 #endif
 
 #  define _stdc
@@ -895,9 +975,11 @@ int qq(void)
 #  define HAS_MKTIME   1  /* time.h */
 #  define HAS_STRFTIME 1  /* time.h */
 #  define HAS_ACCESS   1  /* access() in io.h */
+#  define HAS_sopen    1
 
 #  define HAS_MALLOC_H 1  /* may use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_IO_H     1  /* may use "#include <io.h> */
+#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
 
 #  define USE_STAT_MACROS
 
@@ -905,8 +987,8 @@ int qq(void)
 
 #elif defined(__EMX__)/* EMX for 32-bit OS/2 and RSX for Windows NT **********/
 
-#ifndef INTEL
-#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#ifndef __LITTLE_ENDIAN__
+#  define __LITTLE_ENDIAN__  /* using to select functions/macroses for read & write binary values */
 #endif
 
 #  define _stdc
@@ -943,6 +1025,7 @@ int qq(void)
 
 #  define HAS_DIRENT_H  1  /* use "#include <dirent.h>" for opendir() etc. */
 #  define HAS_IO_H      1  /* use "#include <io.h>" */
+#  define HAS_SHARE_H   1  /* may use "#include <share.h> */
 #  define HAS_UNISTD_H  1  /* use "#include <unistd.h> */
 
 #  define USE_STAT_MACROS
@@ -951,8 +1034,8 @@ int qq(void)
 
 #elif defined(__DJGPP__) /* DJGPP for MS-DOS (DPMI)***************************/
 
-#ifndef INTEL
-#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#ifndef __LITTLE_ENDIAN__
+#  define __LITTLE_ENDIAN__  /* using to select functions/macroses for read & write binary values */
 #endif
 
 #  ifndef __FLAT__
@@ -987,13 +1070,14 @@ int qq(void)
 #  include <io.h>
 #  define mysleep(x) sleep(x)
 
-#  define HAS_SPAWNVP  1      /* spawnvp() in process.h */
-#  define HAS_STRFTIME 1      /* strftime() in time.h  */
-#  define HAS_MKTIME   1      /* mktime() in time.h */
+#  define HAS_SPAWNVP   1   /* spawnvp() in process.h */
+#  define HAS_STRFTIME  1   /* strftime() in time.h  */
+#  define HAS_MKTIME    1   /* mktime() in time.h */
 
-#  define HAS_DIR_H    1      /* use "#include <dir.h>" for findfirst() etc. */
-#  define HAS_IO_H     1
-#  define HAS_UNISTD_H 1
+#  define HAS_DIR_H     1   /* use "#include <dir.h>" for findfirst() etc. */
+#  define HAS_IO_H      1   /* use "#include <io.h> */
+#  define HAS_SHARE_H   1   /* may use "#include <share.h> */
+#  define HAS_UNISTD_H  1   /* use "#include <unistd.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1001,14 +1085,11 @@ int qq(void)
 
 #elif defined(__TURBOC__)/* Borland Turbo C/C++ & Borland C/C++ **************/
 
-#ifndef INTEL
-#  define INTEL  /* using to select functions/macroses for read & write binary values */
-#endif
-
 #  define HAS_MALLOC_H 1      /* use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_DIR_H    1      /* use "#include <dir.h>" for findfirst() etc. */
 #  define HAS_DOS_H    1      /* use "#include <dos.h>" for delay(), intr() etc. */
 #  define HAS_IO_H     1      /* access(), open(), ... */
+#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
 
 #  if defined(__TURBOC__DOS__)/* Turbo C/C++ & Borland C/C++ for MS-DOS */
 
@@ -1107,9 +1188,11 @@ int qq(void)
 #  define _XPENTRY pascal far
 
 #  define HAS_MALLOC_H        /* use "#include <malloc.h>" for malloc() etc. */
+#  define HAS_IO_H     1  /* may use "#include <io.h> */
+#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
 
 /* End: IBM C/Set++ for OS/2 */
-#elif defined(UNIX) /* Unix clones: Linux, FreeBSD, SUNOS (Solaris), BeOS, MacOS etc. */
+#elif defined(__UNIX__) /* Unix clones: Linux, FreeBSD, SUNOS (Solaris), BeOS, MacOS etc. */
 
 #  define _stdc
 #  define _intr
@@ -1183,6 +1266,8 @@ int qq(void)
 #  define HAS_SNPRINTF  1
 #  define HAS_VSNPRINTF 1
 
+#  define HAS_UNISTD_H  1  /* <unistd.h> */
+
 #  define USE_STAT_MACROS
 
 /* End: Unix clones **********************************************************/
@@ -1225,10 +1310,10 @@ int qq(void)
 
 /* End: SAS C for AmigaDOS */
 #else
-#  error compiler.h: Unknown compiler!
+#  error compiler.h: Unknown compiler! Please compile and run ../test/compiler.c (possible need RTFM of your compiler: section "Predefined macros" and update ../test/compiler.c)
 #endif   /* End compiler-specific decrarations */
 
-/* Test defines and/or set default values */
+/**** Test defines and/or set default values *********************************/
 
 #ifdef SH_DENYNO
 #ifndef SH_DENYNONE
@@ -1353,30 +1438,41 @@ int qq(void)
 extern int waitlock(int, long, long);
 extern int waitlock2(int, long, long, long);
 
-#if !defined(NO_MKTIME) && !defined(HAS_MKTIME)
+#if !defined(HAS_MKTIME)
 
-/* If compiler doesn't include a mktime(), we need our own (see strftim.c) */
-
+/* If compiler doesn't include a mktime(), we need our own */
+/* But our own mktime not implemented yet...
 #include <time.h>
-#include <sys/types.h>
-
 time_t _stdc mktime(struct tm *tm_ptr);
-
+*/
+#error Our own mktime() not implemented yet... sorry.
 #endif
 
 /* If compiler doesn't include a strftime(), we need our own (see strftim.c) */
-#if !defined(NO_STRFTIME) && !defined(HAS_STRFTIME)
+#if !defined(HAS_STRFTIME)
 
-#include <time.h>
-#include <sys/types.h>
-
-size_t _stdc strftime(char *str, size_t maxsize, const char *fmt,
+#define strftime(str,max,fmt,tm) strftim(str,max,fmt,tm)
+size_t _stdc strftim(char *str, size_t maxsize, const char *fmt,
   const struct tm *tm_ptr);
 
 #endif
 
 #ifndef min
 #  define min(a,b)              (((a) < (b)) ? (a) : (b))
+#endif
+
+#if !defined(P_WAIT) && defined(_P_WAIT) /*for spawn* in process.h*/
+#define P_WAIT          _P_WAIT
+#endif
+
+#if defined(INTEL) && !defined(__LITTLE_ENDIAN__)
+#warning Define __LITTLE_ENDIAN__ instead INTEL please: INTEL is obsoleted
+#define __LITTLE_ENDIAN__
+#endif
+
+#if defined(__INTEL__) && !defined(__LITTLE_ENDIAN__)
+#warning Define __LITTLE_ENDIAN__ instead __INTEL__ please: __INTEL__ is obsoleted
+#define __LITTLE_ENDIAN__
 #endif
 
 #endif

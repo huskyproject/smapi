@@ -28,19 +28,19 @@ static char rcs_id[]="$Id$";
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
 
-#if !defined(UNIX) && !defined(SASC)
-#include <io.h>
-#endif
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <ctype.h>
 
-#if !defined(UNIX) && !defined(SASC)
+#include "compiler.h"
+
+#ifdef HAS_IO_H
+#  include <io.h>
+#endif
+#ifdef HAS_SHARE_H
 #include <share.h>
 #endif
-
-#include <ctype.h>
 
 #include "prog.h"
 #include "alc.h"
@@ -105,7 +105,7 @@ dword _XPENTRY apiSquishGetHighWater(HAREA ha)
 {
   if (MsgInvalidHarea(ha))
     return (dword)-1L;
-  
+
   return apiSquishUidToMsgn(ha, ha->high_water, UID_PREV);
 }
 
@@ -138,7 +138,7 @@ sword _XPENTRY apiSquishSetHighWater(HAREA ha, dword dwMsg)
   {
     return -1;
   }
-  
+
   return 0;
 }
 
@@ -208,7 +208,7 @@ dword _XPENTRY SquishHash(byte  *f)
     }
     f++;
   }
-  
+
 
   /* Strip off high bit */
 

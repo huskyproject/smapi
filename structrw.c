@@ -41,18 +41,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#if !defined(UNIX) && !defined(SASC)
-#include <io.h>
-#endif
-#ifdef UNIX
-#include <unistd.h>
-#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
 #define MSGAPI_HANDLERS
+
+#include "compiler.h"
+
+#ifdef HAS_UNISTD_H
+#include <unistd.h>
+#endif
+#ifdef HAS_IO_H
+#  include <io.h>
+#endif
+
 #include "prog.h"
 #include "msgapi.h"
 #include "api_sq.h"
@@ -61,7 +65,7 @@
 
 #define MAXHDRINCORE  (1024l*1024*10) /* Maximum jam hdr size for incore, 10M */
 
-#ifndef INTEL
+#ifndef __LITTLE_ENDIAN__
 /*
  *  put_dword
  *
@@ -1013,9 +1017,9 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 
 int read_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen)
 {
-   char *buf;
+   byte *buf;
 
-   buf = (char*)palloc(*SubfieldLen);
+   buf = (byte*)palloc(*SubfieldLen);
 
    if (farread(handle, (byte far *)buf, *SubfieldLen) != *SubfieldLen) {
       pfree(buf);

@@ -273,7 +273,7 @@ struct _msgapi
 
 #define MSGH_ID  0x0302484DL
 
-#if !defined(MSGAPI_HANDLERS) && !defined(NO_MSGH_DEF)
+#if !defined(MSGAPI_HANDLERS) /*&& !defined(NO_MSGH_DEF) *//* NO_MSGH_DEF unused */
 struct _msgh
 {
     MSGA *sq;
@@ -418,7 +418,7 @@ SMAPI_EXT dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dwor
  */
 SMAPI_EXT char * _XPENTRY  strmerr(int msgapierr);
 
-#if !defined(OS2) && !defined(__FLAT__) && !defined(__UNIX__) && !defined(__NT__)
+#if !defined(__OS2__) && !defined(__FLAT__) && !defined(__UNIX__) && !defined(__NT__)
 sword far pascal farread(sword handle, byte far * buf, word len);
 sword far pascal farwrite(sword handle, byte far * buf, word len);
 #endif
@@ -428,7 +428,7 @@ byte *StripNasties(byte * str);
 
 #if defined(__DOS__)
 sword far pascal shareloaded(void);
-#elif defined(OS2) || defined(__NT__) || defined(__UNIX__)
+#elif defined(__OS2__) || defined(__NT__) || defined(__UNIX__)
 #define shareloaded() TRUE
 #else
 #define shareloaded() FALSE

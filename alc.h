@@ -24,7 +24,7 @@
 
 #if defined(_MSC_VER) || defined(__TURBOC__) || defined(__EMX__) || defined(__IBMC__) || defined(__WATCOMC__) || defined(__HIGHC__) || defined(__MINGW32__)
 #include <malloc.h>
-#elif defined(UNIX) || defined(SASC) || defined(__DJGPP__)
+#elif defined(__UNIX__) || defined(SASC) || defined(__DJGPP__)
 #else
 #error alc.h: Unknown compiler!
 #endif

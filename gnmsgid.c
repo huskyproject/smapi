@@ -1,10 +1,17 @@
+/* $Id$
+ * standalone msgid generator: print new msgid to stdout
+
+ *  SMAPI; Modified Squish MSGAPI
+ *
+ */
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
 
+#include "compiler.h"
 #include "msgapi.h"
-#include "prog.h"
+/*#include "prog.h"*/
 
 #define check_stricmp(a, b) (stricmp(a, b) == 0)
 

@@ -19,7 +19,7 @@
 
 #include <string.h>
 #include <stdlib.h>
-#ifdef UNIX
+#ifdef __UNIX__
 #include <signal.h>
 #endif
 #include "alc.h"
@@ -56,18 +56,18 @@ void _MsgCloseApi(void)
     JamCloseOpenAreas();
 }
 
-#ifdef UNIX
+#ifdef __UNIX__
 /* Just a dummy alarm-fnct */
 static void alrm(int x)
-{}     
+{}
 #endif
 
 sword _XPENTRY MsgOpenApi(struct _minf *minf)
 {
-#ifdef UNIX
+#ifdef __UNIX__
     struct sigaction alrmact;
 #endif
-    
+
     unused(copyright);
     mi.req_version = minf->req_version;
     mi.def_zone    = minf->def_zone;
@@ -83,15 +83,15 @@ sword _XPENTRY MsgOpenApi(struct _minf *minf)
     _SquishInit();
 
     atexit(_MsgCloseApi);
-    
+
     /*
      * Set the dummy alarm-fcnt to supress stupid messages.
      */
-#ifdef UNIX    
+#ifdef __UNIX__
     memset(&alrmact, 0, sizeof(alrmact));
     alrmact.sa_handler = alrm;
     sigaction(SIGALRM, &alrmact, 0);
-#endif 
+#endif
 
     return 0;
 }
@@ -331,7 +331,7 @@ byte *_XPENTRY GetCtrlToken(byte *where, byte *what)
     } while (strncmp((char *)where, (char *)what, len));
 
     if (where == NULL || strlen(where)<len) return NULL;
-    
+
     end = (byte *) strchr((char *) where, '\r');
     if (end == NULL) end = (byte *) strchr((char *) where, '\001');
     if (end == NULL) end = where + strlen((char *) where);

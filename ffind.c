@@ -525,7 +525,7 @@ int walk(char *path)
                 strcpy(full, path);
                 strcat(full, ff->ff_name);
                 puts(full);
-#ifndef UNIX
+#ifndef __UNIX__
                 strcat(full, "\\");
 #else
                 strcat(full, "/");
@@ -549,7 +549,7 @@ int walk(char *path)
 
 int main(void)
 {
-#ifndef UNIX
+#ifndef __UNIX__
     return walk("\\") == TRUE ? EXIT_SUCCESS : EXIT_FAILURE;
 #else
     return walk("/") == TRUE ? EXIT_SUCCESS : EXIT_FAILURE;

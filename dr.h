@@ -29,7 +29,7 @@
 #elif defined(__EMX__)
 #include <sys/types.h>
 #include <sys/dir.h>
-#elif defined(UNIX)
+#elif defined(__UNIX__)
 #elif defined(SASC)
 #else
 #include <direct.h>

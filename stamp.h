@@ -25,10 +25,8 @@
 
 #if defined(__WATCOMC__) || defined(__DJGPP__) || defined(__MSVC__)
 typedef unsigned short bits;
-#elif defined(UNIX)
-typedef unsigned bits;  /* AIX does not allow any modifier after unsigned */
 #else
-typedef unsigned int bits;
+typedef unsigned bits;  /* AIX does not allow any modifier after unsigned */
 #endif
 
 /* DOS-style datestamp */

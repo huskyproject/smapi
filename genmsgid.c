@@ -12,7 +12,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#if !defined(UNIX) && !defined(SASC)
+#if !defined(__UNIX__) && !defined(SASC)
 #   include <io.h>
 #endif
 

@@ -17,17 +17,23 @@
  *  author.
  */
 
+/* This file contents our own implementation of strftime() function for using
+ * with compilers where this function not implemented in clib.
+ */
+
 #include <stdio.h>
 #include <time.h>
+#include <sys/types.h>
 #include <stdlib.h>
 #include <string.h>
 #include "compiler.h"
 #include "prog.h"
 
-#ifndef HAS_STRFTIME
-/* Note: TZ environment variable MUST be defined to use the %Z function! */
+/* Note: TZ environment variable MUST be defined to use the %Z function
+ * at least in form "SET TZ=XYZ"
+ */
 
-size_t cdecl strftime(char *string, size_t maxsize, const char *format, const struct tm *current_time)
+size_t cdecl strftim(char *string, size_t maxsize, const char *format, const struct tm *current_time)
 {
     const char *in;
 
@@ -105,15 +111,15 @@ size_t cdecl strftime(char *string, size_t maxsize, const char *format, const st
                 sprintf(out, "%02d", current_time->tm_sec);
                 break;
 
-            case 'U':
-                sprintf(out, "%02d", current_time->tm_yday) / 7;
+            case 'U': /* Not from Sunday, BUG!!! */
+                sprintf(out, "%02d", current_time->tm_yday / 7);
                 break;
 
             case 'w':
                 sprintf(out, "%d", current_time->tm_wday);
                 break;
 
-            case 'W':
+            case 'W': /* Not from Monday, BUG!!! */
                 sprintf(out, "%02d", (current_time->tm_yday) / 7);
                 break;
 
@@ -139,12 +145,19 @@ size_t cdecl strftime(char *string, size_t maxsize, const char *format, const st
                 scrptr = getenv("TZ");
                 if (scrptr != NULL)
                 {
-                    strcpy(out, scrptr);
+                    /*!!! todo1: replace with extract 3 first alpha chars
+                                 to prevent illegal value
+                          todo2: implement full parsing TZ env.var */
+                    strncpy(out, scrptr, 3);
                     out[3] = '\0';
                     strupr(out);
                 }
                 else
                 {
+                    static char firstcall=1;
+                    if(firstcall){ firstcall=0;
+                      fprintf( stderr, "Please set the TZ enviroment variable!");
+                    }
                     strcpy(out, "??T");
                 }
                 break;
@@ -168,5 +181,3 @@ size_t cdecl strftime(char *string, size_t maxsize, const char *format, const st
 
     return strlen(string);
 }
-
-#endif

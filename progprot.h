@@ -50,7 +50,7 @@ SMAPI_EXT char *_fast fts_time(char *string, struct tm *tmdate);
 char *_fast strocpy(char *d, char *s);
 void _fast tdelay(int);
 SMAPI_EXT int _fast setfsize(int fd, long size);
-#ifdef INTEL
+#ifdef __LITTLE_ENDIAN__
 
 #define put_dword(ptr, val)	(*(dword *)(ptr) = (val))
 #define put_word(ptr, val)	(*(word *)(ptr) = (val))
@@ -59,8 +59,8 @@ SMAPI_EXT int _fast setfsize(int fd, long size);
 
 #else
 
-SMAPI_EXT void put_word(byte *ptr, word value);
-SMAPI_EXT void put_dword(byte *ptr, dword value);
+SMAPI_EXT void put_word(byte *ptr, word value);      /* structrw.c */
+SMAPI_EXT void put_dword(byte *ptr, dword value);    /* structrw.c */
 /*
  *  get_dword
  *
@@ -87,7 +87,7 @@ SMAPI_EXT void put_dword(byte *ptr, dword value);
     ((word)((unsigned char)(ptr)[0]) |         \
      (((word)((unsigned char)(ptr)[1])) << 8 ))
 
-#endif /* INTEL */
+#endif /* __LITTLE_ENDIAN__ */
 
 SMAPI_EXT int  _createDirectoryTree(const char *pathName);
 /*DOC

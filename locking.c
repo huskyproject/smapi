@@ -139,17 +139,17 @@ int waitlock2(int handle, long ofs, long length, long t)
 {
     int forever = 0;
     int rc;
-    
-    if (t==0) 
+
+    if (t==0)
       forever = 1;
-     
-    t *= 10; 
+
+    t *= 10;
     while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
     {
         tdelay(100);
         t--;
     }
-    
+
     return rc;
 }
 
@@ -207,17 +207,17 @@ int waitlock2(int handle, long ofs, long length, long t)
 {
     int forever = 0;
     int rc;
-    
-    if (t==0) 
+
+    if (t==0)
       forever = 1;
-     
-    t *= 10; 
+
+    t *= 10;
     while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
     {
         tdelay(100);
         t--;
     }
-    
+
     return rc;
 }
 
@@ -273,17 +273,17 @@ int waitlock2(int handle, long ofs, long length, long t)
 {
     int forever = 0;
     int rc;
-    
-    if (t==0) 
+
+    if (t==0)
       forever = 1;
-     
-    t *= 10; 
+
+    t *= 10;
     while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
     {
         tdelay(100);
         t--;
     }
-    
+
     return rc;
 }
 
@@ -323,7 +323,7 @@ int unlock(int handle, long ofs, long length)
 }
 
 
-#elif defined(UNIX)
+#elif defined(__UNIX__)
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -345,7 +345,7 @@ int lock(int handle, long ofs, long length)
     return fcntl(handle, F_SETLK, file_lock(F_WRLCK, ofs, length, &fl));
 #else
 	return 0;
-#endif   
+#endif
 }
 
 int waitlock(int handle, long ofs, long length)
@@ -394,7 +394,7 @@ int unlock(int handle, long ofs, long length)
 int sopen(const char *name, int oflag, int ishared, int mode)
 {
     int fd = open(name, oflag, mode);
-    
+
     /*
      * I removed this code, 'cause there is no more need for it (i hope so)
      */
@@ -425,7 +425,7 @@ int sopen(const char *name, int oflag, int ishared, int mode)
 #include <dos.h>
 #endif
 
-#ifdef UNIX 
+#ifdef __UNIX__
 #include <unistd.h>
 #endif
 
@@ -442,18 +442,18 @@ int waitlock2(int handle, long ofs, long length, long t)
 {
     int forever = 0;
     int rc;
-    
-    if (t==0) 
+
+    if (t==0)
       forever = 1;
-    
-    t *= 10; 
-     
+
+    t *= 10;
+
     while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
     {
         tdelay(100);
         t--;
     }
-    
+
     return rc;
 }
 

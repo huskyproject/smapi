@@ -28,22 +28,22 @@ static char rcs_id[]="$Id$";
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
 
-#if !defined(UNIX) && !defined(SASC)
-#include <io.h>
-#endif
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <assert.h>
 
-#if !defined(UNIX) && !defined(SASC)
-#include <share.h>
-#endif
+#include "compiler.h"
 
-#if defined(UNIX) || defined(__EMX__)
+#ifdef HAS_UNISTD_H
 #include <unistd.h>
 #endif
-#include <assert.h>
+#ifdef HAS_IO_H
+#  include <io.h>
+#endif
+#ifdef HAS_SHARE_H
+#include <share.h>
+#endif
 
 #include "prog.h"
 #include "alc.h"

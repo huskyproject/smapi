@@ -8,7 +8,7 @@
 #include <string.h>
 #include <assert.h>
 
-#if !defined(UNIX) && !defined(SASC)
+#if !defined(__UNIX__) && !defined(SASC)
 #include <io.h>
 #endif
 
@@ -16,7 +16,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#if !defined(UNIX) && !defined(SASC)
+#if !defined(__UNIX__) && !defined(SASC)
 #include <share.h>
 #endif
 

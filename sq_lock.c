@@ -28,20 +28,21 @@ static char rcs_id[]="$Id$";
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
 
-#if !defined(UNIX) && !defined(SASC)
-#include <io.h>
-#endif
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#if !defined(UNIX) && !defined(SASC)
-#include <share.h>
-#endif
 
-#if defined(UNIX)
+#include "compiler.h"
+
+#ifdef HAS_UNISTD_H
 #include <unistd.h>
+#endif
+#ifdef HAS_IO_H
+#  include <io.h>
+#endif
+#ifdef HAS_SHARE_H
+#include <share.h>
 #endif
 
 #include "prog.h"
@@ -81,20 +82,20 @@ int _sqlock(HAREA ha, int t)
 {
    int forever = 0;
    int rc;
-   
+
    if (t == -1)
      return _alt_lock(ha) == 0;
-     
+
    if (t == 0)
      forever = 1;
-    
-   t *= 10; 
+
+   t *= 10;
    while( (rc=_alt_lock(ha)) && (t>0 || forever))
    {
      tdelay(100);
      t--;
    }
-   
+
    return rc == 0;
 }
 
@@ -105,7 +106,7 @@ int _sqlock(HAREA ha, int t)
   if (t==-1)
     /*  lock return 0 on success */
     return lock(Sqd->sfd, 0, 1) == 0;
-    
+
   return waitlock2(Sqd->sfd, 0, 1, t) == 0;
 }
 
@@ -139,7 +140,7 @@ static unsigned near _SquishLockBase(HAREA ha)
     Sqd->fLocked--;
   }
 
-  return rc;  
+  return rc;
 }
 
 /* Unlock the first byte of the Squish file */
@@ -253,7 +254,7 @@ sword _XPENTRY apiSquishLock(HAREA ha)
     (void)_SquishUnlockBase(ha);
     return -1;
   }
-  
+
   return 0;
 }
 
@@ -274,10 +275,10 @@ sword _XPENTRY apiSquishUnlock(HAREA ha)
   {
     return 0;
   }
-  
+
   (void)_SquishEndBuffer(Sqd->hix);
   (void)_SquishUnlockBase(ha);
-  
+
   return 0;
 }
 

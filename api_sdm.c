@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if !defined(UNIX) && !defined(SASC)
+#if !defined(__UNIX__) && !defined(SASC)
 #include <io.h>
 #endif
 
@@ -30,7 +30,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#if !defined(UNIX) && !defined(SASC)
+#if !defined(__UNIX__) && !defined(SASC)
 #include <share.h>
 #endif
 
@@ -110,7 +110,7 @@ MSGA *MSGAPI SdmOpenArea(byte * name, word mode, word type)
     mh->high_msg = 0;
     mh->high_water = (dword) - 1L;
 
-    if (!direxist((char *) name) && (mode == MSGAREA_NORMAL 
+    if (!direxist((char *) name) && (mode == MSGAREA_NORMAL
        || _createDirectoryTree((char *) name) != 0))
     {
         msgapierr = MERR_NOENT;
@@ -699,13 +699,13 @@ static sword _XPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             statfd = msgh->fd;
             msgh->zplen = (word) WriteZPInfo(msg, WriteToFd, ctxt);
         }
-        
+
         /* Use Attributes und BeOS */
 #ifdef __BEOS__
         {
         struct tm tmdate;
         time_t ttime;
-        
+
         fs_write_attr(msgh->fd, "BEOS:TYPE", B_MIME_TYPE, 0l, "message/fmsg", 13);
         fs_write_attr(msgh->fd, "XMSG:FROM", B_STRING_TYPE, 0l, msg->from, strlen(msg->from));
         fs_write_attr(msgh->fd, "XMSG:TO"  , B_STRING_TYPE, 0l, msg->to, strlen(msg->to));
@@ -1090,7 +1090,7 @@ static sword near _SdmRescanArea(MSGA * mh)
         {
             /* Don't count zero-length or invalid messages */
 
-#ifndef UNIX
+#ifndef __UNIX__
             if (ff->ff_fsize < OMSG_SIZE)
             {
                  continue;
@@ -1122,7 +1122,7 @@ static sword near _SdmRescanArea(MSGA * mh)
                 mh->num_msg = (dword) mn;
             }
 
-#ifdef OS2
+#ifdef __OS2__
             if ((mn % 128) == 127)
                 tdelay(1L); /* give up cpu */
 #endif

@@ -28,21 +28,22 @@ static char rcs_id[]="$Id$";
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
 
-#if !defined(UNIX) && !defined(SASC)
-#include <io.h>
-#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
-#if !defined(UNIX) && !defined(SASC)
-#include <share.h>
-#endif
-
 #include <assert.h>
-#if defined(UNIX) || defined(__EMX__)
+
+#include "compiler.h"
+
+#ifdef HAS_UNISTD_H
 #include <unistd.h>
+#endif
+#ifdef HAS_IO_H
+#  include <io.h>
+#endif
+#ifdef HAS_SHARE_H
+#include <share.h>
 #endif
 
 #include "prog.h"
@@ -676,7 +677,7 @@ sword _XPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
     if (!pxm)
     {
       msgapierr=MERR_BADA;
-     
+
       return -1;
     }
 
