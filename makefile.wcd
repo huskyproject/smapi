@@ -2,8 +2,8 @@
 # No support for Husky build environment.
 
 # ATTENTION ATTENTION ATTENTION!
-# SMAPI BUILD WITH WATCOM FOR DOS WILL MOST PROBABLY JUST CRASH
-# THIS MUST BE A PROBLEM WITH WASM WHICH IS NOT YET DEBUGGED
+# SMAPI BUILD WITH WATCOM FOR DOS WILL MOST PROBABLY JUST CRASH OR OTHERWISE
+# NOT WORK.
 # JUST DON'T USE WATCOM FOR DOS
 # (Watcom for OS/2 and Watcom for Win32 should work without problems)
 
@@ -18,7 +18,7 @@ ADEFS=-DWATCOM
 
 TARGET=	smapiwcd.lib
 
-OBJS=	1stchar.obj api_sdm.obj	api_sq.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj flushasm.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj sqasm.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj patmat.obj
+OBJS=	1stchar.obj api_sdm.obj	api_sq.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj patmat.obj sqasm.obj
 
 # Thunderbirds are go!
 

@@ -100,6 +100,15 @@ void pascal far flush_handle2(int fh)
     FlushFileBuffers((HANDLE) nt_handle);
 }
 
+#elif defined(__WATCOMC__) && defined(MSDOS)
+
+#include <dos.h>
+
+void pascal far flush_handle2(int fh)
+{
+    _dos_commit(fh);
+}
+
 #else
 
 /* refer to MS-DOS flush_handle2 code in FLUSHASM.ASM */
