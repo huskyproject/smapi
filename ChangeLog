@@ -1,3 +1,8 @@
+
+Sun Oct 15 20:09:52 MESZ 2000
+tobi:
+* reduced memory fragmentation in JAM api
+
 Sun Oct 15 19:17:28 NOVST 2000
 max (patches from Pavel Gulchouk):
 * JAM fixes
