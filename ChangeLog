@@ -1,3 +1,12 @@
+2003-06-06 Friday 20:34  d_sergienko
+
+	* src/sq_uid.c (1.6): fixed twice buffer release
+
+2003-06-05 Thursday 21:33  d_sergienko
+
+	* src/sq_uid.c (1.5): speedup converting uids to msgnums
+	(experimental, 3 times faster)
+
 2003-05-25 Sunday 12:35  lmike
 
 	* make/makefile.qnx (1.4): Fixed bug with link to .so creation.
