@@ -1,5 +1,5 @@
 Source: smapi
-Section: libs
+Section: non-free/libs
 Priority: optional
 Maintainer: Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>
 Build-Depends: debhelper (>> 3.0.0), gcc, binutils
@@ -14,7 +14,7 @@ Description: MsgAPI for the Husky-Packages
  formats. It is required for all other Husky-Software.
 
 Package: libsmapi2-dev
-Section: devel
+Section: non-free/devel
 Architecture: any
 Depends: libsmapi2(=${Source-Version}), libc6-dev
 Description: MsgAPI for the Husky-Packages

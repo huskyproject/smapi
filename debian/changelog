@@ -1,3 +1,9 @@
+smapi (2.1.0-3) unstable; urgency=low
+
+  * Changed control to get Section to non-free/*
+
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Mon,  9 Jul 2001 22:38:42 +0200
+
 smapi (2.1.0-2) unstable; urgency=low
 
   * Changed shlibs file.
