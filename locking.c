@@ -51,7 +51,6 @@ sword far pascal shareloaded(void)
 
 int lock(int handle, long ofs, long length)
 {
-    int rc;
     FILELOCK urange, lrange;
     APIRET apiret;
 
@@ -69,7 +68,6 @@ int lock(int handle, long ofs, long length)
 
 int unlock(int handle, long ofs, long length)
 {
-    int rc;
     FILELOCK urange, lrange;
     APIRET apiret;
 
@@ -86,7 +84,6 @@ int unlock(int handle, long ofs, long length)
 
 int waitlock(int handle, long ofs, long length)
 {
-    int rc;
     FILELOCK urange, lrange;
     APIRET apiret;
 

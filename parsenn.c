@@ -145,7 +145,7 @@ void _fast ParseNN(char *netnode, word * zone, word * net, word * node, word * p
 
     if (p)
     {
-        while (*p && isdigit(*p))
+        while (*p && isdigit((int)(*p)))
         {
             p++;
         }
