@@ -1,3 +1,7 @@
+2002-03-20 Wednesday 22:45  pavel.gulchouck
+
+	* api_sdm.c (1.27): Read *.msg >64K fixed
+
 2002-03-19 Tuesday 14:34  mche
 
 	* compiler.h (1.82): added some defines for mcvs compiler
