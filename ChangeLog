@@ -1,3 +1,7 @@
+2003-05-23 Friday 04:32  lmike
+
+	* smapi.qpg (1.2): Previous commit was bad, fixed file contents
+
 2003-05-20 Tuesday 14:45  d_sergienko
 
 	* readme.txt (1.11), smapi.qpg (1.1), make/makefile.inc (1.3),
