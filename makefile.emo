@@ -7,6 +7,7 @@ CFLAGS=	-Wall -Zomf -Zsys
 CDEFS=	-DOS2
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -Wall -funsigned-char -s
 LIB=	emxomfar
+OBJ=	.obj
 
 .SUFFIXES:
 .SUFFIXES: .c .obj

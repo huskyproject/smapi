@@ -7,6 +7,7 @@ CDEFS=  -D__NT__ -DWIN32 -D_CONSOLE -DINTEL -D_MAKE_DLL -D_SMAPI_EXT
 COPT=   -Ob2
 LINK=   link
 LINKOPTS = msvcrt.lib Kernel32.lib /nologo /opt:nowin98 /dll /nodefaultlib /out:"smapimvc.dll" /implib:"smapimvc.lib"
+OBJ=	.obj
 
 SMAPIL= smapimvc.dll
 

@@ -6,6 +6,7 @@ CC=gcc
 LIB=ar
 RANLIB=ranlib
 RM=del
+OBJ=	.o
 
 # __MINGW32__ is predefined macros, __NT__ defined in compiler.h
 # use __MINGW32__ in source code please (if possible)

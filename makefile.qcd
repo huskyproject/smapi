@@ -13,6 +13,7 @@ COPT=	-Ox
 LIB=	lib
 # you may also use tasm
 ASM=	masm
+OBJ=	.obj
 
 TARGET=	smapiqcd.lib
 

@@ -8,6 +8,7 @@ CFLAGS= -w -Zwin32
 CDEFS=  -D__NT__ -DWINNT -D__RSXNT__
 COPT=
 LIB=    ar
+OBJ=	.o
 
 TARGET= smapirxw.a
 

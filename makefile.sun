@@ -9,6 +9,7 @@ CDEFS=	-DUNIX
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
 LIB=	ar
 RANLIB= ranlib
+OBJ=	.o
 
 TARGET=	libsmapisun.a
 

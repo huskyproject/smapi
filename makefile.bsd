@@ -14,6 +14,7 @@ CDEFS=	-DUNIX
 COPT=	-O3 
 LIB=	ar
 RANLIB= ranlib
+OBJ=	.o
 
 TARGET=	libsmapibsd.a
 TARGET_H= *.h

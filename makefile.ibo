@@ -8,6 +8,7 @@ CDEFS=	-DOS2
 COPT=	-O
 #LIB=	ilib
 LIB=   lib
+OBJ=	.obj
 
 TARGET=	smapiibo.lib
 

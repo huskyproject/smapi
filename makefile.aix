@@ -17,6 +17,7 @@ CFLAGS=-qcpluscmt -DUNIX -D_AIX
 
 LIB=	ar
 RANLIB= ranlib
+OBJ=	.o
 
 TARGET=	libsmapiaix.a
 
@@ -24,7 +25,7 @@ all: $(TARGET)
 
 include makefile.inc
 
-.c:
+.c.o:
 	$(CC) -c $(CFLAGS) $*.c
 
 

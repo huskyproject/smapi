@@ -8,6 +8,7 @@ CDEFS=	-D__FLAT__
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -mcpu=i486
 LIB=	ar
 RANLIB= ranlib
+OBJ=	.o
 
 TARGET= smapidjg.a
 

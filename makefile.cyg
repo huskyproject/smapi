@@ -14,6 +14,8 @@ RANLIB=ranlib
 #RANLIB=i386-mingw32-ranlib
 RM=rm
 
+OBJ=	.o
+
 # __CYGWIN__ is predefined macros for GCC/cygwin native mode;
 # __MINGW32__ is predefined macros for `gcc -mno-cygwin` call.
 # Removed macros __NT__ declared in compiler.h

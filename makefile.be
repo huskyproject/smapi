@@ -7,6 +7,7 @@ CC=	gcc
 CFLAGS=	-Wall
 CDEFS=	-DUNIX
 COPT=	-O3
+OBJ=	.o
 
 # on i386, you may add this
 # -fomit-frame-pointer -fstrength-reduce -fPIC -m486

@@ -9,6 +9,7 @@ CDEFS=	-DUNIX
 COPT=
 LIB=	ar
 RANLIB=	ranlib
+OBJ=	.o
 
 TARGET=	libsmapiunix.a
 all: $(TARGET)

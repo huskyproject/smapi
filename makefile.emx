@@ -9,6 +9,7 @@ CFLAGS=	-Wall -Zcrtdll
 CDEFS=	-DOS2
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -funsigned-char -s
 LIB=	ar
+OBJ=	.o
 
 .SUFFIXES:
 .SUFFIXES: .c .o

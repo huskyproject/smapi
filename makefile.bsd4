@@ -16,6 +16,8 @@ LIB=		smapi
 SHLIB_MAJOR=	2
 SHLIB_MINOR=	2.3
 
+OBJ=	.o
+
 # FreeBSD/i386 addition
 #
 .if ${MACHINE_ARCH} == "i386"
