@@ -68,8 +68,16 @@ sword EXPENTRY MsgOpenApi(struct _minf *minf)
 #endif
     
     unused(copyright);
-    mi = *minf;
-    mi.haveshare = shareloaded();
+    mi.req_version = minf->req_version;
+    mi.def_zone    = minf->def_zone;
+    mi.haveshare   = minf->haveshare = shareloaded();
+
+    /* Version 2 Requested */
+    if (mi.req_version > 1 && mi.req_version < 50)
+    {
+       mi.smapi_version    = minf->smapi_version    = MSGAPI_VERSION;
+       mi.smapi_subversion = minf->smapi_subversion = MSGAPI_SUBVERSION;
+    }
 
     _SquishInit();
 

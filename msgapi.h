@@ -83,7 +83,8 @@ typedef struct _netaddr NETADDR;
 typedef NETADDR *PNETADDR;
 typedef dword UMSGID;
 
-#define MSGAPI_VERSION  1
+#define MSGAPI_VERSION    2
+#define MSGAPI_SUBVERSION 0x165
 #define SMAPI_VERSION   "1.5.65.65.65.65.6"
 
 struct _minf
@@ -91,6 +92,10 @@ struct _minf
     word req_version;
     word def_zone;
     word haveshare;  /* filled in by msgapi routines - no need to set this */
+    
+    /* Version 2 Information */
+    word smapi_version;
+    word smapi_subversion;
 };
 
 /*
