@@ -495,7 +495,7 @@ word _XPENTRY NumKludges(char *txt)
 
 /*  Return MSGAPI error text (string constant).
  */
-char *strmerr(int msgapierr)
+char * _XPENTRY strmerr(int msgapierr)
 {
     switch (msgapierr) {
 	case MERR_NONE:   return "No error";

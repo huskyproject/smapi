@@ -408,7 +408,7 @@ SMAPI_EXT dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun);
 
 /*  Return MSGAPI error text (string constant).
  */
-SMAPI_EXT char *strmerr(int msgapierr);
+SMAPI_EXT char * _XPENTRY  strmerr(int msgapierr);
 
 #if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__DJGPP__) && !defined(__NT__) && !defined(NT) && !defined(__MINGW32__)
 sword far pascal farread(sword handle, byte far * buf, word len);
