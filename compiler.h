@@ -947,20 +947,32 @@ int qq(void)
 #    define SMAPI_EXT    extern
 #  endif /* ifdef _MAKE_DLL */
 
-/*   must be included before macro redefenition '# efine SH_DENYNONE _SH_DENYNO' */
+/*   must be included before macro redefenition '# define SH_DENYNONE _SH_DENYNO' */
 #   include <share.h>
-#   define SH_DENYNONE _SH_DENYNO
+#   ifndef SH_DENYNONE
+#     ifdef _SH_DENYNO
+#       define SH_DENYNONE _SH_DENYNO
+#     else
+#       pragma message("Please set SH_DENYNONE to proprietary value: used for file locking")
+#     endif
+#   endif
 /*   must be included before function redefenition '#define P_WAIT _P_WAIT'  */
 #   include <process.h>
-#   define P_WAIT		_P_WAIT   /* process.h */
+#   ifndef P_WAIT
+#     ifdef _P_WAIT
+#       define P_WAIT		_P_WAIT   /* process.h */
+#     else
+#       pragma message("Please set P_WAIT to proprietary value: used for spawnvp() call")
+#     endif
+#   endif
 
 #  define _stdc
-#  ifdef pascal
-#    undef pascal
+#  ifndef pascal
+#    define pascal
 #  endif
-#  define pascal
-#  undef  far
-#  define far
+#  ifndef far
+#    define far
+#  endif
 #  define _fast
 #  define near
 #  define _XPENTRY
@@ -989,15 +1001,19 @@ int qq(void)
 #  endif
 
 /* define constants for 2nd parameter of access() function */
-#  ifndef F_OK
+#  ifndef F_OK                  /* does file exist */
 #    define F_OK 0
 #  endif
 
-#  ifndef R_OK
+#  ifndef X_OK                  /* is it executable by caller */
+#    define X_OK  1
+#  endif
+
+#  ifndef R_OK                  /* is it readable by caller */
 #    define R_OK 04
 #  endif
 
-#  ifndef W_OK
+#  ifndef W_OK                  /* is it writable by caller */
 #    define W_OK 02
 #  endif
 
@@ -1378,10 +1394,12 @@ int qq(void)
 
 #  define mymkdir(a) mkdir((a), 0)
 
-#  ifdef  SH_DENYNO
-#    define SH_DENYNONE SH_DENYNO
-#  else
-#    define SH_DENYNONE 0
+#  if defined(__dj_include_fcntl_h_) !defined( SH_DENYNONE)
+#    ifdef  SH_DENYNO
+#      define SH_DENYNONE SH_DENYNO
+#    else
+#      define SH_DENYNONE 0
+#    endif
 #  endif
 
 #  include <unistd.h>
