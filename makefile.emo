@@ -57,10 +57,10 @@ $(TARGET): $(OBJS)
 	$(LIB) r $@ $?
 
 clean:
-	-DEL *.obj
+	-cmd /c DEL *.obj
 
 distclean: clean
-	-DEL $(TARGET)
+	-cmd /c DEL $(TARGET)
 
 smapi.dll: $(OBJS)
 	echo LIBRARY smapi > smapi.def

@@ -59,7 +59,7 @@ $(TARGET): $(OBJS)
 	$(LIB) r $@ $?
 
 clean:
-	-DEL *.o
+	-cmd /c DEL *.o
 
 distclean:
-	-DEL $(TARGET)
+	-cmd /c DEL $(TARGET)
