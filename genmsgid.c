@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#ifdef _MSC_VER
+#if !defined(UNIX) && !defined(SASC)
 #   include <io.h>
 #endif
 
