@@ -1,3 +1,7 @@
+Wed Mar 7 20:35:00 MET 2001
+og:
+* fixed missing parameter in waitlock2() under OS/2 !
+
 Tue Mar 6 20:45:00 MET 2001
 og:
 * JAM should be now platform independed (works now on SPARC)
