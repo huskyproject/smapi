@@ -1,3 +1,12 @@
+2001-07-08 Sunday 20:37  joerg.jaspert
+
+	* debian/: README.Debian (1.3.2.2), changelog (1.5.2.2), control
+	(1.3.2.2), copyright (1.1.2.2), docs (1.1.2.2), huskymak.cfg
+	(1.5.2.2), libsmapi2-dev.dirs (1.1.2.1), libsmapi2-dev.files
+	(1.1.2.1), libsmapi2.dirs (1.1.2.1), libsmapi2.files (1.1.2.1),
+	rules (1.3.2.2), shlibs (1.4.2.2): The debian Subdir for the Stable
+	Smapi
+
 2001-07-06 Friday 01:26  tobi
 
 	* debian/: README.BUILD-DEB (1.1.2.1), README.Debian (1.3.2.1),
@@ -5,6 +14,17 @@
 	(1.1.2.1), docs (1.1.2.1), huskymak.cfg (1.5.2.1), rules (1.3.2.1),
 	shlibs (1.4.2.1): these files don't apply to stable unless somebody
 	fixes them, so we remove them for the moment
+
+2001-07-02 Monday 22:45  joerg.jaspert
+
+	* debian/: libsmapi2-dev.dirs (1.1), libsmapi2-dev.files (1.1): 2
+	Files with wrong name, shit
+
+2001-07-01 Sunday 20:27  joerg.jaspert
+
+	* debian/: libsmapi2.dirs (1.1), libsmapi2.files (1.1): Rebuild the
+	Package. Now its a real library package for debian, splitted into
+	libsmapi and libsmapi-dev.
 
 2001-06-26 Tuesday 11:28  tobi
 
