@@ -97,7 +97,7 @@
   #include <winbase.h>
   int _fast setfsize(int fd, long size)
   {
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#if (defined(_MSC_VER) && (_MSC_VER >= 1200)) || defined(__MINGW32__)
     return chsize(fd, size);
 #else
     SetFilePointer((HANDLE)fd, size, NULL, FILE_BEGIN);
