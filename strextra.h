@@ -11,7 +11,9 @@
 #ifndef __STREXTRA_H__
 #define __STREXTRA_H__
 
+#if !defined(_MSC_VER) && !defined(__linux__)
 int stricmp(const char *s, const char *t);
+#endif
 
 #if !defined(__IBMPC__) && !defined(__linux__) && !defined(__sun__) && !defined(__WATCOMC__)
 char *strdup(const char *s);
