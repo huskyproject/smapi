@@ -32,6 +32,8 @@
 
 #if defined(OS2)
 
+#include <os2.h>
+
   void _fast tdelay(int msecs)
   {
       DosSleep((ULONG)msecs);

@@ -48,9 +48,9 @@
 #include <unistd.h>
 #endif
 
-#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 
 #define MSGAPI_HANDLERS
 #include "prog.h"
