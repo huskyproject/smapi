@@ -418,7 +418,7 @@ byte *StripNasties(byte * str);
 
 #if defined(MSDOS)
 sword far pascal shareloaded(void);
-#elif defined(OS2) || defined(__NT__) || defined(UNIX)
+#elif defined(OS2) || defined(__NT__) || defined(UNIX) || defined(__MINGW32__) || defined(__CYGWIN__)
 #define shareloaded() TRUE
 #else
 #define shareloaded() FALSE
