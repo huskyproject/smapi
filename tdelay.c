@@ -34,12 +34,11 @@
 #include "prog.h"
 
 #if defined(__OS2__)
-
 #include <os2.h>
 
   void _fast tdelay(int msecs)
   {
-      DosSleep((ULONG)msecs);
+      sleep((ULONG)msecs);
   }
 
 #elif defined(__DOS__)

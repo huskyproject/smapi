@@ -1231,7 +1231,10 @@ int qq(void)
 #  define HAS_strftime    /* strftime() in time.h  */
 #  define HAS_mktime      /* mktime() in time.h */
 
+#if !defined(__OS2__)
 #  define HAS_MALLOC_H     /* may be used "#include <malloc.h>"  (see alc.h) */
+#endif
+
 #  define HAS_IO_H         /* may use "#include <io.h> */
 #  define HAS_SHARE_H      /* may use "#include <share.h> */
 #  define HAS_DIRECT_H
