@@ -129,7 +129,9 @@ emptydir:
 			free(new_fname);
 			return seq;
 		}
-		if (errno == ENOENT) continue;
+		if (errno == ENOENT || errno == EEXIST ||
+		    (errno == EPERM && try < 16))
+			continue;
 		free(seqpath);
 		free(new_fname);
 		return oldGenMsgId();
