@@ -46,6 +46,11 @@
 #define _WINSOCK_H
 #endif
 
+#ifdef __CYG__
+/* For HTick compatibility */
+#define _WINUSER_H
+#endif
+
 #include <windows.h>
 #endif
 
