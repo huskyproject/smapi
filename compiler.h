@@ -237,9 +237,14 @@
    -------------------------------------------------------------------
    __sun__
    ===================================================================
-   GNU C on BeOS
+   GNU C on BeOS 5
    -------------------------------------------------------------------
-   __BeOS__
+   __BEOS__ __i386__ _X86_ __i386 i386  __ELF__ __INTEL__ __PIC__ __pic__
+   __declspec(x) __attribute__((x))
+   __cdecl __attribute__((__cdecl__))
+   __stdcall __attribute__((__stdcall__))
+   intel pentium specific defines:
+    __pentium__ __i586__  i586 __i586 __pentium pentium
    ===================================================================
 
    ===================================================================
@@ -1730,7 +1735,7 @@ int qq(void)
 #    ifndef O_BINARY
 #      define O_BINARY 0
 #    endif
-#  else
+#  else                               /* VERY STRANGE !!!  */
 #    include <fcntl.h>
 #    ifndef O_BINARY
 #      define O_BINARY 0
