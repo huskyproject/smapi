@@ -14,7 +14,7 @@ endif
 ifneq ($(OSTYPE), UNIX)
   LIBPREFIX=
 else
-  LIBPREFIX="lib"
+  LIBPREFIX=lib
 endif
 
 CDEFS=	-D$(OSTYPE) $(ADDCDEFS)
