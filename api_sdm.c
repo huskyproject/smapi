@@ -1024,7 +1024,7 @@ static sword near _Grab_Clen(MSGH * msgh)
 static sword near _SdmRescanArea(MSG * mh)
 {
     FFIND *ff;
-    byte temp[PATHLEN];
+    char *temp;
     word mn, thismsg;
 
     mh->num_msg = 0;
@@ -1038,9 +1038,13 @@ static sword near _SdmRescanArea(MSG * mh)
 
     Mhd->msgnum_len = SDM_BLOCK;
 
+    temp = malloc(strlen(Mhd->base)+6);
     sprintf((char *) temp, "%s*.msg", Mhd->base);
 
     ff = FFindOpen((char *) temp, 0);
+
+    free(temp);
+
     if (ff != 0)
     {
         mn = 0;
