@@ -1,3 +1,11 @@
+2002-07-15 Monday 15:37  mche
+
+	* structrw.c (1.29): corrected prototypes of functions
+
+2002-07-15 Monday 13:27  pavel.gulchouck
+
+	* patmat.c (1.7): Use improved version of patmat() from sh sources
+
 2002-07-14 Sunday 19:02  stas
 
 	* compiler.h (1.86): Change previous patch.
