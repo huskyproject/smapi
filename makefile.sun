@@ -1,6 +1,6 @@
 CC=	gcc
 CFLAGS=	-Wall -s
-CDEFS=	-DUNIX
+CDEFS=	-DUNIX -D_POSIX_C_SOURCE
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce 
 LIB=	ar
 
@@ -24,6 +24,7 @@ OBJS=	1stchar.o  \
 	strextra.o \
 	strftim.o  \
 	strocpy.o  \
+	structrw.o \
 	trail.o    \
 	weekday.o
 
