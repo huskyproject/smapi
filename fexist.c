@@ -69,7 +69,7 @@ int _fast direxist(char *directory)
     struct stat s;
     int rc;
 
-#if !defined(__WATCOMC__) && !(defined(_MSC_VER) && (_MSC_VER >= 1200))
+#if !defined(__WATCOMC__) && !(defined(_MSC_VER) && (_MSC_VER >= 1200)) && !defined(__MINGW32__)
     rc = stat (directory, &s);
 #else
     char *tempstr, *p;
