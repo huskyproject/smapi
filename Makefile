@@ -23,8 +23,8 @@ else
 endif
 
 CDEFS=	-D$(OSTYPE) $(ADDCDEFS)
-VERH =  1
-VER  =  1.6.4
+VERH =  2.1
+VER  =  2.1.0
 
 TARGET=	$(LIBPREFIX)smapi$(LIB)
 
@@ -163,4 +163,3 @@ distclean: clean
 	-$(RM) $(RMOPT) $(LIBPREFIX)smapi.so.$(VER)
 
 all: $(TARGET)
-
