@@ -49,6 +49,7 @@
 #define NOTH 3
 
 static JAMBASE *jbOpen = NULL;
+int JamStrictActiveMsgs = 1;
 
 /* Free's up a SubField-Chain */
 
@@ -129,7 +130,8 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
    }
    lseek(Jmd->IdxHandle, 0, SEEK_SET);
 
-   /* Jam_ActiveMsgs(Jmd); */
+   if (JamStrictActiveMsgs)
+       Jam_ActiveMsgs(Jmd);
 
    jm->high_water = Jmd->HdrInfo.highwater;
    /* jm->high_msg = Jam_HighMsg(Jmd); */
