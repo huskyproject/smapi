@@ -19,7 +19,8 @@
 
 #include <stdio.h>
 #include <time.h>
-#include "prog.h"
+#include "stamp.h"
+#include "progprot.h"
 
 union stamp_combo *_fast Get_Dos_Date(union stamp_combo *st)
 {

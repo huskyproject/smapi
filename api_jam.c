@@ -28,13 +28,13 @@
 #define MSGAPI_HANDLERS
 
 #include "dr.h"
-#include "prog.h"
 #include "stamp.h"
 #include "msgapi.h"
 #include "api_jam.h"
 #include "api_jamp.h"
 #include "apidebug.h"
 #include "unused.h"
+#include "progprot.h"
 
 #define Jmd ((JAMBASE *)(jm->apidata))
 #define MsghJm ((JAMBASE *)(((struct _msgh *)msgh)->sq->apidata))

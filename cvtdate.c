@@ -20,6 +20,7 @@
 #include <time.h>
 #include <string.h>             /* for memcpy */
 #include "prog.h"
+#include "stamp.h"
 
 static int is_dst = -1;
 

@@ -56,7 +56,6 @@
 #endif
 
 #include "ffind.h"
-#include "prog.h"
 
 #ifdef USE_STAT_MACROS
 

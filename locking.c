@@ -48,7 +48,7 @@
 #  include <dos.h>
 #endif
 
-#include "prog.h"
+#include "progprot.h"
 
 #ifdef __DJGPP__
 

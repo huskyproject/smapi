@@ -43,7 +43,6 @@
   #include <unistd.h>
 #endif
 
-#include "prog.h"
 
 #ifdef __DOS__
 

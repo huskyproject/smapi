@@ -23,8 +23,8 @@
 #include <stdio.h>
 #include <time.h>
 #include "compiler.h"
-#include "typedefs.h"
-#include "stamp.h"
+//#include "typedefs.h"
+//#include "stamp.h"
 
 #ifndef TRUE
 #define TRUE 1
@@ -39,18 +39,10 @@
 #define NODE_ALL  56685u
 #define POINT_ALL 56685u
 
-/* Not used
-#define eqstr(str1,str2)      (strcmp(str1,str2)==0)
-#define eqstri(str1,str2)     (stricmp(str1,str2)==0)
-#define eqstrn(str1,str2,n)   (strncmp(str1,str2,n)==0)
-*/
-
 extern char _stdc months[][10];
 extern char _stdc weekday[][10];
 
 extern char _stdc months_ab[][4];
 extern char _stdc weekday_ab[][4];
-
-#include "progprot.h"
 
 #endif

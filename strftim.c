@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "compiler.h"
-#include "prog.h"
 
 #ifdef HAS_strftime
 /* Use function instead macro to prevent compiler warning or error.

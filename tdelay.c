@@ -31,7 +31,7 @@
 #endif
 
 #include "compiler.h"
-#include "prog.h"
+#include "typedefs.h"
 
 #if defined(__OS2__)
 

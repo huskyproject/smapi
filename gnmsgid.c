@@ -1,4 +1,4 @@
-/* 
+/*
    gnmsgid - standalone msgid generator using husky smapi library
    Copyright 2003 by Alexander Reznikov, 2:4600/220@fidonet,
                                          homebrewer@yadex.ru
@@ -24,7 +24,6 @@
 
 #include "compiler.h"
 #include "msgapi.h"
-/*#include "prog.h"*/
 #include "cvsdate.h"
 
 #define check_stricmp(a, b) (stricmp(a, b) == 0)
@@ -113,10 +112,10 @@ void printversion(void)
     date = extract_CVS_keyword(gnmsgid_date);
     gen_rev = extract_CVS_keyword(genmsgid_rev);
     gen_date = extract_CVS_keyword(genmsgid_date);
-   
+
     printf("gnmsgid - standalone msgid generator using husky smapi library\n");
     printf("\nCopyright (c) Alexander Reznikov, 2:4600/220@fidonet\n");
-    printf("Copyright (c) HUSKY development team.\n\n"); 
+    printf("Copyright (c) HUSKY development team.\n\n");
     printf("gnmsgid.c revision:  %s\n", str_or_unknown(rev));
     printf("gnmsgid.c date:      %s\n", str_or_unknown(date));
     printf("genmsgid.c revision: %s\n", str_or_unknown(gen_rev));
@@ -196,7 +195,7 @@ int main(int argc, char *argv[])
             {
                 version = 1;
                 break;
-            }    
+            }
             fprintf(stderr, "Illegal parameter: '%s'!\n", argv[i]);
             perr = 1;
             break;

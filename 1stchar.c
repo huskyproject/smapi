@@ -20,7 +20,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "compiler.h"
-#include "prog.h"
 
 char *_fast firstchar(char *strng, char *delim, int findword)
 {

@@ -21,7 +21,8 @@
 #include <string.h>
 #include <time.h>
 #include "prog.h"
-
+#include "progprot.h"
+#include "stamp.h"
 
 static void near StandardDate(union stamp_combo *d_written);
 

@@ -18,7 +18,7 @@
 #endif
 
 #include "msgapi.h"
-#include "prog.h"
+#include "progprot.h"
 #include "ffind.h"
 
 #define MAX_OUTRUN	(3ul*365*24*60*60) /* 3 year */

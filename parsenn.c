@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "prog.h"
+#include "progprot.h"
 
 static char *colon = ":";
 static char *slash = "/";

@@ -47,12 +47,12 @@ static char rcs_id[]="$Id$";
 #endif
 
 #include "prog.h"
+#include "progprot.h"
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"
 #include "api_sqp.h"
 #include "apidebug.h"
-#include "unused.h"
 
 
 

@@ -49,17 +49,18 @@ static char rcs_id[]="$Id$";
 #endif
 
 #include <errno.h>
-#include "prog.h"
+
 #ifdef HAS_MALLOC_H
 #include <malloc.h>
 #endif
 
+#include "prog.h"
+#include "progprot.h"
 #include "old_msg.h"
 #include "msgapi.h"
 #include "api_sq.h"
 #include "api_sqp.h"
 #include "apidebug.h"
-#include "unused.h"
 
 /* Linked list of open Squish areas */
 

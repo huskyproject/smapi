@@ -59,7 +59,7 @@
 #  include <io.h>
 #endif
 
-#include "prog.h"
+#include "progprot.h"
 #include "msgapi.h"
 #include "api_sq.h"
 #include "old_msg.h"

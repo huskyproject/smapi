@@ -18,7 +18,7 @@
  */
 
 #include <string.h>
-#include "prog.h"
+#include "compiler.h"
 
 char *_fast Strip_Trailing(char *str, char strip)
 {

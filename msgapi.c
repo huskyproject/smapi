@@ -27,6 +27,7 @@
 #endif
 
 #include "prog.h"
+#include "progprot.h"
 #include "msgapi.h"
 #include "apidebug.h"
 #include "unused.h"
