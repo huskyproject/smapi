@@ -339,7 +339,35 @@ int unlock(int handle, long ofs, long length)
 
 */
 
-#elif defined(__UNIX__)
+#elif defined(__BEOS__)
+
+int lock(int handle, long ofs, long length)
+{
+	return 0;
+}
+
+int waitlock(int handle, long ofs, long length)
+{
+	return 0;
+}
+
+int waitlock2(int handle, long ofs, long length, long t)
+{
+	return 0;
+}
+
+int unlock(int handle, long ofs, long length)
+{
+	return 0;
+}
+
+int sopen(const char *name, int oflag, int ishared, int mode)
+{
+    int fd = open(name, oflag, mode);
+    return fd;
+}
+
+#elif defined(__UNIX__) && !defined(__BEOS__)
 
 static struct flock* file_lock(short type, long ofs, long length, struct flock *ret)
 {
@@ -353,22 +381,14 @@ static struct flock* file_lock(short type, long ofs, long length, struct flock *
 
 int lock(int handle, long ofs, long length)
 {
-#ifndef __BEOS__
     struct flock fl;
     return fcntl(handle, F_SETLK, file_lock(F_WRLCK, ofs, length, &fl));
-#else
-	return 0;
-#endif
 }
 
 int waitlock(int handle, long ofs, long length)
 {
-#ifndef __BEOS__
     struct flock fl;
     return fcntl(handle, F_SETLKW, file_lock(F_WRLCK, ofs, length, &fl));
-#else
-    return 0;
-#endif
 }
 
 /*
@@ -377,7 +397,6 @@ int waitlock(int handle, long ofs, long length)
 
 int waitlock2(int handle, long ofs, long length, long t)
 {
-#ifndef __BEOS__
 	int rc;
 	struct flock fl;
 	
@@ -386,23 +405,14 @@ int waitlock2(int handle, long ofs, long length, long t)
 	alarm(0);
 	
 	return rc;
-#else
-  	return 0;
-#endif
 }
 
 
 int unlock(int handle, long ofs, long length)
 {
-#ifndef __BEOS__
     struct flock fl;
     return fcntl(handle, F_SETLK, file_lock(F_UNLCK, ofs, length, &fl));
-#else
-    return 0;
-#endif
 }
-
-#include <stdio.h>
 
 int sopen(const char *name, int oflag, int ishared, int mode)
 {
