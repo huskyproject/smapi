@@ -1,8 +1,10 @@
 CC=	gcc
 CFLAGS=	-Wall -s
 CDEFS=	-DUNIX
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486
+COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486 
 LIB=	ar
+
+ALL: $(TARGET) libsmapilnx.so.2.0
 
 TARGET=	smapilnx.a
 
@@ -33,3 +35,6 @@ OBJS=	1stchar.o  \
 	$(LIB) r $(TARGET) $@
     
 $(TARGET): $(OBJS)
+
+libsmapilnx.so.2.0: $(OBJS)
+	gcc -shared -Wl,-soname,libsmapilnx.so.2 -o libsmapilnx.so.2.0 $(OBJS)
