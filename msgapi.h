@@ -94,7 +94,7 @@ struct _minf
     word req_version;
     word def_zone;
     word haveshare;  /* filled in by msgapi routines - no need to set this */
-    
+
     /* Version 2 Information */
     word smapi_version;
     word smapi_subversion;
@@ -122,7 +122,7 @@ struct _netaddr
  *  and the structure used by the individual message base formats, is done
  *  on-the-fly by the API routines.
  */
- 
+
 typedef struct _xmsg
 {
     /* Bitmasks for 'attr' */
@@ -255,8 +255,8 @@ struct _msgapi
      */
 
     void *apidata;
-    
-   
+
+
 #ifdef ALTLOCKING
     char  *lck_path;
     int    lck_handle;
@@ -299,9 +299,9 @@ extern word _stdc msgapierr;
 extern struct _minf _stdc mi;
 
 #define palloc(s)     malloc(s)
-#define pfree(s)      free(s)
+#define pfree(s)      { if (s) { free(s); s = NULL; } }
 #define farpalloc(s)  farmalloc(s)
-#define farpfree(s)   farfree(s)
+#define farpfree(s)   { if (s) { farfree(s); s = NULL; } }
 
 /* Constants for 'type' argument of MsgUidToMsgn() */
 
