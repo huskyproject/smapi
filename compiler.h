@@ -66,6 +66,12 @@ int qq(void)
 
 #  define _XPENTRY pascal
 
+#ifdef __X86__ /* Watcom C for intel x86 platform */
+#  ifndef INTEL
+#    define INTEL  /* using to select functions/macroses for read & write binary values */
+#  endif
+#endif
+
 /* WATCOM has both M_I86xxx and __modeltype__ macros */
 
 #  if defined(M_I86SM) && ! defined(__SMALL__)
@@ -269,6 +275,10 @@ int qq(void)
 #elif (defined(_MSC_VER) && (_MSC_VER < 1200))
 /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
 
+#ifndef INTEL
+#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#endif
+
 #  define _stdc cdecl
 #  define _intr cdecl interrupt far
 #  define _intcast void (_intr *)()
@@ -297,6 +307,10 @@ int qq(void)
 #elif defined(__WATCOMC__) && defined(MSDOS)
 /* WATCOM C/C++ for MS-DOS */
 
+/* predefined:
+   __DOS__, _DOS, MSDOS
+*/
+
 #  define _stdc cdecl
 #  define _intr interrupt far
 #  define _intcast void (_intr *)()
@@ -316,8 +330,11 @@ int qq(void)
 #  define HAS_SPAWNVP 1
 
 /* End: WATCOM C/C++ for MS-DOS */
-#elif defined(__WATCOMC__) && (defined(__OS2__) || defined(OS2))
+#elif defined(__WATCOMC__) && defined(__OS2__)
 /* WATCOM C/C++ for OS/2 */
+/* Predefined:
+   __OS2__   -  (16-bit or 32-bit OS/2)
+*/
 
 #  define _stdc
 #  define _intr
@@ -345,6 +362,10 @@ int qq(void)
 #elif defined(__WATCOMC__) && defined(__NT__)
 /* WATCOM C/C++ for Windows NT */
 
+/* Predefined:
+   __NT__ 
+*/
+
 #  define _stdc
 #  define _intr
 #  define _intcast
@@ -366,6 +387,10 @@ int qq(void)
 /* End: Watcom C all variants */
 #elif defined(__HIGHC__)
 /* MetaWare High C/C++ for OS/2 */
+
+#ifndef INTEL
+#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#endif
 
 #  define _stdc
 #  define _intr
@@ -405,6 +430,10 @@ int qq(void)
 
 /* Pre-defines:  __GNUC__, __MINGW32__
  */
+
+#ifndef INTEL
+#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#endif
 
 #  define _stdc
 #  define _intr
@@ -468,6 +497,10 @@ int qq(void)
 /* Pre-defines:  __GNUC__, __EMX__
  */
 
+#ifndef INTEL
+#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#endif
+
 #  define _stdc
 #  define _intr
 #  define _intcast
@@ -500,6 +533,10 @@ int qq(void)
 
 /* Pre-defines:  MSDOS, __GNUC__, __DJGPP__
  */
+
+#ifndef INTEL
+#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#endif
 
 #  ifndef __FLAT__
 #    define __FLAT__  /* DOS flat memory */
@@ -534,6 +571,10 @@ int qq(void)
 /* End: DJGPP for MS-DOS (DPMI)*/
 #elif defined(__TURBOC__) && defined(__MSDOS__)
 /* Borland Turbo C/C++ & Borland C/C++ for MS-DOS */
+
+#ifndef INTEL
+#  define INTEL  /* using to select functions/macroses for read & write binary values */
+#endif
 
 /* for BC++ 3.1 */
 #  define strcasecmp stricmp
