@@ -453,7 +453,10 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
         jamhdrNew.TxtLen = msgh->Hdr.TxtLen;
      }
      
-   if (onlytext==NULL) onlytext = palloc(1); *onlytext='\0';
+   if (onlytext==NULL) {
+      onlytext = palloc(1);
+      *onlytext='\0';
+   }
 
    if (msgh->mode == MOPEN_CREATE) 
    {

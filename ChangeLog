@@ -1,6 +1,10 @@
+Fri Mar 16 13:23:55 NOVT 2001
+max:
+* a fix to my yesterday fix :)
+
 Thu Mar 15 20:01:53 NOVT 2001
 max:
-free(onlytext) fix in JamWriteMsg() 
+* free(onlytext) fix in JamWriteMsg() 
 
 Wed Mar 7 20:35:00 MET 2001
 og:
