@@ -1,3 +1,7 @@
+2005-02-03 Thursday 18:53  val_khokhlov
+
+	* src/api_jam.c (1.18): move gettz() function to huskylib
+
 2004-08-20 Friday 12:05  pgul
 
 	* src/api_jam.c (1.17): Fixed bug in previous patch (patch by Nick
