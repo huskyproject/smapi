@@ -1,3 +1,9 @@
+2003-03-03 Monday 13:10  stas_degteff
+
+	* apidebug.h, ffind.c, ffind.h, flush.c, msgapi.h, sq_area.c,
+	strextra.h (smapi-2_4-stable.[1,1,1,1,3,1,1]): Final implement
+	macros defined in compiler.h: bugfix for BeOS
+
 2003-03-01 Saturday 18:54  stas_degteff
 
 	* compiler.h (1.171): Move defines from prog.h into compiler.h
