@@ -2,6 +2,11 @@ development version
 -------------------
 
 ----- cvs ci ------
+Mon May 22 14:58:56 CEST 2000
+mtt:
+* changed version number to 1.6.4
+
+----- cvs ci ------
 Mon May 22 11:40:00 NOVST 2000
 max (patch from Alex Bronin):
 * fix to use stat() with Watcom & MSVC

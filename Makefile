@@ -19,7 +19,7 @@ endif
 
 CDEFS=	-D$(OSTYPE) $(ADDCDEFS)
 VERH =  1
-VER  =  1.6.2
+VER  =  1.6.4
 
 TARGET=	$(LIBPREFIX)smapi$(LIB)
 
