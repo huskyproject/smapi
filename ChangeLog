@@ -1,3 +1,7 @@
+2004-02-11 Wednesday 20:59  d_sergienko
+
+	* strextra.c (smapi-2_4-stable.1): fix for building on FreeBSD
+
 2004-01-10 Saturday 14:54  d_sergienko
 
 	* api_jam.c (smapi-2_4-stable.3): fixed bug with reading messages
