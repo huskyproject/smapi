@@ -1939,8 +1939,8 @@
 2001-11-26 Monday 21:06  tobi
 
 	* makefile.bcd (1.13), makefile.wcd (1.17) (utags:
-	smapi-2_2_1-release, smapi-2_2_2-release, smapi-2_2_3-release,
-	smapi-2_2_4-release): reduce DOS DGROUP size
+	smapi-2_2_2-release, smapi-2_2_4-release, smapi-2_2_1-release,
+	smapi-2_2_3-release): reduce DOS DGROUP size
 
 2001-11-26 Monday 14:52  tobi
 
