@@ -139,7 +139,12 @@ FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
             strcpy(ff->firstbit, ".");
             strcpy(ff->lastbit, filespec);
         }
-        else
+        else if (p == filespec)
+	{
+	    strcpy(ff->firstbit, "/");
+	    strcpy(ff->lastbit, filespec+1);
+	}
+	else
         {
             memcpy(ff->firstbit, filespec, p - filespec);
             ff->firstbit[p - filespec] = '\0';
