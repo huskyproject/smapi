@@ -55,10 +55,10 @@ libsmapibsd.so.2: $(OBJS)
 	$(LD) -shared -o libsmapibsd.so.2 $(OBJS)
 
 install: $(TARGET) libsmapibsd.so.2
-	install $(ILOPT) libsmapibsd.a $(LIBDIR)
-	install $(ILOPT) libsmapibsd.so.2 $(LIBDIR)
-	install $(IIOPT) msgapi.h $(INCDIR)
-	install $(IIOPT) smapi.pas $(INCDIR)
+	install -c $(ILOPT) libsmapibsd.a $(LIBDIR)
+	install -c $(ILOPT) libsmapibsd.so.2 $(LIBDIR)
+	install -c $(IIOPT) msgapi.h $(INCDIR)
+	install -c $(IIOPT) smapi.pas $(INCDIR)
 	ln -sf libsmapibsd.so.2 $(LIBDIR)/libsmapibsd.so
 
 clean:
