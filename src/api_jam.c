@@ -31,6 +31,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef HAS_STRINGS_H
+#include <strings.h>
+#endif
+
 #define MSGAPI_HANDLERS
 
 #include <huskylib/huskylib.h>
