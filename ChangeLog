@@ -1,3 +1,7 @@
+Fri Jan 26 22:17:15 NOVT 2001
+max (patch from Serguei Revtov):
+* NOSEMAPHORES on __sun__
+
 Fri Jan 26 03:59:37 EET 2001
 gul:
 * JAM lost path & seen-by by hpt link fixed

@@ -22,7 +22,7 @@
 
 #include "compiler.h"
 
-#if defined(__NT__)
+#if defined(__NT__) || defined(__sun__)
 #define NOSEMAPHORES
 #endif
 
