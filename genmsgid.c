@@ -130,7 +130,7 @@ emptydir:
 			return seq;
 		}
 		if (errno == ENOENT || errno == EEXIST ||
-		    (errno == EPERM && try < 16))
+		    ((errno == EPERM || errno == EACCES) && try < 16))
 			continue;
 		free(seqpath);
 		free(new_fname);
