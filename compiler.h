@@ -393,6 +393,10 @@ int lock(int handle, long ofs, long length);
 #define mymkdir(a) __mkdir((a), 0)
 #endif
 
+int lock(int handle, long ofs, long length);   /* in locking.c */
+int unlock(int handle, long ofs, long length);
+int sopen(const char *name, int oflag, int ishared, int mode);
+
 #define tell(a) lseek((a),0,SEEK_CUR)
 #define stricmp strcasecmp
 #define O_BINARY 0
