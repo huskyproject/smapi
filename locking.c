@@ -147,7 +147,11 @@ int unlock(int handle, long ofs, long length)
     return 0;
 }
 
-#elif defined(__MINGW32__)
+#elif defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#include <stdio.h>
+#endif
 
 #include <io.h>
 
@@ -198,7 +202,7 @@ int unlock(int handle, long ofs, long length)
     return 0;
 }
 
-#elif defined(_MSC_VER)
+#elif defined(_MSC_VER) && (_MSC_VER < 1200)
 
 #include <io.h>
 #include <stdio.h>

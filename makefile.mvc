@@ -1,0 +1,45 @@
+# Microsoft Visual C++ Makefile
+
+CC=     cl
+CFLAGS= -nologo -Zp1
+CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -DUSE_STAT_MACROS
+COPT=   -O2
+LIB=    lib -nologo
+
+SMAPIL= smapimvc.lib
+
+OBJS=   1stchar.obj  \
+	api_sdm.obj  \
+	api_sq.obj   \
+	api_jam.obj  \
+	cvtdate.obj  \
+	date2bin.obj \
+	dosdate.obj  \
+	fexist.obj   \
+	ffind.obj    \
+	flush.obj    \
+	locking.obj  \
+	months.obj   \
+	msgapi.obj   \
+	parsenn.obj  \
+	patmat.obj   \
+	qksort.obj   \
+	strftim.obj  \
+	strocpy.obj  \
+	structrw.obj \
+	trail.obj    \
+	weekday.obj
+
+.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+
+all: $(SMAPIL)
+
+$(SMAPIL): $(OBJS)
+	$(LIB) /out:$@ $(OBJS)
+
+clean:
+	-del *.obj
+
+distclean: clean
+	-del *.lib

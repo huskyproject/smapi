@@ -56,7 +56,7 @@ struct _msgh;
 struct _xmsg;
 struct _netaddr;
 
-#if defined(__MINGW32__) || defined(WINNT)
+#if defined(__MINGW32__) || defined(__NT__)
 #define MSG MSGAPIMSG
 #endif
 

@@ -1088,6 +1088,7 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
    }
    else {
       kludge = str;
+//      printf("%s\n",kludge);
       subtypes = JAMSFLD_FTSKLUDGE;
    }
 
@@ -1099,7 +1100,7 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
    subf->LoID = subtypes;
    subf->DatLen = strlen(kludge);
    memmove(subf->Buffer, kludge, strlen(kludge));
-
+//   printf("%u\n",subf->LoID);
 
    return subf;
 }
@@ -1458,11 +1459,7 @@ void DecodeSubf(MSGH *msgh)
          makeKludge(&pid, "\x01PID: ", SubField->Buffer, "", SubField->DatLen);
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FTSKLUDGE));) {
-#ifdef UNIX
          if (strncasecmp(SubField->Buffer, "VIA", 3) == 0) {
-#else
-         if (strnicmp(SubField->Buffer, "VIA", 3) == 0) {
-#endif
             makeKludge(&via, "\x01", SubField->Buffer, "\r", SubField->DatLen);
          } else {
             makeKludge(&kludges, "\x01", SubField->Buffer, "", SubField->DatLen);

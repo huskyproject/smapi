@@ -969,11 +969,14 @@ int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword SubfieldLen)
       return 0;
    } /* endif */
 
+//   printf("%x",buf);
+    
    subfieldNext = *subfield;
 
    while ((pbuf - buf) < SubfieldLen) {
       /* 02 bytes LoID */
       subfieldNext->LoID = get_word(pbuf);
+///      printf("%u - %u\n",subfieldNext->LoID,JAMSFLD_FTSKLUDGE);
       pbuf += 2;
 
       /* 02 bytes HiID */

@@ -202,7 +202,7 @@
 #define farwrite write
 #endif
 
-#elif defined(_MSC_VER)
+#elif (defined(_MSC_VER) && (_MSC_VER < 1200))
 
 /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
 
@@ -572,6 +572,24 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define sopen(a,b,c,d) open((a),(b),(d))
 
 #define EXPENTRY
+
+#elif defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#define _stdc
+#ifdef pascal
+#undef pascal
+#endif
+#define pascal
+#define far
+#define _fast
+#define near
+#define EXPENTRY
+#define strncasecmp strnicmp
+#define sleep(x) Sleep(1000L*(x))
+#define farread read
+#define farwrite write
+#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 
 #else
 

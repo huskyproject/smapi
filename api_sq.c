@@ -1857,7 +1857,7 @@ static sword near AddIndex(MSG * sq, SQIDX * ix, dword num)
             Sqd->idxbuf_size += (sizeof(SQIDX) * EXTRA_BUF);
 
             if (
-#if (defined(MSDOS) && !defined(__FLAT__)) || defined(_MSC_VER)
+#if (defined(MSDOS) && !defined(__FLAT__)) || (defined(_MSC_VER) && (_MSC_VER < 1200))
                    Sqd->idxbuf_size >= 65300L ||
 #endif
                    (Sqd->idxbuf = farrealloc(Sqd->idxbuf, (word) Sqd->idxbuf_size)) == NULL)
@@ -1981,7 +1981,7 @@ static sword near _SquishReadIndex(MSG * sq)
     Sqd->idxbuf_size = (ofslen * sizeof(SQIDX)) / SQIDX_SIZE +
         (EXTRA_BUF) * (dword) sizeof(SQIDX);
 
-#if (defined(MSDOS) && !defined(__FLAT__)) || defined(__MSC__)
+#if (defined(MSDOS) && !defined(__FLAT__)) || (defined(_MSC_VER) && (_MSC_VER < 1200))
     if (Sqd->idxbuf_size >= 65300L || (Sqd->idxbuf = farpalloc((size_t) Sqd->idxbuf_size)) == NULL)
 #else
     if ((Sqd->idxbuf = farpalloc((size_t) Sqd->idxbuf_size)) == NULL)

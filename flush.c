@@ -29,7 +29,7 @@
 #include <unistd.h>
 #endif
 
-#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__)
+#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__) && !(defined(_MSC_VER) && (_MSC_VER >= 1200))
 #include <dos.h>
 #endif
 
@@ -51,6 +51,9 @@
 
 #if defined(__NT__)
 #define WIN32_LEAN_AND_MEAN
+#define NOGDI
+#define NOUSER
+#define NOMSG
 #include <windows.h>
 #endif
 

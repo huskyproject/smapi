@@ -33,8 +33,11 @@
 #include <dos.h>
 #endif
 
-#if defined(__RSXNT__) || defined(__MINGW32__)
+#if defined(__RSXNT__) || defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
+#define WIN32_LEAN_AND_MEAN
+#define NOGDI
 #define NOUSER
+#define NOMSG
 
 #ifdef __RSXNT__
                                 /* The RSXNT winsock.h conflicts with EMX
@@ -72,8 +75,9 @@ struct ffind
 #if defined(__TURBOC__) || defined(__DJGPP__)
     struct ffblk ffbuf;
 
-#elif defined(__WATCOMC__) || defined(_MSC_VER)
+#elif defined(__WATCOMC__) || (defined(_MSC_VER) && (_MSC_VER < 1200))
     struct find_t ffbuf;
+    unsigned long hdir;   /* directory handle from DosFindFirst */
 
 #elif defined(OS2)
 #if defined(__386__) || defined(__FLAT__)
@@ -92,7 +96,7 @@ struct ffind
     char newfile[FILENAME_MAX];
     char prefix[FILENAME_MAX];
 
-#elif defined(__RSXNT__) || defined(__MINGW32__)
+#elif defined(__RSXNT__) || defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
     WIN32_FIND_DATA InfoBuf;
     HANDLE hDirA;
     char attrib_srch;

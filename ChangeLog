@@ -2,6 +2,11 @@ development version
 -------------------
 
 ----- cvs ci ------
+Mon May  8 17:40:14 NOVST 2000
+max (patch from Alex Bronin):
+* MS Visual C porting
+
+----- cvs ci ------
 Fri Apr 14 16:54:02 MSD 2000
 max (patch from Serguei Revtov):
 * memory leak in write_sqidx()

@@ -22,7 +22,7 @@
 
 #include "typedefs.h"
 
-#if defined(__WATCOMC__) || defined(__DJGPP__)
+#if defined(__WATCOMC__) || defined(__DJGPP__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
 typedef unsigned short bits;
 #elif defined(UNIX)
 typedef unsigned bits;  /* AIX does not allow any modifier after unsigned */
