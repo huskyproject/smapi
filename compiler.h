@@ -1250,66 +1250,99 @@ int qq(void)
 #  define S_IFDIR     _S_IFDIR
 #endif
 
-/*
+
 #ifndef mymkdir
-#warning mkdir() call set to default value. Please check your compiler documentation for it and write define into compiler.h
+#  warning mkdir() call set to default value. Please check your compiler documentation for it and write define into compiler.h
 #  define mymkdir mkdir
 #endif
 
 #ifndef mysleep
-#warning sleep() call undefined. Please check your compiler documentation for it and write define into compiler.h
-#  define mysleep(x)
+#   ifndef __MSVC__
+#       warning sleep() call undefined. Please check your compiler documentation for it and write define into compiler.h
+#   else
+#       pragma message("sleep() call undefined. Please check your compiler documentation for it and write define into compiler.h")
+#   endif
+#   define mysleep(x)
 #endif
 
 #ifndef SMAPI_EXT
-#warning Please set SMAPI_EXT to extern or proprietary token
+#   warning Please set SMAPI_EXT to extern or proprietary token
 #  define SMAPI_EXT extern
 #endif
 
 #ifndef _XPENTRY
-#warning Please check your compiler to system functions call modifyer and define _XPENTRY
+#  warning Please check your compiler to system functions call modifyer and define _XPENTRY
 #  define _XPENTRY
 #endif
 
 #ifndef _stdc
-#warning Please check your compiler to standard C code modifyer and define _stdc in compiler.h
+#   warning Please check your compiler to standard C code modifyer and define _stdc in compiler.h
 #endif
 
 #ifndef _intr
-#warning Please check your compiler to interrupt handler modifyer and define _intr in compiler.h
+#   ifndef __MSVC__
+#       warning Please check your compiler to interrupt handler modifyer and define _intr in compiler.h
+#   else
+#       pragma message("Please check your compiler to interrupt handler modifyer and define _intr in compiler.h")
+#   endif
 #endif
 
 #ifndef _intcast
-#warning Please check your compiler to int. cast modifyer and define _intcast in compiler.h
+#   ifndef __MSVC__
+#       warning Please check your compiler to int. cast modifyer and define _intcast in compiler.h
+#   else
+#       pragma message("Please check your compiler to int. cast modifyer and define _intcast in compiler.h")
+#   endif
 #endif
+
 #ifndef _veccast
-#warning Please check your compiler to vector cast modifyer and define _veccast in compiler.h
+#   ifndef __MSVC__
+#       warning Please check your compiler to vector cast modifyer and define _veccast in compiler.h
+#   else
+#       pragma message("Please check your compiler to vector cast modifyer and define _veccast in compiler.h")
+#   endif
 #endif
+
 #ifndef _fast
 #warning Please check your compiler to fast functions call modifyer and define _fast in compiler.h
 #endif
+
 #ifndef _loadds
-#warning Please check your compiler to "load data segment" code modifyer and define _loadds in compiler.h
+#   ifndef __MSVC__
+#       warning Please check your compiler to "load data segment" code modifyer and define _loadds in compiler.h
+#   else
+#       pragma message("Please check your compiler to 'load data segment' code modifyer and define _loadds in compiler.h")
+#   endif
 #endif
+
 #ifndef cdecl
-#warning Please check your compiler to C declarations modifyer and define cdecl in compiler.h
+#   ifndef __MSVC__
+#       warning Please check your compiler to C declarations modifyer and define cdecl in compiler.h
+#   else
+#       pragma message("Please check your compiler to C declarations modifyer and define cdecl in compiler.h")
+#   endif
 #endif
+
 #ifndef pascal
 #warning Please check your compiler to pascal style calling conversion code modifyer and define pascal in compiler.h
 #endif
+
 #ifndef near
 #warning Please check your compiler to near functions call modifyer and define near in compiler.h
 #endif
+
 #ifndef far
 #warning Please check your compiler to far functions call modifyer and define far in compiler.h
 #endif
+
 #ifndef farread
 #warning Please check your compiler to far calling implementation of read() function and define farread in compiler.h
 #endif
+
 #ifndef farwrite
 #warning Please check your compiler to far calling implementation of write() function and define farwrite in compiler.h
 #endif
-*/
+
 
  /* waitlock works like lock, but blocks until the lock can be
   * performed.
