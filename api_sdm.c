@@ -1126,7 +1126,7 @@ static sword near _SdmRescanArea(MSG * mh)
 
 #ifdef OS2
             if ((mn % 128) == 127)
-                DosSleep(1L); /* give up cpu */
+                tdelay(1L); /* give up cpu */
 #endif
         }
         while (FFindNext(ff) == 0);
@@ -1309,11 +1309,11 @@ static dword EXPENTRY SdmGetHash(HAREA mh, dword msgnum)
 {
   XMSG xmsg;
   HMSG msgh;
-  dword rc = 0l; 
+  dword rc = 0l;
 
   if ((msgh=SdmOpenMsg(mh, MOPEN_READ, msgnum))==NULL)
     return (dword) 0l;
-  
+
   if (SdmReadMsg(msgh, &xmsg, 0L, 0L, NULL, 0L, NULL)!=(dword)-1)
   {
     rc = SquishHash(xmsg.to) | (xmsg.attr & MSGREAD) ? 0x80000000l : 0;

@@ -1,4 +1,4 @@
-/*
+#/*
  *  SMAPI; Modified Squish MSGAPI
  *
  *  Squish MSGAPI0 is copyright 1991 by Scott J. Dudley.  All rights reserved.
@@ -257,7 +257,7 @@ int lock(int handle, long ofs, long length);
 #define strncasecmp strnicmp
 
 #define EXPENTRY _System
-#define mysleep(x) DosSleep(1000*(x))
+#define mysleep(x) sleep(x)
 #define mode_t int
 
 
