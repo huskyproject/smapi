@@ -1,3 +1,4 @@
+# $Id$
 # Makefile for building SMAPI with Quick C or MS C for DOS
 # No support for the Husky build environment
 
@@ -15,42 +16,7 @@ ASM=	masm
 
 TARGET=	smapiqcd.lib
 
-OBJS=	1stchar.obj  \
-	api_sdm.obj  \
-	sq_area.obj \
-	sq_hash.obj \
-	sq_help.obj \
-	sq_idx.obj \
-	sq_kill.obj \
-	sq_lock.obj \
-	sq_misc.obj \
-	sq_msg.obj \
-	sq_read.obj \
-	sq_uid.obj \
-	sq_write.obj \
-	api_jam.obj  \
-	cvtdate.obj  \
-	date2bin.obj \
-	dosdate.obj  \
-	fexist.obj   \
-	ffind.obj    \
-	flush.obj    \
-	flushasm.obj \
-	locking.obj  \
-	months.obj   \
-	msgapi.obj   \
-	parsenn.obj  \
-	patmat.obj   \
-	qksort.obj   \
-	sqasm.obj    \
-	strftim.obj  \
-	strocpy.obj  \
-	structrw.obj \
-	trail.obj    \
-	weekday.obj \
-	setfsize.obj \
-	tdelay.obj   \
-	genmsgid.obj
+include makefile.inc
 
 
 # Thunderbirds are go!
