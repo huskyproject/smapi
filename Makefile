@@ -118,21 +118,21 @@ endif
 
 install: instdyn
 	-$(MKDIR) $(MKDIROPT) $(INCDIR)
-	-$(MKDIR) $(MKDIROPT) $(INCDIR)/smapi
+	-$(MKDIR) $(MKDIROPT) $(INCDIR)$(DIRSEP)smapi
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
-	$(INSTALL) $(IIOPT) alc.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) api_brow.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) compiler.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) ffind.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) msgapi.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) patmat.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) prog.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) progprot.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) stamp.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) unused.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) semaphor.h $(INCDIR)/smapi
-	$(INSTALL) $(IIOPT) api_jam.h $(INCDIR)/smapi
+	$(INSTALL) $(IIOPT) alc.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) api_brow.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) compiler.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) ffind.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) msgapi.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) patmat.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) prog.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) progprot.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) stamp.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) typedefs.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) unused.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) semaphor.h $(INCDIR)$(DIRSEP)smapi
+	$(INSTALL) $(IIOPT) api_jam.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(ILOPT) $(TARGET) $(LIBDIR)
 	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
 
@@ -148,6 +148,8 @@ uninstall:
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)stamp.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)typedefs.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)unused.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)semaphor.h
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_jam.h
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)patmat$(OBJ)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
