@@ -56,6 +56,15 @@ extern "C" {
 #define MOPEN_WRITE     2
 #define MOPEN_RW        3
 
+#ifdef UNIX
+#define FILEMODE_NETMAIL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+#define FILEMODE_ECHOMAIL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
+#else
+#define FILEMODE_NETMAIL (S_IREAD | S_IWRITE)
+#define FILEMODE_ECHOMAIL (S_IREAD | S_IWRITE)
+#endif
+#define FILEMODE(a) ((a) ? FILEMODE_ECHOMAIL : FILEMODE_NETMAIL)
+
 struct _msgapi;
 struct _msgh;
 struct _xmsg;

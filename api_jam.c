@@ -784,17 +784,9 @@ void Jam_CloseFile(JAMBASE *jambase)
    } /* endif */
 }
 
-int openfilejm(char *name, word mode)
+int openfilejm(char *name, word mode, mode_t permissions)
 {
-   int handle;
-
-#ifdef UNIX
-      handle = sopen(name, mode, SH_DENYNONE, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
-#else
-      handle = sopen(name, mode, SH_DENYNONE, S_IREAD | S_IWRITE);
-#endif
-
-   return handle;
+   return sopen(name, mode, SH_DENYNONE, permissions);
 }
 
 static int gettz(void)
@@ -841,7 +833,7 @@ int JamDeleteBase(char *name)
    return rc;
 }
 
-int Jam_OpenFile(JAMBASE *jambase, word *mode)
+int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
 {
    char *hdr, *idx, *txt, *lrd;
    int x = strlen(jambase->BaseName)+5;
@@ -857,10 +849,10 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode)
    sprintf(lrd, "%s%s", jambase->BaseName, EXT_LRDFILE);
 
    if (*mode == MSGAREA_CREATE) {
-      jambase->HdrHandle = openfilejm(hdr, fop_wpb);
-      jambase->TxtHandle = openfilejm(txt, fop_wpb);
-      jambase->IdxHandle = openfilejm(idx, fop_wpb);
-      jambase->LrdHandle = openfilejm(lrd, fop_wpb);
+      jambase->HdrHandle = openfilejm(hdr, fop_wpb, permissions);
+      jambase->TxtHandle = openfilejm(txt, fop_wpb, permissions);
+      jambase->IdxHandle = openfilejm(idx, fop_wpb, permissions);
+      jambase->LrdHandle = openfilejm(lrd, fop_wpb, permissions);
 
       memset(&(jambase->HdrInfo), '\0', sizeof(JAMHDRINFO));
       strcpy(jambase->HdrInfo.Signature, HEADERSIGNATURE);
@@ -873,10 +865,10 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode)
       write_hdrinfo(jambase->HdrHandle, &(jambase->HdrInfo));
 
    } else {
-      jambase->HdrHandle = openfilejm(hdr, fop_rpb);
-      jambase->TxtHandle = openfilejm(txt, fop_rpb);
-      jambase->IdxHandle = openfilejm(idx, fop_rpb);
-      jambase->LrdHandle = openfilejm(lrd, fop_rpb);
+      jambase->HdrHandle = openfilejm(hdr, fop_rpb, permissions);
+      jambase->TxtHandle = openfilejm(txt, fop_rpb, permissions);
+      jambase->IdxHandle = openfilejm(idx, fop_rpb, permissions);
+      jambase->LrdHandle = openfilejm(lrd, fop_rpb, permissions);
    } /* endif */
 
    if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {
@@ -890,10 +882,10 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode)
          return 0;
       }
       *mode = MSGAREA_CREATE;
-      jambase->HdrHandle = openfilejm(hdr, fop_wpb|O_EXCL);
-      jambase->TxtHandle = openfilejm(txt, fop_wpb|O_EXCL);
-      jambase->IdxHandle = openfilejm(idx, fop_wpb|O_EXCL);
-      jambase->LrdHandle = openfilejm(lrd, fop_wpb|O_EXCL);
+      jambase->HdrHandle = openfilejm(hdr, fop_wpb|O_EXCL, permissions);
+      jambase->TxtHandle = openfilejm(txt, fop_wpb|O_EXCL, permissions);
+      jambase->IdxHandle = openfilejm(idx, fop_wpb|O_EXCL, permissions);
+      jambase->LrdHandle = openfilejm(lrd, fop_wpb|O_EXCL, permissions);
 
       if (jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1) {
          Jam_CloseFile(jambase);
@@ -930,7 +922,7 @@ static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename)
    Jmd->BaseName = (unsigned char*)palloc(strlen(basename)+1);
    strcpy(Jmd->BaseName, basename);
 
-   if (!Jam_OpenFile(Jmd, mode)) {
+   if (!Jam_OpenFile(Jmd, mode, FILEMODE(jm->isecho))) {
       pfree(Jmd->BaseName);
       return 0;
    } /* endif */

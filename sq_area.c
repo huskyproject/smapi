@@ -156,7 +156,7 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
   (void)strcat(szFile, dot_sqd);
 
   if ((Sqd->sfd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
-                      S_IREAD | S_IWRITE))==-1)
+                      FILEMODE(ha->isecho)))==-1)
   {
     msgapierr=MERR_NOENT;
     return FALSE;
@@ -165,7 +165,7 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
   (void)strcat(szFile, dot_sqi);
 
   if ((Sqd->ifd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
-                      S_IREAD | S_IWRITE))==-1)
+                      FILEMODE(ha->isecho)))==-1)
   {
     (void)close(Sqd->sfd);
     msgapierr=MERR_NOENT;

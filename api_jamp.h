@@ -28,7 +28,7 @@ static dword  EXPENTRY JamGetHash(HAREA mh, dword msgnum);
 #define fop_rpb (O_RDWR | O_BINARY)
 
 static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename);
-int Jam_OpenFile(JAMBASE *jambase, word *mode);
+int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions);
 void Jam_CloseFile(JAMBASE *jambase);
 static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum);
 JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what);

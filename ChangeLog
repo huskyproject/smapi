@@ -1,3 +1,7 @@
+Sun Dec  3 15:49:42 UTC 2000
+sms:
+* permissions fix (different permissions for netmail/echomail, but the same
+  for all formats) 
 
 Sun Oct 15 20:09:52 MESZ 2000
 tobi:
