@@ -42,7 +42,7 @@ sword far pascal shareloaded(void)
 }
 #endif
 
-#if (defined (__WATCOMC__) || defined(__EMX__) || defined(__IBMC__)) && defined(OS2)
+#if defined (__WATCOMC__OS2__) || defined(__EMX__) || defined(__IBMC__OS2__)
 
 #include <os2.h>
 
@@ -415,12 +415,12 @@ int sopen(const char *name, int oflag, int ishared, int mode)
 
 #else
 
-#ifdef OS2
+#ifdef __OS2__
 #define INCL_DOSDATETIME
 #include <os2.h>
 #endif
 
-#if defined(__TURBOC__) && defined(__MSDOS__)
+#if defined(__TURBOC__DOS__)
 #include <io.h>
 #include <dos.h>
 #endif

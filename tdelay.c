@@ -31,14 +31,14 @@
 #include <dos.h>
 #endif
 
-#if defined(OS2)
+#if defined(__OS2__)
 #define INCL_NOPM
 #define INCL_DOS    /* must be before prog.h */
 #endif
 
 #include "prog.h"
 
-#if defined(OS2)
+#if defined(__OS2__)
 
 #include <os2.h>
 

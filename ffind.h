@@ -84,7 +84,7 @@ struct ffind
     struct find_t ffbuf;
     unsigned long hdir;   /* directory handle from DosFindFirst */
 
-#elif defined(OS2)
+#elif defined(__OS2__)
 #if defined(__386__) || defined(__FLAT__)
     unsigned long hdir;   /* directory handle from DosFindFirst */
 #else
@@ -101,7 +101,7 @@ struct ffind
     char newfile[FILENAME_MAX];
     char prefix[FILENAME_MAX];
 
-#elif defined(__RSXNT__) || defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
+#elif defined(__RSXNT__) || defined(__MINGW32__) || (defined(___MSCVC__)
     WIN32_FIND_DATA InfoBuf;
     HANDLE hDirA;
     char attrib_srch;

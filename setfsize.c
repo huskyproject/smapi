@@ -73,7 +73,7 @@
 
     return 0;
   }
-#elif defined(OS2)
+#elif defined(__OS2__)
 
   #define INCL_DOSFILEMGR
   #include <os2.h>

@@ -35,7 +35,7 @@
 #include <dos.h>
 #endif
 
-#ifdef OS2
+#ifdef __OS2__
 
 #define INCL_NOPM
 #include <os2.h>
@@ -69,7 +69,7 @@ void pascal far flush_handle2(int fh)
     unused(fh);
 }
 
-#elif defined(OS2)
+#elif defined(__OS2__)
 
 void pascal far flush_handle2(int fh)
 {
@@ -121,7 +121,7 @@ void _fast flush_handle(FILE * fp)
 {
     fflush(fp);
 
-#if defined(OS2) || defined(MSDOS) || defined(__NT__) || defined(__MINGW32__) || defined(__TURBOC__) || defined(SASC) || defined(__DJGPP__)
+#if defined(__OS2__) || defined(MSDOS) || defined(__NT__) || defined(__MINGW32__) || defined(__TURBOC__) || defined(SASC) || defined(__DJGPP__)
     flush_handle2(fileno(fp));
 #else
     {

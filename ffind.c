@@ -32,7 +32,7 @@
 
 #include "ffind.h"
 
-#ifdef OS2
+#ifdef __OS2__
 #define INCL_NOPM
 #define INCL_DOS
 #include <os2.h>
@@ -96,7 +96,7 @@ FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
             ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
         }
 
-#elif defined(OS2)
+#elif defined(__OS2__)
 
 #if defined(__386__) || defined(__FLAT__)
         ULONG SearchCount = 1;
@@ -296,7 +296,7 @@ int _fast FFindNext(FFIND * ff)
         memcpy(ff->ff_name, ff->ffbuf.name, sizeof(ff->ff_name));
         ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
 
-#elif defined(OS2)
+#elif defined(__OS2__)
 
 #if defined(__386__) || defined(__FLAT__)
         ULONG SearchCount = 1;
@@ -416,7 +416,7 @@ void _fast FFindClose(FFIND * ff)
 #if defined(__TURBOC__) || defined(__DJGPP__)
 #elif (defined(__WATCOMC__NT__)) || (defined(__MSVC__) && !defined(MSDOS))
         _dos_findclose(&(ff->ffbuf));
-#elif defined(OS2)
+#elif defined(__OS2__)
         if (ff->hdir)
         {
             DosFindClose(ff->hdir);
@@ -447,7 +447,7 @@ void _fast FFindClose(FFIND * ff)
 
 FFIND *_fast FindInfo(const char *filespec)
 {
-#if !defined(OS2) && !defined(__OS2__)
+#if !defined(__OS2__)
     return FFindOpen(filespec, 0);
 #else
     FFIND *ff;
