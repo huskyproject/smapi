@@ -1,3 +1,10 @@
+smapi (2.3.0-20021022-1) unstable; urgency=low
+
+  * New cvs version
+  * Drop unnecessary debian/*.dirs
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Tue, 22 Oct 2002 14:13:21 +0600
+
 smapi (2.3.0-20021004-1) unstable; urgency=low
 
   * New cvs version
