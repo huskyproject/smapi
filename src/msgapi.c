@@ -44,7 +44,7 @@ static byte *fmpt = (byte *) "FMPT";
 static byte *topt = (byte *) "TOPT";
 static byte *area_colon = (byte *) "AREA:";
 
-static char *copyright = "MSGAPI - Copyright 1991 by Scott J. Dudley.  All rights reserved.";
+/*static char *copyright = "MSGAPI - Copyright 1991 by Scott J. Dudley.  All rights reserved.";*/
 
 /* Global error value for message API routines */
 
