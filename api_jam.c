@@ -1369,7 +1369,7 @@ static int StrToSubfield(unsigned char *str, dword lstr, dword *len, JAMSUBFIELD
 {
    /* warning: str is read only and NOT nul-terminated! */
    unsigned char *kludge;
-   dword subtypes;
+   word subtypes;
 
    if (!subf) return 0;
 
@@ -1458,7 +1458,7 @@ static int NETADDRtoSubf(NETADDR addr, dword *len, word opt, JAMSUBFIELD2ptr sub
    return 1;
 }
 
-static int FromToSubjTOSubf(dword jamsfld, unsigned char *txt, dword *len, JAMSUBFIELD2ptr subf)
+static int FromToSubjTOSubf(word jamsfld, unsigned char *txt, dword *len, JAMSUBFIELD2ptr subf)
 {
    if (!subf) return 0;
    subf->LoID = jamsfld;
