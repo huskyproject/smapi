@@ -565,7 +565,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
                return -1;
             }
             Jmd->HdrInfo.ActiveMsgs++;
-#ifndef LAZY_WRITE_HDR
+#ifdef HARD_WRITE_HDR
             Jmd->HdrInfo.ModCounter++;
             if (Jam_WriteHdrInfo(Jmd))
             {
@@ -612,7 +612,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             farwrite(Jmd->TxtHandle, &ch, 1);
             write_hdr(Jmd->HdrHandle, &jamhdrNew);
             write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
-#ifndef LAZY_WRITE_HDR
+#ifdef HARD_WRITE_HDR
             Jmd->HdrInfo.ModCounter++;
             Jam_WriteHdrInfo(Jmd);
 #endif
@@ -670,7 +670,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
       lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
       write_hdr(Jmd->HdrHandle, &jamhdrNew);
       write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
-#ifndef LAZY_WRITE_HDR
+#ifdef HARD_WRITE_HDR
       Jmd->HdrInfo.ModCounter++;
       Jam_WriteHdrInfo(Jmd);
 #endif
@@ -729,7 +729,7 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
    lseek(Jmd->IdxHandle, -(IDX_SIZE), SEEK_CUR);
    write_idx(Jmd->IdxHandle, &jamidx);
    write_hdr(Jmd->HdrHandle, &jamhdr);
-#ifndef LAZY_WRITE_HDR
+#ifdef HARD_WRITE_HDR
    Jmd->HdrInfo.ModCounter++;
    Jam_WriteHdrInfo(Jmd);
 #endif
