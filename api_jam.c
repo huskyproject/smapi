@@ -299,7 +299,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
       msg->replyto = msgh->Hdr.ReplyTo;
       msg->xmreply1st = msgh->Hdr.Reply1st;
-/*      msg->replies[1] = 0; */
+      msg->replies[1] = 0;
       msg->xmreplynext  = msgh->Hdr.ReplyNext;
 
    } /* endif */
@@ -662,12 +662,14 @@ static UMSGID EXPENTRY JamMsgnToUid(MSG * jm, dword msgnum)
 
     msgapierr = MERR_NONE;
     if (msgnum > jm->num_msg) return (UMSGID) -1;
+    if (msgnum <= 0) return (UMSGID) 0;
     return (UMSGID) (Jmd->actmsg[msgnum - 1].IdxOffset / 8 + Jmd->HdrInfo.BaseMsgNum);
 }
 
 static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
 {
    dword  msgnum, left, right, new;
+   UMSGID umsg;
 
    if (InvalidMh(jm)) {
       return -1L;
@@ -681,16 +683,19 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    while (left <= right)
    {
      new = (right + left) / 2;
-     if (JamMsgnToUid(jm, new) > msgnum)
+     umsg = JamMsgnToUid(jm, new);
+     if (umsg == -1)
+       return 0;
+     if (umsg < msgnum)
        left = new + 1;
-     else if (JamMsgnToUid(jm, new) < msgnum)
+     else if (umsg > msgnum)
        right = new - 1;
      else
        return new;
    }
    if (type == UID_EXACT) return 0;
    if (type == UID_PREV)
-     return (right <= 0) ? 1 : right;
+     return (right < 0) ? 0 : right;
    return (left > jm->num_msg) ? jm->num_msg : left;
 }
 

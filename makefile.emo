@@ -60,3 +60,11 @@ clean:
 
 distclean: clean
 	-DEL $(TARGET)
+
+smapi.dll: $(OBJS)
+	echo LIBRARY smapi > smapi.def
+	echo EXPORTS >> smapi.def
+	emxexp $(OBJS) >> smapi.def
+	$(CC) -Zdll -Zcrtdll -Zomf -Zlinker /PM:VIO -o smapi.dll smapi.def $(OBJS)
+	emximp -o $(TARGET) smapi.def
+#	emximp -o smapiemx.a smapi.def

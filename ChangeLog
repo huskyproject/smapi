@@ -1,3 +1,7 @@
+Sun Oct 15 19:17:28 NOVST 2000
+max (patches from Pavel Gulchouk):
+* JAM fixes
+
 Sat Oct 14 23:18:01 NOVST 2000
 max (patches from Pavel Gulchouk):
 * JAM fix: sqpack don't crashes on areas when msgs deleted from golded

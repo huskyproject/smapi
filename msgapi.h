@@ -107,9 +107,6 @@ struct _netaddr
  *  on-the-fly by the API routines.
  */
  
-#define xmreply1st replies[0]
-#define xmreplynext replies[1]
-
 typedef struct _xmsg
 {
     /* Bitmasks for 'attr' */
@@ -177,6 +174,9 @@ typedef struct _xmsg
 XMSG;
 
 #define XMSG_SIZE (94 + XMSG_FROM_SIZE + XMSG_TO_SIZE + XMSG_SUBJ_SIZE)
+
+#define xmreply1st replies[0]
+#define xmreplynext replies[MAX_REPLY-1]
 
 /*
  *  This is a 'message area handle', as returned by MsgOpenArea(), and
