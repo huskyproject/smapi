@@ -486,6 +486,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             {
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                freejamsubfield(subfieldNew);
+	       msgapierr = MERR_NODS;
                return -1;
             }
             jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
@@ -496,6 +497,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
+	       msgapierr = MERR_NODS;
                return -1;
             }
             msgh->cur_pos = tell(Jmd->TxtHandle);
@@ -506,6 +508,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
+	       msgapierr = MERR_NODS;
                return -1;
             }
             if (!write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen))
@@ -514,6 +517,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
+	       msgapierr = MERR_NODS;
                return -1;
             }
             Jmd->HdrInfo.ActiveMsgs++;
@@ -524,6 +528,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
+	       msgapierr = MERR_NODS;
                return -1;
             }
             jm->high_msg++;
@@ -1192,8 +1197,12 @@ static void near Jam_Unlock(MSG * jm)
 
 sword Jam_WriteHdrInfo(JAMBASEptr jambase)
 {
-   if (lseek(jambase->HdrHandle, 0, SEEK_SET) == -1) return -1;
-   if (write_hdrinfo(jambase->HdrHandle, &(jambase->HdrInfo)) == 0) return -1;
+   if (lseek(jambase->HdrHandle, 0, SEEK_SET) == -1 ||
+	write_hdrinfo(jambase->HdrHandle, &(jambase->HdrInfo)) == 0) {
+	    msgapierr = MERR_NODS;
+	    return -1;
+	}
+
    return 0;
 }
 
