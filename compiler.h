@@ -1045,8 +1045,9 @@ int qq(void)
 #  define mysleep(sec) _sleep((sec)*1000l)
 #  define HAS_sleep     1
 
-#  define mkdir _mkdir
-#  define mymkdir _mkdir
+
+#  define mymkdir mkdir
+
 /*#  define strcasecmp  stricmp*/
 /*#  define strncasecmp strnicmp*/
 
@@ -1069,16 +1070,17 @@ int qq(void)
 #    define SH_DENYNO 0x40
 #  endif
 
-#  define HAS_SPAWNVP  1  /* spawnvp() present */
-#  define HAS_mktime   1  /* time.h */
-#  define HAS_strftime 1  /* time.h */
-#  define HAS_ACCESS   1  /* access() in io.h */
-#  define HAS_sopen    1
+#  define HAS_SPAWNVP    /* spawnvp() present */
+#  define HAS_mktime     /* time.h */
+#  define HAS_strftime   /* time.h */
+#  define HAS_ACCESS    /* access() in io.h */
+#  define HAS_sopen    
 
-#  define HAS_MALLOC_H 1  /* may use "#include <malloc.h>" for malloc() etc. */
-#  define HAS_IO_H     1  /* may use "#include <io.h> */
-#  define HAS_SHARE_H  1  /* may use "#include <share.h> */
-#  define HAS_SYS_UTIME_H 1 /* #include <sys/utime.h> in alternate to <utime.h> */
+#  define HAS_MALLOC_H   /* may use "#include <malloc.h>" for malloc() etc. */
+#  define HAS_IO_H       /* may use "#include <io.h> */
+#  define HAS_SHARE_H    /* may use "#include <share.h> */
+#  define HAS_DIRECT_H
+#  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
 
 #  define USE_STAT_MACROS
 
