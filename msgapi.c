@@ -40,6 +40,12 @@ struct _minf _stdc mi;
 
 sword EXPENTRY MsgOpenApi(struct _minf *minf)
 {
+
+/*
+  TODO: Here is a good place to make an atexit()-call to close open areas 
+  if the app aborts.
+*/
+
     unused(copyright);
     mi = *minf;
     mi.haveshare = shareloaded();
@@ -56,6 +62,12 @@ MSG *EXPENTRY MsgOpenArea(byte * name, word mode, word type)
     if (type & MSGTYPE_SQUISH) return SquishOpenArea(name, mode, type);
     else if (type & MSGTYPE_JAM) return JamOpenArea(name, mode, type);
     else return SdmOpenArea(name, mode, type);
+    
+    /* Hey, i'm reading correct ? If not SQUISH and not JAM it must be SDM ?
+       That's a good thing to make incompatible code, but we're not M$ !
+       TODO: Use MSGTYPE_SDM for checking type-parameter. There could be
+             other developer who wants to extend the API with another
+             Base-Type */
 }
 
 int MsgDeleteBase(char * name, word type)

@@ -46,6 +46,8 @@
 #include "apidebug.h"
 #include "unused.h"
 
+/* TODO: It is a good idea to make a list of all open areas */
+
 MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type)
 {
     struct _sqbase sqbase;
@@ -175,6 +177,8 @@ int SquishDeleteBase(char *name)
     return rc;
 }   
 
+/* TODO: Don't forget updating the Open-Arealist when closing an area */
+
 static sword EXPENTRY SquishCloseArea(MSG * sq)
 {
     if (InvalidMh(sq))
@@ -218,6 +222,8 @@ static sword EXPENTRY SquishCloseArea(MSG * sq)
 
     return 0;
 }
+
+/* TODO: It is a good idea to make a list of all open messages */
 
 static MSGH *EXPENTRY SquishOpenMsg(MSG * sq, word mode, dword msgnum)
 {
@@ -274,6 +280,9 @@ static MSGH *EXPENTRY SquishOpenMsg(MSG * sq, word mode, dword msgnum)
 
     return (MSGH *) msgh;
 }
+
+/* TODO: Remember: When closing a message, remove the message from the 
+   open-message list */
 
 static sword EXPENTRY SquishCloseMsg(MSGH * msgh)
 {
