@@ -1237,25 +1237,25 @@ int EXPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc) (byte * str), byte * k
     }
 
     if ((msg->dest.zone != mi.def_zone || msg->orig.zone != mi.def_zone) &&
-      !strstr((char *) kludges, "\x01INTL"))
+      !strstr((char *) kludges, "\001INTL"))
     {
-        sprintf((char *) temp, "\x01INTL %hu:%hu/%hu %hu:%hu/%hu\r", msg->dest.zone, msg->dest.net,
+        sprintf((char *) temp, "\001INTL %hu:%hu/%hu %hu:%hu/%hu\r", msg->dest.zone, msg->dest.net,
           msg->dest.node, msg->orig.zone, msg->orig.net, msg->orig.node);
 
         (*wfunc) (temp);
         bytes += strlen((char *) temp);
     }
 
-    if (msg->orig.point && !strstr((char *) kludges, "\x01" "FMPT"))
+    if (msg->orig.point && !strstr((char *) kludges, "\001" "FMPT"))
     {
-        sprintf((char *) temp, "\x01" "FMPT %hu\r", msg->orig.point);
+        sprintf((char *) temp, "\001" "FMPT %hu\r", msg->orig.point);
         (*wfunc) (temp);
         bytes += strlen((char *) temp);
     }
 
-    if (msg->dest.point && !strstr((char *) kludges, "\x01" "TOPT"))
+    if (msg->dest.point && !strstr((char *) kludges, "\001" "TOPT"))
     {
-        sprintf((char *) temp, "\x01" "TOPT %hu\r", msg->dest.point);
+        sprintf((char *) temp, "\001" "TOPT %hu\r", msg->dest.point);
         (*wfunc) (temp);
         bytes += strlen((char *) temp);
     }

@@ -131,26 +131,26 @@ static word near _CopyToBuf(byte * p, byte * out, byte ** end)
 
     if (out)
     {
-        *out++ = '\x01';
+        *out++ = '\001';
     }
 
     len++;
 
-    while (*p == '\x0d' || *p == '\x0a' || *p == (byte) '\x8d')
+    while (*p == '\015' || *p == '\012' || *p == (byte) '\215')
     {
         p++;
     }
 
-    while (*p == '\x01' || strncmp((char *) p, (char *) area_colon, 5) == 0)
+    while (*p == '\001' || strncmp((char *) p, (char *) area_colon, 5) == 0)
     {
         /* Skip over the first ^a */
 
-        if (*p == '\x01')
+        if (*p == '\001')
         {
             p++;
         }
 
-        while (*p && *p != '\x0d' && *p != '\x0a' && *p != (byte) '\x8d')
+        while (*p && *p != '\015' && *p != '\012' && *p != (byte) '\215')
         {
             if (out)
             {
@@ -163,12 +163,12 @@ static word near _CopyToBuf(byte * p, byte * out, byte ** end)
 
         if (out)
         {
-            *out++ = '\x01';
+            *out++ = '\001';
         }
 
         len++;
 
-        while (*p == '\x0d' || *p == '\x0a' || *p == (byte) '\x8d')
+        while (*p == '\015' || *p == '\012' || *p == (byte) '\215')
         {
             p++;
         }
@@ -185,7 +185,7 @@ static word near _CopyToBuf(byte * p, byte * out, byte ** end)
 
     /* Make sure to leave no trailing x01's. */
 
-    if (out && out[-1] == '\x01')
+    if (out && out[-1] == '\001')
     {
         out[-1] = '\0';
     }
@@ -250,9 +250,9 @@ byte *EXPENTRY GetCtrlToken(byte * where, byte * what)
         found = (byte *) strstr((char *) where, (char *) what);
     }
 
-    if (where != NULL && found != NULL && found[-1] == '\x01')
+    if (where != NULL && found != NULL && found[-1] == '\001')
     {
-        end = (byte *) strchr((char *) found, '\x01');
+        end = (byte *) strchr((char *) found, '\001');
 
         if (!end)
         {
@@ -372,7 +372,7 @@ byte *EXPENTRY CvtCtrlToKludge(byte * ctrl)
     /* Convert ^aKLUDGE^aKLUDGE... into ^aKLUDGE\r^aKLUDGE\r... */
 
     from = ctrl;
-    while (*from == '\x01' && from[1])
+    while (*from == '\001' && from[1])
     {
         /* Only copy out the ^a if it's NOT the area: line */
 
@@ -383,7 +383,7 @@ byte *EXPENTRY CvtCtrlToKludge(byte * ctrl)
 
         from++;
 
-        while (*from && *from != '\x01')
+        while (*from && *from != '\001')
         {
             *to++ = *from++;
         }
@@ -406,7 +406,7 @@ void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
         return;
     }
 
-    strcpy((char *) search, "\x01");
+    strcpy((char *) search, "\001");
     strcat((char *) search, (char *) what);
 
     /* Now search for this token in the control buffer, and remove it. */
@@ -415,7 +415,7 @@ void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
     while (p != NULL)
     {
         s = p + 1;
-        while (*s && *s != '\x01')
+        while (*s && *s != '\001')
         {
             s++;
         }
@@ -431,7 +431,7 @@ word EXPENTRY NumKludges(char *txt)
     word nk = 0;
     char *p;
 
-    for(p=txt; ((p=strchr(p, '\x01'))!=NULL); p++) nk++;
+    for(p=txt; ((p=strchr(p, '\001'))!=NULL); p++) nk++;
 
     return nk;
 }
