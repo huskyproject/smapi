@@ -55,7 +55,7 @@ static char rcs_id[]="$Id$";
 /* This function returns the UMSGID that will be used by the next message   *
  * to be created.                                                           */
 
-UMSGID EXPENTRY apiSquishGetNextUid(HAREA ha)
+UMSGID _XPENTRY apiSquishGetNextUid(HAREA ha)
 {
   return Sqd->uidNext;
 }
@@ -65,7 +65,7 @@ UMSGID EXPENTRY apiSquishGetNextUid(HAREA ha)
 /* This function converts the message number 'dwMsg' into a unique          *
  * message idenfitier (UMSGID).                                             */
 
-UMSGID EXPENTRY apiSquishMsgnToUid(HAREA ha, dword dwMsg)
+UMSGID _XPENTRY apiSquishMsgnToUid(HAREA ha, dword dwMsg)
 {
   SQIDX sqi;
 
@@ -100,7 +100,7 @@ UMSGID EXPENTRY apiSquishMsgnToUid(HAREA ha, dword dwMsg)
 
 /* This function converts the UMSGID in 'uid' into a real message number */
 
-dword EXPENTRY apiSquishUidToMsgn(HAREA ha, UMSGID uid, word wType)
+dword _XPENTRY apiSquishUidToMsgn(HAREA ha, UMSGID uid, word wType)
 {
   SQIDX sqi;
   dword rc=0;

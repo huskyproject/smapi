@@ -61,20 +61,20 @@
 
 static byte *hwm_from = (byte *) "-=| SquishMail |=-";
 
-MSG *MSGAPI SdmOpenArea(byte * name, word mode, word type)
+MSGA *MSGAPI SdmOpenArea(byte * name, word mode, word type)
 {
-    MSG *mh;
+    MSGA *mh;
 
     unused(_junksqd);
 
-    mh = palloc(sizeof(MSG));
+    mh = palloc(sizeof(MSGA));
     if (mh == NULL)
     {
         msgapierr = MERR_NOMEM;
         goto ErrOpen;
     }
 
-    memset(mh, '\0', sizeof(MSG));
+    memset(mh, '\0', sizeof(MSGA));
 
     mh->id = MSGAPI_ID;
 
@@ -105,7 +105,7 @@ MSG *MSGAPI SdmOpenArea(byte * name, word mode, word type)
     Add_Trailing((char *) Mhd->base, PATH_DELIM);
     Mhd->hwm = (dword) - 1L;
 
-    mh->len = sizeof(MSG);
+    mh->len = sizeof(MSGA);
     mh->num_msg = 0;
     mh->high_msg = 0;
     mh->high_water = (dword) - 1L;
@@ -180,7 +180,7 @@ int SdmDeleteBase(char *name)
     return 1; /* rmdir error is ok */
 }
 
-static sword EXPENTRY SdmCloseArea(MSG * mh)
+static sword _XPENTRY SdmCloseArea(MSGA * mh)
 {
     XMSG msg;
     MSGH *msgh;
@@ -247,7 +247,7 @@ static sword EXPENTRY SdmCloseArea(MSG * mh)
     return 0;
 }
 
-static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
+static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
 {
     byte msgname[PATHLEN];
     int handle, filemode;
@@ -466,7 +466,7 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
     return msgh;
 }
 
-static sword EXPENTRY SdmCloseMsg(MSGH * msgh)
+static sword _XPENTRY SdmCloseMsg(MSGH * msgh)
 {
     if (InvalidMsgh(msgh))
     {
@@ -490,7 +490,7 @@ static sword EXPENTRY SdmCloseMsg(MSGH * msgh)
     return 0;
 }
 
-static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt)
+static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt)
 {
     unsigned len;
     dword realbytes, got;
@@ -662,7 +662,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
     return got;
 }
 
-static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt)
+static sword _XPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt)
 {
     struct _omsg fmsg;
     byte *s;
@@ -774,7 +774,7 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
     return 0;
 }
 
-static sword EXPENTRY SdmKillMsg(MSG * mh, dword msgnum)
+static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum)
 {
     dword hwm;
     byte temp[PATHLEN];
@@ -840,7 +840,7 @@ static sword EXPENTRY SdmKillMsg(MSG * mh, dword msgnum)
     return 0;
 }
 
-static sword EXPENTRY SdmLock(MSG * mh)
+static sword _XPENTRY SdmLock(MSGA * mh)
 {
     if (InvalidMh(mh))
     {
@@ -851,7 +851,7 @@ static sword EXPENTRY SdmLock(MSG * mh)
     return 0;
 }
 
-static sword EXPENTRY SdmUnlock(MSG * mh)
+static sword _XPENTRY SdmUnlock(MSGA * mh)
 {
     if (InvalidMh(mh))
     {
@@ -868,7 +868,7 @@ sword MSGAPI SdmValidate(byte * name)
     return ((sword) (direxist((char *) name) != FALSE));
 }
 
-static sword EXPENTRY SdmSetCurPos(MSGH * msgh, dword pos)
+static sword _XPENTRY SdmSetCurPos(MSGH * msgh, dword pos)
 {
     if (InvalidMsgh(msgh))
     {
@@ -880,7 +880,7 @@ static sword EXPENTRY SdmSetCurPos(MSGH * msgh, dword pos)
     return 0;
 }
 
-static dword EXPENTRY SdmGetCurPos(MSGH * msgh)
+static dword _XPENTRY SdmGetCurPos(MSGH * msgh)
 {
     if (InvalidMsgh(msgh))
     {
@@ -891,7 +891,7 @@ static dword EXPENTRY SdmGetCurPos(MSGH * msgh)
     return msgh->cur_pos;
 }
 
-static UMSGID EXPENTRY SdmMsgnToUid(MSG * mh, dword msgnum)
+static UMSGID _XPENTRY SdmMsgnToUid(MSGA * mh, dword msgnum)
 {
     if (InvalidMh(mh))
     {
@@ -904,7 +904,7 @@ static UMSGID EXPENTRY SdmMsgnToUid(MSG * mh, dword msgnum)
     return (UMSGID) Mhd->msgnum[msgnum - 1];
 }
 
-static dword EXPENTRY SdmUidToMsgn(MSG * mh, UMSGID umsgid, word type)
+static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type)
 {
     dword  left, right, new;
     UMSGID umsg;
@@ -934,7 +934,7 @@ static dword EXPENTRY SdmUidToMsgn(MSG * mh, UMSGID umsgid, word type)
     return (left > mh->num_msg) ? mh->num_msg : left;
 }
 
-static dword EXPENTRY SdmGetHighWater(MSG * mh)
+static dword _XPENTRY SdmGetHighWater(MSGA * mh)
 {
     MSGH *msgh;
     XMSG msg;
@@ -972,7 +972,7 @@ static dword EXPENTRY SdmGetHighWater(MSG * mh)
     return SdmUidToMsgn(mh, mh->high_water, UID_PREV);
 }
 
-static sword EXPENTRY SdmSetHighWater(MSG * mh, dword hwm)
+static sword _XPENTRY SdmSetHighWater(MSGA * mh, dword hwm)
 {
     if (InvalidMh(mh))
     {
@@ -981,7 +981,7 @@ static sword EXPENTRY SdmSetHighWater(MSG * mh, dword hwm)
 
     /*
      *  Only write it to memory for now.  We'll do a complete update of
-     *  the real HWM in 1.MSG only when doing a MsgCloseArea(), to save
+     *  the real HWM in 1.MSGA only when doing a MsgCloseArea(), to save
      *  time.
      */
 
@@ -994,7 +994,7 @@ static sword EXPENTRY SdmSetHighWater(MSG * mh, dword hwm)
     return 0;
 }
 
-static dword EXPENTRY SdmGetTextLen(MSGH * msgh)
+static dword _XPENTRY SdmGetTextLen(MSGH * msgh)
 {
     dword pos, end;
 
@@ -1029,7 +1029,7 @@ static dword EXPENTRY SdmGetTextLen(MSGH * msgh)
     }
 }
 
-static dword EXPENTRY SdmGetCtrlLen(MSGH * msgh)
+static dword _XPENTRY SdmGetCtrlLen(MSGH * msgh)
 {
     /* If we've already figured out the length of the control info */
 
@@ -1055,7 +1055,7 @@ static sword near _Grab_Clen(MSGH * msgh)
     }
 }
 
-static sword near _SdmRescanArea(MSG * mh)
+static sword near _SdmRescanArea(MSGA * mh)
 {
     FFIND *ff;
     char *temp;
@@ -1248,7 +1248,7 @@ static void MSGAPI Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg)
     }
 }
 
-int EXPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc) (byte * str), byte * kludges)
+int _XPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc) (byte * str), byte * kludges)
 {
     byte temp[PATHLEN], *null = (byte *) "";
     int bytes = 0;
@@ -1304,7 +1304,7 @@ static void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate,
     }
 }
 
-static dword EXPENTRY SdmGetHash(HAREA mh, dword msgnum)
+static dword _XPENTRY SdmGetHash(HAREA mh, dword msgnum)
 {
   XMSG xmsg;
   HMSG msgh;
@@ -1324,7 +1324,7 @@ static dword EXPENTRY SdmGetHash(HAREA mh, dword msgnum)
   return rc;
 }
 
-static UMSGID EXPENTRY SdmGetNextUid(HAREA ha)
+static UMSGID _XPENTRY SdmGetNextUid(HAREA ha)
 {
   if (InvalidMh(ha))
     return 0L;

@@ -20,30 +20,30 @@
 #ifndef __API_SDMP_H__
 #define __API_SDMP_H__
 
-static sword EXPENTRY SdmCloseArea(MSG * mh);
-static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum);
-static sword EXPENTRY SdmCloseMsg(MSGH * msgh);
-static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt);
-static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt);
-static sword EXPENTRY SdmKillMsg(MSG * mh, dword msgnum);
-static sword EXPENTRY SdmLock(MSG * mh);
-static sword EXPENTRY SdmUnlock(MSG * mh);
-static sword EXPENTRY SdmSetCurPos(MSGH * msgh, dword pos);
-static dword EXPENTRY SdmGetCurPos(MSGH * msgh);
-static UMSGID EXPENTRY SdmMsgnToUid(MSG * mh, dword msgnum);
-static dword EXPENTRY SdmUidToMsgn(MSG * mh, UMSGID umsgid, word type);
-static dword EXPENTRY SdmGetHighWater(MSG * mh);
-static sword EXPENTRY SdmSetHighWater(MSG * sq, dword hwm);
-static dword EXPENTRY SdmGetTextLen(MSGH * msgh);
-static dword EXPENTRY SdmGetCtrlLen(MSGH * msgh);
-static UMSGID EXPENTRY SdmGetNextUid(HAREA ha);
-static dword  EXPENTRY SdmGetHash(HAREA mh, dword msgnum);
+static sword _XPENTRY SdmCloseArea(MSGA * mh);
+static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum);
+static sword _XPENTRY SdmCloseMsg(MSGH * msgh);
+static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt);
+static sword _XPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt);
+static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum);
+static sword _XPENTRY SdmLock(MSGA * mh);
+static sword _XPENTRY SdmUnlock(MSGA * mh);
+static sword _XPENTRY SdmSetCurPos(MSGH * msgh, dword pos);
+static dword _XPENTRY SdmGetCurPos(MSGH * msgh);
+static UMSGID _XPENTRY SdmMsgnToUid(MSGA * mh, dword msgnum);
+static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type);
+static dword _XPENTRY SdmGetHighWater(MSGA * mh);
+static sword _XPENTRY SdmSetHighWater(MSGA * sq, dword hwm);
+static dword _XPENTRY SdmGetTextLen(MSGH * msgh);
+static dword _XPENTRY SdmGetCtrlLen(MSGH * msgh);
+static UMSGID _XPENTRY SdmGetNextUid(HAREA ha);
+static dword  _XPENTRY SdmGetHash(HAREA mh, dword msgnum);
 
 
 static void Convert_Fmsg_To_Xmsg(struct _omsg *fmsg, XMSG * msg, word def_zone);
 static void Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg);
 static void Init_Xmsg(XMSG * msg);
-static sword near _SdmRescanArea(MSG * mh);
+static sword near _SdmRescanArea(MSGA * mh);
 static sword near _Grab_Clen(MSGH * msgh);
 static void _stdc WriteToFd(byte * str);
 static void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate, byte * asciidate);

@@ -53,7 +53,7 @@ static char rcs_id[]="$Id$";
 
 /* Set the "current position" pointer in a message handle */
 
-sword EXPENTRY apiSquishSetCurPos(HMSG hmsg, dword dwOfs)
+sword _XPENTRY apiSquishSetCurPos(HMSG hmsg, dword dwOfs)
 {
   if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
     return -1;
@@ -66,7 +66,7 @@ sword EXPENTRY apiSquishSetCurPos(HMSG hmsg, dword dwOfs)
 
 /* Return the current read position within a message */
 
-dword EXPENTRY apiSquishGetCurPos(HMSG hmsg)
+dword _XPENTRY apiSquishGetCurPos(HMSG hmsg)
 {
   if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
     return (dword)-1;
@@ -77,7 +77,7 @@ dword EXPENTRY apiSquishGetCurPos(HMSG hmsg)
 
 /* Return the length of the text body of this message */
 
-dword EXPENTRY apiSquishGetTextLen(HMSG hmsg)
+dword _XPENTRY apiSquishGetTextLen(HMSG hmsg)
 {
   if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
     return (dword)-1L;
@@ -90,7 +90,7 @@ dword EXPENTRY apiSquishGetTextLen(HMSG hmsg)
 
 /* Return the length of this message's control information */
 
-dword EXPENTRY apiSquishGetCtrlLen(HMSG hmsg)
+dword _XPENTRY apiSquishGetCtrlLen(HMSG hmsg)
 {
   if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
     return (dword)-1L;
@@ -101,7 +101,7 @@ dword EXPENTRY apiSquishGetCtrlLen(HMSG hmsg)
 
 /* Return the number of the high water marker */
 
-dword EXPENTRY apiSquishGetHighWater(HAREA ha)
+dword _XPENTRY apiSquishGetHighWater(HAREA ha)
 {
   if (MsgInvalidHarea(ha))
     return (dword)-1L;
@@ -114,7 +114,7 @@ dword EXPENTRY apiSquishGetHighWater(HAREA ha)
 
 /* Set the high water marker for this area */
 
-sword EXPENTRY apiSquishSetHighWater(HAREA ha, dword dwMsg)
+sword _XPENTRY apiSquishSetHighWater(HAREA ha, dword dwMsg)
 {
   if (MsgInvalidHarea(ha))
     return -1;
@@ -151,7 +151,7 @@ sword EXPENTRY apiSquishSetHighWater(HAREA ha, dword dwMsg)
 
 /* Function to set the highest/skip message numbers for a *.SQ? base */
 
-void EXPENTRY apiSquishSetMaxMsg(HAREA ha, dword dwMaxMsgs, dword dwSkipMsgs, dword dwMaxDays)
+void _XPENTRY apiSquishSetMaxMsg(HAREA ha, dword dwMaxMsgs, dword dwSkipMsgs, dword dwMaxDays)
 {
   if (MsgInvalidHarea(ha))
     return;
@@ -186,7 +186,7 @@ void EXPENTRY apiSquishSetMaxMsg(HAREA ha, dword dwMaxMsgs, dword dwSkipMsgs, dw
   _SquishBaseThreadUnlock(ha);
 }
 
-void EXPENTRY apiSquishGetMaxMsg(HAREA ha, dword *dwMaxMsgs, dword *dwSkipMsgs, dword *dwMaxDays)
+void _XPENTRY apiSquishGetMaxMsg(HAREA ha, dword *dwMaxMsgs, dword *dwSkipMsgs, dword *dwMaxDays)
 {
   if (MsgInvalidHarea(ha))
     return;
@@ -203,7 +203,7 @@ void EXPENTRY apiSquishGetMaxMsg(HAREA ha, dword *dwMaxMsgs, dword *dwSkipMsgs, 
 
 /* Hash function used for calculating the hashes in the .sqi file */
 
-dword EXPENTRY SquishHash(byte  *f)
+dword _XPENTRY SquishHash(byte  *f)
 {
   dword hash=0, g;
 

@@ -240,7 +240,7 @@ unsigned _SquishExclusiveEnd(HAREA ha)
 
 /* Lock this message area for exclusive access */
 
-sword EXPENTRY apiSquishLock(HAREA ha)
+sword _XPENTRY apiSquishLock(HAREA ha)
 {
   _SquishBaseThreadLock(ha);
 
@@ -281,7 +281,7 @@ sword EXPENTRY apiSquishLock(HAREA ha)
 
 /* Unlock an area that was opened for exclusive access */
 
-sword EXPENTRY apiSquishUnlock(HAREA ha)
+sword _XPENTRY apiSquishUnlock(HAREA ha)
 {
   _SquishBaseThreadLock(ha);
 

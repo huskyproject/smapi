@@ -61,7 +61,7 @@ static void alrm(int x)
 {}     
 #endif
 
-sword EXPENTRY MsgOpenApi(struct _minf *minf)
+sword _XPENTRY MsgOpenApi(struct _minf *minf)
 {
 #ifdef UNIX
     struct sigaction alrmact;
@@ -95,13 +95,13 @@ sword EXPENTRY MsgOpenApi(struct _minf *minf)
     return 0;
 }
 
-sword EXPENTRY MsgCloseApi(void)
+sword _XPENTRY MsgCloseApi(void)
 {
     _MsgCloseApi();
     return 0;
 }
 
-MSG *EXPENTRY MsgOpenArea(byte * name, word mode, word type)
+MSGA *_XPENTRY MsgOpenArea(byte * name, word mode, word type)
 {
     if (type & MSGTYPE_SQUISH) return SquishOpenArea(name, mode, type);
     else if (type & MSGTYPE_JAM) return JamOpenArea(name, mode, type);
@@ -121,7 +121,7 @@ int MsgDeleteBase(char * name, word type)
     else return SdmDeleteBase(name);
 }
 
-sword EXPENTRY MsgValidate(word type, byte * name)
+sword _XPENTRY MsgValidate(word type, byte * name)
 {
     if (type & MSGTYPE_SQUISH) return SquishValidate(name);
     else if (type & MSGTYPE_JAM) return JamValidate(name);
@@ -148,7 +148,7 @@ sword MSGAPI InvalidMsgh(MSGH * msgh)
 
 /* Check to ensure that a message area handle is valid. */
 
-sword MSGAPI InvalidMh(MSG * mh)
+sword MSGAPI InvalidMh(MSGA * mh)
 {
     if (mh == NULL || mh->id != MSGAPI_ID)
     {
@@ -253,7 +253,7 @@ static word near _CopyToBuf(byte * p, byte * out, byte ** end)
     return len;
 }
 
-byte *EXPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length)
+byte *_XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length)
 {
     byte *cbuf, *end;
 
@@ -292,7 +292,7 @@ byte *EXPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length)
     return cbuf;
 }
 
-byte *EXPENTRY GetCtrlToken(byte *where, byte *what)
+byte *_XPENTRY GetCtrlToken(byte *where, byte *what)
 {
     byte *end, *out;
     unsigned int len;
@@ -320,7 +320,7 @@ byte *EXPENTRY GetCtrlToken(byte *where, byte *what)
     return out;
 }
 
-void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
+void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
 {
     byte *p, *s;
 
@@ -401,7 +401,7 @@ void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
     }
 }
 
-byte *EXPENTRY CvtCtrlToKludge(byte * ctrl)
+byte *_XPENTRY CvtCtrlToKludge(byte * ctrl)
 {
     byte *from, *to, *buf;
     size_t clen;
@@ -443,7 +443,7 @@ byte *EXPENTRY CvtCtrlToKludge(byte * ctrl)
     return buf;
 }
 
-void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
+void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
 {
     byte *p;
     unsigned int len = strlen(what);
@@ -466,7 +466,7 @@ void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
     }
 }
 
-word EXPENTRY NumKludges(char *txt)
+word _XPENTRY NumKludges(char *txt)
 {
     word nk = 0;
     char *p;

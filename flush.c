@@ -36,10 +36,6 @@
 
 #ifdef OS2
 
-#ifdef EXPENTRY
-#undef EXPENTRY
-#endif
-
 #define INCL_NOPM
 #include <os2.h>
 

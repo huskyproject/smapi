@@ -647,7 +647,7 @@ static unsigned near _SquishUpdateIndex(HMSG hmsg, PXMSG pxm)
 
 /* Write a message to a Squish base */
 
-sword EXPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
+sword _XPENTRY apiSquishWriteMsg(HMSG hmsg, word fAppend, PXMSG pxm,
                                byte  *szTxt, dword dwTxtLen,
                                dword dwTxtTotal,
                                dword dwCtrlLen, byte  *szCtrl)

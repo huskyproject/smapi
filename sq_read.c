@@ -206,7 +206,7 @@ static dword near _SquishReadTxt(HMSG hmsg, byte  *szTxt, dword dwTxtLen,
 
 /* Read a message from the Squish base */
 
-dword EXPENTRY apiSquishReadMsg(HMSG hmsg, PXMSG pxm, dword dwOfs,
+dword _XPENTRY apiSquishReadMsg(HMSG hmsg, PXMSG pxm, dword dwOfs,
                               dword dwTxtLen, byte  *szTxt,
                               dword dwCtrlLen, byte  *szCtrl)
 {

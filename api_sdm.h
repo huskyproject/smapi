@@ -22,13 +22,13 @@
 
 struct _msgh
 {
-    MSG *sq;
+    MSGA *sq;
     dword id;              /* Must always equal MSGH_ID */
 
     dword bytes_written;
     dword cur_pos;
 
-    /* For *.MSG only! */
+    /* For *.MSGA only! */
 
     sdword clen;
     byte *ctrl;
@@ -40,7 +40,7 @@ struct _msgh
 
 
 /*
- *  This following junk is unique to *.MSG!
+ *  This following junk is unique to *.MSGA!
  *  NO APPLICATIONS SHOULD USE THESE!
  */
 
@@ -57,7 +57,7 @@ struct _sdmdata
     word msgs_open;
 };
 
-int EXPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc)(byte * str), byte * kludges);
+int _XPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc)(byte * str), byte * kludges);
 
 int read_omsg(int, struct _omsg *);
 int write_omsg(int, struct _omsg *);

@@ -52,18 +52,18 @@ static void freejamsubfield(JAMSUBFIELD2LIST *subfield)
   if (subfield) pfree(subfield);
 }
 
-MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
+MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
 {
-   MSG *jm;
+   MSGA *jm;
 
-   jm = palloc(sizeof(MSG));
+   jm = palloc(sizeof(MSGA));
    if (jm == NULL)
    {
       msgapierr = MERR_NOMEM;
       return NULL;
    }
 
-   memset(jm, '\0', sizeof(MSG));
+   memset(jm, '\0', sizeof(MSGA));
 
    jm->id = MSGAPI_ID;
 
@@ -94,7 +94,7 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
 
    memset((byte *) jm->apidata, '\0', sizeof(JAMBASE));
 
-   jm->len = sizeof(MSG);
+   jm->len = sizeof(MSGA);
 
    jm->num_msg = 0;
    jm->high_msg = 0;
@@ -123,7 +123,7 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
    return jm;
 }
 
-static sword EXPENTRY JamCloseArea(MSG * jm)
+static sword _XPENTRY JamCloseArea(MSGA * jm)
 {
    dword i;
 
@@ -161,7 +161,7 @@ static sword EXPENTRY JamCloseArea(MSG * jm)
    return 0;
 }
 
-static MSGH *EXPENTRY JamOpenMsg(MSG * jm, word mode, dword msgnum)
+static MSGH *_XPENTRY JamOpenMsg(MSGA * jm, word mode, dword msgnum)
 {
    struct _msgh *msgh;
 
@@ -219,7 +219,7 @@ static MSGH *EXPENTRY JamOpenMsg(MSG * jm, word mode, dword msgnum)
    return (MSGH *) msgh;
 }
 
-static sword EXPENTRY JamCloseMsg(MSGH * msgh)
+static sword _XPENTRY JamCloseMsg(MSGH * msgh)
 {
    if (InvalidMsgh(msgh))
    {
@@ -286,7 +286,7 @@ static int Jam_OpenTxtFile(JAMBASE *jambase)
    return 1;
 }
 
-static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt)
+static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt)
 {
    JAMSUBFIELD2ptr SubField;
    dword SubPos, bytesread;
@@ -419,7 +419,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
    return bytesread;
 }
 
-static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
+static sword _XPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
              byte * text, dword textlen, dword totlen, dword clen, byte * ctxt)
 {
    /* not supported append if JAM !!!
@@ -431,7 +431,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
    JAMIDXREC      jamidxNew;
    JAMSUBFIELD2LISTptr subfieldNew;
    XMSG           msg_old;
-   MSG            *jm;
+   MSGA            *jm;
    dword	      x = 0;
 
    char           ch = 0;
@@ -713,7 +713,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
 }
 
 
-static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
+static sword _XPENTRY JamKillMsg(MSGA * jm, dword msgnum)
 {
    JAMIDXREC jamidx;
    JAMHDR    jamhdr;
@@ -766,7 +766,7 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
    return 0;
 }
 
-static sword EXPENTRY JamLock(MSG * jm)
+static sword _XPENTRY JamLock(MSGA * jm)
 {
    if (InvalidMh(jm)) {
       return -1;
@@ -786,7 +786,7 @@ static sword EXPENTRY JamLock(MSG * jm)
    return 0;
 }
 
-static sword EXPENTRY JamUnlock(MSG * jm)
+static sword _XPENTRY JamUnlock(MSGA * jm)
 {
    if (InvalidMh(jm)) {
       return -1;
@@ -805,7 +805,7 @@ static sword EXPENTRY JamUnlock(MSG * jm)
    return 0;
 }
 
-static sword EXPENTRY JamSetCurPos(MSGH * msgh, dword pos)
+static sword _XPENTRY JamSetCurPos(MSGH * msgh, dword pos)
 {
     if (InvalidMsgh(msgh))
         return -1;
@@ -814,7 +814,7 @@ static sword EXPENTRY JamSetCurPos(MSGH * msgh, dword pos)
     return 0;
 }
 
-static dword EXPENTRY JamGetCurPos(MSGH * msgh)
+static dword _XPENTRY JamGetCurPos(MSGH * msgh)
 {
     if (InvalidMsgh(msgh))
         return -1;
@@ -822,7 +822,7 @@ static dword EXPENTRY JamGetCurPos(MSGH * msgh)
     return msgh->cur_pos;
 }
 
-static UMSGID EXPENTRY JamMsgnToUid(MSG * jm, dword msgnum)
+static UMSGID _XPENTRY JamMsgnToUid(MSGA * jm, dword msgnum)
 {
     if (InvalidMh(jm))
         return (UMSGID) -1;
@@ -837,7 +837,7 @@ static UMSGID EXPENTRY JamMsgnToUid(MSG * jm, dword msgnum)
     return (UMSGID) (Jmd->actmsg[msgnum - 1].IdxOffset / 8 + Jmd->HdrInfo.BaseMsgNum);
 }
 
-static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
+static dword _XPENTRY JamUidToMsgn(MSGA * jm, UMSGID umsgid, word type)
 {
    dword  msgnum, left, right, new;
    UMSGID umsg;
@@ -870,7 +870,7 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    return (left > jm->num_msg) ? jm->num_msg : left;
 }
 
-static dword EXPENTRY JamGetHighWater(MSG * jm)
+static dword _XPENTRY JamGetHighWater(MSGA * jm)
 {
    if (InvalidMh(jm))
       return -1L;
@@ -878,7 +878,7 @@ static dword EXPENTRY JamGetHighWater(MSG * jm)
    return JamUidToMsgn(jm, jm->high_water, UID_PREV);
 }
 
-static sword EXPENTRY JamSetHighWater(MSG * jm, dword hwm)
+static sword _XPENTRY JamSetHighWater(MSGA * jm, dword hwm)
 {
    if (InvalidMh(jm))
       return -1L;
@@ -891,12 +891,12 @@ static sword EXPENTRY JamSetHighWater(MSG * jm, dword hwm)
    return 0;
 }
 
-static dword EXPENTRY JamGetTextLen(MSGH * msgh)
+static dword _XPENTRY JamGetTextLen(MSGH * msgh)
 {
    return (msgh->Hdr.TxtLen+msgh->lclen);
 }
 
-static dword EXPENTRY JamGetCtrlLen(MSGH * msgh)
+static dword _XPENTRY JamGetCtrlLen(MSGH * msgh)
 {
    return (msgh->clen);
 }
@@ -1083,7 +1083,7 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
    return 1;
 }
 
-static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename)
+static sword MSGAPI Jam_OpenBase(MSGA *jm, word *mode, unsigned char *basename)
 {
    Jmd->BaseName = (unsigned char*)palloc(strlen(basename)+1);
    strcpy(Jmd->BaseName, basename);
@@ -1099,7 +1099,7 @@ static sword MSGAPI Jam_OpenBase(MSG *jm, word *mode, unsigned char *basename)
    return 1;
 }
 
-static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
+static MSGH *Jam_OpenMsg(MSGA * jm, word mode, dword msgnum)
 {
    struct _msgh *msgh;
 /*   JAMIDXREC    idx; */
@@ -1204,7 +1204,7 @@ JAMSUBFIELD2ptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what)
    return NULL;
 }
 
-char *Jam_GetKludge(MSG *jm, dword msgnum, word what)
+char *Jam_GetKludge(MSGA *jm, dword msgnum, word what)
 {
    JAMSUBFIELD2LISTptr subf;
    JAMSUBFIELD2ptr subfptr;
@@ -1265,7 +1265,7 @@ char *Jam_GetKludge(MSG *jm, dword msgnum, word what)
    return NULL;
 }
 
-JAMHDR *Jam_GetHdr(MSG *jm, dword msgnum)
+JAMHDR *Jam_GetHdr(MSGA *jm, dword msgnum)
 {
    if (msgnum == MSGNUM_CUR) {
       msgnum = jm->cur_msg;
@@ -1304,7 +1304,7 @@ JAMHDR *Jam_GetHdr(MSG *jm, dword msgnum)
    return &(Jmd->actmsg[msgnum-1].hdr);
 }
 
-void Jam_WriteHdr(MSG *jm, JAMHDR *jamhdr, dword msgnum)
+void Jam_WriteHdr(MSGA *jm, JAMHDR *jamhdr, dword msgnum)
 {
    if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
 
@@ -1329,7 +1329,7 @@ void Jam_ActiveMsgs(JAMBASEptr jambase)
    read_allidx(jambase);
 }
 
-dword Jam_PosHdrMsg(MSG * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr)
+dword Jam_PosHdrMsg(MSGA * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr)
 {
    if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
 
@@ -1347,13 +1347,13 @@ dword Jam_PosHdrMsg(MSG * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr)
 }
 
 
-static int near Jam_Lock(MSG *jm, int force)
+static int near Jam_Lock(MSGA *jm, int force)
 {
     return !(mi.haveshare && ((force) ? waitlock(Jmd->HdrHandle, 0L, 1L)
                                       :     lock(Jmd->HdrHandle, 0L, 1L) == -1));
 }
 
-static void near Jam_Unlock(MSG * jm)
+static void near Jam_Unlock(MSGA * jm)
 {
     if (mi.haveshare)
     {
@@ -2002,7 +2002,7 @@ dword Jam_Crc32(unsigned char* buff, dword len)
 }
 
 
-static dword EXPENTRY JamGetHash(HAREA mh, dword msgnum)
+static dword _XPENTRY JamGetHash(HAREA mh, dword msgnum)
 {
   XMSG xmsg;
   HMSG msgh;
@@ -2022,7 +2022,7 @@ static dword EXPENTRY JamGetHash(HAREA mh, dword msgnum)
   return rc;
 }
 
-static UMSGID EXPENTRY JamGetNextUid(HAREA ha)
+static UMSGID _XPENTRY JamGetNextUid(HAREA ha)
 {
   if (InvalidMh(ha))
     return 0L;

@@ -85,7 +85,7 @@ struct _browse
 
     dword msgn;
 
-    MSG *sq;
+    MSGA *sq;
     MSGH *m;
     XMSG msg;
     word matched;

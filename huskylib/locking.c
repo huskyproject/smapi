@@ -42,10 +42,6 @@ sword far pascal shareloaded(void)
 
 #if (defined (__WATCOMC__) || defined(__EMX__) || defined(__IBMC__)) && defined(OS2)
 
-#ifdef EXPENTRY
-#undef EXPENTRY
-#endif
-
 #include <os2.h>
 
 int lock(int handle, long ofs, long length)
@@ -417,9 +413,6 @@ int sopen(const char *name, int oflag, int ishared, int mode)
 
 #ifdef OS2
 #define INCL_DOSDATETIME
-#ifdef EXPENTRY
-#undef EXPENTRY
-#endif
 #include <os2.h>
 #endif
 

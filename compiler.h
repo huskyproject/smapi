@@ -54,7 +54,7 @@
 
 #ifdef MSDOS
 
-#define EXPENTRY pascal
+#define _XPENTRY pascal
 
 /* WATCOM has both M_I86xxx and __modeltype__ macros */
 
@@ -200,8 +200,8 @@
 /* #include <conio.h> */
 #define mysleep(x) delay(x);
 
-#ifndef EXPENTRY
-#define EXPENTRY
+#ifndef _XPENTRY
+#define _XPENTRY
 #endif
 
 #define mode_t int
@@ -249,7 +249,7 @@ int lock(int handle, long ofs, long length);
 /* just don't use 16 bit OS/2, we doubt that it still works */
 #define farread read
 #define farwrite write
-#define EXPENTRY pascal far
+#define _XPENTRY pascal far
 #define mysleep(x) DosSleep(1000L*(x))
 #endif
 
@@ -269,7 +269,7 @@ int lock(int handle, long ofs, long length);
 #define strcasecmp stricmp
 #define strncasecmp strnicmp
 
-#define EXPENTRY _System
+#define _XPENTRY _System
 #define mysleep(x) sleep(x)
 #define mode_t int
 
@@ -294,7 +294,7 @@ int lock(int handle, long ofs, long length);
 #define strcasecmp stricmp
 #define strncasecmp strnicmp
 
-#define EXPENTRY pascal
+#define _XPENTRY pascal
 #define mode_t int
 
 #elif defined(__HIGHC__)
@@ -327,7 +327,7 @@ int lock(int handle, long ofs, long length);
 
 
 
-#define EXPENTRY
+#define _XPENTRY
 
 #elif defined(__MINGW32__)
 
@@ -385,8 +385,8 @@ int lock(int handle, long ofs, long length);
 #define SH_DENYNO 0x40
 #endif
 
-#ifndef EXPENTRY
-#define EXPENTRY
+#ifndef _XPENTRY
+#define _XPENTRY
 #endif
 
 #elif defined(__TURBOC__) && defined(WINNT)
@@ -405,7 +405,7 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
-#define EXPENTRY
+#define _XPENTRY
 
 #define strcasecmp stricmp
 #define strncasecmp strncmpi
@@ -436,7 +436,7 @@ int lock(int handle, long ofs, long length);
 #define strcasecmp stricmp
 #define strncasecmp strnicmp
 
-#define EXPENTRY
+#define _XPENTRY
 
 #define HAS_SNPRINTF  1
 #define HAS_VSNPRINTF 1
@@ -457,7 +457,7 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
-#define EXPENTRY
+#define _XPENTRY
 
 #elif defined(__TURBOC__) && defined(__OS2__)
 
@@ -475,8 +475,8 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
-#ifndef EXPENTRY
-#define EXPENTRY __syscall
+#ifndef _XPENTRY
+#define _XPENTRY __syscall
 #endif
 #define mysleep(x) sleep(x);
 
@@ -506,7 +506,7 @@ int lock(int handle, long ofs, long length);
 #define farwrite write
 #define mysleep(x) DosSleep(1000L*(x))
 
-#define EXPENTRY pascal far
+#define _XPENTRY pascal far
 
 
 #elif defined(UNIX)
@@ -556,7 +556,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define SH_DENYNO 0
 #define SH_DENYALL 1
 
-#define EXPENTRY
+#define _XPENTRY
 
 /* Other OS's may sleep with other functions */
 
@@ -632,7 +632,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define SH_DENYNONE 0
 #define sopen(a,b,c,d) open((a),(b),(d))
 
-#define EXPENTRY
+#define _XPENTRY
 
 #elif defined(_MSC_VER) && (_MSC_VER >= 1200)
 #undef SMAPI_EXT
@@ -656,7 +656,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define far
 #define _fast
 #define near
-#define EXPENTRY
+#define _XPENTRY
 #define strcasecmp stricmp
 #define strncasecmp strnicmp
 #define sleep(x) Sleep(1000L*(x))

@@ -612,7 +612,7 @@ static unsigned near _SquishRemoveAreaList(HAREA haThis)
 
 /* Close an open message area */
 
-sword EXPENTRY apiSquishCloseArea(HAREA ha)
+sword _XPENTRY apiSquishCloseArea(HAREA ha)
 {
   if (MsgInvalidHarea(ha))
     return -1;

@@ -71,10 +71,10 @@ struct _xmsg;
 struct _netaddr;
 
 #if  defined(__MINGW32__) || defined(__NT__)
-#define MSG MSGAPIMSG
+#define MSGA MSGAPIMSG
 #endif
 
-typedef struct _msgapi MSG;
+typedef struct _msgapi MSGA;
 typedef struct _msgapi *HAREA;
 typedef struct _msgh MSGH;
 typedef struct _msgh *HMSG;
@@ -224,26 +224,26 @@ struct _msgapi
 
     struct _apifuncs
     {
-        sword(EXPENTRY * CloseArea) (HAREA mh);
-        MSGH *(EXPENTRY * OpenMsg) (HAREA mh, word mode, dword n);
-        sword(EXPENTRY * CloseMsg) (MSGH * msgh);
-        dword(EXPENTRY * ReadMsg) (MSGH * msgh, XMSG * msg, dword ofs, dword bytes, byte * text, dword cbyt, byte * ctxt);
-        sword(EXPENTRY * WriteMsg) (MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt);
-        sword(EXPENTRY * KillMsg) (HAREA mh, dword msgnum);
-        sword(EXPENTRY * Lock) (HAREA mh);
-        sword(EXPENTRY * Unlock) (HAREA mh);
-        sword(EXPENTRY * SetCurPos) (MSGH * msgh, dword pos);
-        dword(EXPENTRY * GetCurPos) (MSGH * msgh);
-        UMSGID(EXPENTRY * MsgnToUid) (HAREA mh, dword msgnum);
-        dword(EXPENTRY * UidToMsgn) (HAREA mh, UMSGID umsgid, word type);
-        dword(EXPENTRY * GetHighWater) (HAREA mh);
-        sword(EXPENTRY * SetHighWater) (HAREA mh, dword hwm);
-        dword(EXPENTRY * GetTextLen) (MSGH * msgh);
-        dword(EXPENTRY * GetCtrlLen) (MSGH * msgh);
+        sword(_XPENTRY * CloseArea) (HAREA mh);
+        MSGH *(_XPENTRY * OpenMsg) (HAREA mh, word mode, dword n);
+        sword(_XPENTRY * CloseMsg) (MSGH * msgh);
+        dword(_XPENTRY * ReadMsg) (MSGH * msgh, XMSG * msg, dword ofs, dword bytes, byte * text, dword cbyt, byte * ctxt);
+        sword(_XPENTRY * WriteMsg) (MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt);
+        sword(_XPENTRY * KillMsg) (HAREA mh, dword msgnum);
+        sword(_XPENTRY * Lock) (HAREA mh);
+        sword(_XPENTRY * Unlock) (HAREA mh);
+        sword(_XPENTRY * SetCurPos) (MSGH * msgh, dword pos);
+        dword(_XPENTRY * GetCurPos) (MSGH * msgh);
+        UMSGID(_XPENTRY * MsgnToUid) (HAREA mh, dword msgnum);
+        dword(_XPENTRY * UidToMsgn) (HAREA mh, UMSGID umsgid, word type);
+        dword(_XPENTRY * GetHighWater) (HAREA mh);
+        sword(_XPENTRY * SetHighWater) (HAREA mh, dword hwm);
+        dword(_XPENTRY * GetTextLen) (MSGH * msgh);
+        dword(_XPENTRY * GetCtrlLen) (MSGH * msgh);
         /* Version 1 Functions */
-        UMSGID (EXPENTRY * GetNextUid)(HAREA harea);
+        UMSGID (_XPENTRY * GetNextUid)(HAREA harea);
         /* Version 2 Functions */
-        dword  (EXPENTRY * GetHash)(HAREA harea, dword msgnum);
+        dword  (_XPENTRY * GetHash)(HAREA harea, dword msgnum);
     } *api;
 
     /*
@@ -275,7 +275,7 @@ struct _msgapi
 #if !defined(MSGAPI_HANDLERS) && !defined(NO_MSGH_DEF)
 struct _msgh
 {
-    MSG *sq;
+    MSGA *sq;
     dword id;
 
     dword bytes_written;
@@ -375,38 +375,38 @@ extern struct _minf _stdc mi;
 
 #define MsgCvtFTSCDateToBinary(a, b) ASCII_Date_To_Binary(a,b)
 
-SMAPI_EXT sword EXPENTRY MsgOpenApi(struct _minf *minf);
-SMAPI_EXT sword EXPENTRY MsgCloseApi(void);
+SMAPI_EXT sword _XPENTRY MsgOpenApi(struct _minf *minf);
+SMAPI_EXT sword _XPENTRY MsgCloseApi(void);
 
-SMAPI_EXT MSG *EXPENTRY MsgOpenArea(byte * name, word mode, word type);
+SMAPI_EXT MSGA *_XPENTRY MsgOpenArea(byte * name, word mode, word type);
 SMAPI_EXT int MsgDeleteBase(char * name, word type);
-sword EXPENTRY MsgValidate(word type, byte * name);
-sword EXPENTRY MsgBrowseArea(BROWSE * b);
+sword _XPENTRY MsgValidate(word type, byte * name);
+sword _XPENTRY MsgBrowseArea(BROWSE * b);
 
 sword MSGAPI InvalidMsgh(MSGH * msgh);
-sword MSGAPI InvalidMh(MSG * mh);
+sword MSGAPI InvalidMh(MSGA * mh);
 
-void EXPENTRY SquishSetMaxMsg(MSG * sq, dword max_msgs, dword skip_msgs, dword age);
-SMAPI_EXT dword EXPENTRY SquishHash(byte * f);
+void _XPENTRY SquishSetMaxMsg(MSGA * sq, dword max_msgs, dword skip_msgs, dword age);
+SMAPI_EXT dword _XPENTRY SquishHash(byte * f);
 
-MSG *MSGAPI SdmOpenArea(byte * name, word mode, word type);
+MSGA *MSGAPI SdmOpenArea(byte * name, word mode, word type);
 sword MSGAPI SdmValidate(byte * name);
 int SdmDeleteBase(char * name);
 
-MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type);
+MSGA *MSGAPI SquishOpenArea(byte * name, word mode, word type);
 sword MSGAPI SquishValidate(byte * name);
 int SquishDeleteBase(char * name);
 
-MSG *MSGAPI JamOpenArea(byte * name, word mode, word type);
+MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type);
 sword MSGAPI JamValidate(byte * name);
 int JamDeleteBase(char * name);
 
-SMAPI_EXT byte *EXPENTRY CvtCtrlToKludge(byte * ctrl);
-SMAPI_EXT byte *EXPENTRY GetCtrlToken(byte * where, byte * what);
-SMAPI_EXT byte *EXPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length);
-void EXPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
-word EXPENTRY NumKludges(char *txt);
-SMAPI_EXT void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
+SMAPI_EXT byte *_XPENTRY CvtCtrlToKludge(byte * ctrl);
+SMAPI_EXT byte *_XPENTRY GetCtrlToken(byte * where, byte * what);
+SMAPI_EXT byte *_XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length);
+void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
+word _XPENTRY NumKludges(char *txt);
+SMAPI_EXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
 
 #if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__DJGPP__) && !defined(__NT__) && !defined(NT) && !defined(__MINGW32__)
 sword far pascal farread(sword handle, byte far * buf, word len);

@@ -33,9 +33,6 @@
 #include "ffind.h"
 
 #ifdef OS2
-#ifdef EXPENTRY
-#undef EXPENTRY
-#endif
 #define INCL_NOPM
 #define INCL_DOS
 #include <os2.h>

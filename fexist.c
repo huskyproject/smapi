@@ -206,9 +206,6 @@ int _fast direxist(const char *directory)
 
 #elif defined(OS2) || defined(__NT__) || defined(__MINGW32__)
 
-#ifdef EXPENTRY
-#undef EXPENTRY
-#endif
 #ifdef OS2
 #define INCL_DOSFILEMGR
 #include <os2.h>

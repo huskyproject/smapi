@@ -562,7 +562,7 @@ static unsigned near _SquishOpenMsgCreate(HMSG hmsg, dword dwMsg)
 
 /* Open a Squish message */
 
-HMSG EXPENTRY apiSquishOpenMsg(HAREA ha, word wMode, dword dwMsg)
+HMSG _XPENTRY apiSquishOpenMsg(HAREA ha, word wMode, dword dwMsg)
 {
   HMSG hmsg;
   unsigned fOpened=FALSE;
@@ -678,7 +678,7 @@ static unsigned near _SquishCloseRemoveList(HMSG hmsg)
 
 /* Close an open message handle */
 
-sword EXPENTRY apiSquishCloseMsg(HMSG hmsg)
+sword _XPENTRY apiSquishCloseMsg(HMSG hmsg)
 {
   if (MsgInvalidHmsg(hmsg))
     return -1;
