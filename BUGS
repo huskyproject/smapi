@@ -2,3 +2,7 @@ Serguei Revtov (sir@cb.tver.ru):
 
 Jam api doesn't work on SUNs. There may be references to odd address
 in some messages.
+
+Max Levenkov (sackett@mail.ru):
+
+Damaged end parts of messages in JAM netmail after packing (see .out packets)

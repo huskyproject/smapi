@@ -308,8 +308,8 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          offset -= msgh->Hdr.TxtLen;
          if (bytes > msgh->lclen) bytes = msgh->lclen;
          if (offset < msgh->lclen) {
-            strncpy(text, msgh->lctrl+offset, bytes-offset);
             bytesread = bytes-offset;
+            strncpy(text, msgh->lctrl+offset, bytesread);
          } else {
          } /* endif */
          msgh->cur_pos += bytesread;
@@ -1277,7 +1277,7 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr
 
    ctrlp = ctrl;
 
-   ptr = (unsigned char *)strchr((char *)ctrlp, '\1');
+   ptr = (unsigned char *)strchr((char *)ctrlp, '\001');
 
    while (ptr) {
       *ptr = '\0';
@@ -1291,7 +1291,7 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr
       }
       ptr++;
       ctrlp = ptr;
-      ptr = (unsigned char *)strchr(ctrlp, '\1');
+      ptr = (unsigned char *)strchr(ctrlp, '\001');
    }
 
    if (*ctrlp && (SubFieldCur = StrToSubfield(ctrlp, &len))) {
@@ -1334,10 +1334,10 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned ch
    first = text;
    while (*first) {
       ptr = (unsigned char *)strchr(first, '\r');
-      if (ptr) *ptr = 0;
-      if (strstr(first, "SEEN-BY: ") == (char*)first  || *first == '\1') {
+      if (ptr) *ptr = '\0';
+      if (strstr(first, "SEEN-BY: ") == (char*)first  || *first == '\001') {
 
-         if (*first == '\1') first++;
+         if (*first == '\001') first++;
 
          if ((SubFieldCur = StrToSubfield(first, &clen))) {
             SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
@@ -1389,18 +1389,18 @@ void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
    strAddr = (char*)calloc(len+1, sizeof(char*));
    if (!strAddr) return;
 
-   memset(netAddr, 0, sizeof(NETADDR));
+   memset(netAddr, '\0', sizeof(NETADDR));
 
 
    strncpy(strAddr, str, len);
 
    ptr = strchr(strAddr, '@');
 
-   if (ptr)  *ptr = 0;
+   if (ptr)  *ptr = '\0';
 
    ptr = strchr(strAddr, ':');
    if (ptr) {
-      memset(ch, 0, sizeof(ch));
+      memset(ch, '\0', sizeof(ch));
       strncpy(ch, strAddr, ptr-strAddr);
       netAddr->zone = atoi(ch);
       tmp = ++ptr;
@@ -1411,7 +1411,7 @@ void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
 
    ptr = strchr(tmp, '/');
    if (ptr) {
-      memset(ch, 0, sizeof(ch));
+      memset(ch, '\0', sizeof(ch));
       strncpy(ch, tmp, ptr-tmp);
       netAddr->net = atoi(ch);
       tmp = ++ptr;
@@ -1421,7 +1421,7 @@ void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
 
    ptr = strchr(tmp, '.');
    if (ptr) {
-      memset(ch, 0, sizeof(ch));
+      memset(ch, '\0', sizeof(ch));
       strncpy(ch, tmp, ptr-tmp);
       netAddr->node = atoi(ch);
       ptr++;
@@ -1480,24 +1480,24 @@ void DecodeSubf(MSGH *msgh)
    } /* endif */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID))) {
-         makeKludge(&msgid, "\x01MSGID: ", SubField->Buffer, "", SubField->DatLen);
+         makeKludge(&msgid, "\001MSGID: ", SubField->Buffer, "", SubField->DatLen);
       }
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_REPLYID))) {
-         makeKludge(&reply, "\x01REPLY: ", SubField->Buffer, "", SubField->DatLen);
+         makeKludge(&reply, "\001REPLY: ", SubField->Buffer, "", SubField->DatLen);
       }
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_PID))) {
-         makeKludge(&pid, "\x01PID: ", SubField->Buffer, "", SubField->DatLen);
+         makeKludge(&pid, "\001PID: ", SubField->Buffer, "", SubField->DatLen);
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_TRACE));) {
          makeKludge(&via, "\001Via ", SubField->Buffer, "\r", SubField->DatLen);
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FTSKLUDGE));) {
          if (strncasecmp(SubField->Buffer, "VIA", 3) == 0) {
-            makeKludge(&via, "\x01", SubField->Buffer, "\r", SubField->DatLen);
+            makeKludge(&via, "\001", SubField->Buffer, "\r", SubField->DatLen);
          } else {
-            makeKludge(&kludges, "\x01", SubField->Buffer, "", SubField->DatLen);
+            makeKludge(&kludges, "\001", SubField->Buffer, "", SubField->DatLen);
          }
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FLAGS));) {
