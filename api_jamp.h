@@ -102,6 +102,7 @@ int read_hdrinfo(sword handle, JAMHDRINFO *HdrInfo);
 int read_idx(sword handle, JAMIDXREC *Idx);
 int read_hdr(sword handle, JAMHDR *Hdr);
 int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen);
+int copy_subfield(JAMSUBFIELD2ptr *to, JAMSUBFIELD2ptr from);
 
 int read_allidx(JAMBASEptr jmb);
 

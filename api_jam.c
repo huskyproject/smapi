@@ -50,15 +50,15 @@
 static void freejamsubfield(JAMSUBFIELD2 *subfield)
 {
   JAMSUBFIELD2 *subi;
-  
+
   while (subfield)
   {
 	subi = subfield->next;  /* Remember next subf */
-  
+
   	if (subfield->Buffer)   /* Remove buffer if avail */
   		free(subfield->Buffer);
   	pfree(subfield);	    /* Remove this subf */
-  
+
   	subfield = subi;        /* Next subf */
   }
 }
@@ -136,6 +136,8 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
 
 static sword EXPENTRY JamCloseArea(MSG * jm)
 {
+   int i;
+
    if (InvalidMh(jm))
    {
       return -1;
@@ -156,7 +158,11 @@ static sword EXPENTRY JamCloseArea(MSG * jm)
    Jam_CloseFile(Jmd);
 
    pfree(Jmd->BaseName);
-   pfree(Jmd->actmsg);
+   if (Jmd->actmsg) {
+      for (i=0; i<Jmd->HdrInfo.ActiveMsgs; i++)
+         freejamsubfield(Jmd->actmsg[i].subfield);
+      pfree(Jmd->actmsg);
+   }
    pfree(jm->api);
    pfree((char *)jm->apidata);
    jm->id = 0L;
@@ -486,7 +492,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             {
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                freejamsubfield(subfieldNew);
-	       msgapierr = MERR_NODS;
+               msgapierr = MERR_NODS;
                return -1;
             }
             jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
@@ -497,7 +503,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
-	       msgapierr = MERR_NODS;
+               msgapierr = MERR_NODS;
                return -1;
             }
             msgh->cur_pos = tell(Jmd->TxtHandle);
@@ -508,7 +514,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
-	       msgapierr = MERR_NODS;
+               msgapierr = MERR_NODS;
                return -1;
             }
             if (!write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen))
@@ -517,7 +523,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
-	       msgapierr = MERR_NODS;
+               msgapierr = MERR_NODS;
                return -1;
             }
             Jmd->HdrInfo.ActiveMsgs++;
@@ -528,7 +534,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                setfsize(Jmd->IdxHandle, msgh->seek_idx);
                setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                freejamsubfield(subfieldNew);
-	       msgapierr = MERR_NODS;
+               msgapierr = MERR_NODS;
                return -1;
             }
             jm->high_msg++;
@@ -537,7 +543,10 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
                Jmd->actmsg[jm->num_msg].IdxOffset = msgh->seek_idx;
                Jmd->actmsg[jm->num_msg].TrueMsg = msgh->seek_hdr;
                Jmd->actmsg[jm->num_msg].UserCRC = jamidxNew.UserCRC;
-            }
+	       memcpy(&(Jmd->actmsg[jm->num_msg].hdr), &jamhdrNew, sizeof(jamhdrNew));
+	       Jmd->actmsg[jm->num_msg].subfield = subfieldNew;
+            } else
+               freejamsubfield(subfieldNew);
             jm->num_msg++;
          } 
          else 
@@ -574,11 +583,11 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             if (Jmd->actmsg_read) {
                Jmd->actmsg[msgh->msgnum - 1].TrueMsg = msgh->seek_hdr;
                Jmd->actmsg[msgh->msgnum - 1].UserCRC = jamidxNew.UserCRC;
-            }
+	       memcpy(&(Jmd->actmsg[msgh->msgnum-1].hdr), &jamhdrNew, sizeof(jamhdrNew));
+	       Jmd->actmsg[msgh->msgnum - 1].subfield = subfieldNew;
+            } else
+               freejamsubfield(subfieldNew);
          } /* endif */
-
-         /* pfree(subfieldNew); */
-         freejamsubfield(subfieldNew);
       } /* endif */
    } 
    else 
@@ -605,9 +614,14 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
       jamidxNew.HdrOffset = msgh->seek_hdr;
       jamhdrNew.ReplyCRC = 0xFFFFFFFFUL;
 
-
-      lseek(Jmd->IdxHandle, msgh->seek_idx, SEEK_SET);
-      write_idx(Jmd->IdxHandle, &jamidxNew);
+      if (Jmd->actmsg_read &&
+          Jmd->actmsg[msgh->msgnum - 1].TrueMsg == msgh->seek_hdr &&
+          Jmd->actmsg[msgh->msgnum - 1].UserCRC == jamidxNew.UserCRC) {
+         /* no index update needed */ ;
+      } else {
+         lseek(Jmd->IdxHandle, msgh->seek_idx, SEEK_SET);
+         write_idx(Jmd->IdxHandle, &jamidxNew);
+      }
 
       if (text && textlen) {
          lseek(Jmd->TxtHandle, 0, SEEK_END);
@@ -626,18 +640,19 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 			/*
       pfree(msgh->SubFieldPtr);
 			*/
-			freejamsubfield(msgh->SubFieldPtr);
+      freejamsubfield(msgh->SubFieldPtr);
       msgh->SubFieldPtr = subfieldNew;
       DecodeSubf(msgh);
       if (Jmd->actmsg_read) {
          Jmd->actmsg[msgh->msgnum - 1].TrueMsg = msgh->seek_hdr;
          Jmd->actmsg[msgh->msgnum - 1].UserCRC = jamidxNew.UserCRC;
+         memcpy(&(Jmd->actmsg[msgh->msgnum - 1].hdr), &jamhdrNew, sizeof(jamhdrNew));
+         copy_subfield(&(Jmd->actmsg[msgh->msgnum - 1].subfield), subfieldNew);
       }
 
    } /* endif */
    if (didlock) {
       Jam_Unlock(jm);
-   } else {
    } /* endif */
 
    pfree(onlytext);
@@ -685,6 +700,14 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
    write_idx(Jmd->IdxHandle, &jamidx);
    write_hdr(Jmd->HdrHandle, &jamhdr);
    Jam_WriteHdrInfo(Jmd);
+
+   if (Jmd->actmsg_read) {
+      int i;
+      for (i=0; i<Jmd->HdrInfo.ActiveMsgs; i++)
+         freejamsubfield(Jmd->actmsg[i].subfield);
+      pfree(Jmd->actmsg);
+      Jmd->actmsg_read = 0;
+   }
 
    Jam_ActiveMsgs(Jmd);
    jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
@@ -1076,6 +1099,11 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
         return NULL;
       } /* endif */
       jm->cur_msg = msgnum;
+   } else {
+      if (msgnum > jm->num_msg) {
+         msgapierr = MERR_NOENT;
+         return NULL;
+      } /* endif */
    }
 
    msgh = palloc(sizeof(struct _msgh));
@@ -1103,18 +1131,17 @@ static MSGH *Jam_OpenMsg(MSG * jm, word mode, dword msgnum)
       msgh->Idx.UserCRC = Jmd->actmsg[msgnum-1].UserCRC;
       if (msgh->Idx.HdrOffset != 0xffffffffUL) {
          msgh->seek_hdr = msgh->Idx.HdrOffset;
-         lseek(Jmd->HdrHandle, msgh->Idx.HdrOffset, SEEK_SET);
-         read_hdr(Jmd->HdrHandle, &(msgh->Hdr));
+         memcpy(&(msgh->Hdr), &(Jmd->actmsg[msgnum-1].hdr), sizeof(msgh->Hdr));
          if (stricmp((char*)&msgh->Hdr, "JAM") != 0) {
             pfree(msgh);
             return NULL;
          } else {
          } /* endif */
-         if(mode == MOPEN_CREATE) return (MSGH *)msgh;
+         if (mode == MOPEN_CREATE) return (MSGH *)msgh;
                
          msgh->SubFieldPtr = 0;
                
-         read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), &(msgh->Hdr.SubfieldLen));
+         copy_subfield(&(msgh->SubFieldPtr), Jmd->actmsg[msgnum-1].subfield);
          DecodeSubf(msgh);
          return (MSGH *) msgh;
       }
@@ -1197,12 +1224,8 @@ static void near Jam_Unlock(MSG * jm)
 
 sword Jam_WriteHdrInfo(JAMBASEptr jambase)
 {
-   if (lseek(jambase->HdrHandle, 0, SEEK_SET) == -1 ||
-	write_hdrinfo(jambase->HdrHandle, &(jambase->HdrInfo)) == 0) {
-	    msgapierr = MERR_NODS;
-	    return -1;
-	}
-
+   if (lseek(jambase->HdrHandle, 0, SEEK_SET) == -1) return -1;
+   if (write_hdrinfo(jambase->HdrHandle, &(jambase->HdrInfo)) == 0) return -1;
    return 0;
 }
 
@@ -1317,7 +1340,7 @@ static JAMSUBFIELD2ptr StrToSubfield(unsigned char *str, dword *len)
 
    subf->LoID = subtypes;
    subf->DatLen = x;
-	 subf->Buffer = strdup(kludge);
+   subf->Buffer = strdup(kludge);
 /*   memmove(subf->Buffer, kludge, x); */
 
    return subf;
@@ -1354,7 +1377,7 @@ JAMSUBFIELD2ptr NETADDRtoSubf(NETADDR addr, dword *len, word opt)
    } /* endif */
    subf->DatLen = x;
 	 
-	 subf->Buffer = strdup(buf);
+   subf->Buffer = strdup(buf);
 /*   memmove(subf->Buffer, buf, x); */
 
    return subf;
@@ -1373,7 +1396,7 @@ static JAMSUBFIELD2ptr FromToSubjTOSubf(dword jamsfld, unsigned char *txt, dword
    memset(subf,0,sizeof(JAMSUBFIELD2));
    subf->LoID = jamsfld;
    subf->DatLen = x;
-	 subf->Buffer = strdup(txt);
+   subf->Buffer = strdup(txt);
 /*   memmove(subf->Buffer, txt, x);*/
 
    return subf;

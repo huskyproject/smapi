@@ -961,6 +961,26 @@ int read_hdr(sword handle, JAMHDR *Hdr)
    return 1;
 }
 
+int copy_subfield(JAMSUBFIELD2ptr *to, JAMSUBFIELD2ptr from)
+{
+   JAMSUBFIELD2ptr dest = NULL;
+
+   for (; from; from=from->next) {
+      if (dest) {
+         dest->next = palloc(sizeof(JAMSUBFIELD2));
+         dest = dest->next;
+      } else
+         dest = *to = palloc(sizeof(JAMSUBFIELD2));
+      memcpy(dest, from, sizeof(JAMSUBFIELD2));
+      dest->next = NULL;
+      if (from->Buffer) {
+         dest->Buffer = malloc(from->DatLen);
+	 memcpy(dest->Buffer, from->Buffer, from->DatLen);
+      }
+   }
+   return 0;
+}
+
 int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen)
 {
    char *buf, *pbuf;
@@ -978,16 +998,15 @@ int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen)
 
    subfieldNext = *subfield = 0;
 
-   while ((pbuf - buf + 8) < *SubfieldLen)
-	 {
+   while ((pbuf - buf + 8) < *SubfieldLen) {
       subfieldNew = (JAMSUBFIELD2ptr) palloc(sizeof(JAMSUBFIELD2));
-			subfieldNew->next = 0;
-			if (subfieldNext)
-			  subfieldNext->next = subfieldNew;
-			subfieldNext = subfieldNew;
+      subfieldNew->next = 0;
+      if (subfieldNext)
+         subfieldNext->next = subfieldNew;
+      subfieldNext = subfieldNew;
 
-			if (!*subfield)
-			  *subfield = subfieldNext;
+      if (!*subfield)
+         *subfield = subfieldNext;
 
       /* 02 bytes LoID */
       subfieldNext->LoID = get_word(pbuf);
@@ -1007,7 +1026,7 @@ int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen)
       /* DatLen bytes Buffer */
       if ((long)datlen >= 0 && datlen < *SubfieldLen)
       { subfieldNext->DatLen = datlen;
-			  subfieldNext->Buffer = malloc(datlen+1);
+        subfieldNext->Buffer = malloc(datlen);
         memmove(subfieldNext->Buffer, pbuf, datlen);
       }
       else
@@ -1028,9 +1047,9 @@ int read_subfield(sword handle, JAMSUBFIELD2ptr *subfield, dword *SubfieldLen)
 int read_allidx(JAMBASEptr jmb)
 {
    byte  *buf, *pbuf;
-   byte  hbuf[HDR_SIZE], *phbuf = hbuf;
+   JAMHDR  hbuf;
    int   len, i, allocated;
-   dword offset, attr;
+   dword offset;
 
    lseek(jmb->IdxHandle, 0, SEEK_END);
    len = tell(jmb->IdxHandle);
@@ -1053,14 +1072,15 @@ int read_allidx(JAMBASEptr jmb)
       offset = get_dword(pbuf+4);
       if (offset != 0xFFFFFFFFUL) {
          lseek(jmb->HdrHandle, offset, SEEK_SET);
-         if (farread(jmb->HdrHandle, (byte far *)hbuf, HDR_SIZE) == HDR_SIZE) {
-            attr = get_dword(phbuf+52);
-            if (!(attr & JMSG_DELETED)) {
+         if (read_hdr(jmb->HdrHandle, &hbuf) != 0) {
+            if (!(hbuf.Attribute & JMSG_DELETED)) {
                if (i >= allocated)
                   jmb->actmsg = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*(allocated += 16));
                jmb->actmsg[i].IdxOffset = pbuf - buf;
                jmb->actmsg[i].TrueMsg = offset;
                jmb->actmsg[i].UserCRC = get_dword(pbuf);
+               memcpy(&(jmb->actmsg[i].hdr), &hbuf, sizeof(hbuf));
+               read_subfield(jmb->HdrHandle, &(jmb->actmsg[i].subfield), &(jmb->actmsg[i].hdr.SubfieldLen));
                i++;
             } /* endif */
          } /* endif */
