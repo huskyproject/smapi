@@ -1,3 +1,7 @@
+2003-06-16 Monday 14:18  lmike
+
+	* make/makefile.qnx (1.5): Added proper library dependcies for QNX6
+
 2003-06-06 Friday 20:34  d_sergienko
 
 	* src/sq_uid.c (1.6): fixed twice buffer release
