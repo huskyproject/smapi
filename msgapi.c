@@ -28,7 +28,7 @@
 #include "apidebug.h"
 #include "unused.h"
 
-void _SquishCloseOpenAreas(void);
+unsigned _SquishCloseOpenAreas(void);
 void _SquishInit();
 void _SquishDeInit();
 
@@ -53,6 +53,7 @@ void _MsgCloseApi(void)
 */
 
     _SquishDeInit();
+    JamCloseOpenAreas();
 }
 
 #ifdef UNIX

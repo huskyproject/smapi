@@ -45,6 +45,8 @@
 
 #define NOTH 3
 
+static JAMBASE *jbOpen = NULL;
+
 /* Free's up a SubField-Chain */
 
 static void freejamsubfield(JAMSUBFIELD2LIST *subfield)
@@ -126,6 +128,7 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
 static sword _XPENTRY JamCloseArea(MSGA * jm)
 {
    dword i;
+   JAMBASE *jbptr = jbOpen;
 
    if (InvalidMh(jm))
    {
@@ -136,6 +139,10 @@ static sword _XPENTRY JamCloseArea(MSGA * jm)
       msgapierr = MERR_EOPEN;
       return -1;
    }
+
+   if (jbptr != Jmd)
+       while((jbptr) && ((JAMBASE *)jbptr->jbNext) && ((JAMBASE *)jbptr->jbNext != Jmd))
+           jbptr = (JAMBASE *)jbptr->jbNext;
 
    if (Jmd->modified || Jmd->HdrInfo.highwater != jm->high_water) {
       Jmd->HdrInfo.highwater = jm->high_water;
@@ -153,12 +160,25 @@ static sword _XPENTRY JamCloseArea(MSGA * jm)
          freejamsubfield(Jmd->actmsg[i].subfield);
       pfree(Jmd->actmsg);
    }
+
+   if (jbOpen != Jmd)
+       (JAMBASE *)jbptr->jbNext = Jmd->jbNext;
+   else
+       jbOpen = jbOpen->jbNext;
+
    pfree(jm->api);
    pfree((char *)jm->apidata);
    jm->id = 0L;
+   memset(jm, 0, sizeof(MSGA));
    pfree(jm);
 
    return 0;
+}
+
+void JamCloseOpenAreas()
+{
+    while(jbOpen)
+        JamCloseArea(jbOpen->jm);
 }
 
 static MSGH *_XPENTRY JamOpenMsg(MSGA * jm, word mode, dword msgnum)
@@ -1093,6 +1113,11 @@ static sword MSGAPI Jam_OpenBase(MSGA *jm, word *mode, unsigned char *basename)
       pfree(Jmd->BaseName);
       return 0;
    } /* endif */
+
+   Jmd->jm = jm;
+
+   Jmd->jbNext = jbOpen;
+   jbOpen = Jmd;
 
    lseek(Jmd->HdrHandle, 0, SEEK_SET);
    read_hdrinfo(Jmd->HdrHandle, &(Jmd->HdrInfo));

@@ -228,6 +228,8 @@ typedef struct {
    mode_t          permissions;
    word            mode;
    word            modified;
+   MSGA            *jm;
+   void            *jbNext;
    } JAMBASE, *JAMBASEptr;
 
 #endif /* __JAM_H__ */

@@ -394,6 +394,7 @@ int SquishDeleteBase(char * name);
 MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type);
 sword MSGAPI JamValidate(byte * name);
 int JamDeleteBase(char * name);
+void JamCloseOpenAreas();
 
 SMAPI_EXT byte *_XPENTRY CvtCtrlToKludge(byte * ctrl);
 SMAPI_EXT byte *_XPENTRY GetCtrlToken(byte * where, byte * what);
