@@ -1,3 +1,16 @@
+2003-03-25 Tuesday 13:14  stas_degteff
+
+	* make/: makefile.be (1.2), makefile.bsd (1.2), makefile.bsd4
+	(1.2), makefile.cyg (1.2), makefile.djg (1.2), makefile.emo (1.2),
+	makefile.emx (1.2), makefile.lnx (1.2), makefile.mgw (1.2),
+	makefile.rxw (1.2), makefile.sun (1.3), makefile.unx (1.2): Prevent
+	GCC warning about 'long long' type
+
+2003-03-25 Tuesday 13:10  stas_degteff
+
+	* src/sq_idx.c (1.5): Replace LONG_MAX with signed_long_max
+	(defined in huskylib/compiler.h)
+
 2003-03-24 Monday 12:06  stas_degteff
 
 	* smapi/api_sdmp.h (1.4), src/api_sdm.c (1.8): Prepare change SDM
