@@ -1009,7 +1009,8 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
 
    } else {
       jambase->HdrHandle = openfilejm(hdr, fop_rpb, permissions);
-      /* jambase->TxtHandle = openfilejm(txt, fop_rpb, permissions); */
+      /* jambase->TxtHandle = openfilejm(txt, fop_rpb, permissions);
+      */ jambase->TxtHandle = 0;
       jambase->IdxHandle = openfilejm(idx, fop_rpb, permissions);
       /* jambase->LrdHandle = openfilejm(lrd, fop_rpb, permissions);
       */ jambase->LrdHandle = 0;
