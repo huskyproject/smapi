@@ -190,7 +190,7 @@ int _SquishBeginBuffer(HIDX hix)
 
     uiSize=(unsigned)dwSize * (unsigned)SQIDX_SIZE;
 
-    if (read_sqidx(HixSqd->ifd, hix->pss[i].psqi, dwSize) != 1)
+    if (read_sqidx((sword)HixSqd->ifd, hix->pss[i].psqi, dwSize) != 1)
     {
 
       do
@@ -252,7 +252,7 @@ int SidxGet(HIDX hix, dword dwMsg, SQIDX *psqi)
   {
     (void)lseek(HixSqd->ifd, (long)(dwMsg-1) * (long)SQIDX_SIZE, SEEK_SET);
 
-    if (read_sqidx(HixSqd->ifd, psqi, 1) != 1)
+    if (read_sqidx((sword)HixSqd->ifd, psqi, 1) != 1)
     {
       msgapierr=MERR_BADF;
       return FALSE;
@@ -300,7 +300,7 @@ static int near _SquishAppendIndexRecord(HIDX hix, SQIDX *psqi)
      * up the file.                                                         */
 
     if (lseek(HixSqd->ifd, lSize, SEEK_SET) != lSize ||
-        write_sqidx(HixSqd->ifd, &sqi, 1) != 1)
+        write_sqidx((sword)HixSqd->ifd, &sqi, 1) != 1)
     {
       msgapierr=MERR_NODS;
       return FALSE;
@@ -406,7 +406,7 @@ int SidxPut(HIDX hix, dword dwMsg, SQIDX *psqi)
   {
     (void)lseek(HixSqd->ifd, (long)(dwMsg-1) * (long)SQIDX_SIZE, SEEK_SET);
 
-    if (write_sqidx(HixSqd->ifd, psqi, 1) != 1)
+    if (write_sqidx((sword)HixSqd->ifd, psqi, 1) != 1)
     {
       msgapierr=MERR_NODS;
       return FALSE;
@@ -549,7 +549,7 @@ unsigned _SquishRemoveIndexEntry(HIDX hix, dword dwMsg, SQIDX *psqiOut,
 
   (void)lseek(HixSqd->ifd, -(long)SQIDX_SIZE, SEEK_CUR);
 
-  if (write_sqidx(HixSqd->ifd, &sqi, 1) != 1)
+  if (write_sqidx((sword)HixSqd->ifd, &sqi, 1) != 1)
   {
     msgapierr=MERR_BADF;
     return FALSE;
@@ -642,7 +642,7 @@ int _SquishEndBuffer(HIDX hix)
 
         if (rc)
         {
-          if (write_sqidx(HixSqd->ifd, (hix->pss[i].psqi+j), size)
+          if (write_sqidx((sword)HixSqd->ifd, (hix->pss[i].psqi+j), size)
                  != 1)
 
           {

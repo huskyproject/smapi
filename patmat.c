@@ -69,7 +69,7 @@ int patmat(char *raw, char *pat)
     /* if pattern is a '*' */
     if (*pat == '*')
     {
-        int i;
+        unsigned int i;
 
         /* match patterns *?****???***?? faster... */
         while (*(++pat))

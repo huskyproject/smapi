@@ -523,7 +523,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
     {
         lseek(msgh->fd, 0L, SEEK_SET);
 
-        if (!read_omsg(msgh->fd, &fmsg))
+        if (!read_omsg((sword)msgh->fd, &fmsg))
         {
             msgapierr = MERR_BADF;
             return -1L;
@@ -686,7 +686,7 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
     {
         Convert_Xmsg_To_Fmsg(msg, &fmsg);
 
-        if (!write_omsg(msgh->fd, &fmsg))
+        if (!write_omsg((sword)msgh->fd, &fmsg))
         {
             msgapierr = MERR_NODS;
             return -1;
@@ -1233,8 +1233,8 @@ static void MSGAPI Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg)
     fmsg->reply = (word) msg->replyto;
     fmsg->up = (word) msg->replies[0];
     fmsg->attr = (word) (msg->attr & 0xffffL);
-    fmsg->times = msg->xmtimesread;
-    fmsg->cost = msg->xmcost;
+    fmsg->times = (word)msg->xmtimesread;
+    fmsg->cost =  (word)msg->xmcost;
 
     /*
      *  Non-standard point kludge to ensure that 4D pointmail works

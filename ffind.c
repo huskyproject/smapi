@@ -220,7 +220,7 @@ FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
 #elif defined(__RSXNT__) || defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
 
         ff->hDirA = FindFirstFile(filespec, &(ff->InfoBuf));
-        ff->attrib_srch = attribute;
+        ff->attrib_srch = (char)attribute;
         while (ff->hDirA != INVALID_HANDLE_VALUE)
         {
             if (strlen(ff->InfoBuf.cFileName) < sizeof(ff->ff_name))

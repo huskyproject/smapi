@@ -973,7 +973,7 @@ int read_hdr(sword handle, JAMHDR *Hdr)
 
 int copy_subfield(JAMSUBFIELD2LISTptr *to, JAMSUBFIELD2LISTptr from)
 {
-   int i;
+   dword i;
 
    *to = palloc(from->arraySize);
    if (*to == NULL) return 1;
@@ -1064,7 +1064,8 @@ int read_allidx(JAMBASEptr jmb)
 {
    byte  *buf, *pbuf, *hdrbuf;
    JAMHDR  hbuf;
-   int   len, hlen, i, allocated;
+   int   len;
+   dword i,allocated,hlen;
    dword offset;
 
    lseek(jmb->IdxHandle, 0, SEEK_END);
@@ -1281,7 +1282,8 @@ int write_subfield(sword handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLe
 {
    unsigned char *buf, *pbuf;
    dword datlen;
-   int rc, i;
+   int rc;
+   dword i;
    JAMSUBFIELD2ptr subfieldNext;
 
    buf = (unsigned char*)palloc(SubfieldLen);

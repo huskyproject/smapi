@@ -68,7 +68,7 @@ static unsigned near _SquishReadXmsg(HMSG hmsg, PXMSG pxm, dword *pdwOfs)
       return FALSE;
     }
 
-  if (read_xmsg(HSqd->sfd, pxm) != 1)
+  if (read_xmsg((sword)HSqd->sfd, pxm) != 1)
   {
     msgapierr=MERR_BADF;
     return FALSE;

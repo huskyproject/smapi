@@ -295,7 +295,7 @@ byte *EXPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length)
 byte *EXPENTRY GetCtrlToken(byte *where, byte *what)
 {
     byte *end, *out;
-    int len;
+    unsigned int len;
 
     if (where == NULL || what == NULL) return NULL;
     len = strlen(what);
@@ -446,7 +446,7 @@ byte *EXPENTRY CvtCtrlToKludge(byte * ctrl)
 void EXPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
 {
     byte *p;
-    int len = strlen(what);
+    unsigned int len = strlen(what);
 
     while (1) {
 	ctrl = strchr((char *)ctrl, '\001');

@@ -61,7 +61,7 @@ static char rcs_id[]="$Id$";
 unsigned _SquishReadBaseHeader(HAREA ha, SQBASE *psqb)
 {
   if (lseek(Sqd->sfd, 0L, SEEK_SET) != 0 ||
-      read_sqbase(Sqd->sfd, psqb) != 1)
+      read_sqbase((sword)Sqd->sfd, psqb) != 1)
   {
     if (errno==EACCES || errno==-1)
       msgapierr=MERR_SHARE;
@@ -82,7 +82,7 @@ unsigned _SquishReadBaseHeader(HAREA ha, SQBASE *psqb)
 unsigned _SquishWriteBaseHeader(HAREA ha, SQBASE *psqb)
 {
   if (lseek(Sqd->sfd, 0L, SEEK_SET) != 0 ||
-      write_sqbase(Sqd->sfd, psqb) != 1)
+      write_sqbase((sword)Sqd->sfd, psqb) != 1)
   {
     msgapierr=MERR_NODS;
     return FALSE;
@@ -268,7 +268,7 @@ unsigned _SquishReadHdr(HAREA ha, FOFS fo, SQHDR *psqh)
 
   if (fo >= Sqd->foEnd ||
       lseek(Sqd->sfd, fo, SEEK_SET) != fo ||
-      read_sqhdr(Sqd->sfd, psqh) != 1 ||
+      read_sqhdr((sword)Sqd->sfd, psqh) != 1 ||
       psqh->id != SQHDRID)
   {
     msgapierr=MERR_BADF;
@@ -293,7 +293,7 @@ unsigned _SquishWriteHdr(HAREA ha, FOFS fo, SQHDR *psqh)
   }
 
   if (lseek(Sqd->sfd, fo, SEEK_SET) != fo ||
-      write_sqhdr(Sqd->sfd, psqh) != 1)
+      write_sqhdr((sword)Sqd->sfd, psqh) != 1)
   {
     msgapierr=MERR_NODS;
     return FALSE;
@@ -398,7 +398,7 @@ unsigned _SquishFreeIndex(HAREA ha, dword dwMsg, SQIDX *psqi,
     /* Write it back out to disk at the same position */
 
     rc=(lseek(Sqd->ifd, ofs, SEEK_SET)==ofs &&
-        write_sqidx(Sqd->ifd, psqi, ((long)dwMsg-1L)) == 1);
+        write_sqidx((sword)Sqd->ifd, psqi, ((long)dwMsg-1L)) == 1);
   }
 
   pfree(psqi);
