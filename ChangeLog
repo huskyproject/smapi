@@ -1,3 +1,7 @@
+2002-05-07 Tuesday 13:31  mche
+
+	* compiler.h (1.83): make mvcdll version compilable
+
 2002-05-06 Monday 20:01  pavel.gulchouck
 
 	* Makefile (1.23): install/uninstall minor fix (patch from Michael
