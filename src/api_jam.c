@@ -146,7 +146,7 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
    /* But if ActiveMsgs==0 read returns immediately without Jam_ActiveMsgs() */
    /* For prevent losing messages in this case do Jam_ActiveMsgs here        */
    if (Jmd->HdrInfo.ActiveMsgs == 0 && len > 0)
-      Jam_ActiveMsgs(Jmd);
+      Jam_ActiveMsgs(jm);
 
    jm->high_water = Jmd->HdrInfo.highwater;
    /* jm->high_msg = Jam_HighMsg(Jmd); */
