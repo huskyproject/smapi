@@ -1,3 +1,7 @@
+2003-01-23 Thursday 10:37  stas_degteff
+
+	* compiler.h (1.158): Change FreeBSD macros description
+
 2003-01-22 Wednesday 05:54  stas_degteff
 
 	* genmsgid.c (1.20): Fix: segdir existents check. Thanks to
