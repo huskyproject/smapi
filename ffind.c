@@ -452,7 +452,7 @@ FFIND *_fast FindInfo(const char *filespec)
 #else
     FFIND *ff;
     FILESTATUS fs;
-    char *f;
+    const char *f;
 
     ff = malloc(sizeof *ff);
     if (ff == NULL)
