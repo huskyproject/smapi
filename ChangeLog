@@ -1,3 +1,12 @@
+2002-10-11 Friday 13:36  stas_degteff
+
+	* api_jam.c, api_sdm.c (smapi-2_2-stable.[5,1]): Fix bug with
+	signed use unsigned var in SdmUidToMsgn() and JamUidToMsgn()
+
+2002-10-10 Thursday 21:54  sfpavel
+
+	* makefile.djg (smapi-2_2-stable.2): Fix DJGPP build
+
 2002-10-10 Thursday 11:35  sfpavel
 
 	* api_jam.c, structrw.c (smapi-2_2-stable.[4,1]): Apply fixes from
