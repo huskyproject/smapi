@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Sat Oct  7 13:53:49 NOVST 2000
+max:
+* fixed bug in FFindOpen() (path like "/*")
+
+----- cvs ci ------
 Tue Oct  3 18:22:25 MSZ 2000
 tobi:
 * introduced MSGIMM flag in XMSG for use by JAM API

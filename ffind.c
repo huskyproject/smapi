@@ -141,8 +141,8 @@ FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
         }
         else
         {
-            memcpy(ff->firstbit, filespec, p - filespec);
-            ff->firstbit[p - filespec] = '\0';
+            memcpy(ff->firstbit, filespec, p - filespec + 1);
+            ff->firstbit[p - filespec + 1] = '\0';
             strcpy(ff->lastbit, p + 1);
         }
         ff->dir = opendir(ff->firstbit);
