@@ -413,6 +413,18 @@ int qq(void)
 #endif
 
 
+#if defined(__DOS4G__) /* DOS4G/W dos-dpmi extender */
+#ifndef __DOS__
+#  define __DOS__
+#endif
+#ifndef __DPMI__
+#  define __DPMI__
+#endif
+#ifndef __FLAT__
+#  define __FLAT__
+#endif
+#endif
+
 /**** OS defines ****/
 
 #if defined(__TURBOC__DOS__) && !defined(__DOS__)
@@ -839,10 +851,15 @@ int qq(void)
 #  define HAS_SHARE_H     1 /* may use "#include <share.h> */
 #  define HAS_DIRECT_H    1
 #  define HAS_SYS_UTIME_H 1 /* #include <sys/utime.h> in alternate to <utime.h> */
+#  define HAS_DOS_H       1
 
 #  define mymkdir(x)    mkdir(x) /*<direct.h>*/
+#  define HAS_mkdir
+#  include <dos.h>
+#  define mysleep(x)    sleep(x) /* dos.h */
+#  define HAS_sleep
 
-#  if defined(__WATCOMC__DOS__)
+#  if defined(__WATCOMC__DOS__) ||  defined(__WATCOMC__DOS4G__)
 /* WATCOM C/C++ for MS-DOS or DOS4G*/
 
 #    define _stdc      cdecl
@@ -852,8 +869,6 @@ int qq(void)
 #    define _fast      pascal
 
 #    define _XPENTRY   pascal
-#    define mysleep(x) sleep(x) /* dos.h */
-#    define HAS_sleep     1
 
 /* End: WATCOM C/C++ for MS-DOS */
 #  elif defined(__WATCOMC__OS2__)
@@ -866,8 +881,6 @@ int qq(void)
 #    define _fast
 
 #    define _XPENTRY   _System
-#    define mysleep(x) sleep(x)  /* dos.h */
-#    define HAS_sleep     1
 
 /*#  define mysleep(x) DosSleep(x*1000)*/  /* os2/bsedos.h */
 
@@ -883,8 +896,6 @@ int qq(void)
 
 #    define _XPENTRY pascal
 
-#    define mysleep(x) sleep(x)      /* dos.h */
-#    define HAS_sleep     1
 /*#  define mysleep(x) Sleep(x*1000) */ /* winbase.h */
 
 /* End: WATCOM C/C++ for Windows NT */
