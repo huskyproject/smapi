@@ -4,15 +4,14 @@
 include ../huskymak.cfg
 
 ifeq ($(DEBUG), 1)
-  CFLAGS=	-Wall -ggdb
-#  CFLAGS=	-Wall -ggdb -DNO_LOCKING
+  CFLAGS=	$(WARNFLAGS) $(DEBCFLAGS)
+# CFLAGS=	$(WARNFLAGS) $(DEBCFLAGS) -DNO_LOCKING
 else
-  CFLAGS=	-Wall -s
-# CFLAGS=	-Wall -s -DNO_LOCKING
+  CFLAGS=	$(WARNFLAGS) $(OPTCFLAGS)
+# CFLAGS=	$(WARNFLAGS) $(OPTCFLAGS) -DNO_LOCKING
 endif
 
 CDEFS=	-D$(OSTYPE) $(ADDCDEFS)
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -fPIC
 VERH =  1
 VER  =  1.6.2
 
@@ -48,16 +47,16 @@ OBJS=	1stchar$(OBJ)  \
 	weekday$(OBJ)
 
 .c$(OBJ):
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS)  $<
 	$(AR) $(AR_R) $(TARGET) $@
 
 $(TARGET): $(OBJS)
 
+ifeq ($(DYNLIBS), 1)
 libsmapi.so.$(VER): $(OBJS)
 	gcc -shared -Wl,-soname,libsmapi.so.$(VERH) \
           -o libsmapi.so.$(VER) $(OBJS)
 
-ifeq ($(DYNLIBS), 1)
 instdyn: libsmapi.so.$(VER)
 	$(INSTALL) $(ILOPT) libsmapi.so.$(VER) $(LIBDIR)
 	$(LN) $(LNOPT) $(LIBDIR)/libsmapi.so.$(VER) $(LIBDIR)/libsmapi.so.$(VERH)
