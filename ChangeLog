@@ -1,3 +1,18 @@
+2003-02-01 Saturday 16:02  d_sergienko
+
+	* Makefile (1.36): join cd && rm into one shell execution in
+	uninstall target
+
+2003-02-01 Saturday 15:20  d_sergienko
+
+	* Makefile (1.35), makefile.inc (1.9): move headers into
+	makefile.inc from Makefile
+
+2003-02-01 Saturday 10:26  d_sergienko
+
+	* Makefile (1.34): use $(OBJS), $(VER) and $(VERH) from
+	makefile.inc
+
 2003-01-31 Friday 05:58  stas_degteff
 
 	* compiler.h (1.163): Update defines for linux & freebsd
