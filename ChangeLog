@@ -1,3 +1,11 @@
+2002-07-22 Monday 17:27  pavel.gulchouck
+
+	* api_jam.c (1.83.2.3): Jam_OpenFile() minor fix
+
+2002-07-22 Monday 17:20  pavel.gulchouck
+
+	* api_jam.c (1.83.2.2): Jam_OpenFile() bugfix
+
 2002-07-14 Sunday 18:59  stas
 
 	* compiler.h (1.84.2.1): Declare __NT__ for cygwin & mingw (MFC).
