@@ -393,24 +393,12 @@ int lock(int handle, long ofs, long length);
 #define mymkdir(a) __mkdir((a), 0)
 #endif
 
-#include <sys/file.h>
-#define lock(a,b,c) flock(a, LOCK_EX)
-#define unlock(a,b,c) flock(a, LOCK_SH)
-
 #define tell(a) lseek((a),0,SEEK_CUR)
 #define stricmp strcasecmp
 #define O_BINARY 0
 #define SH_DENYNONE 0
 #define SH_DENYNO 0
 #define SH_DENYALL 1
-#ifndef O_EXLOCK
-#define O_EXLOCK 0
-#endif
-#ifndef O_SHLOCK
-#define O_SHLOCK 0
-#endif
-
-#define sopen(a,b,c,d) open((a),(b)|(((c)==SH_DENYALL)?O_EXLOCK:O_SHLOCK),(d))
 
 #define EXPENTRY
 
