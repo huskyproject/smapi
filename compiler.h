@@ -52,7 +52,7 @@
 #endif
 #endif
 
-#ifdef MSDOS
+#if defined(MSDOS)
 
 #define EXPENTRY pascal
 
@@ -555,7 +555,9 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define SH_DENYNO 0
 #define SH_DENYALL 1
 
+#ifndef EXPENTRY  /* workaround for redefine this for DJGPP */
 #define EXPENTRY
+#endif
 
 /* Other OS's may sleep with other functions */
 
@@ -565,8 +567,12 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define mysleep(x) usleep(x*1000000l)
 #endif
 
+#if defined(__GNUC__) && !defined(VSPRINTF_ONLY)
+  /* Use -DVSPRINTF_ONLY on systems without vsnprintf() and snprintf()
+     Expample: sunOs 2.5.1 (Thanks to Serguei Revtov) */
 #define HAS_SNPRINTF  1
 #define HAS_VSNPRINTF 1
+#endif
 
 #elif defined(__DJGPP__)
 
