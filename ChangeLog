@@ -1,3 +1,8 @@
+2002-01-29 Tuesday 11:55  mche
+
+	* api_sq.h (1.5), compiler.h (1.78), msgapi.h (1.39): making
+	hptsqfix compilable with dlls under win32
+
 2002-01-26 Saturday 14:38  mche
 
 	* compiler.h (1.77): added defenition of snprintf for mvc compiler
