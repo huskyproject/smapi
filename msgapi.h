@@ -248,6 +248,8 @@ struct _msgapi
     void *apidata;
     
     SEMAPHORE sem;
+    
+    char  *lck_path;
 };
 
 
