@@ -1,3 +1,37 @@
+2002-11-12 Tuesday 13:47  stas_degteff
+
+	* makefile.aix (1.6), makefile.bcd (1.16), makefile.bco (1.14),
+	makefile.bcw (1.13), makefile.be (1.8), makefile.bsd (1.29),
+	makefile.bsd4 (1.10), makefile.cyg (1.6), makefile.djg (1.21),
+	makefile.emo (1.24), makefile.emx (1.16), makefile.hco (1.15),
+	makefile.ibo (1.20), makefile.inc (1.2), makefile.lnx (1.32),
+	makefile.mgw (1.17), makefile.mvc (1.11), makefile.mvcdll (1.12),
+	makefile.qcd (1.18), makefile.rxw (1.17), makefile.sun (1.22),
+	makefile.unx (1.19): Continue previous
+
+2002-11-12 Tuesday 13:39  stas_degteff
+
+	* makefile.aix (1.5), makefile.be (1.7), makefile.bsd (1.28),
+	makefile.bsd4 (1.9), makefile.cyg (1.5), makefile.djg (1.20),
+	makefile.emo (1.23), makefile.emx (1.15), makefile.hco (1.14),
+	makefile.ibo (1.19), makefile.inc (1.1), makefile.lnx (1.31),
+	makefile.mgw (1.16), makefile.mvc (1.10), makefile.mvcdll (1.11),
+	makefile.qcd (1.17), makefile.rxw (1.16), makefile.sun (1.21),
+	makefile.unx (1.18): Change makefiles: place common part into
+	makefile.inc
+
+2002-11-12 Tuesday 05:51  stas_degteff
+
+	* genmsgid.c (1.13): Fix compilation warnings (type conversion)
+
+2002-11-12 Tuesday 05:48  stas_degteff
+
+	* locking.c (1.30): Remove unused variable  (OS/2)
+
+2002-11-12 Tuesday 05:46  stas_degteff
+
+	* ffind.c (1.15), ffind.h (1.15): Fix compilation warnings (EMX)
+
 2002-11-11 Monday 12:56  stas_degteff
 
 	* genmsgid.c (1.12): Add top comment
