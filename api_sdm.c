@@ -923,10 +923,10 @@ static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type)
 	    return 0;
 	if (umsg < umsgid)
 	    left = new + 1;
-	else if (umsg > umsgid)
+	else if (umsg > umsgid){
 	    if(new>0) right = new - 1;
 	    else right=0;
-	else
+	}else
 	    return new;
     }
     if (type == UID_EXACT) return 0;
