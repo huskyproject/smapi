@@ -1,0 +1,23 @@
+mtt at Christi Himmelfahrt '98! mtt@uni-paderborn.de
+
+Unix:
+-----
+
+1. Put the smapi package in the directory where the other packages of fidolinux
+   reside:
+
+   /usr/src/packages/		-> fidoconfig/
+				-> hpt/
+				-> smapi/
+
+2. compile smapi
+
+3. copy the library libsmapilnx.so.2.0 to a dir like /usr/local/lib
+
+4. create syslinks:
+	[cd /usr/local/lib]
+	ln -s libsmapilnx.so.2.0 libsmapilnx.so.2
+	ln -s libsmapilnx.so.2 libsmapilnx.so
+
+You're ready. Now you can install hpt and other software which require smapi
+like fidoconfig and the upcoming KFidoEd.
