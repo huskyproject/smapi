@@ -41,7 +41,7 @@
 
 #define FFIND struct ffind
 
-#if defined (__WATCOMC__)
+#if defined (__WATCOMC__) || defined(__DJGPP__)
 #pragma pack(1)
 #endif
 
@@ -90,6 +90,10 @@ struct ffind
 
 #if defined (__WATCOMC__)
 #pragma pack(0)
+#endif
+
+#if defined (__DJGPP__)
+#pragma pack()
 #endif
 
 
