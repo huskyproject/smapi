@@ -1727,11 +1727,11 @@ int qq(void)
 #    define sleep(x) snooze(x*1000000l)
 #    define HAS_sleep     1
 #    define HAS_SYS_SYSEXITS_H     1  /*  <sys/sysexits.h> */
-#  elif defined(__LINUX__) || defined(__SUN__)
+#  elif defined(__SUN__)
 #    define mysleep(x) usleep(x*1000000l)
 #    define sleep(x)   usleep(x*1000000l)
 #    define HAS_sleep     1
-#  elif defined(__BSD__) || defined(__CYGWIN__)
+#  elif defined(__BSD__) || defined(__CYGWIN__) || defined(__LINUX__)
 #    define mysleep(x) sleep(x)
 #    define HAS_sleep     1
 #  endif
