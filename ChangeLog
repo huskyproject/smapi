@@ -1,3 +1,7 @@
+2002-03-19 Tuesday 14:34  mche
+
+	* compiler.h (1.82): added some defines for mcvs compiler
+
 2002-03-07 Thursday 14:35  pavel.gulchouck
 
 	* compiler.h (1.81): mingw32 _sleep() fix
