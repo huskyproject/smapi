@@ -283,6 +283,10 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       /* ftsdate = msg->__ftsc_date; */
       ftsdate = (unsigned char *)sc_time(scombo, (char *)(msg->__ftsc_date));
 
+      s_time = localtime((time_t *)(&(msgh->Hdr.DateProcessed)));
+      scombo = (SCOMBO*)(&(msg->date_arrived));
+      scombo = TmDate_to_DosDate(s_time, scombo);
+
    } /* endif */
 
    bytesread = 0;
