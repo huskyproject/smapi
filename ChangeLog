@@ -1,3 +1,8 @@
+2003-03-31 Monday 18:49  mche
+
+	* smapiDll.vcproj (1.1): vcproj Project File added for building
+	dynamyc smapi library in Microsoft Visual Studio .NET
+
 2003-03-29 Saturday 20:31  d_sergienko
 
 	* strextra.c (1.7), strextra.h (1.7), src/api_jam.c (1.5),
