@@ -38,9 +38,9 @@ OBJS=	1stchar.obj  \
 
 .c.obj:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
+	$(LIB) r $@ $?
 
 clean:
 	-DEL *.obj

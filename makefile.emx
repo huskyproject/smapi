@@ -40,9 +40,9 @@ OBJS=	1stchar.o  \
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
+	$(LIB) r $@ $?
 
 clean:
 	-DEL *.o
