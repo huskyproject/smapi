@@ -216,6 +216,8 @@
 #define strcasecmp stricmp
 #define strncasecmp strnicmp
 
+#define mode_t int
+
 #elif (defined(_MSC_VER) && (_MSC_VER < 1200))
 
 /* Microsoft C or Microsoft QuickC for MS-DOS or OS/2 */
