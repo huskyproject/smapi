@@ -1,3 +1,13 @@
+2001-12-23 Sunday 21:08  pavel.gulchouck
+
+	* progprot.h (1.11), structrw.c (1.26): minor bugfix for -DINTEL=1
+
+2001-12-23 Sunday 13:38  pavel.gulchouck
+
+	* api_jam.c (1.69), api_jam.h (1.10), api_jamp.h (1.15), cvtdate.c
+	(1.8), structrw.c (1.25): Speedup, many changes (a lot of jam code
+	rewrited)
+
 2001-12-22 Saturday 00:20  pavel.gulchouck
 
 	* api_jam.c (1.68): A bit speedup
