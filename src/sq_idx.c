@@ -68,7 +68,7 @@ static char rcs_id[]="$Id$";
 
 #ifdef __FLAT__
   #define MORE_SPACE       256      /* Allow for up to 256 additions */
-  #define SEGMENT_SIZE    (LONG_MAX/(long)SQIDX_SIZE)
+  #define SEGMENT_SIZE    (signed_long_max/(long)SQIDX_SIZE)
   #define SHIFT_SIZE      32768
 #else
   #define MORE_SPACE        16      /* Allow for up to 16 additions */
