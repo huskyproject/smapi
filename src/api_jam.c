@@ -1598,6 +1598,7 @@ static dword Jam_JamAttrToMsg(MSGH *msgh)
    if (msgh->Hdr.Attribute & JMSG_LOCKED)      attr |= MSGLOCKED;
    if (msgh->Hdr.Attribute & JMSG_DIRECT)      attr |= MSGXX2;
    if (msgh->Hdr.Attribute & JMSG_IMMEDIATE)   attr |= MSGIMM;
+   if (msgh->Hdr.Attribute2 & 0x00000800L)     attr |= MSGREADTMR;
 
    return attr;
 }
@@ -1628,6 +1629,15 @@ static dword Jam_MsgAttrToJam(XMSG *msg)
 
    return attr;
 }
+
+static dword Jam_MsgAttr2ToJam(XMSG *msg)
+{
+   if (InvalidMsg(msg))
+      return 0;
+   if (msg->attr & MSGREADTMR) return 0x00000800L;
+   return 0L;
+}
+
 
 static int StrToSubfield(const unsigned char *str, dword lstr, dword *len, JAMSUBFIELD2ptr subf)
 {
@@ -1771,6 +1781,8 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    subfield[0]->subfield[0].Buffer = (unsigned char *)&(subfield[0]->subfield[clen+1]);
 
    jamhdr->Attribute = Jam_MsgAttrToJam(msg);
+   jamhdr->Attribute2 = Jam_MsgAttr2ToJam(msg);
+   
    if (msgh->sq->isecho != NOTH) {
       if (msgh->sq->isecho) {
          jamhdr->Attribute |= JMSG_TYPEECHO;
