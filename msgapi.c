@@ -25,6 +25,8 @@
 #include "apidebug.h"
 #include "unused.h"
 
+void _SquishCloseOpenAreas(void);
+
 static byte *intl = (byte *) "INTL";
 static byte *fmpt = (byte *) "FMPT";
 static byte *topt = (byte *) "TOPT";
@@ -49,11 +51,14 @@ sword EXPENTRY MsgOpenApi(struct _minf *minf)
     unused(copyright);
     mi = *minf;
     mi.haveshare = shareloaded();
+    
+    atexit(_SquishCloseOpenAreas);
     return 0;
 }
 
 sword EXPENTRY MsgCloseApi(void)
 {
+	_SquishCloseOpenAreas();
     return 0;
 }
 

@@ -46,12 +46,19 @@
 #include "apidebug.h"
 #include "unused.h"
 
-/* TODO: It is a good idea to make a list of all open areas */
 
-MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type)
+/* The root of a simple list of open Areas */
+
+static HAREA _haopen = NULL;
+
+/* OG: 8/12/00
+   Changed returntype 'MSG *' to HAREA 
+*/
+
+HAREA MSGAPI SquishOpenArea(byte * name, word mode, word type)
 {
     struct _sqbase sqbase;
-    MSG *sq;
+    HAREA sq;
 
     unused(_junksq);
 
@@ -160,6 +167,16 @@ MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type)
     *sq->api = sq_funcs;
     sq->sz_xmsg = XMSG_SIZE;
 
+
+    /* TODO: Locking against other threads would be cool ;) */
+   
+    /* 8/12/00 
+       OG: Area is opened, so it can be linked to open-area list 
+    */
+ 
+    Sqd->hanext = _haopen;
+    _haopen = sq;
+
     return sq;
 }
 
@@ -177,21 +194,67 @@ int SquishDeleteBase(char *name)
     return rc;
 }   
 
-/* TODO: Don't forget updating the Open-Arealist when closing an area */
 
-static sword EXPENTRY SquishCloseArea(MSG * sq)
+/* Closing open messages */
+
+static unsigned _SquishCloseAreaMsgs(HAREA sq)
 {
+  HMSG hm, hmNext;
+
+  /* Close any open messages, if necessary */
+
+  for (hm=Sqd->hmsgopen; hm; hm=hmNext)
+  {
+    hmNext=hm->hmsgnext;
+
+    if (SquishCloseMsg(hm)==-1)
+    {
+      msgapierr=MERR_EOPEN;
+      return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
+/* Exitlist routine to make sure that all areas are closed */
+
+void _SquishCloseOpenAreas(void)
+{
+  HAREA sq, haNext;
+
+  /* If nothing to close, just get out. */
+
+  if (!_haopen)
+    return;
+
+  for (sq=_haopen; sq; sq=haNext)
+  {
+    haNext=Sqd->hanext;
+
+    SquishCloseArea(sq);
+  }
+
+  _haopen=NULL;
+}
+
+static sword EXPENTRY SquishCloseArea(HAREA sq)
+{
+    HAREA ha;
+    
     if (InvalidMh(sq))
     {
         return -1;
     }
 
-    /* If Base isn't locked, it MUST be locked, 'cause Writiting the header
+    /* If Base isn't locked, it MUST be locked, 'cause writiting the header
        is quit uncool if the base isn't locked */
     if (!sq->locked)
     {
         SquishLock(sq);
     }
+
+    _SquishCloseAreaMsgs(sq);
 
     _SquishUpdateSq(sq, TRUE);
 
@@ -205,7 +268,7 @@ static sword EXPENTRY SquishCloseArea(MSG * sq)
        It is better to close all open messages, 'cause if the app 'lost'
        some open messages (yes, it's a byte-eater out there) it's impossible
        to close the area ! 
-       TODO: Close all open messaged */
+       TODO: Close all open messages */
     if (Sqd->msgs_open)
     {
         msgapierr = MERR_EOPEN;
@@ -215,6 +278,38 @@ static sword EXPENTRY SquishCloseArea(MSG * sq)
     close(Sqd->sfd);
     close(Sqd->ifd);
 
+
+    /* TODO: Locking against other threads is a _MUST_ */
+
+    /* OG: 8/12/00
+       Remove Area from open-area list 
+    */
+
+    /* Search entry */
+    if (_haopen == sq)
+    {
+      /* Area is head of open-area list */
+      _haopen = SqdSQ(_haopen)->hanext;
+    }
+    else
+    {
+      ha = _haopen;
+      while (ha && SqdSQ(ha)->hanext != sq)
+      {
+        ha = SqdSQ(ha)->hanext;
+      }
+      
+      if (ha)
+      {
+        /* Something found */
+        SqdSQ(ha)->hanext = SqdSQ(sq)->hanext;    
+      }
+      else
+      {
+        /* Area not in open-area list ? - That's strange ! */
+      }
+    }
+    
     pfree(sq->api);
     pfree((char *)sq->apidata);
     sq->id = 0L;
@@ -223,9 +318,7 @@ static sword EXPENTRY SquishCloseArea(MSG * sq)
     return 0;
 }
 
-/* TODO: It is a good idea to make a list of all open messages */
-
-static MSGH *EXPENTRY SquishOpenMsg(MSG * sq, word mode, dword msgnum)
+static HMSG EXPENTRY SquishOpenMsg(HAREA sq, word mode, dword msgnum)
 {
     struct _msgh *msgh;
 
@@ -278,18 +371,30 @@ static MSGH *EXPENTRY SquishOpenMsg(MSG * sq, word mode, dword msgnum)
 
     MsghSqd->msgs_open++;
 
-    return (MSGH *) msgh;
+    /* OG: 8/12/00
+       Linking all open messages against to a open-messages list
+    */
+    
+    msgh->hmsgnext = Sqd->hmsgopen;
+    Sqd->hmsgopen  = msgh;
+
+    return (HMSG) msgh;
 }
 
 /* TODO: Remember: When closing a message, remove the message from the 
    open-message list */
 
-static sword EXPENTRY SquishCloseMsg(MSGH * msgh)
+static sword EXPENTRY SquishCloseMsg(HMSG msgh)
 {
+    HAREA sq;
+    HMSG  hmsg;
+    
     if (InvalidMsgh(msgh))
     {
         return -1;
     }
+
+    sq = msgh->sq;
 
     /* Fill the message out to the length that the app said it would be */
 
@@ -305,6 +410,39 @@ static sword EXPENTRY SquishCloseMsg(MSGH * msgh)
     }
 
     MsghSqd->msgs_open--;
+
+
+    /* TODO: Locking against other threads is a _MUST_ */
+
+    /* OG: 8/12/00
+       Remove message from open-message list 
+    */
+
+    /* Search entry */
+    if (Sqd->hmsgopen == msgh)
+    {
+      /* Message is head of open-message list */
+      Sqd->hmsgopen = msgh->hmsgnext;
+    }
+    else
+    {
+      /* Start at the root */
+      hmsg = Sqd->hmsgopen;
+      while (hmsg && hmsg->hmsgnext != msgh)
+      {
+        hmsg = hmsg->hmsgnext;
+      }
+      
+      if (hmsg)
+      {
+        /* Something found */
+        hmsg->hmsgnext = msgh->hmsgnext;    
+      }
+      else
+      {
+        /* Message not in open-message list ? - That's strange ! */
+      }
+    }
 
     if (msgh->hdr)
     {

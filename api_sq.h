@@ -78,6 +78,8 @@ struct _msgh
     FOFS seek_frame;
 
     word mode;
+    
+    HMSG hmsgnext;
 };
 
 struct _sqidx

@@ -58,11 +58,16 @@ static void far *near farmemset(void far * s, int c, size_t length);
 static int near _SquishLock(MSG * sq, int force);
 static void near _SquishUnlock(MSG * sq);
 static sword near _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen, dword clen, SQHDR * freehdr, FOFS * last_frame, SQHDR * lhdr, MSGH * msgh);
+static unsigned _SquishCloseAreaMsgs(HAREA sq);
+
+void _SquishCloseOpenAreas(void);
+
 
 #define fop_wpb (O_CREAT | O_TRUNC | O_RDWR | O_BINARY)
 #define fop_rpb (O_RDWR | O_BINARY)
 
 #define Sqd ((struct _sqdata *)(sq->apidata))
+#define SqdSQ(sq) ((struct _sqdata *)(sq->apidata))
 #define MsghSqd ((struct _sqdata *)(((struct _msgh far *)msgh)->sq->apidata))
 
 static struct _apifuncs sq_funcs =

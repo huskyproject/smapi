@@ -62,6 +62,9 @@ struct _sqdata
     word msgs_open;
 
     SQIDX far *idxbuf;
+    
+    HAREA  hanext;          /* Next open Area */
+    HMSG   hmsgopen;        /* List of open messages */
 };
 
 #endif
