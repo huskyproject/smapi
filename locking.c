@@ -149,7 +149,7 @@ int waitlock2(int handle, long ofs, long length, long t)
       
     while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
     {
-        mysleep(1);
+        tdelay(1000);
         t--;
     }
     
@@ -216,7 +216,7 @@ int waitlock2(int handle, long ofs, long length, long t)
       
     while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
     {
-        mysleep(1);
+        tdelay(1000);
         t--;
     }
     
@@ -266,7 +266,7 @@ int waitlock(int handle, long ofs, long length)
 {
     while (lock(handle, ofs, length) == -1)
     {
-        mysleep(1);
+        tdelay(1000);
     }
     return 0;
 }
@@ -281,7 +281,7 @@ int waitlock2(int handle, long ofs, long length, long t)
       
     while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
     {
-        mysleep(1);
+        tdelay(1000);
         t--;
     }
     
@@ -434,7 +434,7 @@ int waitlock(int handle, long ofs, long length)
 {
     while (lock(handle, ofs, length) == -1)
     {
-        mysleep(1);
+        tdelay(1000);
     }
     return 0;
 }
@@ -449,7 +449,7 @@ int waitlock2(int handle, long ofs, long length, long t)
       
     while ((rc = lock(handle, ofs, length)) == -1 && (t > 0 || forever))
     {
-        mysleep(1);
+        tdelay(1000);
         t--;
     }
     
