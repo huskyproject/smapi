@@ -17,7 +17,7 @@ Package: libsmapi2-dev
 Section: devel
 Architecture: any
 Depends: libsmapi2(=${Source-Version}), libc6-dev, huskybase(<< 2.0-0)
-Conflicts: libsmapi2cur-dev
+Conflicts: libsmapi2cur-dev, huskybase(>> 2.0-0)
 Description: MsgAPI for the Husky-Packages
  smapi is a modified message api for *.MSG, SQUISH (C) and JAM-Messagebase
  formats. It is required for all other Husky-Software.
