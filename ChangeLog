@@ -1,3 +1,8 @@
+2003-09-18 Thursday 05:49  sfpavel
+
+	* debian/changelog (smapi-2_4-stable.8): New stable version:
+	2.4-RC2
+
 2003-08-10 Sunday 08:35  pgul
 
 	* msgapi.c (smapi-2_4-stable.1): Do not skip first SoftCR when
