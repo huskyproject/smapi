@@ -70,7 +70,7 @@
 
   int _fast setfsize(int fd, long size)
   {
-    return ((int)DosNewSize((HFILE)fd, (ULONG)size));
+    return ((int)DosSetFileSize((HFILE)fd, (ULONG)size));
   }
 
 #elif defined(NT)

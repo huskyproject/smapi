@@ -47,12 +47,6 @@ static char rcs_id[]="$Id$";
 #include <unistd.h>
 #endif
 
-#if defined(UNIX) && !defined(__BEOS__)
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/sem.h>
-#endif
-
 #include "prog.h"
 #include "alc.h"
 #include "old_msg.h"
@@ -61,20 +55,12 @@ static char rcs_id[]="$Id$";
 #include "api_sqp.h"
 #include "apidebug.h"
 #include "unused.h"
-#include "semaphor.h"
 
 /* Linked list of open Squish areas */
 
 static HAREA haOpen=NULL;
 
-#ifdef __IBMC__
-static short lock_sem = 0;
-#elif defined(__BEOS__)
-#include <OS.h>
-static sem_id lock_sem;
-#elif defined(UNIX)
-static int lock_sem;
-#endif
+static SEMAPHORE lock_sem;
 
 static char dot_sqd[]=".sqd";
 static char dot_sqi[]=".sqi";

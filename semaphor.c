@@ -100,4 +100,26 @@ void unlock_semaphore(SEMAPHORE *sem)
   semop(*sem, &sops, 1);
 }
 
+#elif defined(OS2)
+
+void create_semaphore(SEMAPHORE *s)
+{
+  DosCreateMutexSem(NULL, s, DC_SEM_SHARED, 0);
+}
+
+void lock_semaphore(SEMAPHORE *s)
+{
+  DosRequestMutexSem(*s, SEM_INDEFINITE_WAIT);
+}
+
+void unlock_semaphore(SEMAPHORE *s)
+{
+  DosReleaseMutexSem(*s);
+}
+
+void delete_semaphore(SEMAPHORE *s)
+{
+  DosCloseMutexSem(*s);
+}
+
 #endif

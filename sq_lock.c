@@ -40,12 +40,6 @@ static char rcs_id[]="$Id$";
 #include <share.h>
 #endif
 
-#if defined(UNIX) && !defined(__BEOS__)
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/sem.h>
-#endif
-
 #if defined(UNIX)
 #include <unistd.h>
 #endif
@@ -58,7 +52,6 @@ static char rcs_id[]="$Id$";
 #include "api_sqp.h"
 #include "apidebug.h"
 #include "unused.h"
-#include "semaphor.h"
 
 /* Base is locked for other processes */
 

@@ -35,6 +35,7 @@ static char rcs_id[]="$Id$";
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <string.h>
 
 #if !defined(UNIX) && !defined(SASC)
 #include <share.h>

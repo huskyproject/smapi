@@ -10,6 +10,7 @@ COPT=	-O3
 # -fomit-frame-pointer -fstrength-reduce -fPIC -m486
 
 LIB=	ar
+RANLIB= ranlib
 
 TARGET=	libsmapilnx.a
 
@@ -55,9 +56,10 @@ OBJS=	1stchar.o  \
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
+	$(LIB) r $@ $?
+	$(RANLIB) $(TARGET)
 
 clean:
 	-rm *.o

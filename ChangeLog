@@ -1,4 +1,11 @@
 ----- cvs ci ------
+Mon Sep 04 12:54:10 NOVST 2000
+max (patches from Pavel Gulchouk):
+* semaphores for OS/2
+* jam update for "hpt link" & "hptlink"
+* fix: writing zero-terminated msg, reading any msg.
+
+----- cvs ci ------
 Sun Sep 03 19:54:10 NOVST 2000
 max (patches from Pavel Gulchouk):
 * ReplyTo/Reply1st/ReplyNext support ("hpt link" links jam areas now)

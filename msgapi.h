@@ -27,6 +27,7 @@ extern "C" {
 #include "compiler.h"
 #include "typedefs.h"
 #include "stamp.h"
+#include "semaphor.h"
 
 #ifdef __BEOS__
 #include <OS.h>
@@ -150,7 +151,7 @@ typedef struct _xmsg
 
 #define MAX_REPLY 9            /* Max number of stored replies to one msg */
 
-    UMSGID replyto;
+    UMSGID replyto, replynext;
     UMSGID replies[MAX_REPLY];
     dword umsgid;               /* UMSGID of this message, if (attr&MSGUID) */
                                 /* This field is only stored on disk -- it  *
@@ -231,13 +232,7 @@ struct _msgapi
 
     void *apidata;
     
-    #ifdef __BEOS__
-     sem_id sem;
-    #elif defined(__IBMC__)
-     short sem;
-    #elif defined(UNIX)
-      int sem;
-    #endif
+    SEMAPHORE sem;
 };
 
 

@@ -624,7 +624,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
         }
 
         got = (word) farread(msgh->fd, text, (unsigned int)bytes);
-        text[(unsigned int)bytes] = '\0';
+        text[(unsigned int)got] = '\0';
 
         /*
          *  Update counter only if we got some text, and only if we're
@@ -772,6 +772,12 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             msgapierr = MERR_NODS;
             return -1;
         }
+        if (text[textlen])
+            if (farwrite(msgh->fd, "", 1) != 1)
+            {
+                msgapierr = MERR_NODS;
+                return -1;
+            }
     }
 
     msgapierr = MERR_NONE;
@@ -1122,24 +1128,8 @@ static sword near _SdmRescanArea(MSG * mh)
             }
 
 #ifdef OS2
-#ifdef __TURBOC__
             if ((mn % 128) == 127)
-            {
-                sleep(1);
-            }
-#else
-            {
-#ifdef __IBMC__
-                extern void _System DosSleep(dword);
-#else
-                extern void far pascal DosSleep(dword);
-#endif
-                if ((mn % 128) == 127)
-                {
-                    DosSleep(1L);
-                }
-            }
-#endif
+                DosSleep(1L); /* give up cpu */
 #endif
         }
         while (FFindNext(ff) == 0);

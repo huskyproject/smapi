@@ -48,6 +48,14 @@
 
 #define SEMAPHORE int
 
+/* IBM OS2 semaphores */
+#elif defined(OS2)
+
+#define INCL_DOS
+#include <os2.h>
+
+#define SEMAPHORE HMTX
+
 #else
 
 #error "Don't know how to setup semaphore. Use -DNOSEMAPHORES"
