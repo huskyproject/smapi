@@ -1,3 +1,12 @@
+2002-05-17 Friday 22:05  pavel.gulchouck
+
+	* makeperl.mvc (1.4): use makefile.mvc instead of makeperl.mvc
+
+2002-05-17 Friday 17:55  pavel.gulchouck
+
+	* makeperl.mvcdll (1.5): Use makefile.mvcdll instead of
+	makeperl.mvcdll
+
 2002-05-14 Tuesday 16:12  pavel.gulchouck
 
 	* ffind.h (1.13): mingw32 compilation fix
