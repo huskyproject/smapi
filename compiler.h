@@ -717,6 +717,7 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define open		_open
 #define access		_access
 #define snprintf	_snprintf
+#define vsnprintf   _vsnprintf
 #define spawnvp     _spawnvp
 #define dup		    _dup
 #define mktemp		_mktemp
