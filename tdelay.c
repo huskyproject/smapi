@@ -27,7 +27,7 @@
 #endif
 #endif
 
-#ifdef __MSDOS__
+#if defined(__MSDOS__) || (defined(__FLAT__) && defined(__WATCOMC__))
 #include <dos.h>
 #endif
 
@@ -97,6 +97,11 @@
     usleep(msecs*1000l);
   }
 
+#elif defined(__WATCOMC__)
+  void _fast tdelay(int msecs)
+  {
+    sleep(msecs);
+  }
 #else
 #error Unknown OS
 #endif

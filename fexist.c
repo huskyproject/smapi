@@ -157,7 +157,7 @@ long _fast fsize(char *filename)
     return ret;
 }
 
-#if defined(MSDOS) || defined(__DJGPP__)
+#if defined(MSDOS) || defined(__DJGPP__) || (defined(__FLAT__) && defined(__WATCOMC__))
 
 int _fast direxist(char *directory)
 {
