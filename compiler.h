@@ -21,7 +21,7 @@
 #define __COMPILER_H__
 
 /*
-  BeOS is NOT Unix, but sometime it seem's to Be ... ;) 
+  BeOS is NOT Unix, but sometime it seem's to Be ... ;)
 */
 #if defined (__BEOS__)
   #ifndef UNIX
@@ -258,6 +258,8 @@ int lock(int handle, long ofs, long length);
 
 #define EXPENTRY _System
 #define mysleep(x) DosSleep(1000*(x))
+#define mode_t int
+
 
 #elif defined(__WATCOMC__) && defined(__NT__)
 

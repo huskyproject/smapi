@@ -18,6 +18,7 @@
  */
 
 #include <unistd.h>
+#include <stdlib.h> /* NULL */
 
 #include "semaphor.h"
 
@@ -62,7 +63,7 @@ void create_semaphore(SEMAPHORE *sem)
 
   *sem = semget(IPC_PRIVATE, 1, 0600|IPC_CREAT);
 
-  semctl(*sem, 0, SETVAL, fl);  
+  semctl(*sem, 0, SETVAL, fl);
 }
 
 void delete_semaphore(SEMAPHORE *sem)
@@ -80,7 +81,7 @@ void delete_semaphore(SEMAPHORE *sem)
 void lock_semaphore(SEMAPHORE *sem)
 {
   struct sembuf sops;
-  
+
   sops.sem_num = 0;
   sops.sem_op  = -1;
   sops.sem_flg = 0;
@@ -92,7 +93,7 @@ void lock_semaphore(SEMAPHORE *sem)
 void unlock_semaphore(SEMAPHORE *sem)
 {
   struct sembuf sops;
-  
+
   sops.sem_num = 0;
   sops.sem_op  = 1;
   sops.sem_flg = 0;
@@ -101,6 +102,10 @@ void unlock_semaphore(SEMAPHORE *sem)
 }
 
 #elif defined(OS2)
+
+#define INCL_DOS
+#include <os2.h>
+
 
 void create_semaphore(SEMAPHORE *s)
 {
