@@ -1,3 +1,13 @@
+2003-03-04 Tuesday 12:54  stas_degteff
+
+	* compiler.h (smapi-2_4-stable.2): Use sleep() from unistd.h in
+	BeOS build
+
+2003-03-04 Tuesday 12:51  stas_degteff
+
+	* compiler.h (smapi-2_4-stable.1): Prevent warnings in BeOS (use
+	unistd.h)
+
 2003-03-03 Monday 13:10  stas_degteff
 
 	* apidebug.h, ffind.c, ffind.h, flush.c, msgapi.h, sq_area.c,
