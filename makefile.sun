@@ -4,8 +4,8 @@
 
 CC=	gcc
 CFLAGS=	-Wall
-CDEFS=	-DUNIX
-#CDEFS=	-DUNIX -DHAS_SEMUN_UNDECL
+CDEFS=	-D__SUN__
+#CDEFS+= -DHAS_SEMUN_UNDECL
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
 LIB=	ar
 RANLIB= ranlib
