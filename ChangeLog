@@ -1,3 +1,8 @@
+2002-02-26 Tuesday 09:18  ml
+
+	* makeperl.mvc (1.2), makeperl.mvcdll (1.1), msgapi.h (1.41):
+	changes for compiling mscv6 dll version with perl support
+
 2002-02-24 Sunday 12:23  mche
 
 	* .cvsignore (1.2): *.obj
