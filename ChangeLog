@@ -1,3 +1,7 @@
+2003-03-27 Thursday 21:26  d_sergienko
+
+	* smapi/msgapi.h (1.6): add macro getHAREA() for convenience
+
 2003-03-25 Tuesday 13:14  stas_degteff
 
 	* make/: makefile.be (1.2), makefile.bsd (1.2), makefile.bsd4
