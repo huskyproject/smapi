@@ -227,7 +227,7 @@ typedef struct {
    JAMHDRINFO      HdrInfo;        /* Message header info */
    JAMACTMSGptr    actmsg;
    word            msgs_open;
-   word            actmsg_read;
+   word            actmsg_read;    /* ??? 0, 1 or 2; 0 of not read, 1 if header fit in core, 2 otherwise*/
    mode_t          permissions;
    word            mode;
    word            modified;

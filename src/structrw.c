@@ -1085,8 +1085,8 @@ int read_allidx(JAMBASEptr jmb)
       jmb->actmsg = (JAMACTMSGptr)farmalloc(allocated * sizeof(JAMACTMSG));
       if (jmb->actmsg == NULL) {
          if (hdrbuf) pfree(hdrbuf);
-	 pfree(buf);
-	 return 0;
+         pfree(buf);
+         return 0;
       }
    }
 
@@ -1096,21 +1096,21 @@ int read_allidx(JAMBASEptr jmb)
          if (offset+HDR_SIZE<=hlen) {
             if (hdrbuf)
                decode_hdr(hdrbuf+offset, &hbuf);
-	    else {
+            else {
                lseek(jmb->HdrHandle, offset, SEEK_SET);
-	       read_hdr(jmb->HdrHandle, &hbuf);
-	    }
+               read_hdr(jmb->HdrHandle, &hbuf);
+            }
             if (!(hbuf.Attribute & JMSG_DELETED)) {
                if (i >= allocated) {
                   newptr = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*(allocated += 16));
                   if (newptr == NULL) {
                      pfree(jmb->actmsg);
                      if (hdrbuf) pfree(hdrbuf);
-		     pfree(buf);
-		     return 0;
-		  }
-		  jmb->actmsg = newptr;
-	       }
+                     pfree(buf);
+                     return 0;
+                  }
+                  jmb->actmsg = newptr;
+               }
                jmb->actmsg[i].IdxOffset = pbuf - buf;
                jmb->actmsg[i].TrueMsg = offset;
                jmb->actmsg[i].UserCRC = get_dword(pbuf);
