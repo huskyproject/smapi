@@ -16,7 +16,7 @@ LIB=		smapi
 SHLIB_MAJOR=	2
 SHLIB_MINOR=	2.5
 
-OBJ=	.o
+_OBJ=	.o
 
 # FreeBSD/i386 addition
 #
@@ -27,6 +27,7 @@ OBJ=	.o
 .include <makefile.inc>
 
 CFLAGS+= -I$(H_DIR) -I../../huskylib
+VPATH=$(SRC_DIR)
 
 .include <bsd.lib.mk>
 
