@@ -96,14 +96,9 @@ struct ffind
 #endif
 };
 
-#if defined (__WATCOMC__)
-#pragma pack(0)
-#endif
-
-#if defined (__DJGPP__)
+#if defined (__WATCOMC__) || defined(__DJGPP__)
 #pragma pack()
 #endif
-
 
 /*
  * I prefixed the functions below with an additional F in order to
