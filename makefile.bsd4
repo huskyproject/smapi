@@ -13,7 +13,7 @@ CFLAGS= 	-Wall -DUNIX -O3
 
 LIB=		smapi
 SHLIB_MAJOR=	2
-SHLIB_MINOR=	2.1
+SHLIB_MINOR=	2.3
 
 # FreeBSD/i386 addition
 #
