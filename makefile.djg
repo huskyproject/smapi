@@ -53,6 +53,8 @@ OBJS=	1stchar.o  \
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
+all: $(TARGET)
+
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
