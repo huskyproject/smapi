@@ -202,7 +202,7 @@ dword _XPENTRY apiSquishUidToMsgn(HAREA ha, UMSGID uid, word wType)
   _SquishExclusiveEnd(ha);
 */
 
-  if ((apiSquishUnlock(ha) == -1) || (! _SquishFreeBuffer(Sqd->hix)))
+  if (apiSquishUnlock(ha) == -1)
     rc=(dword)0;
 
   return rc;
