@@ -53,8 +53,16 @@ void unlock_semaphore(SEMAPHORE *sem)
 
 void create_semaphore(SEMAPHORE *sem)
 {
-  *sem = semget(IPC_PRIVATE, 1, 0x1f|SEM_CREAT);
-  unlock_semaphore(sem);
+#ifdef HAS_SEMUN
+  union semun fl;
+  fl.val = 1;
+#else
+  int fl = 1;
+#endif
+
+  *sem = semget(IPC_PRIVATE, 1, 0600|IPC_CREAT);
+
+  semctl(*sem, 0, SETVAL, fl);  
 }
 
 void delete_semaphore(SEMAPHORE *sem)
