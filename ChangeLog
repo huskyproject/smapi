@@ -1,3 +1,12 @@
+2002-10-31 Thursday 08:30  pgul
+
+	* genmsgid.c (1.8): minor bugfix - errno for non-destructive
+	rename()
+
+2002-10-31 Thursday 08:11  pgul
+
+	* genmsgid.c (1.7): bugfix (empty seqdir with MSVC)
+
 2002-10-29 Tuesday 12:01  stas_degteff
 
 	* makefile.djg (1.19): Add 'all' tag for DJGPP build
