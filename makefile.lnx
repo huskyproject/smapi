@@ -49,5 +49,5 @@ $(TARGET): $(OBJS)
 clean:
 	-rm *.o
 
-distclean:
+distclean: clean
 	-rm $(TARGET)
