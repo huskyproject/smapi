@@ -1,3 +1,12 @@
+2003-01-27 Monday 20:27  stas_degteff
+
+	* compiler.h (1.160): Fix BSD compilation: sleep() and mktime()
+	presents.
+
+2003-01-27 Monday 16:22  stas_degteff
+
+	* compiler.h (1.159): Update linux & bsd defines
+
 2003-01-23 Thursday 22:17  d_sergienko
 
 	* Makefile (1.33): install static library when invoking 'make
