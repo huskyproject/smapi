@@ -1,3 +1,13 @@
+2002-10-20 Sunday 11:26  mche
+
+	* smapiDll.dsp (1.3), smapiStatic.dsp (1.2): Microsoft Developer
+	Studio Project Files added
+
+2002-10-20 Sunday 09:36  mche
+
+	* compiler.h (1.101), makefile.mvc (1.8), makefile.mvcdll (1.9):
+	defenition for USE_SYSTEM_COPY in smapi/compiler.h for MSVC
+
 2002-10-18 Friday 06:34  mche
 
 	* smapiDll.dsp (1.2): Microsoft Developer Studio Project Files
