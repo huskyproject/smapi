@@ -1,5 +1,10 @@
 
 ----- cvs ci ------
+Tue Oct  3 18:22:25 MSZ 2000
+tobi:
+* introduced MSGIMM flag in XMSG for use by JAM API
+
+----- cvs ci ------
 Tue Oct  3 00:19:14 MEZ 2000
 tobi:
 * Support Jam Direct flag (JMSG_DIRECT) via MSGXX1 Squish flag, which is

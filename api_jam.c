@@ -1064,6 +1064,7 @@ static dword Jam_JamAttrToMsg(MSGH *msgh)
    if (msgh->Hdr.Attribute & JMSG_CONFIRMREQ)  attr |= MSGCPT;
    if (msgh->Hdr.Attribute & JMSG_LOCKED)      attr |= MSGLOCKED;
    if (msgh->Hdr.Attribute & JMSG_DIRECT)      attr |= MSGXX2;
+   if (msgh->Hdr.Attribute & JMSG_IMMEDIATE)   attr |= MSGIMM;
 
    return attr;
 }
@@ -1087,6 +1088,7 @@ static dword Jam_MsgAttrToJam(XMSG *msg)
    if (msg->attr & MSGCPT)     attr |= JMSG_CONFIRMREQ;
    if (msg->attr & MSGLOCKED)  attr |= JMSG_LOCKED;
    if (msg->attr & MSGXX2)     attr |= JMSG_DIRECT;
+   if (msg->attr & MSGIMM)     attr |= JMSG_IMMEDIATE;
    
    return attr;
 }
