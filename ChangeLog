@@ -1,3 +1,7 @@
+2003-05-25 Sunday 12:35  lmike
+
+	* make/makefile.qnx (1.4): Fixed bug with link to .so creation.
+
 2003-05-23 Friday 04:32  lmike
 
 	* smapi.qpg (1.2): Previous commit was bad, fixed file contents
