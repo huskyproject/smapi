@@ -947,10 +947,10 @@ int qq(void)
 #    define SMAPI_EXT    extern
 #  endif /* ifdef _MAKE_DLL */
 
-/*   must be included before function redefenition like '#define fileno _fileno' */
+/*   must be included before macro redefenition '# efine SH_DENYNONE _SH_DENYNO' */
 #   include <share.h>
-#define SH_DENYNONE _SH_DENYNO
-/*   must be included before function redefenition like '#define P_WAIT		_P_WAIT'  */
+#   define SH_DENYNONE _SH_DENYNO
+/*   must be included before function redefenition '#define P_WAIT _P_WAIT'  */
 #   include <process.h>
 #   define P_WAIT		_P_WAIT   /* process.h */
 
@@ -1021,7 +1021,6 @@ int qq(void)
 #  define HAS_MALLOC_H     /* use "#include <malloc.h>" for malloc() etc. */
 #  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
 #  define HAS_DIRECT_H
-//#  include <direct.h>
 
    SMAPI_EXT int unlock(int handle, long ofs, long length);
    SMAPI_EXT int lock(int handle, long ofs, long length);
