@@ -1,3 +1,8 @@
+2002-11-10 Sunday 08:28  sfpavel
+
+	* Makefile, file_id.diz, msgapi.h, debian/libsmapi2.files
+	(smapi-2_2-stable.[5,5,2,2]): smapi 2.2.1 release
+
 2002-10-25 Friday 11:38  stas_degteff
 
 	* progprot.h (smapi-2_2-stable.1): Bugfix: include required header
