@@ -48,5 +48,6 @@ $(TARGET): $(OBJS)
 
 clean:
 	-DEL *.OBJ
-	-DEL SMAPIWCX.LIB
 
+distclean:
+	-DEL SMAPIWCX.LIB

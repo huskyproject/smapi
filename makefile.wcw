@@ -21,4 +21,7 @@ $(TARGET): $(OBJS)
 
 clean:
         -DEL *.OBJ
-	-DEL SMAPIWCW.LIB
+
+distclean:
+	-DEL $(TARGET)
+
