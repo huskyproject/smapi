@@ -11,7 +11,7 @@ prefix= 	/usr/local
 LIBDIR= 	$(prefix)/lib
 CFLAGS= 	-Wall -DUNIX -O3 -DNOSEMAPHORES
 
-LIB=		smapi
+LIB=		smapibsd
 SHLIB_MAJOR=	2
 SHLIB_MINOR=	2.1
 
