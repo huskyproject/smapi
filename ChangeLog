@@ -1,3 +1,7 @@
+2003-05-29 Thursday 20:45  d_sergienko
+
+	* VERSION (smapi-2_4-stable.2): make info more real
+
 2003-04-30 Wednesday 09:41  sfpavel
 
 	* debian/: changelog, control (smapi-2_4-stable.[7,5]): New stable
