@@ -1,3 +1,7 @@
+2003-02-21 Friday 19:20  stas_degteff
+
+	* compiler.h (1.168): Add some info about BeOS defines
+
 2003-02-20 Thursday 12:01  stas_degteff
 
 	* HISTORY (1.2): Update bugfixes list
