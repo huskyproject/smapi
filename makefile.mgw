@@ -1,0 +1,45 @@
+# Makefile for building a Windows 95 / NT SMAPI library
+# with the MingW32 GNU compiler. Can be used to crosscompile the
+# windows smapi library on a Unix machine.
+
+#use this line if you are using MINGW32 on a Windows box
+#CC=     gcc
+
+#use this line if you are using MINGW32 CPD on a Unix box
+CC=i386--mingw32-gcc
+
+CFLAGS= -Wall
+CDEFS=  -D__NT__ -DWINNT -D__MINGW32__
+COPT=
+LIB=    ar
+
+TARGET= smapimgw.a
+
+OBJS=   1stchar.o  \
+	api_sdm.o  \
+	api_sq.o   \
+	cvtdate.o  \
+	date2bin.o \
+	dosdate.o  \
+	fexist.o   \
+	ffind.o    \
+	flush.o    \
+	locking.o  \
+	months.o   \
+	msgapi.o   \
+	parsenn.o  \
+	qksort.o   \
+	strftim.o  \
+	strocpy.o  \
+	structrw.o  \
+	trail.o    \
+	weekday.o
+
+# Thunderbirds are go!
+
+.c.o:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) r $(TARGET) $@
+
+$(TARGET): $(OBJS)
+
