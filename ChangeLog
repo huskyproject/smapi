@@ -1,3 +1,7 @@
+2002-07-17 Wednesday 22:00  tobi
+
+	* compiler.h (1.87), strextra.c (1.5): Added support for MacOS X
+
 2002-07-15 Monday 15:37  mche
 
 	* structrw.c (1.29): corrected prototypes of functions
