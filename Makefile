@@ -23,8 +23,6 @@ else
 endif
 
 CDEFS=	-D$(OSTYPE) $(ADDCDEFS)
-VERH =  2.3
-VER  =  2.3.0
 
 TARGET=	$(LIBPREFIX)smapi$(LIB)
 
@@ -34,42 +32,7 @@ else
 ALL: $(TARGET)
 endif
 
-OBJS=	1stchar$(OBJ)  \
-	api_sdm$(OBJ)  \
-	sq_area$(OBJ) \
-	sq_hash$(OBJ) \
-	sq_help$(OBJ) \
-	sq_idx$(OBJ) \
-	sq_kill$(OBJ) \
-	sq_lock$(OBJ) \
-	sq_misc$(OBJ) \
-	sq_msg$(OBJ) \
-	sq_read$(OBJ) \
-	sq_uid$(OBJ) \
-	sq_write$(OBJ) \
-	api_jam$(OBJ)  \
-	cvtdate$(OBJ)  \
-	date2bin$(OBJ) \
-	dosdate$(OBJ)  \
-	fexist$(OBJ)   \
-	ffind$(OBJ)    \
-	flush$(OBJ)    \
-	genmsgid$(OBJ) \
-	locking$(OBJ)  \
-	months$(OBJ)   \
-	msgapi$(OBJ)   \
-	parsenn$(OBJ)  \
-	patmat$(OBJ)   \
-	qksort$(OBJ)   \
-	strextra$(OBJ) \
-	strftim$(OBJ)  \
-	strocpy$(OBJ)  \
-	structrw$(OBJ) \
-	trail$(OBJ)    \
-	weekday$(OBJ)  \
-	tdelay$(OBJ)   \
-	setfsize$(OBJ) 
-
+include makefile.inc
 
 ifeq ($(DYNLIBS), 1)
 all: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
@@ -132,7 +95,6 @@ install: instdyn
 	$(INSTALL) $(IIOPT) unused.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(IIOPT) api_jam.h $(INCDIR)$(DIRSEP)smapi
 	$(INSTALL) $(ISLOPT) $(TARGET) $(LIBDIR)
-#	$(INSTALL) $(ISLOPT) patmat$(OBJ) $(LIBDIR)
 
 uninstall:
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_brow.h
@@ -147,7 +109,6 @@ uninstall:
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)unused.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_jam.h
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
-#	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)patmat$(OBJ)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERH)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so
