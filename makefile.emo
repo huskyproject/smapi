@@ -1,8 +1,12 @@
 CC=	gcc
-CFLAGS=	-Wall -Zomf -Zcrtdll -s
+CFLAGS=	-Wall -Zomf -Zsys -s
 CDEFS=	-DOS2
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486
+COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
+#-m486
 LIB=	emxomfar
+
+.SUFFIXES:
+.SUFFIXES: .c .obj
 
 TARGET=	smapiemo.lib
 
