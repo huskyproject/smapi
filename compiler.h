@@ -211,11 +211,11 @@
 #else
 #define _fast pascal
 #endif
-
+/*
 #define unlock(a,b,c) unused(a)
 #define lock(a,b,c) 0
 #error "Don't know how to implement record locking."
-/* Using an executable that does no support record locking is
+   Using an executable that does no support record locking is
    discouraged in a multitasking environment. If you want to
    do it anyway, you may uncomment this line. Record lokcing is used
    to obtain a lock on the very first byte of a SQD file which

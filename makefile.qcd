@@ -1,7 +1,11 @@
-# Makefile for building SMAPI with Quick C for DOS
+# Makefile for building SMAPI with Quick C or MS C for DOS
 # No support for the Husky build environment
 
+# Use this for Quick C:
 CC=	qcl
+# Use this for MS C
+CC=cl
+
 CFLAGS=	-nologo -W4 -AL
 CDEFS=	-DMSDOS
 COPT=	-Ox

@@ -55,7 +55,7 @@ static sword near _SquishWriteIndex(MSG * sq);
 static sword near _SquishGetIdxFrame(MSG * sq, dword num, SQIDX * idx);
 static void far *near farmemmove(void far * destin, const void far * source, unsigned n);
 static void far *near farmemset(void far * s, int c, size_t length);
-static int near _SquishLock(MSG * sq, int);
+static int near _SquishLock(MSG * sq, int force);
 static void near _SquishUnlock(MSG * sq);
 static sword near _SquishFindFree(MSG * sq, FOFS * this_frame, dword totlen, dword clen, SQHDR * freehdr, FOFS * last_frame, SQHDR * lhdr, MSGH * msgh);
 

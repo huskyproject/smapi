@@ -158,6 +158,7 @@ int waitlock(int handle, long ofs, long length)
     if (offset == -1)
         return -1;
 
+    lseek(handle, ofs, SEEK_SET);
     _locking(handle, 1, length);
     lseek(handle, offset, SEEK_SET);
 
@@ -172,6 +173,8 @@ int lock(int handle, long ofs, long length)
     if (offset == -1)
         return -1;
 
+
+    lseek(handle, ofs, SEEK_SET);
     r = _locking(handle, 2, length);
     lseek(handle, offset, SEEK_SET);
 
@@ -188,11 +191,65 @@ int unlock(int handle, long ofs, long length)
     if (offset == -1)
         return -1;
 
+    lseek(handle, ofs, SEEK_SET);
     _locking(handle, 0, length);
     lseek(handle, offset, SEEK_SET);
 
     return 0;
 }
+
+#elif defined(_MSC_VER)
+
+#include <io.h>
+#include <stdio.h>
+
+int waitlock(int handle, long ofs, long length)
+{
+    long offset = tell(handle);
+
+    if (offset == -1)
+        return -1;
+
+    lseek(handle, ofs, SEEK_SET);
+    locking(handle, 1, length);
+    lseek(handle, offset, SEEK_SET);
+
+    return 0;
+}
+
+int lock(int handle, long ofs, long length)
+{
+    long offset = tell(handle);
+    int r;
+
+    if (offset == -1)
+        return -1;
+
+
+    lseek(handle, ofs, SEEK_SET);
+    r = locking(handle, 2, length);
+    lseek(handle, offset, SEEK_SET);
+
+    if  (r)
+       return -1;
+
+    return 0;
+}
+
+int unlock(int handle, long ofs, long length)
+{
+    long offset = tell(handle);
+
+    if (offset == -1)
+        return -1;
+
+    lseek(handle, ofs, SEEK_SET);
+    locking(handle, 0, length);
+    lseek(handle, offset, SEEK_SET);
+
+    return 0;
+}
+
 
 #elif defined(UNIX)
 
