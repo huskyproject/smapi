@@ -323,6 +323,26 @@ int lock(int handle, long ofs, long length);
 
 #define EXPENTRY
 
+#elif defined(__TURBOC__) && defined(WINNT)
+
+/* Borland C/C++ for Win32 */
+
+#pragma option -a1
+
+#define _stdc cdecl
+#define _intr
+#define _intcast
+#define _veccast
+#define _fast pascal
+#define _loadds
+#define near
+#define far
+
+#define farread read
+#define farwrite write
+
+#define EXPENTRY
+
 #elif defined(__TURBOC__) && defined(__OS2__)
 
 /* Borland C/C++ for OS/2 */
