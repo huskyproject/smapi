@@ -3,7 +3,7 @@
 CC=     cl
 CFLAGS= -nologo -Zp1
 CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -DUSE_STAT_MACROS
-COPT=   -O2
+COPT=   -O2 -DNDEBUG
 LIB=    lib -nologo
 
 SMAPIL= smapimvc.lib
