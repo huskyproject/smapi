@@ -288,9 +288,18 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       /* ftsdate = msg->__ftsc_date; */
       ftsdate = (unsigned char *)sc_time(scombo, (char *)(msg->__ftsc_date));
 
-      s_time = gmtime((time_t *)(&(msgh->Hdr.DateProcessed)));
-      scombo = (SCOMBO*)(&(msg->date_arrived));
-      scombo = TmDate_to_DosDate(s_time, scombo);
+      if (msgh->Hdr.DateProcessed) {
+         s_time = gmtime((time_t *)(&(msgh->Hdr.DateProcessed)));
+         scombo = (SCOMBO*)(&(msg->date_arrived));
+         scombo = TmDate_to_DosDate(s_time, scombo);
+      }
+      else
+         ((SCOMBO*)(&(msg->date_arrived)))->ldate = 0;
+
+      msg->replyto = msgh->Hdr.ReplyTo;
+      msg->replies[0] = msgh->Hdr.Reply1st;
+      msg->replies[1] = msgh->Hdr.ReplyNext;
+      msg->replies[2] = 0;
 
    } /* endif */
 
@@ -665,6 +674,10 @@ static dword EXPENTRY JamUidToMsgn(MSG * jm, UMSGID umsgid, word type)
    }
 
    msgnum = umsgid - Jmd->HdrInfo.BaseMsgNum + 1;
+   if (msgnum <= 0)
+      return 0;
+   if (msgnum > jm->high_msg)
+      return jm->high_msg;
 
    while (1) {
       if (!Jam_PosHdrMsg(jm, msgnum-1, &idxmsg, &hdrmsg)) {
@@ -1229,7 +1242,14 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    }
    strcpy(jamhdr->Signature, HEADERSIGNATURE);
    jamhdr->Revision = CURRENTREVLEV;
-   jamhdr->DateProcessed = time(NULL) + gettz();
+   if (((SCOMBO*)&(msg->date_arrived))->ldate) {
+      /* save arrived date for sqpack */
+      ptm = &stm;
+      ptm = DosDate_to_TmDate((SCOMBO*)(&(msg->date_arrived)), ptm);
+      jamhdr->DateProcessed = mktime(ptm) + gettz();
+   }
+   else
+      jamhdr->DateProcessed = time(NULL) + gettz();
    ptm = &stm;
    ptm = DosDate_to_TmDate((SCOMBO*)(&(msg->date_written)), ptm);
    jamhdr->DateWritten = mktime(ptm) + gettz();
@@ -1286,6 +1306,11 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 
    jamhdr->SubfieldLen = sublen;
    jamhdr->PasswordCRC = 0xFFFFFFFFUL;
+
+   jamhdr->ReplyTo = msg->replyto;
+   jamhdr->Reply1st = msg->replies[0];
+   if (msg->replies[0])
+      jamhdr->ReplyNext = msg->replies[1];
 
    *subfield = SubField;
 }
