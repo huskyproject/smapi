@@ -1725,8 +1725,9 @@ int qq(void)
 #endif
 
 #if defined(__LINUX__) || defined(__FreeBSD__)
-#  define HAS_mktime
-#  define HAS_strftime
+#  define HAS_mktime	/* <time.h> */
+#  define HAS_strftime	/* <time.h> */
+#  define HAS_DIRENT_H  /* <dirent.h> */
 #endif
 
 #  define HAS_popen_close  /* popen(); pclose() */
