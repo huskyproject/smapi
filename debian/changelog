@@ -3,8 +3,9 @@ smapi (2.4.0+beta1-2) unstable; urgency=low
   * Place smapi package to main! Scott J. Didley comfirms that from 2003
     his agree to change the terms of use to those of the LGPL
   * Minor fixes for debian/rules
+  * Add HISTORY to documentation
 
- -- Pavel Andreew <pavel@collage.etel.ru>  Tue, 18 Feb 2003 17:09:03 +0500
+ -- Pavel Andreew <pavel@collage.etel.ru>  Fri, 21 Feb 2003 12:47:32 +0500
 
 smapi (2.4.0+beta1-1) unstable; urgency=low
 
