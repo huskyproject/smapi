@@ -1724,9 +1724,9 @@ void DecodeSubf(MSGH *msgh)
          strcpy(pctrl, orig); pctrl+=strlen(pctrl);
       }
       if (fmpt)
-         addkludge(&pctrl, "\001" "FMPT", "", fmpt, 0);
+         addkludge(&pctrl, "\001" "FMPT ", "", fmpt, 0);
       if (topt)
-         addkludge(&pctrl, "\001" "TOPT", "", topt, 0);
+         addkludge(&pctrl, "\001" "TOPT ", "", topt, 0);
       orig[0] = dest[0] = '\0';
    }
 
