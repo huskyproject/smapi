@@ -150,16 +150,7 @@ short _SquishThreadUnlock(void)
 
 int SquishDeleteBase(char *name)
 {
-    byte temp[PATHLEN];
-    int rc = 1;
-    
-    sprintf((char *) temp, (char *) dot_sqd, name);
-    if (unlink(temp)) rc = 0;
-    sprintf((char *) temp, (char *) dot_sqi, name);
-    if (unlink(temp)) rc = 0;
-    sprintf((char *) temp, (char *) dot_sql, name);
-    unlink(temp);
-    return rc;
+  _SquishUnlinkBaseFiles(name);
 }   
 
 /* Exitlist routine to make sure that all areas are closed */
@@ -256,6 +247,12 @@ static unsigned near _SquishUnlinkBaseFiles(byte  *szName)
 
   (void)strcpy(szFile, szName);
   (void)strcat(szFile, dot_sqi);
+
+  if (unlink(szFile) != 0)
+    rc=FALSE;
+
+  (void)strcpy(szFile, szName);
+  (void)strcat(szFile, dot_sql);
 
   if (unlink(szFile) != 0)
     rc=FALSE;
@@ -540,14 +537,15 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
 
   /* If the open succeeded */
 
-  _SquishThreadLock();
-
   if (fOpened)
   {
     /* Add us to the linked list of open areas */
+    _SquishThreadLock();
 
     Sqd->haNext=haOpen;
     haOpen=ha;
+    
+    _SquishThreadUnlock();
   }
   else
   {
@@ -556,8 +554,6 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
     pfree(ha);
     ha=NULL;
   }
-
-  _SquishThreadUnlock();
 
 #ifdef __BEOS__
   ha->sem = create_sem(0, 0);
