@@ -974,7 +974,7 @@ static dword EXPENTRY SdmGetTextLen(MSGH * msgh)
         pos = (dword) tell(msgh->fd);
         end = lseek(msgh->fd, 0L, SEEK_END);
 
-        if (end < sizeof(XMSG))
+        if (end < OMSG_SIZE)
         {
             msgh->msg_len = 0L;
         }
