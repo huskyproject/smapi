@@ -3,7 +3,9 @@
 
 CC=	gcc
 CFLAGS=	-Wall
-CDEFS=	-DUNIX
+# attention: locking does not yet work on BeOS, so be careful with
+# multitasking!
+CDEFS=	-DUNIX -DNO_LOCKING
 COPT=	-O3
 
 # on i386, you may add this
