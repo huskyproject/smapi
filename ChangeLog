@@ -1,3 +1,11 @@
+2002-10-01 Tuesday 06:58  pgul
+
+	* sq_write.c (1.9): deutch comments removed
+
+2002-10-01 Tuesday 06:48  pgul
+
+	* api_sdm.h (1.6): change comments
+
 2002-09-30 Monday 09:43  mche
 
 	* api_brow.h (1.2), api_jam.c (1.88), api_jamp.h (1.18), api_sdm.c
