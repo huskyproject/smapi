@@ -1,3 +1,21 @@
+2002-10-22 Tuesday 10:17  stas_degteff
+
+	* readme.txt (smapi-2_2-stable.3): Update comilators list
+
+2002-10-22 Tuesday 06:38  stas_degteff
+
+	* Makefile, makefile.sun, makefile.unx (smapi-2_2-stable.[4,1,1]):
+	Fix clean & distclean tags in makefiles
+
+2002-10-22 Tuesday 06:13  stas_degteff
+
+	* api_jam.c, api_sdm.c (smapi-2_2-stable.[6,2]): Fix nested if-else
+
+2002-10-22 Tuesday 06:10  stas_degteff
+
+	* locking.c (smapi-2_2-stable.1): Comment out unused variable
+	(prevent compilation warning)
+
 2002-10-14 Monday 17:43  sfpavel
 
 	* debian/: changelog, libsmapi2-dev.dirs, libsmapi2.dirs
