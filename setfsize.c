@@ -24,6 +24,12 @@
 /* name=Function to dynamically change the size of a file
 */
 
+#ifdef MSDOS
+#ifndef __MSDOS__
+#define __MSDOS__
+#endif
+#endif
+
 #ifdef __MSDOS__
 #include <dos.h>
 #endif
