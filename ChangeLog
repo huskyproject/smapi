@@ -1,4 +1,9 @@
 ----- cvs ci ------
+Mon Aug 28 12:46:58 UTC 2000
+sms:
+* fixed segfault if area could not be opened
+
+----- cvs ci ------
 Thu Aug 24 13:54:51 UTC 2000
 sms:
 * fixed return value of _sqlock

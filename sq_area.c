@@ -513,7 +513,8 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
     pfree(ha->apidata);
     pfree(ha->api);
     pfree(ha);
-    ha=NULL;
+
+    return NULL;
   }
 
   create_semaphore(&(ha->sem));
