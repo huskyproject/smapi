@@ -1,3 +1,7 @@
+2002-11-25 Monday 09:00  mche
+
+	* semaphor.c (1.11), semaphor.h (1.12): s_addr --> hs_addr
+
 2002-11-23 Saturday 20:12  stas_degteff
 
 	* api_jam.c (1.96): Fix Watcom C for NT comilation warning: remove
