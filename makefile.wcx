@@ -7,7 +7,7 @@
 
 CC	= wcl386
 CFLAGS	= -zq -wx -oneatx -4 -bt=dos4g -mf -fpi87 -c
-CDEFS	= -D__DOS__
+CDEFS	=
 LFLAGS	= -mf -l=dos4g -fpi87
 EXENAMEFLAG	= -fe=
 
@@ -16,6 +16,7 @@ AROPT	= -b -q
 ASMPROG	= wasm
 RM	= del
 
+C	= .c
 LIB	= .lib
 DLLIB	= .dll
 OBJ	= .obj
@@ -50,7 +51,7 @@ all : $(TARGET) programs $(SYMBOLIC)
 $(TARGET) : $(OBJS)  $(SYMBOLIC)
 
 $(GNMSGID) : $(GMOBJS)
-	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $(GMOBJS) $(TARGET)
+	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $@$(C) $(GMOBJS) $(TARGET)
 
 .IGNORE
 

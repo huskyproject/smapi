@@ -6,9 +6,9 @@
 # __OS2V2__ (-bt=os2v2)
 
 CC	= wcl386
-CFLAGS	= -zq -wx -bt=os2v2 -oneatx -4 -fpi87 -c -fp4
+CFLAGS	= -zq -wx -bt=os2v2 -oneatx -4 -fpi87 -c
 CDEFS	=
-LFLAGS	= -mf -l=os2v2 -fpi87 -fp87 -fp4
+LFLAGS	= -mf -l=os2v2 -fpi87
 EXENAMEFLAG	= -fe=
 AR	= wlib
 AROPT	= -b -q
@@ -47,7 +47,7 @@ $(TARGET) : $(OBJS)  $(SYMBOLIC)
 programs: $(GNMSGID) $(SYMBOLIC)
 
 $(GNMSGID) : $(GMOBJS)
-	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $(GMOBJS) $(TARGET)
+	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $@$(C) $(GMOBJS) $(TARGET)
 
 .IGNORE
 
