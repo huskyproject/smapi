@@ -742,7 +742,9 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define mktemp		_mktemp
 #define fdopen		_fdopen
 #define O_BINARY	_O_BINARY
+#ifndef O_RDWR
 #define O_RDWR		_O_RDWR
+#endif
 #define S_IFMT		_S_IFMT
 #define S_IFDIR		_S_IFDIR
 
