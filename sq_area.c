@@ -61,7 +61,9 @@ static char rcs_id[]="$Id$";
 
 static HAREA haOpen=NULL;
 
+#ifndef NOSEMAPHORES
 static SEMAPHORE lock_sem;
+#endif
 
 static char dot_sqd[]=".sqd";
 static char dot_sqi[]=".sqi";
