@@ -1,3 +1,7 @@
+2002-02-17 Sunday 14:28  pavel.gulchouck
+
+	* api_jam.c (1.76): Set HighWaterMark for JAM to UID, not MsgNum
+
 2002-02-15 Friday 08:44  ml
 
 	* setfsize.c (1.9): setfsize() uses chsize() for mingw32
