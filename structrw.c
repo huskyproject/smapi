@@ -48,9 +48,9 @@
 #include <unistd.h>
 #endif
 
-#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 
 #define MSGAPI_HANDLERS
 #include "prog.h"
@@ -870,7 +870,7 @@ int read_hdr(sword handle, JAMHDR *Hdr)
    } /* endif */
 
    /* 04 bytes Signature */
-   memmove(Hdr->Signature, pbuf, (size_t)4); 
+   memmove(Hdr->Signature, pbuf, (size_t)4);
    pbuf += 4;
 
    /* 02 bytes Revision */
@@ -1116,7 +1116,7 @@ int write_hdr(sword handle, JAMHDR *Hdr)
    byte buf[HDR_SIZE], *pbuf = buf;
 
    /* 04 bytes Signature */
-   memmove(pbuf, Hdr->Signature, (size_t)4); 
+   memmove(pbuf, Hdr->Signature, (size_t)4);
    pbuf += 4;
 
    /* 02 bytes Revision */

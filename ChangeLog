@@ -1,6 +1,7 @@
 smapi 1.6.4a
-------------
-(pending for release)
+============
+(released on Sun Sep 17 18:58:45 MEST 2000)
+
 
 ----- cvs ci ------
 Sa  16 Sep 2000 23:24:43 CEST
@@ -49,9 +50,11 @@ Thu Jul 13 19:22:30 NOVST 2000
 max (patches from Pavel Gulchouk):
 * jam readsubfiled() fixes
 
+
 smapi 1.6.4
------------
+===========
 (released on Tue Jul 18 21:01:54 MEST 2000)
+
 
 ----- cvs ci ------
 Thu Jun 29 21:39:49 NOVST 2000
@@ -98,7 +101,7 @@ Fedor:
 Fr  31 Mar 2000 17:53:23 CEST
 tobi (patches mostly from Alex S. Aganichev)
 * Modified the routines in fexist.c to use stat() if available, instead
-  of opendir/readdir/closedir. This should speed up things a lot and also 
+  of opendir/readdir/closedir. This should speed up things a lot and also
   produce more reliable results.
 * Some small corrections in compiler.h for various compilers.
 * Fixed flush_handle2 for DJGPP and for RSXNT (the RSXNT code previously
@@ -144,7 +147,7 @@ max:
 - fsize() fix
 
 ----- cvs ci ------
-Thu Jan  6 19:51:30 NOVT 2000                                                   
+Thu Jan  6 19:51:30 NOVT 2000
 max (patch from Kolya Nesterov):
 - fsize() now  works correct on *NIX systems
 
@@ -160,20 +163,20 @@ smapi 1.6.2
 ----- cvs ci ------
 Mi  15 Dez 1999 00:46:37 CET
 tobi:
-- Fixed serious  Y2K bug in the SMAPI. This one affects the SDM part 
-  (Fido *.MSG) of the SMAPI as well as all programs that call 
+- Fixed serious  Y2K bug in the SMAPI. This one affects the SDM part
+  (Fido *.MSG) of the SMAPI as well as all programs that call
   ASCII_Date_To_Binary.
 
-	
+
 smapi 1.6.1
 -----------
 
 ----- cvs ci ------
 So  12 Dez 1999 09:02:13 CET
 tobi: (patch by Eduard Dulich):
-- Fixed Y2K bug in the SMAPI. It does not affect Squish and Msg, but JAM, 
-  and it does affect any program (no matter what storage type) that 
-  explicitly calls the sc_time routine. The bug results in years 2000 
+- Fixed Y2K bug in the SMAPI. It does not affect Squish and Msg, but JAM,
+  and it does affect any program (no matter what storage type) that
+  explicitly calls the sc_time routine. The bug results in years 2000
   .. 2009 being filled in as "0" .. "9" instead of "00" .. "09".
 
 ----- cvs ci ------
@@ -189,16 +192,16 @@ sms:
 
 
 ----- cvs ci ------
-Tue Oct 19 20:22:22 CEST 1999 
+Tue Oct 19 20:22:22 CEST 1999
 mtt:
 - fixed bug in cvtddate which leads to wrong date line.(Oleg)
 
-	
+
 The following list is the old whatsnew file. I renamed it to make it conform
 with husky Styleguides.
-	
+
 The following is a list of bug fixes and new features since SMAPI 1.1.
-	
+
 SMAPI 1.2
 ---------
 
