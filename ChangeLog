@@ -1,3 +1,7 @@
+Sun Feb 11 17:16:00 MESZ 2001
+oliver grimm:
+* Added Filetyping & Attributes for BeOS (SDM Type Areas only)
+
 Fri Jan 26 22:17:15 NOVT 2001
 max (patch from Serguei Revtov):
 * NOSEMAPHORES on __sun__
