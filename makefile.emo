@@ -1,0 +1,33 @@
+CC=	gcc
+CFLAGS=	-Wall -Zomf -Zcrtdll -s
+CDEFS=	-DOS2
+COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486
+LIB=	emxomfar
+
+TARGET=	smapiemo.lib
+
+OBJS=	1stchar.obj  \
+	api_sdm.obj  \
+	api_sq.obj   \
+	cvtdate.obj  \
+	date2bin.obj \
+	dosdate.obj  \
+	fexist.obj   \
+	ffind.obj    \
+	flush.obj    \
+	months.obj   \
+	msgapi.obj   \
+	parsenn.obj  \
+	qksort.obj   \
+	strftim.obj  \
+	strocpy.obj  \
+	trail.obj    \
+	weekday.obj
+
+# Thunderbirds are go!
+
+.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) r $(TARGET) $@
+    
+$(TARGET): $(OBJS)

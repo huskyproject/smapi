@@ -1,0 +1,61 @@
+The following is a list of bug fixes and new features since SMAPI 1.1.
+
+SMAPI 1.4
+---------
+
+- Bug fix: NumKludges() was not working correctly.
+
+- The following typedefs and macros were added to msgapi.h, for
+  compatibility with MsgAPI 0.4+ (SQDEV200).
+
+    typedef struct _msgapi *HAREA;
+    typedef struct _msgh *HMSG;
+    typedef struct _xmsg *PXMSG;
+    typedef NETADDR *PNETADDR;
+
+    #define MSGAPI_VERSION  1
+    #define SMAPI_VERSION   "1.4"
+
+- MSGAPI32.LIB and MSGAPINT.LIB have been removed from the SMAPI archive.
+
+
+SMAPI 1.3
+---------
+
+- Major bug fix: Under some circumstances SMAPI would create a corrupted
+  index entry when a new message was added to a Squish base.  This was
+  caused by a misunderstanding of a small section of code, which in turn
+  caused the library to read from the wrong position of an array.  This
+  has been corrected.
+
+- Bug fix: Due to a structure alignment problem, the Linux, FreeBSD and
+  DJGPP versions of SMAPI would corrupt the date_written and date_arrived
+  fields on newly created messages.  Due to the layout of Squish message
+  base format, this may have also caused corruption to the message
+  threading of the newly created message.  Fixed.
+
+- Various minor code modifications intended to make SMAPI more reliable
+  under some error conditions.
+
+- A makefile for IBM C/Set++ for OS/2 2.0 is now included; MAKEFILE.IBO.
+  (Courtesy Paul Edwards.)
+
+- Various minor modifications to support compilation of a native Windows
+  NT library.  A makefile for WATCOM C/C++ for Windows NT 10.x is now
+  included; MAKEFILE.WCW.
+
+- The makefile for the Microsoft QuickC library now uses the Microsoft
+  Macro Assembler, MASM.  The Borland Turbo Assembler, TASM, may be used
+  if you do not have MASM.
+
+
+SMAPI 1.2
+---------
+
+- MSGAPI32.DLL and MSGAPINT.DLL have been removed from the SMAPI archive.
+
+- SMAPI now supports compilation using the DJGPP compiler.  (Courtesy
+  Alexander Aganichev.)
+
+- The Linux, EMX and FreeBSD makefiles now utilise compiler optimisation
+  when creating the SMAPI library.

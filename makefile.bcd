@@ -1,0 +1,40 @@
+CC=	bcc
+CFLAGS=	-w -ml
+CDEFS=	-DMSDOS
+COPT=	-O2
+LIB=	tlib
+ASM=	tasm
+
+TARGET=	smapibcd.lib
+
+OBJS=	1stchar.obj  \
+	api_sdm.obj  \
+	api_sq.obj   \
+	cvtdate.obj  \
+	date2bin.obj \
+	dosdate.obj  \
+	fexist.obj   \
+	ffind.obj    \
+	flush.obj    \
+	flushasm.obj \
+	months.obj   \
+	msgapi.obj   \
+	parsenn.obj  \
+	qksort.obj   \
+	sqasm.obj    \
+	strftim.obj  \
+	strocpy.obj  \
+	trail.obj    \
+	weekday.obj
+
+# Thunderbirds are go!
+
+.c.obj:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) $(TARGET) -+$@
+    
+.asm.obj:
+	$(ASM) -ml $<    
+	$(LIB) $(TARGET) -+$@
+
+$(TARGET): $(OBJS)
