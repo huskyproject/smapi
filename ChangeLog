@@ -1,3 +1,8 @@
+2003-07-27 Sunday 12:07  d_sergienko
+
+	* smapi/msgapi.h (1.7), src/api_jam.c (1.7): save extended lastread
+	in Jam base (for Taymir mailreader)
+
 2003-06-16 Monday 14:18  lmike
 
 	* make/makefile.qnx (1.5): Added proper library dependcies for QNX6
