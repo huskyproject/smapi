@@ -25,6 +25,7 @@ OBJS=	1stchar.obj  \
 	months.obj   \
 	msgapi.obj   \
 	parsenn.obj  \
+	patmat.obj   \
 	qksort.obj   \
 	sqasm.obj    \
 	strftim.obj  \

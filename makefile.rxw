@@ -24,6 +24,7 @@ OBJS=   1stchar.o  \
 	months.o   \
 	msgapi.o   \
 	parsenn.o  \
+	patmat.o   \
 	qksort.o   \
 	strftim.o  \
 	strocpy.o  \
