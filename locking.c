@@ -216,12 +216,13 @@ int unlock(int handle, long ofs, long length)
     return fcntl(handle, F_SETLK, file_lock(F_UNLCK, ofs, length));
 }
 
+#include <stdio.h>
 
 int sopen(const char *name, int oflag, int ishared, int mode)
 {
     int fd = open(name, oflag, mode);
 #ifndef NO_LOCKING
-    if (fcntl(fd, F_SETLK,
+    if (fd != -1 && fcntl(fd, F_SETLK,
               file_lock((ishared == SH_DENYNONE) ? F_RDLCK : F_WRLCK, 0, 0)))
 
     {

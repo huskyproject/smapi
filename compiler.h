@@ -489,7 +489,7 @@ int lock(int handle, long ofs, long length);   /* in locking.c */
 int unlock(int handle, long ofs, long length);
 int sopen(const char *name, int oflag, int ishared, int mode);
 
-#define tell(a) lseek((a),0,SEEK_CUR)
+/* #define tell(a) lseek((a),0,SEEK_CUR) */
 
 #ifndef stricmp
 #define stricmp strcasecmp
