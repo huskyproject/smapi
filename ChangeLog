@@ -1,3 +1,8 @@
+2001-12-17 Monday 09:14  pavel.gulchouck
+
+	* api_jam.c (1.64): JamWriteMsg returns bad retcode if write fails
+	(disk full etc.)
+
 2001-12-13 Thursday 16:46  mche
 
 	* api_jam.c (1.63), api_sdm.c (1.25), fexist.c (1.16), progprot.h
