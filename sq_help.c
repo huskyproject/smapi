@@ -389,6 +389,10 @@ unsigned _SquishFreeIndex(HAREA ha, dword dwMsg, SQIDX *psqi,
   unsigned rc=TRUE;
   long ofs;
 
+#ifdef __WATCOMC__
+dwIdxSize=dwIdxSize; /* To prevent warning */
+#endif
+
   if (fWrite)
   {
     /* Seek to the offset of the message that we want to delete */
