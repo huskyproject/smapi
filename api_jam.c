@@ -1165,7 +1165,7 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
       subtypes = JAMSFLD_FLAGS;
    }
    else if (strstr(str, "TZUTC: ")) {
-      kludge = str+6;
+      kludge = str+7;
       subtypes = JAMSFLD_TZUTCINFO;
    }
    else {
