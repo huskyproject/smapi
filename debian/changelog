@@ -1,3 +1,20 @@
+smapi (2.1.0-5) unstable; urgency=low
+
+  * Package (hopefully) gets into Debian. Filed a bug against wnpp and
+    asked my sponsor to check the package. If he uploads it, it
+    will close the bug, Closes: #104534
+  * Newest cvs checkout.
+  * Path for Config-Files now /etc/husky. Old /etc/fido is for Fidogate
+    so we cant take it.
+
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Wed,  8 Aug 2001 21:10:08 +0200
+
+smapi (2.1.0-4) unstable; urgency=low
+
+  * Very small change.
+  
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Fri, 13 Jul 2001 14:09:25 +0200
+
 smapi (2.1.0-3) unstable; urgency=low
 
   * Changed control to get Section to non-free/*
