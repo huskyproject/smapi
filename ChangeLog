@@ -1,3 +1,8 @@
+2002-11-21 Thursday 08:01  stas_degteff
+
+	* compiler.h (smapi-2_2-stable.6): Prevent constants redefinitions
+	(O_BINARY, O_RDWR, S_IFMT, S_IFDIR)
+
 2002-11-13 Wednesday 10:59  stas_degteff
 
 	* cvtdate.c (smapi-2_2-stable.1): Fix bug with NULL message date
