@@ -194,7 +194,9 @@ int _SquishBeginBuffer(HIDX hix)
     {
 
       do
+      {
         farpfree(hix->pss[i].psqi);
+      }
       while (i--);
 
       pfree(hix->pss);
