@@ -1,3 +1,20 @@
+2002-03-04 Monday 19:23  pavel.gulchouck
+
+	* msgapi.c (1.25): Compile errors fix
+
+2002-03-04 Monday 14:26  mche
+
+	* setfsize.c (1.10): fix for mvc compiler
+
+2002-03-04 Monday 13:17  pavel.gulchouck
+
+	* msgapi.c (1.24): A bit speedup
+
+2002-03-04 Monday 11:43  ml
+
+	* api_jamp.h (1.16), makeperl.mvcdll (1.4): fixed compilation of
+	dll versions
+
 2002-03-03 Sunday 21:36  pavel.gulchouck
 
 	* api_jam.c (1.78): Extra memory usage fixed
