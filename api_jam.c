@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "dr.h"
 
 #if !defined(UNIX) && !defined(SASC)
@@ -33,6 +34,12 @@
 
 #define Jmd ((JAMBASE *)(jm->apidata))
 #define MsghJm ((JAMBASE *)(((struct _msgh *)msgh)->sq->apidata))
+
+#ifdef __TURBOC__
+#pragma warn -pia*
+#pragma warn -ucp
+#pragma warn -sig
+#endif
 
 MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
 {
@@ -270,7 +277,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       } /* endif */
 
 
-      s_time = localtime(&(msgh->Hdr.DateWritten));
+      s_time = localtime((time_t *)(&(msgh->Hdr.DateWritten)));
       scombo = (SCOMBO*)(&(msg->date_written));
       scombo = TmDate_to_DosDate(s_time, scombo);
       ftsdate = msg->__ftsc_date;
@@ -339,7 +346,9 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
    char           ch = 0, *onlytext = NULL;
    int            didlock = FALSE;
 
+   assert(append == 0);
 
+   
    if (InvalidMsgh(msgh)) {
       return -1L;
    }
