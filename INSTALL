@@ -1,2 +1,37 @@
-Please read the files (especially README) in the huskybse package if you are
-intending to use smapi together with Husky!
+
+Please read the files (especially README.Makefiles) in the
+husky-common (huskybse) package FIRST!
+
+Unix:
+-----
+
+1. Put the smapi package in the directory where the other packages of fido
+   linux reside:
+
+   /usr/src/packages/        -> smapi/
+                             -> fidoconfig/
+                             -> hpt/
+                             -> htick/
+                             ...some other
+
+2. Determine which makefile you need to use then compile and install fidoconfig
+   using selected makefile, as following examples:
+   Ex.1 (use common makefile (named 'Makefile'): require huskymak.cfg):
+	$ make
+	$ make install
+   Ex.2 (use platfom-specific makefile):
+	$ make -f makefile.lnx
+	$ make -f makefile.lnx install
+
+3. (For UNIXes only) Ensure /usr/local/lib/ is in /etc/ld.so.conf
+
+4. (For UNIXes only) Execute ldconfig as root
+
+5. Write a fido config according to the proposal which is also in this package.
+   If your are just some normal point, give the shell script fidoInst a
+   chance. Always test the config with the tparser tool, which you can place
+   in a directory like /usr/local/bin.
+
+You're ready. Now you can install software which uses smapi.
+
+$Id$
