@@ -527,7 +527,7 @@ char * _XPENTRY strmerr(int msgapierr)
 }
 
 
-/* Check version of fidoconfig library
+/* Check version of smapi library
  * return zero if test failed; non-zero if passed
  * test cvs need for DLL version only, using #include <smapi/cvsdate.h>
   const char *smapidate(){

@@ -417,6 +417,9 @@ SMAPI_EXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
 SMAPI_EXT dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun);
 SMAPI_EXT dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dword (*altGenMsgId)(void), char **errstr);
 
+SMAPI_EXT int _XPENTRY CheckSmapiVersion( int need_major, int need_minor,
+                	    int need_patch, const char *cvs_date_string );
+
 /*  Return MSGAPI error text (string constant).
  */
 SMAPI_EXT char * _XPENTRY  strmerr(int msgapierr);
