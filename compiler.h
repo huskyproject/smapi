@@ -1600,7 +1600,6 @@ int qq(void)
 
 /* End: IBM C/Set++ for OS/2 */
 #elif defined(__UNIX__) /* Unix clones: Linux, FreeBSD, SUNOS (Solaris), BeOS, MacOS etc. */
-
 #  define SMAPI_EXT extern
 #  define _stdc
 #  define _intr
@@ -1692,7 +1691,7 @@ int qq(void)
 #    define sleep(x) snooze(x*1000000l)
 #    define HAS_sleep     1
 #    define HAS_SYS_SYSEXITS_H     1  /*  <sys/sysexits.h> */
-#  elif defined(__LINUX__) || defined(__SUN__)
+#  elif defined(__LINUX__) || defined(__SUN__)  || defined(__FreeBSD__)
 #    define mysleep(x) usleep(x*1000000l)
 #    define sleep(x)   usleep(x*1000000l)
 #    define HAS_sleep     1
@@ -1713,13 +1712,18 @@ int qq(void)
 #  define HAS_SYS_WAIT_H       1  /* <sys/wait.h> */
 #  define USE_STAT_MACROS
 
-#define <fcntl.h>
+#include <fcntl.h>
 #ifndef O_BINARY
 # define O_BINARY 0 /* O_BINARY flag has no effect under UNIX */
 #endif
 
 #ifndef O_TEXT
 # define O_TEXT   0 /* O_TEXT flag has no effect under UNIX */
+#endif
+
+#if defined(__LINUX__) || defined(__FreeBSD__)
+#  define HAS_mktime
+#  define HAS_strftime
 #endif
 
 /* End: Unix clones **********************************************************/
@@ -1803,9 +1807,9 @@ int qq(void)
 
 #ifndef mysleep
 #   ifdef __GNUC__
-#       pragma message("sleep() call undefined. Please check your compiler documentation for it and write define into compiler.h")
+#	warning sleep() call undefined. Please check your compiler documentation for it and write "#define mysleep" into compiler.h
 #   else
-#       warning sleep() call undefined. Please check your compiler documentation for it and write "#define mysleep" into compiler.h
+#	pragma message("sleep() call undefined. Please check your compiler documentation for it and write define into compiler.h")
 #   endif
 #   define mysleep(x)
 #endif
