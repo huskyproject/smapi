@@ -519,6 +519,10 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
   }
 
   create_semaphore(&(ha->sem));
+  
+#ifdef ALTLOCKING
+   ha->lck_handle = 0;
+#endif
 
   /* Return the handle to this area */
   return ha;

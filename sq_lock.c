@@ -134,7 +134,7 @@ int _squnlock(HAREA ha)
 
 static unsigned near _SquishLockBase(HAREA ha)
 {
-  int trys;
+  unsigned rc;
   /* Only need to lock the area the first time */
 
   if (Sqd->fLocked++ != 0)
@@ -143,8 +143,11 @@ static unsigned near _SquishLockBase(HAREA ha)
   /* The first step is to obtain a lock on the Squish file header.  Another *
    * process may be attempting to do the same thing, so we retry a couple   *
    * of times just in case.                                                 */
-  trys = SQUISH_LOCK_RETRY;
-  return _sqlock(ha, SQUISH_LOCK_RETRY);
+  rc = _sqlock(ha, SQUISH_LOCK_RETRY);
+  if (!rc)
+    Sqd->fLocked--;
+
+  return rc;  
 }
 
 /* Unlock the first byte of the Squish file */
