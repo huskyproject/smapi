@@ -1,3 +1,7 @@
+2002-02-15 Friday 08:44  ml
+
+	* setfsize.c (1.9): setfsize() uses chsize() for mingw32
+
 2002-02-14 Thursday 17:20  pavel.gulchouck
 
 	* compiler.h (1.80): "#define chsize _chsize" for mingw32
