@@ -1,3 +1,7 @@
+2002-11-16 Saturday 11:44  pgul
+
+	* compiler.h (1.105): Fix compiler warning
+
 2002-11-15 Friday 05:18  stas_degteff
 
 	* makefile.inc (1.3): dos2unix
