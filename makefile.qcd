@@ -10,6 +10,7 @@ CFLAGS=	-nologo -W4 -AL
 CDEFS=	-DMSDOS
 COPT=	-Ox
 LIB=	lib
+# you may also use tasm
 ASM=	masm
 
 TARGET=	smapiqcd.lib

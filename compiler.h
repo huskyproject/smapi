@@ -211,10 +211,16 @@
 #else
 #define _fast pascal
 #endif
+
+int unlock(int handle, long ofs, long length);
+int lock(int handle, long ofs, long length);
+
+
 /*
 #define unlock(a,b,c) unused(a)
 #define lock(a,b,c) 0
-#error "Don't know how to implement record locking."
+
+   #error "Don't know how to implement record locking."
    Using an executable that does no support record locking is
    discouraged in a multitasking environment. If you want to
    do it anyway, you may uncomment this line. Record lokcing is used
@@ -495,7 +501,7 @@ int unlock(int handle, long ofs, long length);
 int sopen(const char *name, int oflag, int ishared, int mode);
 
 #ifndef sun
-#define tell(a) lseek((a),0,SEEK_CUR) 
+#define tell(a) lseek((a),0,SEEK_CUR)
 #endif
 
 #ifndef stricmp

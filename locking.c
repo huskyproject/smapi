@@ -205,15 +205,10 @@ int unlock(int handle, long ofs, long length)
 
 int waitlock(int handle, long ofs, long length)
 {
-    long offset = tell(handle);
-
-    if (offset == -1)
-        return -1;
-
-    lseek(handle, ofs, SEEK_SET);
-    locking(handle, 1, length);
-    lseek(handle, offset, SEEK_SET);
-
+    while (lock(handle, ofs, length) == -1)
+    {
+        mysleep(1);
+    }
     return 0;
 }
 
@@ -224,7 +219,6 @@ int lock(int handle, long ofs, long length)
 
     if (offset == -1)
         return -1;
-
 
     lseek(handle, ofs, SEEK_SET);
     r = locking(handle, 2, length);
@@ -239,14 +233,17 @@ int lock(int handle, long ofs, long length)
 int unlock(int handle, long ofs, long length)
 {
     long offset = tell(handle);
+    int r;
 
     if (offset == -1)
         return -1;
 
     lseek(handle, ofs, SEEK_SET);
-    locking(handle, 0, length);
+    r = locking(handle, 0, length);
     lseek(handle, offset, SEEK_SET);
 
+    if (r)
+        return -1;
     return 0;
 }
 
