@@ -108,3 +108,4 @@ distclean: clean
 	-$(RM) $(TARGET)
 	-$(RM) $(LIBPREFIX)smapi.so.$(VER)
 
+all: $(TARGET)
