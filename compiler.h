@@ -355,7 +355,7 @@ int lock(int handle, long ofs, long length);
 #define sleep(sec) _sleep((sec)*1000l)
 #define write _write
 #define read _read
-#if !defined(__CYG__) && !defined(__MINGW__)
+#if !defined(__CYGWIN__) && !defined(__MINGW32__)
 #define stat _stat
 #define fstat _fstat
 #define chsize _chsize
@@ -388,9 +388,6 @@ int lock(int handle, long ofs, long length);
 #ifndef EXPENTRY
 #define EXPENTRY
 #endif
-
-#define HAS_SNPRINTF  1
-#define HAS_VSNPRINTF 1
 
 #elif defined(__TURBOC__) && defined(WINNT)
 
