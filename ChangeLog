@@ -1,3 +1,169 @@
+2003-01-12 Sunday 16:05  mche
+
+	* compiler.h (1.121): remove usless warnings for MSVC
+
+2003-01-12 Sunday 15:45  mche
+
+	* compiler.h (1.120): fix output warnings for MSVC
+
+2003-01-12 Sunday 15:11  mche
+
+	* compiler.h (1.119), smapiDll.dsp (1.5): define INTEL for MSVC in
+	compiler.h
+
+2003-01-11 Saturday 17:36  mche
+
+	* compiler.h (1.118), ffind.h (1.20), flush.c (1.16), prog.h (1.7):
+	fix MSVC dll compilation
+
+2003-01-11 Saturday 16:08  mche
+
+	* compiler.h (1.117): non-portable code is comented
+
+2003-01-11 Saturday 13:13  stas_degteff
+
+	* msgapi.h (1.61), prog.h (1.6): Update code (continue)
+
+2003-01-11 Saturday 12:55  stas_degteff
+
+	* compiler.h (1.116), fexist.c (1.29), ffind.c (1.21), ffind.h
+	(1.19), flush.c (1.15), gnmsgid.c (1.4), makefile.cyg (1.9),
+	makefile.emo (1.25), makefile.emx (1.18), msgapi.h (1.60), prog.h
+	(1.5), progprot.h (1.20), setfsize.c (1.14), strftim.c (1.3),
+	tdelay.c (1.14): Update compiler-specific code
+
+2003-01-10 Friday 15:39  mche
+
+	* fexist.c (1.28), ffind.c (1.20), ffind.h (1.18): fix smapi
+	compilation with MSVC
+
+2003-01-10 Friday 14:48  stas_degteff
+
+	* makefile.inc (1.5), makefile.wcd (1.24), makefile.wco (1.21),
+	makefile.wcw (1.26), makefile.wcx (1.21): Update makefiles for
+	Watcom C 10.0: use makefile.inc
+
+2003-01-10 Friday 14:46  stas_degteff
+
+	* structrw.c (1.35): Fix 16bit warning
+
+2003-01-10 Friday 14:38  stas_degteff
+
+	* ffind.c (1.19), ffind.h (1.17), flush.c (1.14), locking.c (1.32),
+	setfsize.c (1.13), tdelay.c (1.13): replace OS@ to __OS2__ & etc.
+
+2003-01-10 Friday 14:13  stas_degteff
+
+	* sq_help.c (1.7): Workaroud for warning
+
+2003-01-10 Friday 13:49  stas_degteff
+
+	* fexist.c (1.27), flush.c (1.13): include compiler.h
+
+2003-01-10 Friday 13:46  stas_degteff
+
+	* fexist.c (1.26), ffind.c (1.18), ffind.h (1.16), flush.c (1.12),
+	locking.c (1.31), prog.h (1.4), progprot.h (1.19), stamp.h (1.4):
+	fix WATCOM C warnings
+
+2003-01-10 Friday 13:36  mche
+
+	* compiler.h (1.115): make msged compilable with MSVC
+
+2003-01-10 Friday 13:18  stas_degteff
+
+	* compiler.h (1.114): Update compiler declarations. hanks to Igor
+	Romanovsky
+
+2003-01-10 Friday 09:42  sfpavel
+
+	* debian/: changelog (1.19), copyright (1.4), libsmapi2-dev.preinst
+	(1.3), libsmapi2.files (1.4): New debian version
+
+2003-01-10 Friday 09:25  sfpavel
+
+	* Makefile (1.30): Don't install patmat.o into /usr/lib
+
+2003-01-10 Friday 06:46  mche
+
+	* gnmsgid.c (1.3): fix previous patch
+
+2003-01-10 Friday 06:10  andr_lukyanov
+
+	* gnmsgid.c (1.2), makefile.emx (1.17): Fix output and EMX
+	compilation
+
+2003-01-10 Friday 01:17  andr_lukyanov
+
+	* makefile.wco (1.20): small fix for Watcom C
+
+2003-01-09 Thursday 12:44  stas_degteff
+
+	* Makefile (1.29): set permissions for install documentations &
+	libraries. Patch from Max Khon <fjoe@iclub.nsu.ru>
+
+2003-01-09 Thursday 11:42  mche
+
+	* makefile.cyg (1.8), makefile.mgw (1.19): correct makefiles for
+	building gnmsgid.exe
+
+2003-01-09 Thursday 08:51  andr_lukyanov
+
+	* makefile.djg (1.22), makefile.wcd (1.23), makefile.wco (1.19),
+	makefile.wcw (1.25), makefile.wcx (1.20): Update makefiles for
+	Watcom C and DJGPP, incleded last patch from mche
+
+2003-01-09 Thursday 07:40  mche
+
+	* makefile.inc (1.4), makefile.mvc (1.13), makefile.mvcdll (1.15):
+	correct previous patch
+
+2003-01-09 Thursday 07:09  mche
+
+	* genmsgid.c (1.14), gnmsgid.c (1.1), makefile.mgw (1.18),
+	makefile.mvc (1.12), makefile.mvcdll (1.14), msgapi.h (1.59):
+	advanced msgid generation patch by [Alexander Reznikov		   
+	    2:4600/220]
+
+2003-01-09 Thursday 02:54  andr_lukyanov
+
+	* makefile.wcd (1.22), makefile.wco (1.18), makefile.wcw (1.24),
+	makefile.wcx (1.19): Update makefiles for Watcom C
+
+2003-01-08 Wednesday 10:58  stas_degteff
+
+	* setfsize.c (1.12), tdelay.c (1.12): Fix compilation for borland
+	C/w32. Thanks to Igor Romanovsky
+
+2003-01-08 Wednesday 10:35  stas_degteff
+
+	* compiler.h (1.113): Fix compilation for borland C/w32. Thanks to
+	Igor Romanovsky
+
+2003-01-08 Wednesday 09:59  andr_lukyanov
+
+	* makefile.wcd (1.21), makefile.wco (1.17), makefile.wcw (1.23),
+	makefile.wcx (1.18): Update makefiles for Watcom C
+
+2003-01-08 Wednesday 09:48  andr_lukyanov
+
+	* api_jam.c (1.99), api_sdm.c (1.35): Replace C++ syntax with C
+	standard syntax
+
+2003-01-08 Wednesday 09:25  stas_degteff
+
+	* compiler.h (1.112), makefile.bcw (1.14): fix BorlandC/TurboC
+	compilation
+
+2003-01-05 Sunday 12:26  mche
+
+	* sq_idx.c (1.8): fix compilation
+
+2003-01-04 Saturday 11:58  stas_degteff
+
+	* api_jam.c (1.98), msgapi.h (1.58): Check malloc(), calloc() and
+	realloc() return values.
+
 2002-12-17 Tuesday 12:44  stas_degteff
 
 	* makefile.mvcdll (1.13): Fix dll makefile: distclean & etc. Thanks
