@@ -1169,6 +1169,97 @@ JAMSUBFIELD2ptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what)
    return NULL;
 }
 
+char *Jam_GetKludge(MSG *jm, dword msgnum, word what)
+{
+   JAMSUBFIELD2LISTptr subf;
+   JAMSUBFIELD2ptr subfptr;
+   int i;
+   char *res;
+
+   if (msgnum == MSGNUM_CUR) {
+      msgnum = jm->cur_msg;
+   } else if (msgnum == MSGNUM_NEXT) {
+      msgnum = jm->cur_msg+1;
+      if (msgnum > jm->num_msg) {
+         msgapierr = MERR_NOENT;
+         return NULL;
+      } /* endif */
+      jm->cur_msg = msgnum;
+   } else if (msgnum == MSGNUM_PREV) {
+      msgnum = jm->cur_msg-1;
+      if (msgnum == 0) {
+        msgapierr = MERR_NOENT;
+        return NULL;
+      } /* endif */
+      jm->cur_msg = msgnum;
+   } else {
+      if (msgnum > jm->num_msg) {
+         msgapierr = MERR_NOENT;
+         return NULL;
+      } /* endif */
+   }
+
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
+ 
+   if (!Jmd->actmsg)
+      return NULL;
+   subf = Jmd->actmsg[msgnum-1].subfield;
+   for (i=0, subfptr = subf->subfield; i<subf->subfieldCount; i++, subfptr++)
+      if (subfptr->LoID == what) {
+	 res = palloc(subfptr->DatLen + 1);
+	 if (res == NULL) return NULL;
+	 memcpy(res, subfptr->Buffer, subfptr->DatLen);
+	 res[subfptr->DatLen] = '\0';
+	 return res;
+      }
+   return NULL;
+}
+
+JAMHDR *Jam_GetHdr(MSG *jm, dword msgnum)
+{
+   if (msgnum == MSGNUM_CUR) {
+      msgnum = jm->cur_msg;
+   } else if (msgnum == MSGNUM_NEXT) {
+      msgnum = jm->cur_msg+1;
+      if (msgnum > jm->num_msg) {
+         msgapierr = MERR_NOENT;
+         return NULL;
+      } /* endif */
+      jm->cur_msg = msgnum;
+   } else if (msgnum == MSGNUM_PREV) {
+      msgnum = jm->cur_msg-1;
+      if (msgnum == 0) {
+        msgapierr = MERR_NOENT;
+        return NULL;
+      } /* endif */
+      jm->cur_msg = msgnum;
+   } else {
+      if (msgnum > jm->num_msg) {
+         msgapierr = MERR_NOENT;
+         return NULL;
+      } /* endif */
+   }
+
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
+ 
+   if (!Jmd->actmsg)
+      return NULL;
+
+   return &(Jmd->actmsg[msgnum-1].hdr);
+}
+
+void Jam_WriteHdr(MSG *jm, JAMHDR *jamhdr, dword msgnum)
+{
+   if (!Jmd->actmsg_read) Jam_ActiveMsgs(Jmd);
+
+   if (!Jmd->actmsg)
+      return;
+
+   memcpy(&(Jmd->actmsg[msgnum-1].hdr), jamhdr, sizeof(JAMHDR));
+   lseek(Jmd->HdrHandle, Jmd->actmsg[msgnum-1].TrueMsg, SEEK_SET);
+   write_hdr(Jmd->HdrHandle, jamhdr);
+}
+
 dword Jam_HighMsg(JAMBASEptr jambase)
 {
    dword highmsg;
