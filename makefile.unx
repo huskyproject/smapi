@@ -8,7 +8,7 @@ RANLIB= ranlib
 TARGET=	libsmapiunix
 
 LIBDIR=$(HOME)/fido/lib
-INCDIR=$(HOME)/fido/include
+INCDIR=$(HOME)/fido/include/smapi
 
 
 default: $(TARGET).a $(TARGET).so
@@ -39,7 +39,7 @@ OBJS=	1stchar.o  \
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
-	$(LIB) r $(TARGET) $@
+	$(LIB) r $(TARGET).a $@
 
 $(TARGET).a: $(OBJS)
 	$(RANLIB) $(TARGET).a
@@ -49,5 +49,5 @@ $(TARGET).so: $(OBJS)
 
 install:
 	cp -f $(TARGET).so $(LIBDIR)
-	cpp -DUNIX msgapi.h > $(INCDIR)/msgapi.h 
+	cp -f *.h  $(INCDIR)
 	
