@@ -21,6 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifdef MSDOS
+#ifndef __MSDOS__
+#define __MSDOS__
+#endif
+#endif
+
 #ifdef __MSDOS__
 #include <dos.h>
 #endif
@@ -68,7 +74,7 @@
 #elif defined(__BEOS__)
 
 #include <be/kernel/scheduler.h>
-  
+
   void _fast tdelay(int msecs)
   {
     snooze(msecs*1000l);
@@ -77,12 +83,12 @@
 #elif defined(UNIX)
 
 #include <unistd.h>
-  
+
   void _fast tdelay(int msecs)
   {
     usleep(msecs*1000l);
   }
-  
+
 #else
 #error Unknown OS
 #endif
