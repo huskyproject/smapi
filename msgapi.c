@@ -62,7 +62,7 @@ void _MsgCloseApi(void)
 #ifdef __UNIX__
 /* Just a dummy alarm-fnct */
 static void alrm(int x)
-{}
+{x=x;}
 #endif
 
 sword _XPENTRY MsgOpenApi(struct _minf *minf)

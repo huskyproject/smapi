@@ -418,6 +418,8 @@ int unlock(int handle, long ofs, long length)
 int sopen(const char *name, int oflag, int ishared, int mode)
 {
     int fd = open(name, oflag, mode);
+    /* prevent compiler warning */
+    ishared = ishared;
 
     /*
      * I removed this code, 'cause there is no more need for it (i hope so)

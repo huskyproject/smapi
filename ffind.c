@@ -62,6 +62,11 @@ FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
 
     ff = malloc(sizeof(FFIND));
 
+#if defined(__UNIX__)
+    /* prevent compiler warning */
+    attribute = attribute;
+#endif
+
     if (ff != NULL)
     {
 #if defined(__TURBOC__) || defined(__DJGPP__)
