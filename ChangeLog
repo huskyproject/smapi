@@ -1,6 +1,7 @@
 Sat Oct 14 23:18:01 NOVST 2000
 max (patches from Pavel Gulchouk):
 * JAM fix: sqpack don't crashes on areas when msgs deleted from golded
+* JAM fix: hpt link works good after deleting msgs from golded
 
 Mon Oct  9 10:10:43 NOVST 2000
 max:
