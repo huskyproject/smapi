@@ -1,3 +1,12 @@
+development version
+-------------------
+
+----- cvs ci ------
+Mi  15 Dez 1999 00:46:37 CET
+tobi:
+- Fixed a structure packing problem with DJGPP.
+
+
 smapi 1.6.2
 -----------
 

@@ -179,7 +179,7 @@
 #define _fast pascal
 #define _loadds
 
-#include <conio.h>
+/* #include <conio.h> */
 #define mysleep(x) delay(x);
 
 #elif defined(__WATCOMC__) && defined(MSDOS)
