@@ -659,7 +659,7 @@ int write_sqbase(int handle, struct _sqbase *psqbase)
     return (farwrite(handle, (byte far *)buf, SQBASE_SIZE) == SQBASE_SIZE);
 }
 
-int read_omsg(sword handle, struct _omsg *pomsg)
+int read_omsg(int handle, struct _omsg *pomsg)
 {
     byte buf[OMSG_SIZE], *pbuf = buf;
     word rawdate, rawtime;
@@ -733,7 +733,7 @@ int read_omsg(sword handle, struct _omsg *pomsg)
     return 1;
 }
 
-int write_omsg(sword handle, struct _omsg *pomsg)
+int write_omsg(int handle, struct _omsg *pomsg)
 {
     byte buf[OMSG_SIZE], *pbuf = buf;
     word rawdate, rawtime;
@@ -811,7 +811,7 @@ int write_omsg(sword handle, struct _omsg *pomsg)
     return (farwrite(handle, (byte far *)buf, OMSG_SIZE) == OMSG_SIZE);
 }
 
-int read_hdrinfo(sword handle, JAMHDRINFO *HdrInfo)
+int read_hdrinfo(int handle, JAMHDRINFO *HdrInfo)
 {
    byte buf[HDRINFO_SIZE], *pbuf = buf;
 
@@ -856,7 +856,7 @@ int read_hdrinfo(sword handle, JAMHDRINFO *HdrInfo)
    return 1;
 }
 
-int read_idx(sword handle, JAMIDXREC *Idx)
+int read_idx(int handle, JAMIDXREC *Idx)
 {
    byte buf[IDX_SIZE], *pbuf = buf;
 
@@ -959,7 +959,7 @@ static void decode_hdr(byte *pbuf, JAMHDR *Hdr)
    Hdr->Cost = get_dword(pbuf);
 }
 
-int read_hdr(sword handle, JAMHDR *Hdr)
+int read_hdr(int handle, JAMHDR *Hdr)
 {
    byte buf[HDR_SIZE];
 
@@ -1043,7 +1043,7 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
    *SubfieldLen = pbuf - buf;
 }
 
-int read_subfield(sword handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen)
+int read_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen)
 {
    char *buf;
 
@@ -1158,7 +1158,7 @@ int read_allidx(JAMBASEptr jmb)
    return 1;
 }
 
-int write_hdrinfo(sword handle, JAMHDRINFO *HdrInfo)
+int write_hdrinfo(int handle, JAMHDRINFO *HdrInfo)
 {
    byte buf[HDRINFO_SIZE], *pbuf = buf;
 
@@ -1199,7 +1199,7 @@ int write_hdrinfo(sword handle, JAMHDRINFO *HdrInfo)
    return (farwrite(handle, (byte far *)buf, HDRINFO_SIZE) == HDRINFO_SIZE);
 }
 
-int write_idx(sword handle, JAMIDXREC *Idx)
+int write_idx(int handle, JAMIDXREC *Idx)
 {
    byte buf[IDX_SIZE], *pbuf = buf;
 
@@ -1216,7 +1216,7 @@ int write_idx(sword handle, JAMIDXREC *Idx)
    return (farwrite(handle, (byte far *)buf, IDX_SIZE) == IDX_SIZE);
 }
 
-int write_hdr(sword handle, JAMHDR *Hdr)
+int write_hdr(int handle, JAMHDR *Hdr)
 {
    byte buf[HDR_SIZE], *pbuf = buf;
 
@@ -1305,7 +1305,7 @@ int write_hdr(sword handle, JAMHDR *Hdr)
    return (farwrite(handle, (byte far *)buf, HDR_SIZE) == HDR_SIZE);
 }
 
-int write_subfield(sword handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLen)
+int write_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLen)
 {
    unsigned char *buf, *pbuf;
    dword datlen;
