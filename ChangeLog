@@ -1,3 +1,8 @@
+2002-02-13 Wednesday 11:42  ml
+
+	* progprot.h (1.14), setfsize.c (1.8): fixed setfsize() for msvc6
+	compiler
+
 2002-02-11 Monday 00:27  pavel.gulchouck
 
 	* fexist.c (1.20): MSVC compiling
