@@ -1,3 +1,7 @@
+2002-02-24 Sunday 12:23  mche
+
+	* .cvsignore (1.2): *.obj
+
 2002-02-20 Wednesday 10:50  ml
 
 	* .cvsignore (1.1): add .cvsignore file
