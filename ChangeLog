@@ -1,3 +1,8 @@
+2002-03-05 Tuesday 01:27  joerg.jaspert
+
+	* debian/: changelog (1.10), huskymak.cfg (1.9): New Debian Package
+	built
+
 2002-03-04 Monday 19:23  pavel.gulchouck
 
 	* msgapi.c (1.25): Compile errors fix
