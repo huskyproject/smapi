@@ -1,3 +1,7 @@
+2002-03-21 Thursday 08:53  ml
+
+	* api_sdm.c (1.22.2.4): Read *.msg >64K fixed
+
 2002-03-01 Friday 10:08  ml
 
 	* .cvsignore (1.2.2.1), makefile.mvc (1.4.2.1), makeperl.mvc
