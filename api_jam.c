@@ -129,8 +129,8 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
    /* Jam_ActiveMsgs(Jmd); */
 
    jm->high_water = Jmd->HdrInfo.highwater;
-   jm->high_msg = Jam_HighMsg(Jmd);
-   jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
+   /* jm->high_msg = Jam_HighMsg(Jmd); */
+   jm->high_msg = jm->num_msg = Jmd->HdrInfo.ActiveMsgs;
 
    jm->type = MSGTYPE_JAM;
 
