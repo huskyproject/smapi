@@ -43,6 +43,9 @@ void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written)
     /* OG: localtime must only generated, if msgadate == '' & yr = 1980
            A little bit more speed !
     */
+    /* max: and why you leave generation upper *msgdate=='\0' ?
+            but you can't remove, because it needed at the end of function
+	    think you must remove localtime generation below */
 
     if (d_written->msg_st.date.yr == 0)
     {
