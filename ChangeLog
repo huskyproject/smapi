@@ -1,3 +1,16 @@
+2002-11-10 Sunday 20:58  pgul
+
+	* structrw.c (1.34): Also one fix for reading corrupted jam area
+
+2002-11-10 Sunday 20:44  pgul
+
+	* api_jam.c (1.93): Minor fix for read corrupted areas
+
+2002-11-10 Sunday 20:18  pgul
+
+	* api_jam.c (1.92), structrw.c (1.33), api_jamp.h (1.19): Fixed
+	segfault on read corrupted jam area
+
 2002-11-05 Tuesday 14:52  stas_degteff
 
 	* compiler.h (1.104), fexist.c (1.25), sq_lock.c (1.21): Convert
