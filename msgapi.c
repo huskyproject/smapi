@@ -58,6 +58,13 @@ MSG *EXPENTRY MsgOpenArea(byte * name, word mode, word type)
     else return SdmOpenArea(name, mode, type);
 }
 
+int MsgDeleteBase(char * name, word type)
+{
+    if (type & MSGTYPE_SQUISH) return SquishDeleteBase(name);
+    else if (type & MSGTYPE_JAM) return JamDeleteBase(name);
+    else return SdmDeleteBase(name);
+}
+
 sword EXPENTRY MsgValidate(word type, byte * name)
 {
     if (type & MSGTYPE_SQUISH) return SquishValidate(name);

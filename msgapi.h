@@ -315,6 +315,7 @@ sword EXPENTRY MsgOpenApi(struct _minf *minf);
 sword EXPENTRY MsgCloseApi(void);
 
 MSG *EXPENTRY MsgOpenArea(byte * name, word mode, word type);
+int MsgDeleteBase(char * name, word type);
 sword EXPENTRY MsgValidate(word type, byte * name);
 sword EXPENTRY MsgBrowseArea(BROWSE * b);
 
@@ -326,12 +327,15 @@ dword EXPENTRY SquishHash(byte * f);
 
 MSG *MSGAPI SdmOpenArea(byte * name, word mode, word type);
 sword MSGAPI SdmValidate(byte * name);
+int SdmDeleteBase(char * name);
 
 MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type);
 sword MSGAPI SquishValidate(byte * name);
+int SquishDeleteBase(char * name);
 
 MSG *MSGAPI JamOpenArea(byte * name, word mode, word type);
 sword MSGAPI JamValidate(byte * name);
+int JamDeleteBase(char * name);
 
 byte *EXPENTRY CvtCtrlToKludge(byte * ctrl);
 byte *EXPENTRY GetCtrlToken(byte * where, byte * what);

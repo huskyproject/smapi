@@ -161,6 +161,20 @@ MSG *MSGAPI SquishOpenArea(byte * name, word mode, word type)
     return sq;
 }
 
+int SquishDeleteBase(char *name)
+{
+    byte temp[PATHLEN];
+    int rc = 1;
+    
+    sprintf((char *) temp, (char *) ss_sqd, name);
+    if (unlink(temp)) rc = 0;
+    sprintf((char *) temp, (char *) ss_sqi, name);
+    if (unlink(temp)) rc = 0;
+    sprintf((char *) temp, (char *) ss_sql, name);
+    unlink(temp);
+    return rc;
+}   
+
 static sword EXPENTRY SquishCloseArea(MSG * sq)
 {
     if (InvalidMh(sq))

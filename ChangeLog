@@ -3,6 +3,11 @@ smapi 1.6.4
 (released on Mon May 22 14:58:56 CEST 2000)
 
 ----- cvs ci ------
+Mon Jul 31 12:18:23 NOVST 2000
+max (patches from Pavel Gulchouk):
+* MsgDeleteBase() functions
+
+----- cvs ci ------
 Tue Jul 25 22:09:07 NOVST 2000
 max (patches from Pavel Gulchouk):
 * jam @Via fixes

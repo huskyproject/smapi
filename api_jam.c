@@ -789,6 +789,35 @@ static int gettz(void)
    return (int)(((long)mktime(tm)-(long)gt));
 }
 
+int JamDeleteBase(char *name)
+{
+   char *hdr, *idx, *txt, *lrd;
+   int x = strlen(name)+5;
+   int rc = 1;
+
+   hdr = (char*) palloc(x);
+   idx = (char*) palloc(x);
+   txt = (char*) palloc(x);
+   lrd = (char*) palloc(x);
+
+   sprintf(hdr, "%s%s", name, EXT_HDRFILE);
+   sprintf(txt, "%s%s", name, EXT_TXTFILE);
+   sprintf(idx, "%s%s", name, EXT_IDXFILE);
+   sprintf(lrd, "%s%s", name, EXT_LRDFILE);
+
+   if (unlink(hdr)) rc = 0;
+   if (unlink(txt)) rc = 0;
+   if (unlink(idx)) rc = 0;
+   if (unlink(lrd)) rc = 0;
+
+   pfree(hdr);
+   pfree(txt);
+   pfree(idx);
+   pfree(lrd);
+
+   return rc;
+}
+
 int Jam_OpenFile(JAMBASE *jambase, word *mode)
 {
    char *hdr, *idx, *txt, *lrd;

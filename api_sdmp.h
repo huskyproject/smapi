@@ -72,7 +72,7 @@ static struct _apifuncs sdm_funcs =
     SdmGetHighWater,
     SdmSetHighWater,
     SdmGetTextLen,
-    SdmGetCtrlLen,
+    SdmGetCtrlLen
 };
 
 #endif

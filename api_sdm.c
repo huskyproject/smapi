@@ -144,6 +144,36 @@ ErrOpen:
     return NULL;
 }
 
+int SdmDeleteBase(char *name)
+{
+    FFIND *ff;
+    char *temp;
+
+    temp = malloc(strlen(name)+6);
+    sprintf(temp, "%s*.msg", name);
+
+    ff = FFindOpen(temp, 0);
+
+    free(temp);
+
+    if (ff != 0)
+    {
+	do
+	{
+	    temp = malloc(strlen(name) + strlen(ff->ff_name) + 1);
+	    sprintf(temp, "%s%s", name, ff->ff_name);
+	    unlink(temp);
+	    free(temp);
+	}
+        while (FFindNext(ff) == 0);
+
+        FFindClose(ff);
+    }
+    rmdir(name);
+
+    return 1; /* rmdir error is ok */
+}
+
 static sword EXPENTRY SdmCloseArea(MSG * mh)
 {
     XMSG msg;
