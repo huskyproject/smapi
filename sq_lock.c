@@ -46,6 +46,10 @@ static char rcs_id[]="$Id$";
 #include <sys/sem.h>
 #endif
 
+#if defined(UNIX)
+#include <unistd.h>
+#endif
+
 #include "prog.h"
 #include "alc.h"
 #include "old_msg.h"
