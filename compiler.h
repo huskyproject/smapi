@@ -20,6 +20,15 @@
 #ifndef __COMPILER_H__
 #define __COMPILER_H__
 
+/*
+  BeOS is NOT Unix, but sometime it seem's to Be ... ;)
+*/
+#if defined (__BEOS__)
+  #ifndef UNIX
+    #define UNIX
+  #endif
+#endif
+
 #if defined ( __WATCOMC__ )
 #include <direct.h>
 #include <io.h>
@@ -507,7 +516,10 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define stricmp strcasecmp
 #endif
 
+#ifndef __BEOS__
 #define O_BINARY 0
+#endif
+
 #define SH_DENYNONE 0
 #define SH_DENYNO 0
 #define SH_DENYALL 1
