@@ -48,4 +48,6 @@ $(TARGET): $(OBJS)
 
 clean:
 	-DEL *.OBJ
+
+distclean: clean
 	-DEL SMAPIBCD.LIB
