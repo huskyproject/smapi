@@ -398,7 +398,7 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
                 pfree(msgh);
                 close(handle);
                 msgapierr = MERR_NOMEM;
-                return NULL;
+		return NULL;
             }
         }
 
@@ -409,7 +409,8 @@ static MSGH *EXPENTRY SdmOpenMsg(MSG * mh, word mode, dword msgnum)
 
         if (!owrite)
         {
-            Mhd->msgnum[(size_t) (mh->num_msg++)] = (word) msgnum;
+	    Mhd->msgnum[(size_t) (mh->num_msg)] = (word) msgnum;
+	    mh->num_msg++;
         }
         else
         {

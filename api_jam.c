@@ -1419,8 +1419,9 @@ void DecodeSubf(MSGH *msgh)
          if (ptr) *ptr = '\0';
          ptr = strchr(orig, '.');
          if (ptr) {
-            *(ptr++) = '\0';
-            if (atoi(ptr) != 0) fmpt = ptr;
+            *ptr = '\0';
+	    ptr++;
+	    if (atoi(ptr) != 0) fmpt = ptr;
          }
       }
       if (dest) {
@@ -1428,8 +1429,9 @@ void DecodeSubf(MSGH *msgh)
          if (ptr) *ptr = '\0';
          ptr = strchr(dest, '.');
          if (ptr) {
-            *(ptr++) = '\0';
-            if (atoi(ptr) != 0) topt = ptr;
+            *ptr = '\0';
+	    ptr++;
+	    if (atoi(ptr) != 0) topt = ptr;
          }
       }
       if (orig && dest) {

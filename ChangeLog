@@ -2,6 +2,11 @@ smapi 1.6.1
 -----------
 
 ----- cvs ci ------
+Tue Nov 30 22:11:00 CET 1999
+sms:
+- fixed some misuses of ++ in api_jam.c and api_sdm.c
+
+----- cvs ci ------
 Thu Oct 16 13:40:00 MET DST 1999
 sms:
 - reorganized Makefiles, please read README.Makefiles in the husky-common
