@@ -401,7 +401,7 @@ SMAPI_EXT byte *_XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned 
 void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
 word _XPENTRY NumKludges(char *txt);
 SMAPI_EXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
-SMAPI_EXT dword _XPENTRY GenMsgId(void);
+SMAPI_EXT dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun);
 
 #if !defined(OS2) && !defined(__FLAT__) && !defined(UNIX) && !defined(__DJGPP__) && !defined(__NT__) && !defined(NT) && !defined(__MINGW32__)
 sword far pascal farread(sword handle, byte far * buf, word len);

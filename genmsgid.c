@@ -22,19 +22,20 @@ dword oldGenMsgId(void)
 	return seq;
 }
 
-dword _XPENTRY GenMsgId(void)
+dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 {
 	dword seq, n;
 	time_t curtime;
-	unsigned long max_outrun;
 	FFIND *ff;
-	char *seqdir, *seqpath, max_fname[13], *new_fname, *pname, *p;
-	int  h;
+	char *seqpath, max_fname[13], *new_fname, *pname, *p;
+	int  h, try;
 
-	seqdir = getenv("SEQDIR");
-	if (seqdir == NULL) {
-		/* warning: no SEQDIR defined, fall to ugly old algorythm */
-		return oldGenMsgId();
+	if (seqdir == NULL || *seqdir == '\0') {
+		seqdir = getenv("SEQDIR");
+		if (seqdir == NULL || *seqdir == '\0') {
+			/* warning: no SEQDIR defined, fall to ugly old algorythm */
+			return oldGenMsgId();
+		}
 	}
 	seqpath = malloc(strlen(seqdir)+13);
 	strcpy(seqpath, seqdir);
@@ -42,25 +43,31 @@ dword _XPENTRY GenMsgId(void)
 	if (*seqpath && strchr("/\\", seqpath[strlen(seqpath)-1]) == NULL)
 		*pname++ = PATH_DELIM;
 	new_fname = NULL;
-	max_outrun = MAX_OUTRUN;
-	p = getenv("SEQOUT");
-	if (p && isdigit(*p)) {
-		max_outrun = (unsigned long)atol(p);
-		switch (tolower(p[strlen(p) - 1])) {
-			case 'y':	max_outrun *= 365;
-			case 'd':	max_outrun *= 24;
-			case 'h':	max_outrun *= 60*60;
-					break;
-			case 'w':	max_outrun *= (7l*24*60*60);
-					break;
-			case 'm':	max_outrun *= (31l*24*60*60);
-					break;
+	if (max_outrun == 0) {
+		max_outrun = MAX_OUTRUN;
+		p = getenv("SEQOUT");
+		if (p && isdigit(*p)) {
+			max_outrun = (unsigned long)atol(p);
+			switch (tolower(p[strlen(p) - 1])) {
+				case 'y':	max_outrun *= 365;
+				case 'd':	max_outrun *= 24;
+				case 'h':	max_outrun *= 60*60;
+						break;
+				case 'w':	max_outrun *= (7l*24*60*60);
+						break;
+				case 'm':	max_outrun *= (31l*24*60*60);
+						break;
+			}
 		}
 	}
-	for (;;) {
+	for (try=0;;try++) {
 		strcpy(pname, "*.*");
 		ff = FFindOpen(seqpath, 0);
 		if (ff == NULL) {
+			*pname = '\0';
+			if (try == 0 && !direxist(seqpath))
+				if (_createDirectoryTree(seqpath) == 0)
+					continue;
 			free(seqpath);
 			if (new_fname) free(new_fname);
 			return oldGenMsgId();
