@@ -1,3 +1,12 @@
+2002-06-21 Friday 15:01  stas
+
+	* makefile.bsd (1.20): Fix install (define INSTALL) ; add uninstall
+	; define RM and use it.
+
+2002-06-21 Friday 13:48  pavel.gulchouck
+
+	* makefile.bsd (1.19): 'make install' fix
+
 2002-06-19 Wednesday 17:15  mche
 
 	* compiler.h (1.84): some defines for MSVC
