@@ -1728,8 +1728,8 @@ int qq(void)
 #    define SH_DENYALL 1
 #  endif
 
-#  define mysleep(x) snooze(x*1000000l)
-#  define sleep(x) snooze(x*1000000l)
+#  define mysleep(x) sleep(x)
+/*#  define sleep(x) snooze(x*1000000l)*/ /* use sleep() from unistd.h */
 #  define HAS_sleep     1
 #  define HAS_mktime	1  /* in <time.h> */
 #  define HAS_strftime	1  /* in <time.h> */
