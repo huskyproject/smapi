@@ -1,38 +1,28 @@
-# Makefile for Building SMAPI with Mingw32 for NT.
-# No support for the Husky build environment.
+CC=gcc
+LIB=ar
+RANLIB=ranlib
+RM=del
 
-#use this line if you are using MINGW32 on a Windows box
-#CC=gcc
-#LIB=ar
-#RANLIB=ranlib
-#RM=del
-
-#use this line if you are using MINGW32 CPD on a Unix box as cross compiler
-CC=i386-mingw32-gcc
-LIB=i386-mingw32-ar
-RANLIB=i386-mingw32-ranlib
-RM=rm
-
-CDEFS=-D__NT__ -DWINNT
+CDEFS=-D__NT__ -D__MINGW__ -c
 CFLAGS=-Wall
 COPT=-O3
 
-TARGET=libsmapimgw.a
+default: all
 
-default: $(TARGET)
+TARGET=libsmapimgw.a
 
 OBJS=   1stchar.o  \
 	api_sdm.o  \
-	sq_area.o \
-	sq_hash.o \
-	sq_help.o \
-	sq_idx.o \
-	sq_kill.o \
-	sq_lock.o \
-	sq_misc.o \
-	sq_msg.o \
-	sq_read.o \
-	sq_uid.o \
+	sq_area.o  \
+	sq_hash.o  \
+	sq_help.o  \
+	sq_idx.o   \
+	sq_kill.o  \
+	sq_lock.o  \
+	sq_misc.o  \
+	sq_msg.o   \
+	sq_read.o  \
+	sq_uid.o   \
 	sq_write.o \
 	api_jam.o  \
 	cvtdate.o  \
@@ -51,7 +41,7 @@ OBJS=   1stchar.o  \
 	strocpy.o  \
 	structrw.o \
 	trail.o    \
-	weekday.o \
+	weekday.o  \
 	semaphor.o \
 	setfsize.o \
 	tdelay.o
@@ -60,7 +50,7 @@ OBJS=   1stchar.o  \
 all: $(TARGET)
 
 .c.o:
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $<
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)

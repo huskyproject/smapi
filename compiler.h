@@ -351,7 +351,7 @@ int lock(int handle, long ofs, long length);
 #define sleep(sec) _sleep((sec)*1000l)
 #define write _write
 #define read _read
-#if !defined(__CYG__)
+#if !defined(__CYG__) && !defined(__MINGW__)
 #define stat _stat
 #define fstat _fstat
 #define chsize _chsize
