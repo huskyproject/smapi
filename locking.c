@@ -301,6 +301,11 @@ int unlock(int handle, long ofs, long length)
 int sopen(const char *name, int oflag, int ishared, int mode)
 {
     int fd = open(name, oflag, mode);
+    
+    /*
+     * I removed this code, 'cause there is no more need for it (i hope so)
+     */
+/*
 #ifndef NO_LOCKING
     if (fd != -1 && fcntl(fd, F_SETLK,
               file_lock((ishared == SH_DENYNONE) ? F_RDLCK : F_WRLCK, 0, 0)))
@@ -310,6 +315,7 @@ int sopen(const char *name, int oflag, int ishared, int mode)
         return -1;
     }
 #endif
+*/
     return fd;
 }
 

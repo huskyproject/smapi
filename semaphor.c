@@ -54,14 +54,23 @@ void unlock_semaphore(SEMAPHORE *sem)
 
 #elif defined(UNIX)
 
+#if defined(__GNU_LIBRARY__) && !defined(_SEM_SEMUN_UNDEFINED)
+   /* union semun is defined by including <sys/sem.h> */
+#else
+   /* according to X/OPEN we have to define it ourselves */
+   union semun 
+   {
+     int val;                    /* value for SETVAL */
+     struct semid_ds *buf;       /* buffer for IPC_STAT, IPC_SET */
+     unsigned short int *array;  /* array for GETALL, SETALL */
+     struct seminfo *__buf;      /* buffer for IPC_INFO */
+   };
+#endif   
+
 void create_semaphore(SEMAPHORE *sem)
 {
-#ifdef HAS_SEMUN
   union semun fl;
   fl.val = 1;
-#else
-  int fl = 1;
-#endif
 
   *sem = semget(IPC_PRIVATE, 1, 0600|IPC_CREAT);
 
@@ -70,12 +79,8 @@ void create_semaphore(SEMAPHORE *sem)
 
 void delete_semaphore(SEMAPHORE *sem)
 {
-#ifdef HAS_SEMUN
   union semun fl;
   fl.val = 0;
-#else
-  int fl = 0;
-#endif
 
   semctl(*sem, 0, IPC_RMID, fl);
 }

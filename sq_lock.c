@@ -89,21 +89,11 @@ int _squnlock(HAREA ha)
   return 1;
 }
 
-#ifdef __BEOS__
-#define _alt_sleep(x) snooze(x*1000)
-#elif defined(UNIX)
-#define _alt_sleep(x) usleep(x*1000)
-#else
-#error "Don't know how to sleep x ms (milliseconds)."
-#endif
-
 int _sqlock(HAREA ha)
 {
     while (_alt_lock(ha) == -1)
-    {
-        _alt_sleep(1);
-    }
-    
+        tdelay(1);
+   
     return 1;
 }
 
@@ -111,8 +101,13 @@ int _sqlock(HAREA ha)
 
 int _sqlock(HAREA ha)
 {
-  // waitlock returns 0 on success
-  return !waitlock(Sqd->sfd, 0, 1);
+  /* lock returns 0 on success
+   * This is a temporarly solution. Yes, here is a potential deadlock.
+   */
+  while (lock(Sqd->sfd, 0, 1) != 0)
+    tdelay(500);
+    
+  return 1;
 }
 
 int _squnlock(HAREA ha)
@@ -137,7 +132,12 @@ static unsigned near _SquishLockBase(HAREA ha)
   /* The first step is to obtain a lock on the Squish file header.  Another *
    * process may be attempting to do the same thing, so we retry a couple   *
    * of times just in case.                                                 */
-  return _sqlock(ha);
+  if (_sqlock(ha) == 0)
+  {
+     Sqd->fLocked--;
+     return 0;
+  }
+  return 1;
 }
 
 /* Unlock the first byte of the Squish file */
