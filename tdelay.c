@@ -68,13 +68,13 @@
     _sleep((dword)msecs);
   }
 
-#elif defined(NT) || defined(__NT__)
-/* not mingw or `cygwin -mno-cygwin` */
+#elif defined(NT) || defined(__NT__) || defined(__WIN32__)
+/* win32/nt not mingw or `cygwin -mno-cygwin`  (MS VC, Borland C/win32, Watcom C)*/
 
-# ifndef _MSC_VER
-   extern void Sleep(dword ms);
-# else
+# if defined(_MSC_VER) || defined(__TURBOC__)
    extern void __stdcall Sleep(dword ms);
+# else
+   extern void Sleep(dword ms);
 # endif
    void _fast tdelay(int msecs)
    {
