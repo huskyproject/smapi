@@ -97,7 +97,8 @@ install: instdyn
 	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
 
 clean:
-	-$(RM) *$(OBJ) *~
+	-$(RM) *$(OBJ)
+	-$(RM) *~
 
 distclean: clean
 	-$(RM) $(TARGET)
