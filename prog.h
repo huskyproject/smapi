@@ -35,9 +35,9 @@
 #define calloc(n,u)   farcalloc(n,u)
 #define free(p)       farfree(p)
 #define realloc(p,n)  farrealloc(p,n)
-#endif
+#endif /* defined(ZREE) */
 
-#endif
+#endif /* defined(__FARDATA__) */
 
 #if defined(_MSC_VER)
 
@@ -55,14 +55,14 @@ void far *farcalloc(int n, int m);
 #endif
 #endif
 
-#endif
+#endif /* defined(ZREE) */
 
 #define NO_STRFTIME
 #define NO_MKTIME
 
 #elif defined(__TURBOC__)
 
-#if __TURBOC__ == 0x0295  /* TC++ includes a strftime() function */
+#if __TURBOC__ == 0x0295
 #define NO_STRFTIME
 #define NO_MKTIME
 #endif
