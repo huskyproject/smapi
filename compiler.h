@@ -489,12 +489,9 @@ int lock(int handle, long ofs, long length);   /* in locking.c */
 int unlock(int handle, long ofs, long length);
 int sopen(const char *name, int oflag, int ishared, int mode);
 
-/* The following line breaks compilation on Solaris. I don't know which
-   platform requires it (probably none ...). If you need it, only
-   re-add this line surrounded by proper #ifdef's. 
-
-   #define tell(a) lseek((a),0,SEEK_CUR) 
-*/   
+#ifndef sun
+#define tell(a) lseek((a),0,SEEK_CUR) 
+#endif
 
 #ifndef stricmp
 #define stricmp strcasecmp
