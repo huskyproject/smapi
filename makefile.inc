@@ -37,3 +37,5 @@ OBJS=	1stchar$(OBJ)  \
 	setfsize$(OBJ) \
 	tdelay$(OBJ)   \
 	genmsgid$(OBJ)
+
+GMOBJS = genmsgid$(OBJ) fexist$(OBJ) ffind$(OBJ)

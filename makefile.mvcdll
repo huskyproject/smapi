@@ -25,7 +25,7 @@ $(SMAPIDLL): $(OBJS)
 	$(LINK) $(LINKOPTS) $(OBJS)
 
 gnmsgid.exe: $(OBJS)
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ gnmsgid.c $(OBJS) /link /opt:nowin98
+        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ gnmsgid.c $(GMOBJS) /link /opt:nowin98
         -del gnmsgid.exp
         -del gnmsgid.lib
 
