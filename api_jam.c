@@ -434,8 +434,11 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          offset -= msgh->Hdr.TxtLen;
          if (bytes > msgh->lclen) bytes = msgh->lclen;
          if (offset < msgh->lclen) {
-            bytesread = bytes-offset;
-            strncpy((char*)text, (char*)(msgh->lctrl+offset), bytesread);
+             if (offset < bytes)
+                 bytesread = bytes-offset;
+             else
+                 bytesread = 0;
+             strncpy((char*)text, (char*)(msgh->lctrl+offset), bytesread);
          } else {
          } /* endif */
          msgh->cur_pos += bytesread;
@@ -445,7 +448,9 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          if (bytes > msgh->Hdr.TxtLen-offset) {
             bytesread =  farread(MsghJm->TxtHandle, text, msgh->Hdr.TxtLen-offset);
             bytes -= (msgh->Hdr.TxtLen-offset);
-            bytes -= offset;
+            if (offset < bytes)
+                bytes -= offset;
+            else bytes = 0;
             if (bytes > msgh->lclen) bytes = msgh->lclen;
             strncpy((char*)(text+bytesread), (char*)(msgh->lctrl), bytes);
             bytesread += bytes;
