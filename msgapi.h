@@ -388,7 +388,7 @@ sword MSGAPI InvalidMsgh(MSGH * msgh);
 sword MSGAPI InvalidMh(MSG * mh);
 
 void EXPENTRY SquishSetMaxMsg(MSG * sq, dword max_msgs, dword skip_msgs, dword age);
-dword EXPENTRY SquishHash(byte * f);
+SMAPI_EXT dword EXPENTRY SquishHash(byte * f);
 
 MSG *MSGAPI SdmOpenArea(byte * name, word mode, word type);
 sword MSGAPI SdmValidate(byte * name);

@@ -647,7 +647,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #define mode_t int
 
-int unlock(int handle, long ofs, long length);
+SMAPI_EXT int unlock(int handle, long ofs, long length);
 SMAPI_EXT int lock(int handle, long ofs, long length);
 
 #include <direct.h>
