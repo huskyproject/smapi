@@ -1363,7 +1363,7 @@ static void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate,
 
     if (fromdate->date.da == 0 || fromdate->date.da > 31 || fromdate->date.yr > 50 ||
       fromdate->time.hh > 23 || fromdate->time.mm > 59 || fromdate->time.ss > 59 ||
-      ((union stamp_combo *)&fromdate)->ldate == 0)
+      ((union stamp_combo *)(void *)&fromdate)->ldate == 0)
     {
         ASCII_Date_To_Binary((char *) asciidate, (union stamp_combo *)todate);
     }
