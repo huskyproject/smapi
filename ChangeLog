@@ -1,3 +1,24 @@
+2002-11-13 Wednesday 14:51  pgul
+
+	* msgapi.c (1.30), msgapi.h (1.53): Add strmerr() function
+
+2002-11-13 Wednesday 14:31  pgul
+
+	* api_jam.c (1.95): Minor fix previous patch
+
+2002-11-13 Wednesday 13:57  stas_degteff
+
+	* 1stchar.c (1.2), api_jam.c (1.94), cvtdate.c (1.12), msgapi.c
+	(1.29), msgapi.h (1.52): Fix: check pointers before use
+
+2002-11-13 Wednesday 10:55  stas_degteff
+
+	* makefile.cyg (1.7): Add DEBUG define
+
+2002-11-13 Wednesday 10:53  stas_degteff
+
+	* cvtdate.c (1.11): Fix bug with NULL message date
+
 2002-11-12 Tuesday 13:47  stas_degteff
 
 	* makefile.aix (1.6), makefile.bcd (1.16), makefile.bco (1.14),
