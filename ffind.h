@@ -49,56 +49,59 @@
 
 #define FFIND struct ffind
 
-#if defined (__WATCOMC__) || defined(__DJGPP__)
-#pragma pack(1)
+#if defined(__DJGPP__) || defined(__TURBOC__) 
+#include <dir.h>
 #endif
+
+#if defined(__WATCOMC__) || defined(_MSC_VER)
+#include <dos.h>
+#endif
+
 
 struct ffind
 {
-#ifndef OS2
-    char reserved[21];
-#endif
-
+    /* this is the public area of the struct */
     char ff_attrib;
     unsigned short ff_ftime;
     unsigned short ff_fdate;
     long ff_fsize;
-#if defined (__WATCOMC__) && ( defined(__OS2__) || defined(__NT__) )
     char ff_name[256];
-#else
-    char ff_name[13];  /* urks! */
-#endif
 
-#ifdef OS2
+    /* now comes the privat area where search handles or similiar are stored */
+
+#if defined(__TURBOC__) || defined(__DJGPP__)
+    struct ffblk ffbuf;
+
+#elif defined(__WATCOMC__) || defined(_MSC_VER)
+    struct find_t ffbuf;
+
+#elif defined(OS2)
 #if defined(__386__) || defined(__FLAT__)
     unsigned long hdir;   /* directory handle from DosFindFirst */
 #else
     unsigned short hdir;  /* directory handle from DosFindFirst */
 #endif
-#endif
 
-#ifdef UNIX
+#elif defined(UNIX)
     DIR *dir;
     char firstbit[FILENAME_MAX];
     char lastbit[FILENAME_MAX];
-#endif
 
-#ifdef SASC
+#elif defined(SASC)
     struct FileInfoBlock info;
     char newfile[FILENAME_MAX];
     char prefix[FILENAME_MAX];
-#endif
 
-#if defined(__RSXNT__) || defined(__MINGW32__)
+#elif defined(__RSXNT__) || defined(__MINGW32__)
     WIN32_FIND_DATA InfoBuf;
     HANDLE hDirA;
     char attrib_srch;
+
+#else
+#error Unknown compiler!
 #endif
 };
 
-#if defined (__WATCOMC__) || defined(__DJGPP__)
-#pragma pack()
-#endif
 
 /*
  * I prefixed the functions below with an additional F in order to

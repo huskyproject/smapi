@@ -67,10 +67,36 @@ FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
     {
 #if defined(__TURBOC__) || defined(__DJGPP__)
 
-        if (findfirst(filespec, (struct ffblk *)ff, attribute) != 0)
+        if (findfirst(filespec, &(ff->ffbuf), attribute) != 0)
         {
             free(ff);
             ff = NULL;
+        }
+        else
+        {
+            ff->ff_attrib = ff->ffbuf.ff_attrib;
+            ff->ff_ftime  = ff->ffbuf.ff_ftime;
+            ff->ff_fdate  = ff->ffbuf.ff_fdate;
+            ff->ff_fsize  = ff->ffbuf.ff_fsize;
+            memcpy(ff->ff_name, ff->ffbuf.ff_name, sizeof(ff->ff_name));
+            ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
+        }
+
+#elif defined(_MSC_VER) || defined(__WATCOMC__)
+
+        if (_dos_findfirst(filespec, attribute, &(ff->ffbuf)) != 0)
+        {
+            free(ff);
+            ff = NULL;
+        }
+        else
+        {
+            ff->ff_attrib = ff->ffbuf.attrib;
+            ff->ff_ftime  = ff->ffbuf.wr_time;
+            ff->ff_fdate  = ff->ffbuf.wr_date;
+            ff->ff_fsize  = ff->ffbuf.size;
+            memcpy(ff->ff_name, ff->ffbuf.name, sizeof(ff->ff_name));
+            ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
         }
 
 #elif defined(OS2)
@@ -96,14 +122,6 @@ FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
             strncpy(ff->ff_name, findbuf.achName, sizeof(ff->ff_name));
         }
         else
-        {
-            free(ff);
-            ff = NULL;
-        }
-
-#elif defined(_MSC_VER) || defined(__WATCOMC__)
-
-        if (_dos_findfirst(filespec, attribute, (struct find_t *)ff) != 0)
         {
             free(ff);
             ff = NULL;
@@ -256,7 +274,25 @@ int _fast FFindNext(FFIND * ff)
     {
 #if defined(__TURBOC__) || defined(__DJGPP__)
 
-        rc = findnext((struct ffblk *)ff);
+        rc = findnext(&(ff->ffbuf));
+
+        ff->ff_attrib = ff->ffbuf.ff_attrib;
+        ff->ff_ftime  = ff->ffbuf.ff_ftime;
+        ff->ff_fdate  = ff->ffbuf.ff_fdate;
+        ff->ff_fsize  = ff->ffbuf.ff_fsize;
+        memcpy(ff->ff_name, ff->ffbuf.ff_name, sizeof(ff->ff_name));
+        ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
+
+#elif defined(_MSC_VER) || defined(__WATCOMC__)
+
+        rc = _dos_findnext(&(ff->ffbuf));
+
+        ff->ff_attrib = ff->ffbuf.attrib;
+        ff->ff_ftime  = ff->ffbuf.wr_time;
+        ff->ff_fdate  = ff->ffbuf.wr_date;
+        ff->ff_fsize  = ff->ffbuf.size;
+        memcpy(ff->ff_name, ff->ffbuf.name, sizeof(ff->ff_name));
+        ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
 
 #elif defined(OS2)
 
@@ -278,10 +314,6 @@ int _fast FFindNext(FFIND * ff)
             strncpy(ff->ff_name, findbuf.achName, sizeof(ff->ff_name));
             rc = 0;
         }
-
-#elif defined(_MSC_VER) || defined(__WATCOMC__)
-
-        rc = _dos_findnext((struct find_t *)ff);
 
 #elif defined(UNIX)
 
@@ -379,29 +411,24 @@ void _fast FFindClose(FFIND * ff)
 {
     if (ff != NULL)
     {
-
-#ifdef __WATCOMC__
-        _dos_findclose((struct find_t *)ff);
-#endif
-
-#ifdef OS2
+#if defined(__TURBOC__) || defined(__DJGPP__)
+#elif defined(__WATCOMC__) || (defined(_MSC_VER) && !defined(MSDOS))
+        _dos_findclose(&(ff->ffbuf));
+#elif defined(OS2)
         if (ff->hdir)
         {
             DosFindClose(ff->hdir);
         }
-#endif
-
-#if defined(__RSXNT__) || defined(__MINGW32__)
-        if (ff->hDirA != INVALID_HANDLE_VALUE)
-        {
-            FindClose(ff->hDirA);
-        }
-#endif
-
-#ifdef UNIX
+#elif defined(UNIX)
         if (ff->dir)
         {
             closedir(ff->dir);
+        }
+#elif defined(SASC)
+#elif defined(__RSXNT__) || defined(__MINGW32__)
+        if (ff->hDirA != INVALID_HANDLE_VALUE)
+        {
+            FindClose(ff->hDirA);
         }
 #endif
         free(ff);
