@@ -1,3 +1,8 @@
+2003-02-17 Monday 19:02  pgul
+
+	* api_jam.c (1.103), api_sdm.c (1.38), sq_area.c (1.29): Fixed
+	MsgDeleteBase() retcode
+
 2003-02-16 Sunday 12:43  stas_degteff
 
 	* INSTALL (1.9): Rewrite installation instructions
