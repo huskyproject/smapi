@@ -23,7 +23,7 @@
    S_ISREG and S_ISDIR macros. The problem is that while stat() is POSIX, those
    macros are not. For compilers that do not provide these macros, we revert to
    the old "ffind" method. */
-#define USE_STAT_MACROS 
+#define USE_STAT_MACROS
 #endif
 
 #include <stdio.h>
@@ -49,7 +49,7 @@
 /* This is the nice code that works on UNIX and every other decent platform.
    It has been contributed by Alex S. Aganichev */
 
-int _fast fexist(char *filename)
+int _fast fexist(const char *filename)
 {
     struct stat s;
 
@@ -58,7 +58,7 @@ int _fast fexist(char *filename)
     return S_ISREG(s.st_mode);
 }
 
-long _fast fsize(char *filename)
+long _fast fsize(const char *filename)
 {
     struct stat s;
 
@@ -67,7 +67,7 @@ long _fast fsize(char *filename)
     return s.st_size;
 }
 
-int _fast direxist(char *directory)
+int _fast direxist(const char *directory)
 {
     struct stat s;
     int rc;
@@ -116,7 +116,7 @@ int _fast direxist(char *directory)
 
 /* Here comes the ugly platform specific and sometimes even slow code. */
 
-int _fast fexist(char *filename)
+int _fast fexist(const char *filename)
 {
     FFIND *ff;
 
@@ -133,7 +133,7 @@ int _fast fexist(char *filename)
     }
 }
 
-long _fast fsize(char *filename)
+long _fast fsize(const char *filename)
 {
     FFIND *ff;
     FILE  *fp;
@@ -162,7 +162,7 @@ long _fast fsize(char *filename)
 
 #if defined(MSDOS) || defined(__DJGPP__) || (defined(__FLAT__) && defined(__WATCOMC__))
 
-int _fast direxist(char *directory)
+int _fast direxist(const char *directory)
 {
     FFIND *ff;
     char *tempstr;
@@ -220,7 +220,7 @@ int _fast direxist(char *directory)
 #include <windows.h>
 #endif
 
-int _fast direxist(char *directory)
+int _fast direxist(const char *directory)
 {
     char *tempstr, *p;
     size_t l;
@@ -285,7 +285,7 @@ int _fast direxist(char *directory)
 
 #include <stdio.h>
 
-int _fast direxist(char *directory)
+int _fast direxist(const char *directory)
 {
     FILE *fp;
 

@@ -24,12 +24,12 @@
 void pascal far flush_handle2(int fd);
 #endif
 void _fast flush_handle(FILE * fp);
-SMAPI_EXT int _fast fexist(char *filename);
-SMAPI_EXT long _fast fsize(char *filename);
+SMAPI_EXT int _fast fexist(const char *filename);
+SMAPI_EXT long _fast fsize(const char *filename);
 char *_fast firstchar(char *strng, char *delim, int findword);
 char *_fast stristr(char *string, char *search);
 void _fast qksort(int a[], size_t n);
-SMAPI_EXT int _fast direxist(char *directory);
+SMAPI_EXT int _fast direxist(const char *directory);
 SMAPI_EXT void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written);
 union stamp_combo *_fast Get_Dos_Date(union stamp_combo *st);
 SMAPI_EXT struct tm *_fast DosDate_to_TmDate(union stamp_combo *dosdate, struct tm *tmdate);
