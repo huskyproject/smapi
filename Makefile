@@ -64,16 +64,16 @@ ifdef RANLIB
 endif
 
 ifeq ($(DYNLIBS), 1)
-ifeq (~$(LD)~, ~~)
-$(LIBPREFIX)smapi.so.$(VER): $(OBJS)
-	$(CC) -shared -Wl,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
-          -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
-else
+  ifeq (~$(MKSHARED)~,~ld~)
 $(LIBPREFIX)smapi.so.$(VER): $(OBJS)
 	$(LD) -s -shared \
 	      -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
-endif
-	
+  else
+$(LIBPREFIX)smapi.so.$(VER): $(OBJS)
+	$(CC) -shared -Wl,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
+          -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
+  endif
+
 instdyn: $(LIBPREFIX)smapi.so.$(VER)
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
 	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
