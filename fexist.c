@@ -30,7 +30,9 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined(UNIX) || defined(__MINGW32__) || defined(__EMX__)
 #include <unistd.h>
+#endif
 #ifdef USE_STAT_MACROS
 #include <sys/types.h>
 #include <sys/stat.h>
