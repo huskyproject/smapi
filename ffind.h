@@ -117,8 +117,8 @@ struct ffind
  * prevent name clashes with the Win32 API
  */
 
-FFIND *_fast FFindOpen(char *filespec, unsigned short attribute);
-FFIND *_fast FFindInfo(char *filespec);
+FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute);
+FFIND *_fast FFindInfo(const char *filespec);
 int _fast FFindNext(FFIND * ff);
 void _fast FFindClose(FFIND * ff);
 

@@ -54,7 +54,7 @@
  *  Returns: NULL == File not found.
  */
 
-FFIND *_fast FFindOpen(char *filespec, unsigned short attribute)
+FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
 {
     FFIND *ff;
 
@@ -445,7 +445,7 @@ void _fast FFindClose(FFIND * ff)
  *  PLF Thu  10-17-1991  18:12:37
  */
 
-FFIND *_fast FindInfo(char *filespec)
+FFIND *_fast FindInfo(const char *filespec)
 {
 #ifndef OS2
     return FFindOpen(filespec, 0);
