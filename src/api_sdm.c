@@ -73,6 +73,12 @@ MSGA *MSGAPI SdmOpenArea(byte * name, word mode, word type)
 {
     MSGA *mh;
 
+    if( !name || !*name )
+    {
+       msgapierr = MERR_BADNAME;
+       return NULL;
+    }
+
     mh = palloc(sizeof(MSGA));
     if (mh == NULL)
     {
@@ -161,7 +167,7 @@ int SdmDeleteBase(char *name)
     FFIND *ff;
     char *temp;
 
-    if(!name){ msgapierr=MERR_BADNAME; return FALSE; }
+    if(!name || !*name){ msgapierr=MERR_BADNAME; return FALSE; }
 
     temp = malloc(strlen(name)+6);
     sprintf(temp, "%s*.msg", name);
@@ -1009,6 +1015,11 @@ static dword _XPENTRY SdmGetTextLen(MSGH * msgh)
 {
     dword pos, end;
 
+    if(InvalidMsgh(msgh))
+    {
+        return -1;
+    }
+
     /* Figure out the physical length of the message */
 
     if (msgh->msg_len == (dword) - 1)
@@ -1042,6 +1053,12 @@ static dword _XPENTRY SdmGetTextLen(MSGH * msgh)
 
 static dword _XPENTRY SdmGetCtrlLen(MSGH * msgh)
 {
+
+    if(InvalidMsgh(msgh))
+    {
+        return -1;
+    }
+
     /* If we've already figured out the length of the control info */
 
     if (msgh->clen == (dword) - 1 && _Grab_Clen(msgh) == -1)
@@ -1071,6 +1088,11 @@ static sword near _SdmRescanArea(MSGA * mh)
     FFIND *ff;
     char *temp;
     word mn, thismsg;
+
+    if(InvalidMh(mh))
+    {
+        return -1;
+    }
 
     mh->num_msg = 0;
 
@@ -1148,6 +1170,10 @@ static sword near _SdmRescanArea(MSGA * mh)
 
 static void MSGAPI Init_Xmsg(XMSG * msg)
 {
+    if(InvalidMsg(msg))
+    {
+        return;
+    }
     memset(msg, '\0', sizeof(XMSG));
 }
 
@@ -1155,6 +1181,15 @@ static void MSGAPI Convert_Fmsg_To_Xmsg(struct _omsg *fmsg, XMSG * msg,
   word def_zone)
 {
     NETADDR *orig, *dest;
+
+    if(!fmsg){
+        msgapierr = MERR_BADH;
+        return;
+    }
+    if(InvalidMsg(msg))
+    {
+        return;
+    }
 
     Init_Xmsg(msg);
 
@@ -1204,6 +1239,14 @@ static void MSGAPI Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg)
 {
     NETADDR *orig, *dest;
 
+    if(!fmsg){
+        msgapierr = MERR_BADH;
+        return;
+    }
+    if(InvalidMsg(msg))
+    {
+        return;
+    }
     memset(fmsg, '\0', sizeof(struct _omsg));
 
     orig = &msg->orig;
@@ -1263,6 +1306,15 @@ int _XPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc) (byte * str), byte * k
     byte temp[PATHLEN], *null = (byte *) "";
     int bytes = 0;
 
+    if(!wfunc){
+        msgapierr = MERR_BADH;
+        return -1;
+    }
+    if(InvalidMsg(msg))
+    {
+        return -1;
+    }
+
     if (!kludges)
     {
         kludges = null;
@@ -1297,11 +1349,18 @@ int _XPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc) (byte * str), byte * k
 
 static void _stdc WriteToFd(byte * str)
 {
+  if(str && *str)
     farwrite(statfd, str, strlen((char *) str));
+  else msgapierr = MERR_BADH;
 }
 
 static void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate, byte * asciidate)
 {
+  if(!todate || !fromdate || !asciidate){
+    msgapierr = MERR_BADH;
+    return;
+  }
+
     if (fromdate->date.da == 0 || fromdate->date.da > 31 || fromdate->date.yr > 50 ||
       fromdate->time.hh > 23 || fromdate->time.mm > 59 || fromdate->time.ss > 59 ||
       ((union stamp_combo *)&fromdate)->ldate == 0)
