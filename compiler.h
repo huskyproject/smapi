@@ -31,6 +31,19 @@
   #endif
 #endif
 
+/*
+ Cygwin is win32
+*/
+#ifdef __CYGWIN__
+# define __NT__
+#endif
+
+/* defined in MINGW32 & cygwin's gcc with '-mno_cygwin' option */
+#ifdef __MINGW32__
+# define __NT__
+#endif
+
+
 #if defined ( __WATCOMC__ )
 #include <direct.h>
 #include <io.h>
@@ -625,7 +638,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #   else
 #      define SMAPI_EXT __declspec(dllexport)
 #  endif //_SMAPI_EXT
-#else 
+#else
 #   define SMAPI_EXT
 #endif
 
@@ -669,7 +682,7 @@ SMAPI_EXT int lock(int handle, long ofs, long length);
 #define NO_STRFTIME
 
  /* waitlock works like lock, but blocks until the lock can be
-  * performed. 
+  * performed.
   * waitlock2 works like a timed waitlock.
   */
 #ifndef mysleep
