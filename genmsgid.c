@@ -1,3 +1,9 @@
+/* $Id$
+ *
+ *  SMAPI; Modified Squish MSGAPI
+ *
+ */
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
