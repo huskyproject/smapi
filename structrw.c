@@ -988,7 +988,7 @@ int read_subfield(sword handle, JAMSUBFIELDptr *subfield, dword *SubfieldLen)
       if (pbuf - buf + datlen > *SubfieldLen)
           break;
       /* DatLen bytes Buffer */
-      if ((long)datlen > 0 && datlen < *SubfieldLen)
+      if ((long)datlen >= 0 && datlen < *SubfieldLen)
       { subfieldNext->DatLen = datlen;
         memmove(subfieldNext->Buffer, pbuf, datlen);
       }
