@@ -24,7 +24,7 @@ endif
 
 CDEFS=	-D$(OSTYPE) $(ADDCDEFS)
 VERH =  2.0
-VER  =  2.0.0
+VER  =  2.0.1
 
 TARGET=	$(LIBPREFIX)smapi$(LIB)
 
@@ -137,7 +137,7 @@ install: instdyn
 	$(INSTALL) $(ILOPT) patmat$(OBJ) $(LIBDIR)
 
 uninstall:
-	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)alc.h 
+	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)alc.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)api_brow.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)compiler.h
 	-$(RM) $(RMOPT) $(INCDIR)$(DIRSEP)smapi$(DIRSEP)ffind.h
