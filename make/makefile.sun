@@ -47,7 +47,7 @@ _DLL	= .dll
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -Wall -O3 -fomit-frame-pointer -fstrength-reduce
+CFLAGS	= -Wno-long-long -Wall -O3 -fomit-frame-pointer -fstrength-reduce
 # linker options
 LFLAGS	=
 # options for compile only (link is off)

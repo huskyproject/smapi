@@ -4,7 +4,7 @@
 # No support for the Husky build environment
 
 CC=     gcc
-CFLAGS= -w -Zwin32 -I..\smapi -I..\..\huskylib
+CFLAGS= -Wall -Wno-long-long -w -Zwin32 -I..\smapi -I..\..\huskylib
 CDEFS=  -D__NT__ -DWINNT -D__RSXNT__
 COPT=
 LIB=    ar

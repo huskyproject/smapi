@@ -32,7 +32,7 @@ _DEF	= .def
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -Wall -O3 -fomit-frame-pointer -fstrength-reduce -Zomf -Zsys
+CFLAGS	= -Wno-long-long -Wall -O3 -fomit-frame-pointer -fstrength-reduce -Zomf -Zsys
 # options for compile only (link is off)
 OBJOPT	= -c
 # options for build static library

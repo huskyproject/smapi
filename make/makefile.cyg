@@ -35,7 +35,7 @@ _DLL	= .dll
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -Wall -mno-cygwin -O3
+CFLAGS	= -Wno-long-long -Wall -mno-cygwin -O3
 # options for compile only (link is off)
 OBJOPT	= -c
 # options for build static library

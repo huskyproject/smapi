@@ -3,7 +3,7 @@
 # No support for the Husky build environment
 
 CC=	gcc
-CFLAGS=	-Wall -funsigned-char -I../smapi -I../../huskylib
+CFLAGS=	-Wno-long-long -Wall -funsigned-char -I../smapi -I../../huskylib
 CDEFS=	-DUNIX
 COPT=	-O3
 OBJ=	.o

@@ -44,7 +44,7 @@ _DLL	= .dll
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -Wall -O3
+CFLAGS	= -Wno-long-long -Wall -O3
 # linker options
 LFLAGS	=
 # options for compile only (link is off)

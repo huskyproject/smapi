@@ -44,7 +44,7 @@ _DLL	= .so
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -Wall -O3
+CFLAGS	= -Wno-long-long -Wall -O3
 # i386 addition
 .if ${MACHINE_ARCH} == "i386"
    CFLAGS+= -fomit-frame-pointer -fstrength-reduce -m486

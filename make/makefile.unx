@@ -42,7 +42,7 @@ _DLL	= .so
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -Wall
+CFLAGS	= -Wno-long-long -Wall
 # options for compile only (link is off)
 OBJOPT	= -c
 # options for build static library

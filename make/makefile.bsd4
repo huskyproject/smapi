@@ -10,7 +10,7 @@
 NOMAN=	1
 prefix= 	/usr/local
 LIBDIR= 	$(prefix)/lib
-CFLAGS= 	-Wall -DUNIX -O3
+CFLAGS= 	-Wno-long-long -Wall -DUNIX -O3
 
 LIB=		smapi
 SHLIB_MAJOR=	2

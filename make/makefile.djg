@@ -29,7 +29,7 @@ _DLL	= .dll
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -Wall -O3 -fomit-frame-pointer -fstrength-reduce -mcpu=i486
+CFLAGS	= -Wno-long-long -Wall -O3 -fomit-frame-pointer -fstrength-reduce -mcpu=i486
 # options for compile only (link is off)
 OBJOPT	= -c
 # options for build static library

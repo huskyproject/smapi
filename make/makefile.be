@@ -33,7 +33,7 @@ _DLL	= .dll
 # compiler defines
 CDEFS	=
 # common compiler options
-CFLAGS	= -Wall -O3
+CFLAGS	= -Wno-long-long -Wall -O3
 # on i386, you may add this
 #CFLAGS	+= -fomit-frame-pointer -fstrength-reduce -fPIC -m486
 
