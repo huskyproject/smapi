@@ -1,3 +1,14 @@
+smapi (2.5-20030305-1) unstable; urgency=low
+
+  * New cvs version
+  * Place smapi package to main! Scott J. Didley confirms that from 2003
+    his agree to change the terms of use to those of the LGPL
+  * Standarts 3.5.8
+  * Depend on huskylib now
+  * Add HISTORY and LICENSE to documentation
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Wed,  5 Mar 2003 13:28:36 +0500
+
 smapi (2.3.0-20030205-1) unstable; urgency=low
 
   * New cvs version
