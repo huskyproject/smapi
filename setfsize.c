@@ -95,7 +95,8 @@
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <winbase.h>
-  SMAPI_EXT int _fast setfsize(int fd, long size)
+  #include <io.h>
+  int _fast setfsize(int fd, long size)
   {
 #if (defined(_MSC_VER) && (_MSC_VER >= 1200)) || defined(__MINGW32__)
     return chsize(fd, size);
