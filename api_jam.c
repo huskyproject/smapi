@@ -1401,42 +1401,46 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned
    SubField = *subfield;
 
    sublen = jamhdr->SubfieldLen;
-
-   if (textlen) {
-       onlytext = (unsigned char*)palloc(textlen);
+   
+   if (textlen)
+   {
+       onlytext = (unsigned char*)palloc(textlen + 1);
        *onlytext = '\0';
-   } else {
+       
+       first = text;
+       while (*first) {
+           ptr = (unsigned char *)strchr(first, '\r');
+           if (ptr) *ptr = '\0';
+           if (strstr(first, "SEEN-BY: ") == (char*)first  ||
+               *first == '\001') {
+               
+               if (*first == '\001') first++;
+               
+               if ((SubFieldCur = StrToSubfield(first, &clen))) {
+                   SubField = (JAMSUBFIELDptr)
+                       farrealloc(SubField, sublen+clen);
+                   memmove((char*)SubField+sublen, SubFieldCur, clen);
+                   free(SubFieldCur);
+                   sublen += clen;
+               } else {;}
+           } else {
+               x = strlen(onlytext);
+               assert(x + strlen(first) + 1 <= textlen);
+               sprintf(onlytext+x, "%s\r", first);
+           } /* endif */
+           if (ptr) {
+               *ptr = '\r';
+               first = ptr+1;
+           } else {
+               first += strlen(first);
+           } /* endif */
+       } /* endwhile */
+   }
+   else
+   {
        onlytext = NULL;
    }
-
-   first = text;
-   while (*first) {
-      ptr = (unsigned char *)strchr(first, '\r');
-      if (ptr) *ptr = '\0';
-      if (strstr(first, "SEEN-BY: ") == (char*)first  || *first == '\001') {
-
-         if (*first == '\001') first++;
-
-         if ((SubFieldCur = StrToSubfield(first, &clen))) {
-            SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
-            memmove((char*)SubField+sublen, SubFieldCur, clen);
-            free(SubFieldCur);
-            sublen += clen;
-         } else {;}
-
-      } else {
-         assert(x + strlen(first) <= textlen);
-         x = strlen(onlytext);
-         sprintf(onlytext+x, "%s\r", first);
-      } /* endif */
-      if (ptr) {
-         *ptr = '\r';
-         first = ptr+1;
-      } else {
-         first += strlen(first);
-      } /* endif */
-   } /* endwhile */
-
+   
    jamhdr->SubfieldLen = sublen;
    *subfield = SubField;
 
