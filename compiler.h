@@ -315,7 +315,11 @@
    Borland C and Turbo C
    -------------------------------------------------------------------
    __TURBOC__  = 397 (0x18D) for TurboC 2.0
+   __TURBOC__  =1040 (0x410) for Borland C++ 3.1
+   __TURBOC__  =1120 (0x460) for Borland C++ 5.02
    __TURBOC__  =1360 (0x550) for Borland C++ 5.5
+   __BCPLUSPLUS__  =0x340   Borland C++ 5.0 (Defined for C++ compilation)
+   __BORLANDC__    =0x500   Borland C++ 5.0 Version number
    ===================================================================
    Borland C and Turbo C for DOS
    -------------------------------------------------------------------
@@ -328,6 +332,14 @@
    Borland C for OS/2
    -------------------------------------------------------------------
    __TURBOC__ __OS2__
+   ===================================================================
+   Otther Borland C macros
+   -------------------------------------------------------------------
+   __BCOPT__       =1       Defined in any compiler that has an optimizer
+   __CDECL__       =1       Defined if Calling Convention is set to C;
+                            otherwise undefined
+   _CHAR_UNSIGNED  1   Defined by default indicating that the default char is
+   unsigned char. Use the -K option to undefine this macro.
    ===================================================================
 
    ===================================================================
