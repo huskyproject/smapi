@@ -1,3 +1,8 @@
+2003-01-08 Wednesday 10:45  stas_degteff
+
+	* compiler.h, setfsize.c, tdelay.c (smapi-2_2-stable.[8,1,1]): Fix
+	compilation for borland C/w32. Thanks to Igor Romanovsky
+
 2002-12-30 Monday 15:49  stas_degteff
 
 	* VERSION (smapi-2_2-stable.4): Add requirements and empty line (to
