@@ -124,15 +124,18 @@ typedef struct _xmsg
 #define MSGKILL    0x0080
 #define MSGLOCAL   0x0100
 #define MSGHOLD    0x0200
-#define MSGXX2     0x0400
+#define MSGXX2     0x0400     /* you can use this flag as "Direct" attribute */
 #define MSGFRQ     0x0800
 #define MSGRRQ     0x1000
 #define MSGCPT     0x2000
 #define MSGARQ     0x4000
 #define MSGURQ     0x8000
 #define MSGSCANNED 0x00010000L
-#define MSGLOCKED  0x40000000L /* this seems to be a feature of golded */
 #define MSGUID     0x00020000L /* xmsg.uid field contains umsgid of msg */
+#define MSGIMM     0x00040000L /* Use only if msgtype == MSGTYPE_JAM !
+                                  Used to map the Jam "immediate" attribute. */
+#define MSGLOCKED  0x40000000L /* this seems to be a feature of golded  */
+
 
     dword attr;
 
