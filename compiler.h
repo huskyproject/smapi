@@ -204,10 +204,13 @@
    ===================================================================
    DJGPP (DOS DPMI)                          (GNU C clone)
    -------------------------------------------------------------------
-    __DJGPP__ MSDOS __MSDOS__  __GNUC__  __STDC__
+    __DJGPP__ __DJGPP DJGPP MSDOS __MSDOS__  __GNUC__  __STDC__
+    __unix__  unix  __i386__
    Some values:
    __GNUC__=3 (0x3); __GNUC_MINOR__=2 (0x2)
    __VERSION__=3.2
+   __DJGPP__ =__DJGPP =DJGPP  =2
+   DJGPP_MINOR = __DJGPP_MINOR =__DJGPP_MINOR__ =3
    ===================================================================
    EMX (OS/2)                                (GNU C clone)
    -------------------------------------------------------------------
@@ -710,19 +713,14 @@ int qq(void)
 #  endif
 #endif
 
-#if defined(UNIX) || defined(_UNIX) || defined(__unix)
-#  if !defined(__UNIX__)
-#    define __UNIX__
-#  endif
-#endif
-#ifdef __unix__
+#if defined(UNIX) || defined(_UNIX) || defined(__unix) || defined(__unix__) ||  defined(unix)
 #  ifdef __DJGPP__
 #    undef __UNIX__
+#    undef UNIX
+#    undef _UNIX
+#    undef __unix__
+#    undef unix
 #  else
-#    if !defined(__UNIX__)
-#      define __UNIX__
-#    endif
-#  endif
 #endif
 
 /***** Platforms *************************************************************/
