@@ -1,12 +1,12 @@
 # $Id$
-# Makefile for Building SMAPI with Watcom C for 16 bit DOS
+# Makefile for Building SMAPI with Watcom C 11.0c for 16 bit DOS
 # No support for Husky build environment.
 
 # ATTENTION ATTENTION ATTENTION!
 # SMAPI BUILD WITH WATCOM FOR DOS WILL MOST PROBABLY JUST CRASH OR OTHERWISE
 # NOT WORK.
 # JUST DON'T USE WATCOM FOR DOS
-# (Watcom for OS/2 and Watcom for Win32 should work without problems)
+# (Watcom for DOS/386, OS/2 and Win32 should work without problems)
 
 #
 # Predefines: __WATCOMC__,
@@ -20,13 +20,22 @@ AR	= wlib
 AR_R	= -b -q
 ASM	= wasm
 AFLAGS	= -ml -zq -bt=dos
+RM	= del
 OBJ	= .obj
 LIB	= .lib
 
 TARGET	= smapiwcd$(LIB)
 
-OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) sq_help$(OBJ) sq_idx$(OBJ) sq_kill$(OBJ) sq_lock$(OBJ) sq_misc$(OBJ) sq_msg$(OBJ) sq_read$(OBJ) sq_uid$(OBJ) sq_write$(OBJ) api_jam$(OBJ) cvtdate$(OBJ) date2bin$(OBJ) dosdate$(OBJ) fexist$(OBJ) ffind$(OBJ) flush$(OBJ) flushasm$(OBJ) locking$(OBJ) months$(OBJ) msgapi$(OBJ) parsenn$(OBJ) patmat$(OBJ) qksort$(OBJ) sqasm$(OBJ) strftim$(OBJ) strocpy$(OBJ) structrw$(OBJ) trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
+# OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) &
+#	  sq_help$(OBJ) sq_idx$(OBJ) sq_kill$(OBJ) sq_lock$(OBJ) &
+#	  sq_misc$(OBJ) sq_msg$(OBJ) sq_read$(OBJ) sq_uid$(OBJ) &
+#	  sq_write$(OBJ) api_jam$(OBJ) cvtdate$(OBJ) date2bin$(OBJ) &
+#	  dosdate$(OBJ) fexist$(OBJ) ffind$(OBJ) flush$(OBJ) flushasm$(OBJ) &
+#	  locking$(OBJ) months$(OBJ) msgapi$(OBJ) parsenn$(OBJ) patmat$(OBJ) &
+#	  qksort$(OBJ) sqasm$(OBJ) strftim$(OBJ) strocpy$(OBJ) structrw$(OBJ) &
+#         trail$(OBJ) weekday$(OBJ) setfsize$(OBJ) tdelay$(OBJ) genmsgid$(OBJ)
 
+!include makefile.inc
 
 # Thunderbirds are go!
 
@@ -34,13 +43,15 @@ OBJS	= 1stchar$(OBJ) api_sdm$(OBJ) sq_area$(OBJ) sq_hash$(OBJ) sq_help$(OBJ) sq_
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(AR) $(AR_R) $(TARGET) -+$@
 	
+.asm$(OBJ):
+	$(ASM) $(AFLAGS) $(ADEFS) $<
+	$(LIB) -b -q $(TARGET) -+$@
+
 $(TARGET): $(OBJS)
 	
-.IGNORE
-	
 clean:
-	-DEL *$(OBJ)
+	-$(RM) *$(OBJ)
 		
 distclean:
-	-DEL $(TARGET)
+	-$(RM) $(TARGET)
     
