@@ -1,7 +1,14 @@
+
+----- cvs ci ------
+Tue Oct  3 00:19:14 MEZ 2000
+tobi:
+* Support Jam Direct flag (JMSG_DIRECT) via MSGXX1 Squish flag, which is
+  already used for "Direct" flagging by a lot of Squish programs.
+
+
 smapi 1.6.4a
 ============
 (released on Sun Sep 17 18:58:45 MEST 2000)
-
 
 ----- cvs ci ------
 Sa  16 Sep 2000 23:24:43 CEST
