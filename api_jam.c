@@ -41,6 +41,8 @@
 #pragma warn -sig
 #endif
 
+#define NOTH 3
+
 MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
 {
    MSG *jm;
@@ -60,6 +62,8 @@ MSG *MSGAPI JamOpenArea(byte * name, word mode, word type)
    {
       jm->isecho = TRUE;
    }
+   
+   if (type & MSGTYPE_NOTH) jm->isecho = NOTH;
 
    jm->api = (struct _apifuncs *)palloc(sizeof(struct _apifuncs));
    if (jm->api == NULL) {
@@ -1156,12 +1160,13 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    memset(jamhdr, '\0', sizeof(JAMHDR));
 
    jamhdr->Attribute = Jam_MsgAttrToJam(msg);
-   if (msgh->sq->isecho) {
-      jamhdr->Attribute |= JMSG_TYPEECHO;
-   } else {
-      jamhdr->Attribute |= JMSG_TYPENET;
-   } /* endif */
-
+   if (msgh->sq->isecho != NOTH) {
+      if (msgh->sq->isecho) {
+         jamhdr->Attribute |= JMSG_TYPEECHO;
+      } else {
+         jamhdr->Attribute |= JMSG_TYPENET;
+      } /* endif */
+   }
    strcpy(jamhdr->Signature, HEADERSIGNATURE);
    jamhdr->Revision = CURRENTREVLEV;
    jamhdr->DateProcessed = time(NULL);

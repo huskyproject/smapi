@@ -36,6 +36,7 @@ extern "C" {
 #define MSGTYPE_SQUISH  0x02
 #define MSGTYPE_JAM     0x08
 #define MSGTYPE_ECHO    0x80
+#define MSGTYPE_NOTH    0x0100
 
 #define MSGNUM_CUR      ((dword)-1L)
 #define MSGNUM_PREV     ((dword)-2L)

@@ -1,6 +1,11 @@
 development version
 -------------------
 
+Fri Feb  4 15:24:13 MSK 2000
+----- cvs ci ------
+Fedor:
++ New MSGTYPE_NOTH for Jam base (need for used ftrack).
+
 ----- cvs ci ------
 Thu Jan 13 16:52:46 MET 2000
 tobi:
