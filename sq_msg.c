@@ -40,7 +40,7 @@ static char rcs_id[]="$Id$";
 #include <share.h>
 #endif
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 

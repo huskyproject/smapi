@@ -45,7 +45,7 @@ static char rcs_id[]="$Id$";
 #include <unistd.h>
 #endif
 #include <assert.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 #include "prog.h"
 #include "alc.h"
