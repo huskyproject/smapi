@@ -1433,7 +1433,7 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2ptr
    SubField = *subfield;
 
    ctrl = (unsigned char*)palloc(clen+1);
-   strcpy((char *)ctrl, ctxt);
+   strncpy((char *)ctrl, ctxt, clen);
    ctrl[clen] = '\0';
 
    ctrlp = ctrl;
@@ -1758,9 +1758,9 @@ void DecodeSubf(MSGH *msgh)
          pfree(ptr);
       }
       else if (SubField->LoID == JAMSFLD_PATH2D) {
-         makeKludge(&ptr, "\001PATH: ", SubField->Buffer, "\r", SubField->DatLen);
-         addkludge(&msgh->lctrl, ptr);
-         pfree(ptr);
+		  makeKludge(&ptr, "\001PATH: ", SubField->Buffer, "\r", SubField->DatLen);
+		  addkludge(&msgh->lctrl, ptr);
+		  pfree(ptr);
       }
       else if (SubField->LoID == JAMSFLD_SEENBY2D) {
          makeKludge(&ptr, "SEEN-BY: ", SubField->Buffer, "\r", SubField->DatLen);

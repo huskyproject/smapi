@@ -1,3 +1,7 @@
 Oliver Grimm (attila@attila-products.de):
 
 File-Locking doesn't work under BeOS ! Must compiled with -DNOLOCKING to work !
+
+Max Levenkov:
+
+PATH before SEEN-BYs in JAM!
