@@ -493,9 +493,9 @@ static sword EXPENTRY SdmCloseMsg(MSGH * msgh)
 static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt)
 {
     unsigned len;
-    dword realbytes;
+    dword realbytes, got;
     struct _omsg fmsg;
-    word need_ctrl, got;
+    word need_ctrl;
     NETADDR *orig, *dest;
     byte *fake_msgbuf = NULL, *newtext;
 
@@ -595,7 +595,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
             msgh->cur_pos = offset;
         }
 
-        got = (word) farread(msgh->fd, text, (unsigned int)bytes);
+        got = (dword) farread(msgh->fd, text, (unsigned int)bytes);
         text[(unsigned int)got] = '\0';
 
         /*
@@ -630,7 +630,7 @@ static dword EXPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
             memmove(text, newtext, (size_t) (bytes - (newtext - text)));
 
-            got -= (word) (msgh->clen - 1);
+            got -= (dword) (msgh->clen - 1);
         }
     }
 
