@@ -1473,7 +1473,6 @@ int qq(void)
 #  endif
 
 #  define mymkdir(a) mkdir((a), 0)
-#  define getpid() _getpid()
 
    int unlock(int handle, long ofs, long length);
    int lock(int handle, long ofs, long length);
@@ -1488,7 +1487,7 @@ int qq(void)
 #  define HAS_sleep     1  /* sleep(): stdlib.h, unistd.h */
 #  define HAS_snprintf  1
 #  define HAS_vsnprintf 1
-#  define HAS_getpid    1  /* getpid() in process.h */
+#  define HAS_getpid    1  /* getpid() in process.h, unistd.h */
 #  define HAS_spawnvp   1  /* spawnvp() in process.h */
 #  define HAS_strftime  1  /* strftime() in time.h  */
 #  define HAS_mktime    1  /* mktime() in time.h */

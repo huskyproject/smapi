@@ -34,7 +34,7 @@ $(TARGET): $(OBJS)
 	$(AR) $(AR_R) $@ $?
 
 gnmsgid$(EXE): gnmsgid$(OBJ)
-	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG)gnmsgid$(EXE) gnmsgid$(OBJ) $(LOPT) $(TARGET)
+	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG) gnmsgid$(EXE) gnmsgid$(OBJ) $(LOPT) $(TARGET)
 
 clean:
 	-$(RM) *$(OBJ)

@@ -26,9 +26,8 @@
 
 #include <dir.h>
 
+
 #elif defined(__EMX__)
-#include <sys/types.h>
-#include <sys/dir.h>
 #elif defined(__UNIX__)
 #elif defined(SASC)
 #else
