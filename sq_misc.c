@@ -203,7 +203,7 @@ void EXPENTRY apiSquishGetMaxMsg(HAREA ha, dword *dwMaxMsgs, dword *dwSkipMsgs, 
 
 /* Hash function used for calculating the hashes in the .sqi file */
 
-dword EXPENTRY apiSquishHash(byte  *f)
+dword EXPENTRY SquishHash(byte  *f)
 {
   dword hash=0, g;
 
