@@ -1,3 +1,26 @@
+2003-03-12 Wednesday 21:41  d_sergienko
+
+	* prog.h (smapi-2_4-stable.2): fix warnings on MSVC
+
+2003-03-12 Wednesday 07:32  stas_degteff
+
+	* prog.h (smapi-2_4-stable.1): Fix EMX build. Thanks to Andr
+	Luk'yanov
+
+2003-03-12 Wednesday 06:15  stas_degteff
+
+	* ffind.c (smapi-2_4-stable.2): Fix EMX warnings. Thanks to Andr
+	Luk'yanov  2:5001/7
+
+2003-03-11 Tuesday 08:20  stas_degteff
+
+	* strftim.c (smapi-2_4-stable.1): DOS2UNIX
+
+2003-03-11 Tuesday 08:17  stas_degteff
+
+	* api_sdm.c, locking.c (smapi-2_4-stable.[1,1]): Fix compiler
+	warnings on BeOS. Thanks to Paul Galashin <wblaze@yandex.ru>
+
 2003-03-07 Friday 13:28  stas_degteff
 
 	* compiler.h (smapi-2_4-stable.8): Fix DJGPP build
