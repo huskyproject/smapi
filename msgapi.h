@@ -84,8 +84,8 @@ typedef NETADDR *PNETADDR;
 typedef dword UMSGID;
 
 #define MSGAPI_VERSION    2
-#define MSGAPI_SUBVERSION 0x200
-#define SMAPI_VERSION   "2.0.0"
+#define MSGAPI_SUBVERSION 0x201
+#define SMAPI_VERSION   "2.0.1"
 
 struct _minf
 {
