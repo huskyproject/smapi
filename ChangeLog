@@ -1,3 +1,7 @@
+2001-12-23 Sunday 13:59  ml
+
+	* tdelay.c (1.6.2.3): fix for compile under mingw32
+
 2001-12-18 Tuesday 17:43  ml
 
 	* api_jam.c (1.58.2.5): taken current branch
