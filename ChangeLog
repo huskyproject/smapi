@@ -1,3 +1,38 @@
+2003-03-05 Wednesday 16:31  sfpavel
+
+	* msgapi.h (1.70), old_msg.h (1.5), prog.h (1.13), stamp.h (1.7),
+	tdelay.c (1.16): Drop include for obsolete typedefs.h
+
+2003-03-05 Wednesday 10:31  sfpavel
+
+	* api_jamp.h (1.20), api_sq.h (1.8), msgapi.h (1.69), patmat.h
+	(1.3), prog.h (1.12), sq_area.c (1.32), sq_hash.c (1.10), sq_help.c
+	(1.12), sq_idx.c (1.13), sq_kill.c (1.10), sq_lock.c (1.26),
+	sq_misc.c (1.11), sq_msg.c (1.12), sq_read.c (1.13), sq_uid.c
+	(1.11), stamp.h (1.6): Fix compiler warnings (C++ comments)
+
+2003-03-05 Wednesday 10:30  sfpavel
+
+	* debian/: libsmapi2.dirs (1.3), overrides (1.1), rules (1.10): Fix
+	warnings for debian package
+
+2003-03-05 Wednesday 10:30  sfpavel
+
+	* Makefile (1.40), makefile.inc (1.12): Use new defines from
+	makefile.inc at Makefile
+
+2003-03-05 Wednesday 09:06  sfpavel
+
+	* VERSION (1.7), file_id.diz (1.4): Update version info
+
+2003-03-05 Wednesday 08:47  sfpavel
+
+	* readme.txt (1.10), debian/README.Debian (1.6), debian/changelog
+	(1.21), debian/control (1.10), debian/copyright (1.5), debian/docs
+	(1.4), debian/libsmapi2-dev.files (1.2),
+	debian/libsmapi2-dev.preinst (1.4), debian/libsmapi2.files (1.5),
+	debian/rules (1.9), debian/shlibs (1.10): New debian package
+
 2003-03-03 Monday 07:30  d_sergienko
 
 	* Makefile (1.39), api_jam.c (1.106), api_sdm.c (1.41), api_sq.h
