@@ -20,9 +20,10 @@
 #ifndef __STAMP_H__
 #define __STAMP_H__
 
+#include "compiler.h"
 #include "typedefs.h"
 
-#if defined(__WATCOMC__) || defined(__DJGPP__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
+#if defined(__WATCOMC__) || defined(__DJGPP__) || defined(__MSVC__)
 typedef unsigned short bits;
 #elif defined(UNIX)
 typedef unsigned bits;  /* AIX does not allow any modifier after unsigned */

@@ -26,7 +26,7 @@
 #include "compiler.h"
 #include "stamp.h"
 
-#if !((defined(__WATCOMC__) && !defined(MSDOS)) || (defined(_MSC_VER) && (_MSC_VER >= 1200)))
+#if !( (defined(__WATCOMC__) && !defined(MSDOS)) || defined(__MSVC__) )
 void pascal far flush_handle2(int fd);
 #endif
 void _fast flush_handle(FILE * fp);

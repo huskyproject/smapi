@@ -33,7 +33,7 @@
 #include <dos.h>
 #endif
 
-#if defined(__RSXNT__) || defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
+#if defined(__RSXNT__) || defined(__MINGW32__) || defined(__MSVC__)
 #define WIN32_LEAN_AND_MEAN
 #define NOGDI
 #define NOUSER
@@ -80,7 +80,7 @@ struct ffind
 #if defined(__TURBOC__) || defined(__DJGPP__)
     struct ffblk ffbuf;
 
-#elif defined(__WATCOMC__) || (defined(_MSC_VER) && (_MSC_VER < 1200))
+#elif defined(__WATCOMC__) || defined(__MSVC__)
     struct find_t ffbuf;
     unsigned long hdir;   /* directory handle from DosFindFirst */
 

@@ -26,7 +26,7 @@
 #include <dir.h>
 #endif
 
-#if !defined( __IBMC__) && !defined(UNIX) && !defined(__MINGW32__) && !(defined(_MSC_VER) && (_MSC_VER >= 1200))
+#if !defined( __IBMC__) && !defined(UNIX) && !defined(__MINGW32__) && !defined(__MSVC__)
 #include <dos.h>
 #endif
 
@@ -79,7 +79,7 @@ FFIND *_fast FFindOpen(const char *filespec, unsigned short attribute)
             ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
         }
 
-#elif (defined(_MSC_VER) && (_MSC_VER < 1200)) || defined(__WATCOMC__)
+#elif defined(__MSVC__) || defined(__WATCOMC__)
 
         if (_dos_findfirst(filespec, attribute, &(ff->ffbuf)) != 0)
         {
@@ -285,7 +285,7 @@ int _fast FFindNext(FFIND * ff)
         memcpy(ff->ff_name, ff->ffbuf.ff_name, sizeof(ff->ff_name));
         ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
 
-#elif (defined(_MSC_VER) && (_MSC_VER < 1200)) || defined(__WATCOMC__)
+#elif defined(__MSVC__) || defined(__WATCOMC__)
 
         rc = _dos_findnext(&(ff->ffbuf));
 
@@ -414,7 +414,7 @@ void _fast FFindClose(FFIND * ff)
     if (ff != NULL)
     {
 #if defined(__TURBOC__) || defined(__DJGPP__)
-#elif (defined(__WATCOMC__) && defined (__NT__)) || (defined(_MSC_VER) && (_MSC_VER < 1200) && !defined(MSDOS))
+#elif (defined(__WATCOMC__NT__)) || (defined(__MSVC__) && !defined(MSDOS))
         _dos_findclose(&(ff->ffbuf));
 #elif defined(OS2)
         if (ff->hdir)
@@ -427,7 +427,7 @@ void _fast FFindClose(FFIND * ff)
             closedir(ff->dir);
         }
 #elif defined(SASC)
-#elif defined(__RSXNT__) || defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER >= 1200))
+#elif defined(__RSXNT__) || defined(__MINGW32__) || defined(__MSVC__)
         if (ff->hDirA != INVALID_HANDLE_VALUE)
         {
             FindClose(ff->hDirA);

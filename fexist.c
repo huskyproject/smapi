@@ -37,7 +37,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #else
-#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__) && !(defined(_MSC_VER) && (_MSC_VER >= 1200))
+#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__) && !defined(__MSVC__)
 #include <dos.h>
 #endif
 #endif
