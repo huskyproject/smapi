@@ -110,7 +110,8 @@ MSG *MSGAPI SdmOpenArea(byte * name, word mode, word type)
     mh->high_msg = 0;
     mh->high_water = (dword) - 1L;
 
-    if (!direxist((char *) name) && (mode == MSGAREA_NORMAL || mymkdir((char *) name) == -1))
+    if (!direxist((char *) name) && (mode == MSGAREA_NORMAL 
+       || _createDirectoryTree((char *) name) != 0))
     {
         msgapierr = MERR_NOENT;
         goto ErrOpen;
