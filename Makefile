@@ -17,7 +17,7 @@ else
 endif
 
 ifneq ($(OSTYPE), UNIX)
-  LIBPREFIX=
+#  LIBPREFIX=
 else
   LIBPREFIX=lib
 endif
