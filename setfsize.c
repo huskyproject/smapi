@@ -25,9 +25,20 @@
 */
 
 
-#ifdef __DOS__
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+
+#include "compiler.h"
+
+#ifdef HAS_IO_H
+#include <io.h>
+#endif
+
+#ifdef HAS_DOS_H
 #include <dos.h>
 #endif
+
 #include "prog.h"
 
 #if defined(__DOS__)
@@ -35,11 +46,6 @@
   #ifdef __WATCOMC__
   #include <i86.h>
   #endif
-
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <io.h>
-  #include <fcntl.h>
 
   int _fast setfsize(int fd, long size)
   {
@@ -87,10 +93,12 @@
     return ftruncate(fd, size);
   }
 #elif defined(__WIN32__)
+
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
   #include <winbase.h>
   #include <io.h>
+
   int _fast setfsize(int fd, long size)
   {
 #if defined(__MSVC__) || defined(__MINGW32__)

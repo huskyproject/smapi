@@ -6,12 +6,10 @@
 # __OS2V2__ (-bt=os2v2)
 
 CC	= wcl386
-CFLAGS	= -zq -wx -bt=os2v2 -oneatx -5 -mf -fpi87 -c
-CDEFS	= -D__OS2__
-LFLAGS	= -mf -l=os2v2 -fpi87
-
+CFLAGS	= -zq -wx -bt=os2v2 -oneatx -4 -fpi87 -c -fp4
+CDEFS	=
+LFLAGS	= -mf -l=os2v2 -fpi87 -fp87 -fp4
 EXENAMEFLAG	= -fe=
-
 AR	= wlib
 AROPT	= -b -q
 ASMPROG	= wasm
@@ -35,16 +33,9 @@ SYMBOLIC = .SYMBOLIC
 
 !include makefile.inc
 
-TARGET	= smapiwco$(LIB)
-
-EXENAMEFLAG = -fe=
-
-NULL     = @%null
-SYMBOLIC = .SYMBOLIC
-
 default : all $(SYMBOLIC)
 
-all : $(TARGET)  $(SYMBOLIC)
+all : $(TARGET) programs $(SYMBOLIC)
 #all : $(TARGET) $(GNMSGID)  $(SYMBOLIC)
 
 .c$(OBJ) :
@@ -52,6 +43,8 @@ all : $(TARGET)  $(SYMBOLIC)
 	$(AR) $(AROPT) $(TARGET) -+$@
 
 $(TARGET) : $(OBJS)  $(SYMBOLIC)
+
+programs: $(GNMSGID) $(SYMBOLIC)
 
 $(GNMSGID) : $(GMOBJS)
 	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $(GMOBJS) $(TARGET)
@@ -65,3 +58,4 @@ clean :
 distclean : clean
 	-$(RM) $(TARGET)
 	-$(RM) $(GENMSGID)
+		

@@ -16,12 +16,12 @@ CC	= wcl
 CFLAGS	= -zq -wx -oneas -bt=dos -ml -fpi87 -c
 CDEFS	=
 LFLAGS	= -ml -l=dos -fpi87
+EXENAMEFLAG	= -fe=
+
 AR	= wlib
 AROPT	= -b -q
 ASMPROG	= wasm
-AFLAGS	= -ml -zq -bt=dos
-
-EXENAMEFLAG	= -fe=
+AFLAGS	= -zq -bt=dos
 
 RM	= del
 
@@ -43,16 +43,24 @@ SYMBOLIC = .SYMBOLIC
 
 !include makefile.inc
 
+OBJS	+= flushasm$(OBJ)
+
 default : all $(SYMBOLIC)
 
-all : $(TARGET)  $(SYMBOLIC)
+all : $(TARGET) programs $(SYMBOLIC)
 #all : $(TARGET) $(GNMSGID)  $(SYMBOLIC)
 
 .c$(OBJ) :
 	$(CC) $(CFLAGS) $(CDEFS)  $<
 	$(AR) $(AROPT) $(TARGET) -+$@
 
-$(TARGET) : $(OBJS)  $(SYMBOLIC)
+$(ASM)$(OBJ) :
+	$(ASMPROG) $(AFLAGS) $<
+	$(AR) $(AROPT) $(TARGET) -+$@
+
+$(TARGET) : $(OBJS) $(SYMBOLIC)
+
+programs: $(GNMSGID) $(SYMBOLIC)
 
 $(GNMSGID) : $(GMOBJS)
 	$(CC) $(LFLAGS) $(EXENAMEFLAG)$(GNMSGID) $(GMOBJS) $(TARGET)

@@ -6,9 +6,9 @@
 # __NT__ (-bt=nt)
 
 CC	= wcl386
-CFLAGS	= -zq -wx -bt=nt -oneatx -5 -fpi87 -c
+CFLAGS	= -zq -wx -bt=nt -oneatx -5 -fpi87 -c -fp5
 CDEFS	=
-LFLAGS	= -mf -l=nt -fpi87
+LFLAGS	= -mf -l=nt -fpi87 -fp5
 EXENAMEFLAG	= -fe=
 AR	= wlib
 AROPT	= -b -q
@@ -35,7 +35,9 @@ SYMBOLIC = .SYMBOLIC
 
 default : all $(SYMBOLIC)
 
-all : $(TARGET)  $(SYMBOLIC)
+programs: $(GNMSGID) $(SYMBOLIC)
+
+all : $(TARGET) programs $(SYMBOLIC)
 #all : $(TARGET) $(GNMSGID)  $(SYMBOLIC)
 
 .c$(OBJ) :
@@ -56,5 +58,4 @@ clean :
 distclean : clean
 	-$(RM) $(TARGET)
 	-$(RM) $(GENMSGID)
-
-		    
+		

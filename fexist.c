@@ -31,11 +31,20 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#if defined(__UNIX__) || defined(__MINGW32__) || defined(__EMX__)
-#include <unistd.h>
-#endif
 
 #include "compiler.h"
+
+#ifdef HAS_UNISTD_H
+#  include <unistd.h>
+#endif
+
+#ifdef HAS_DIRECT_H
+#  include <direct.h>
+#endif
+
+#ifdef HAS_DOS_H
+#  include <dos.h>
+#endif
 
 #ifdef USE_STAT_MACROS
 /* These are compilers that have both a working stat() and (important!) the
@@ -44,10 +53,6 @@
    the old "ffind" method. */
 #  include <sys/types.h>
 #  include <sys/stat.h>
-#else
-#  if HAS_DOS_H
-#    include <dos.h>
-#  endif
 #endif
 
 #include "ffind.h"

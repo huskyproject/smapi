@@ -419,8 +419,12 @@ SMAPI_EXT dword _XPENTRY GenMsgIdEx(char *seqdir, unsigned long max_outrun, dwor
 SMAPI_EXT char * _XPENTRY  strmerr(int msgapierr);
 
 #if !defined(__OS2__) && !defined(__FLAT__) && !defined(__UNIX__) && !defined(__NT__)
+#ifndef farread
 sword far pascal farread(sword handle, byte far * buf, word len);
+#endif
+#ifndef farwrite
 sword far pascal farwrite(sword handle, byte far * buf, word len);
+#endif
 #endif
 
 byte *_fast Address(NETADDR * a);

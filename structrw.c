@@ -45,6 +45,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
+
 
 #define MSGAPI_HANDLERS
 
@@ -94,6 +96,40 @@ void put_word(byte *ptr, word value)
     ptr[1] = (value >> 8) & 0xFF;
 }
 #endif
+
+#ifdef NEED_trivial_farread
+  #ifdef HAS_dos_read
+  /* "Text mode" not implemented !!! */
+  int trivial_farread( int handle, void far *buffer, unsigned len )
+  { unsigned r_len=0;
+
+    if(dos_read( handle, buffer, len, &r_len ) )
+      return 0;
+
+    return r_len;
+  }
+  #else
+    #error "Can't implement trivial_farread() without dos_read()"
+  #endif
+#endif
+
+#ifdef NEED_trivial_farwrite
+  #ifdef HAS_dos_write
+  /* "Text mode" not implemented !!! */
+  int trivial_farwrite( int handle, void far *buffer, unsigned len )
+  { unsigned r_len=0;
+
+    if(dos_write( handle, buffer, len, &r_len ) )
+      return 0;
+
+    return r_len;
+  }
+  #else
+    #error "Can't implement trivial_farwrite() without dos_write()"
+  #endif
+#endif
+
+
 
 int read_xmsg(int handle, XMSG *pxmsg)
 {

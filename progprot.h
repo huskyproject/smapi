@@ -26,8 +26,9 @@
 #include "compiler.h"
 #include "stamp.h"
 
-#if !( (defined(__WATCOMC__) && !defined(__DOS__)) || defined(__MSVC__) )
-void pascal far flush_handle2(int fd);
+/*#if !( (defined(__WATCOMC__) && !defined(__DOS__)) || defined(__MSVC__) )*/
+#ifdef __DOS__
+void pascal far flush_handle2(int fd);  /* flushasm.asm for DOS, redefined for known implementations in flush.c */
 #endif
 
 void _fast flush_handle(FILE * fp);

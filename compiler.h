@@ -49,6 +49,7 @@
    * HAS_strftime        - strftime() presents
    * HAS_sopen           - sopen() presents
    * HAS_sleep           - sleep() presents or defined here
+   * HAS_dos_read        - dos_read() presnts or defined here
    *
    * HAS_MALLOC_H        - may be used "#include <malloc.h>" for malloc() etc.
    * HAS_DOS_H           - may be used "#include <dos.h>"
@@ -79,8 +80,13 @@
    * strncasecmp(s1,s2) - case-incencitive strings comparition not more n chars,
    *                      declare if present with other name or include header
    * strnicmp(s1,s2)    - also as above
+   *
    * farread(a,b,c)     - for flat memory models declare as read(a,b,c)
    * farwrite(a,b,c)    - for flat memory models declare as write(a,b,c)
+   * NEED_trivial_farread  - macro-flag: need use my own trivial_farread()
+   *                         instead farread() (implemented in structrw.c)
+   * NEED_trivial_farwrite - macro-flag: need use my own trivial_farwrite()
+   *                         instead farwrite() (implemented in structrw.c)
    *
    ***************************************************************************
    * Memory and platforms
@@ -292,9 +298,9 @@ int qq(void)
 /**** Compiler defines ****/
 
 #if defined(__DJGPP__) /* DJGPP for MS-DOS (DPMI)*/
-#ifndef __DOS__
+/*#ifndef __DOS__
 #  define __DOS__
-#endif
+#endif*/
 #ifndef __DPMI__
 #  define __DPMI__
 #endif
@@ -339,13 +345,13 @@ int qq(void)
 
 /* Watcom C */
 #if defined(__WATCOMC__)
-#  if defined(MSDOS) && !defined(__WATCOMC__DOS__)
+#  if defined(__DOS__) && !defined(__WATCOMC__DOS__)
 #    define __WATCOMC__DOS__
 #  endif
 #  if defined(__DOS4G__) && !defined(__WATCOMC__DOS4G__)
 #    define __WATCOMC__DOS4G__
 #  endif
-#  if defined(__OS2__) && !defined(__WATCOMC__OS2__)
+#  if (defined(__OS2__) || defined(__OS2V2__)) && !defined(__WATCOMC__OS2__)
 #    define __WATCOMC__OS2__
 #  endif
 #  if defined(__NT__)
@@ -414,9 +420,9 @@ int qq(void)
 
 
 #if defined(__DOS4G__) /* DOS4G/W dos-dpmi extender */
-#ifndef __DOS__
+/*#ifndef __DOS__
 #  define __DOS__
-#endif
+#endif*/
 #ifndef __DPMI__
 #  define __DPMI__
 #endif
@@ -435,6 +441,11 @@ int qq(void)
 #  if !defined(__DOS__)
 #    define __DOS__
 #  endif
+#endif
+
+#if defined(__OS2V2__) && !defined(__OS2__)
+/*  Watcom C: wcl -bt=os2v2 */
+#  define __OS2__
 #endif
 
 #if defined(NT) || defined(WINNT)
@@ -835,11 +846,6 @@ int qq(void)
 #  define mode_t int
 #  define SMAPI_EXT extern
 
-#  ifdef __FLAT__
-#    define farread read
-#    define farwrite write
-#  endif
-
 #  define strcasecmp  stricmp
 #  define strncasecmp strnicmp
 #  define snprintf    _snprintf
@@ -864,7 +870,22 @@ int qq(void)
 #  define mysleep(x)    sleep(x) /* dos.h */
 #  define HAS_sleep
 
-#  if defined(__WATCOMC__DOS__) ||  defined(__WATCOMC__DOS4G__)
+#  if defined(__WATCOMC__DOS4G__)
+/* WATCOM C/C++ for DOS4G*/
+
+#    define _stdc      cdecl
+#    define _intr      interrupt far
+#    define _intcast   void (_intr *)()
+#    define _veccast   _intcast
+#    define _fast      pascal
+
+#    define farread    read
+#    define farwrite   write
+
+#    define _XPENTRY   pascal
+
+/* End: WATCOM C/C++ for MS-DOS4G */
+#  elif defined(__WATCOMC__DOS__)
 /* WATCOM C/C++ for MS-DOS or DOS4G*/
 
 #    define _stdc      cdecl
@@ -872,6 +893,21 @@ int qq(void)
 #    define _intcast   void (_intr *)()
 #    define _veccast   _intcast
 #    define _fast      pascal
+
+#    ifdef __FAR_DATA__
+#      define farread    read
+#      define farwrite   write
+#    else
+#      define farread    trivial_farread
+#      define farwrite   trivial_farwrite
+#      define NEED_trivial_farread   1
+#      define NEED_trivial_farwrite  1
+       int trivial_farread( int handle, void far *buffer, unsigned len );
+       int trivial_farwrite( int handle, void far *buffer, unsigned len );
+#    endif
+
+#    define HAS_dos_read 1      /* dos_read() */
+#    define dos_read _dos_read  /* _dos_read() in dos.h */
 
 #    define _XPENTRY   pascal
 
@@ -884,6 +920,8 @@ int qq(void)
 #    define _intcast
 #    define _veccast
 #    define _fast
+#    define farread  read
+#    define farwrite write
 
 #    define _XPENTRY   _System
 
@@ -898,6 +936,8 @@ int qq(void)
 #    define _intcast
 #    define _veccast
 #    define _fast
+#    define farread  read
+#    define farwrite write
 
 #    define _XPENTRY pascal
 
@@ -1544,5 +1584,13 @@ size_t _stdc strftim( char *str, size_t maxsize, const char *fmt,
 #if !defined(P_WAIT) && defined(_P_WAIT) /*for spawn* in process.h*/
 #define P_WAIT          _P_WAIT
 #endif
+
+#ifdef NEED_trivial_farread
+  int trivial_farread( int handle, void far *buffer, unsigned len );
+#endif
+#ifdef NEED_trivial_farwrite
+  int trivial_farwrite( int handle, void far *buffer, unsigned len );
+#endif
+
 
 #endif

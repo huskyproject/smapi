@@ -72,9 +72,9 @@ CFLAGS	+= $(DEBUG)
 include makefile.inc
 
 default:
-	@echo Run 'make dll' to build dll version ($(DLLTARGET), $(PROGRAMS))
-	@echo Run 'make static' to build static version ($(TARGET), $(PROGRAMS))
-	@echo Run 'make programs' to build static version of programs ($(PROGRAMS))
+	@echo Run 'make dll' to build dll version \($(DLLTARGET), $(PROGRAMS)\)
+	@echo Run 'make static' to build static version \($(TARGET), $(PROGRAMS)\)
+	@echo Run 'make programs' to build static version of programs \($(PROGRAMS)\)
 	@echo Run 'make all' to build all above
 
 all:	static dll programs

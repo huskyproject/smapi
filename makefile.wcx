@@ -6,8 +6,8 @@
 # __DOS4G__ (-bt=dos4g), __FLAT__ (-mf)
 
 CC	= wcl386
-CFLAGS	= -zq -wx -oneatx -5 -bt=dos4g -mf -fpi87 -c
-CDEFS	= -DMSDOS -D__MSDOS__ -D__DOS__
+CFLAGS	= -zq -wx -oneatx -4 -bt=dos4g -mf -fpi87 -c
+CDEFS	= -D__DOS__
 LFLAGS	= -mf -l=dos4g -fpi87
 EXENAMEFLAG	= -fe=
 
@@ -38,7 +38,9 @@ SYMBOLIC = .SYMBOLIC
 #	wmake -u -f makefile.wcx all
 default : all $(SYMBOLIC)
 
-all : $(TARGET)  $(SYMBOLIC)
+programs: $(GNMSGID) $(SYMBOLIC)
+
+all : $(TARGET) programs $(SYMBOLIC)
 #all : $(TARGET) $(GNMSGID)  $(SYMBOLIC)
 
 .c$(OBJ) :

@@ -26,10 +26,32 @@
  *
  */
 
-#include "prog.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <fcntl.h>
+
 #include "compiler.h"
 
+#if HAS_DIRECT_H
+#  include <direct.h>
+#endif
+
+#ifdef HAS_INUSTD_H
+#  include <unistd.h>
+#endif
+
+#if HAS_IO_H
+#  include <io.h>
+#endif
+
+#if HAS_DOS_H
+#  include <dos.h>
+#endif
+
+#include "prog.h"
+
 #ifdef __DJGPP__
+
 #include "msgapi.h"
 #include <dpmi.h>
 
@@ -42,7 +64,8 @@ sword far pascal shareloaded(void)
 }
 #endif
 
-#if defined (__WATCOMC__OS2__) || defined(__EMX__) || defined(__IBMC__OS2__)
+/*#if defined (__WATCOMC__OS2__) || defined(__EMX__) || defined(__IBMC__OS2__)*/
+#if defined (__OS2__)
 
 #include <os2.h>
 
@@ -109,7 +132,6 @@ int waitlock2(int handle, long ofs, long length, long t)
 
 #include <windows.h>
 #include <emx/syscalls.h>
-#include <stdlib.h>
 
 #ifndef F_GETOSFD
 #define F_GETOSFD 6
@@ -180,12 +202,6 @@ int unlock(int handle, long ofs, long length)
 
 #elif defined(__MINGW32__) || defined(__MSVC__)
 
-#if defined(__MSVC__)
-#include <stdio.h>
-#endif
-
-#include <io.h>
-
 int waitlock(int handle, long ofs, long length)
 {
     long offset = tell(handle);
@@ -255,6 +271,7 @@ int unlock(int handle, long ofs, long length)
     return 0;
 }
 
+/* This #if-#elif-#else-#endif branch doing never!!!
 #elif defined(__MSVC__)
 
 #include <io.h>
@@ -322,11 +339,9 @@ int unlock(int handle, long ofs, long length)
     return 0;
 }
 
+*/
 
 #elif defined(__UNIX__)
-
-#include <fcntl.h>
-#include <unistd.h>
 
 static struct flock* file_lock(short type, long ofs, long length, struct flock *ret)
 {
@@ -418,15 +433,6 @@ int sopen(const char *name, int oflag, int ishared, int mode)
 #ifdef __OS2__
 #define INCL_DOSDATETIME
 #include <os2.h>
-#endif
-
-#if defined(__TURBOC__DOS__)
-#include <io.h>
-#include <dos.h>
-#endif
-
-#ifdef __UNIX__
-#include <unistd.h>
 #endif
 
 int waitlock(int handle, long ofs, long length)
