@@ -1,3 +1,12 @@
+2003-02-14 Friday 13:10  stas_degteff
+
+	* VERSION (1.6), msgapi.h (1.67), readme.txt (1.8): Change version
+	number to 2.5-current
+
+2003-02-14 Friday 13:07  stas_degteff
+
+	* TODO (1.4): Change version number to 2.5-current
+
 2003-02-07 Friday 08:21  stas_degteff
 
 	* msgapi.h (1.66): Add comments for CheckSmapiVersion()
