@@ -437,7 +437,7 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             lseek(Jmd->IdxHandle, 0, SEEK_END);
             lseek(Jmd->HdrHandle, 0, SEEK_END);
             lseek(Jmd->TxtHandle, 0, SEEK_END);
-            jamhdrNew.MsgNum = Jmd->HdrInfo.BaseMsgNum+(tell(Jmd->IdxHandle)/sizeof(JAMIDXREC));
+            jamhdrNew.MsgNum = Jmd->HdrInfo.BaseMsgNum+(tell(Jmd->IdxHandle)/IDXSIZE);
             msgh->seek_idx = tell(Jmd->IdxHandle);
             msgh->seek_hdr = jamidxNew.HdrOffset = tell(Jmd->HdrHandle);
             jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen(msg->to));
@@ -578,8 +578,8 @@ static sword EXPENTRY JamKillMsg(MSG * jm, dword msgnum)
    jamhdr.Attribute |= JMSG_DELETED;
    jamidx.UserCRC = 0xFFFFFFFFL;
    jamidx.HdrOffset = 0xFFFFFFFFL;
-   lseek(Jmd->HdrHandle, -(sizeof(JAMHDR)), SEEK_CUR);
-   lseek(Jmd->IdxHandle, -(sizeof(JAMIDXREC)), SEEK_CUR);
+   lseek(Jmd->HdrHandle, -(HDR_SIZE), SEEK_CUR);
+   lseek(Jmd->IdxHandle, -(IDX_SIZE), SEEK_CUR);
    write_idx(Jmd->IdxHandle, &jamidx);
    write_hdr(Jmd->HdrHandle, &jamhdr);
    Jam_WriteHdrInfo(Jmd);
@@ -1007,6 +1007,8 @@ JAMSUBFIELDptr Jam_GetSubField(struct _msgh *msgh, dword *SubPos, word what)
 {
    JAMSUBFIELDptr SubField;
 
+                                /* this crashes on Sparc */
+
    while (*SubPos < msgh->Hdr.SubfieldLen) {
       SubField = (JAMSUBFIELDptr)((char*)(msgh->SubFieldPtr)+(*SubPos));
       *SubPos += (SubField->DatLen+sizeof(JAMBINSUBFIELD));
@@ -1023,7 +1025,7 @@ dword Jam_HighMsg(JAMBASEptr jambase)
    dword highmsg;
    lseek(jambase->IdxHandle, 0, SEEK_END);
    highmsg = tell(jambase->IdxHandle);
-   return (highmsg / sizeof(JAMIDXREC));
+   return (highmsg / IDX_SIZE);
 }
 
 void Jam_ActiveMsgs(JAMBASEptr jambase)
@@ -1570,6 +1572,8 @@ void DecodeSubf(MSGH *msgh)
    }
 
    SubPos = 0;
+
+                                /* this crashes on Sparc */
    while (SubPos < msgh->Hdr.SubfieldLen) {
       SubField = (JAMSUBFIELDptr)((char*)(msgh->SubFieldPtr)+SubPos);
       SubPos += (SubField->DatLen+sizeof(JAMBINSUBFIELD));
