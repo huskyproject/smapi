@@ -53,7 +53,7 @@ void _fast ASCII_Date_To_Binary(char *msgdate, union stamp_combo *d_written)
       tim=localtime(&timeval);
 
       /* Insert today's date */
-      strftime(msgdate,19,"%d %b %y  %H:%M:%S",tim);
+      fts_time(msgdate,tim);
 
       StandardDate(d_written);
     }  
