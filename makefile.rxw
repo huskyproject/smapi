@@ -4,7 +4,7 @@
 CC=     gcc
 CFLAGS= -w -Zwin32
 CDEFS=  -D__NT__ -DWINNT -D__RSXNT__ 
-COPT=   -O3
+COPT=   
 LIB=    ar
 
 TARGET= smapirxw.a

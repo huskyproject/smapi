@@ -4,7 +4,7 @@
 CC=     BCC32
 CFLAGS= -WC
 CDEFS=  -D__NT__ -DWINNT
-COPT=   -O
+COPT=   
 LIB=    tlib
 
 TARGET= smapibcw.lib
