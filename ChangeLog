@@ -1,3 +1,8 @@
+2003-03-18 Tuesday 06:06  stas_degteff
+
+	* sq_area.c (smapi-2_4-stable.2): Fix _SquishCreateNewBase(): don't
+	rewrite old file
+
 2003-03-13 Thursday 16:03  stas_degteff
 
 	* Makefile (smapi-2_4-stable.2): Fix previous
