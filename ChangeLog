@@ -1,7 +1,7 @@
-2001-05-26 Saturday 18:53 oliver.grimm
+2001-05-26 Saturday 18:52  oliver.grimm
 
-	* api_jam.c (1.58): OG: Now the kludges ARE in the right order
-	in JAM Areas !!!!!!
+	* api_jam.c (1.58): og: Fixed "path-before-seenby" bug in
+	api_jam.c.
 
 2001-05-09 Wednesday 10:56  oliver.grimm
 
