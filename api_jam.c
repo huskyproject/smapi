@@ -354,7 +354,10 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
 static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt)
 {
-   /* not supported append if JAM !!! */
+   /* not supported append if JAM !!!
+      the reason is that we need to know ALL of the text before we can set up
+      the JAM headers.
+    */
 
    JAMHDR         jamhdrNew;
    JAMIDXREC      jamidxNew;
@@ -422,9 +425,9 @@ static sword EXPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
 
    if (clen && ctxt) ConvertCtrlToSubf(&jamhdrNew, &subfieldNew, clen, ctxt);
 
-   if (textlen && text) onlytext = DelimText(&jamhdrNew, &subfieldNew, text);
+   if (textlen && text) onlytext = DelimText(&jamhdrNew, &subfieldNew, text, textlen);
    else if (msgh->mode != MOPEN_CREATE) {
-      DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl);
+      DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl, 0);
       jamhdrNew.TxtOffset = msgh->Hdr.TxtOffset;
       jamhdrNew.TxtLen = msgh->Hdr.TxtLen;
    }
@@ -1388,7 +1391,8 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr
    *subfield = SubField;
 }
 
-unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned char *text)
+unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned
+                         char *text, size_t textlen)
 {
    JAMSUBFIELDptr SubField, SubFieldCur;
    dword sublen, clen, x;
@@ -1398,8 +1402,12 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned ch
 
    sublen = jamhdr->SubfieldLen;
 
-   onlytext = (unsigned char*)palloc(1);
-   *onlytext = '\0';
+   if (textlen) {
+       onlytext = (unsigned char*)palloc(textlen);
+       *onlytext = '\0';
+   } else {
+       onlytext = NULL;
+   }
 
    first = text;
    while (*first) {
@@ -1417,8 +1425,8 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned ch
          } else {;}
 
       } else {
+         assert(x + strlen(first) <= textlen);
          x = strlen(onlytext);
-         onlytext = (unsigned char*)farrealloc(onlytext, x+strlen(first)+2);
          sprintf(onlytext+x, "%s\r", first);
       } /* endif */
       if (ptr) {

@@ -42,7 +42,8 @@ sword Jam_WriteHdrInfo(JAMBASEptr jambase);
 dword Jam_Crc32(unsigned char* buff, dword len);
 static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield);
 static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, dword clen, unsigned char *ctxt);
-unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned char *text);
+unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELDptr *subfield, unsigned
+                         char *text, size_t textlen);
 int makeKludge(char **buff, char *sstr, unsigned char *str, char *ent, int len);
 void parseAddr(NETADDR *netAddr, unsigned char *str, dword len);
 void DecodeSubf(MSGH *msgh);
