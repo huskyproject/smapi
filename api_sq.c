@@ -1929,19 +1929,17 @@ static sword near Add_To_Free_Chain(MSG * sq, FOFS killofs, SQHDR * killhdr)
 static sword near _SquishReadIndex(MSG * sq)
 {
     dword ofslen;
-    int read_error = 0;
-
 
     /* Seek to end, and find length of file */
 
     lseek(Sqd->ifd, 0L, SEEK_END);
     ofslen = tell(Sqd->ifd);
 
-    Sqd->idxbuf_used = (ofslen / SQIDX_SIZE) * sizeof(SQIDX);
-    Sqd->idxbuf_write = (ofslen / SQIDX_SIZE) * sizeof(SQIDX);
-    Sqd->idxbuf_delta = (ofslen / SQIDX_SIZE) * sizeof(SQIDX);
-    Sqd->idxbuf_size = ((ofslen / SQIDX_SIZE) + (EXTRA_BUF)) *
-        (dword) sizeof(SQIDX);
+    Sqd->idxbuf_used = (ofslen * sizeof(SQIDX)) / SQIDX_SIZE;
+    Sqd->idxbuf_write = (ofslen * sizeof(SQIDX)) / SQIDX_SIZE;
+    Sqd->idxbuf_delta = (ofslen * sizeof(SQIDX)) / SQIDX_SIZE;
+    Sqd->idxbuf_size = (ofslen * sizeof(SQIDX)) / SQIDX_SIZE +
+        (EXTRA_BUF) * (dword) sizeof(SQIDX);
 
 #if (defined(MSDOS) && !defined(__FLAT__)) || defined(__MSC__)
     if (Sqd->idxbuf_size >= 65300L || (Sqd->idxbuf = farpalloc((size_t) Sqd->idxbuf_size)) == NULL)
@@ -1955,18 +1953,9 @@ static sword near _SquishReadIndex(MSG * sq)
 
     /* Seek to beginning of file, and try to read everything in */
 
-    if (ofslen)
-    {
-        if (lseek(Sqd->ifd, 0L, SEEK_SET) == -1)
-        {
-            read_error = 1;
-        }
-        if (!read_sqidx(Sqd->ifd, Sqd->idxbuf, (ofslen / SQIDX_SIZE)))
-        {
-            read_error = 1;
-        }
-    }
-    if (read_error)
+    if (ofslen &&
+        ( (lseek(Sqd->ifd, 0L, SEEK_SET) == -1) ||
+          (!read_sqidx(Sqd->ifd, Sqd->idxbuf, (ofslen / SQIDX_SIZE)))))
     {
         farpfree(Sqd->idxbuf);
         Sqd->idxbuf = NULL;
@@ -1975,13 +1964,11 @@ static sword near _SquishReadIndex(MSG * sq)
     }
 
     return 0;
-
 }
 
 static sword near _SquishWriteIndex(MSG * sq)
 {
     sword ret = 0;
-    int write_error = 0;
 
     if (Sqd->idxbuf == NULL)
     {
@@ -1994,24 +1981,14 @@ static sword near _SquishWriteIndex(MSG * sq)
     {
         ret = 0;
     }
-    else
-    {
-        if (lseek(Sqd->ifd, Sqd->idxbuf_delta, SEEK_SET) == -1)
-        {
-            write_error = 1;
-        }
-        if (!write_sqidx(Sqd->ifd,
-                         Sqd->idxbuf + Sqd->idxbuf_delta / sizeof(SQIDX),
-                         (Sqd->idxbuf_write - Sqd->idxbuf_delta) /
+    else if (lseek(Sqd->ifd, Sqd->idxbuf_delta, SEEK_SET) == -1 ||
+             !write_sqidx(Sqd->ifd,
+                          Sqd->idxbuf + Sqd->idxbuf_delta / sizeof(SQIDX),
+                          (Sqd->idxbuf_write - Sqd->idxbuf_delta) /
                             sizeof(SQIDX)))
-        {
-            write_error = 1;
-        }
-        if (write_error)
-        {
-            ret = -1;
-            msgapierr = MERR_BADF;
-        }
+    {
+        ret = -1;
+        msgapierr = MERR_BADF;
     }
 
 #if defined(MSDOS) && !defined(__NT__)
