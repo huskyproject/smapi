@@ -1,3 +1,17 @@
+2002-12-30 Monday 15:49  stas_degteff
+
+	* VERSION (smapi-2_2-stable.4): Add requirements and empty line (to
+	prevent illegal paches generate)
+
+2002-12-30 Monday 15:31  stas_degteff
+
+	* VERSION (smapi-2_2-stable.3): Set version to 2.2.2-stable
+
+2002-12-30 Monday 15:27  stas_degteff
+
+	* VERSION (tags: smapi-2_2_2-release) (smapi-2_2-stable.2):
+	2.2.2-release
+
 2002-12-27 Friday 12:52  sfpavel
 
 	* Makefile, file_id.diz, msgapi.h, debian/changelog,
@@ -251,9 +265,9 @@
 
 2002-06-25 Tuesday 13:38  stas
 
-	* VERSION (tags: smapi-2_2_2-release, smapi-2_2_1-release),
-	file_id.diz, readme.txt (smapi-2_2-stable.[1,1,1]): Begin
-	smapi-2.2-stable branch. (update doc, set VERSION file)
+	* VERSION (tags: smapi-2_2_1-release), file_id.diz, readme.txt
+	(smapi-2_2-stable.[1,1,1]): Begin smapi-2.2-stable branch. (update
+	doc, set VERSION file)
 
 2002-06-23 Sunday 19:57  stas
 
