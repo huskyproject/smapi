@@ -1482,20 +1482,23 @@ int qq(void)
 
 #  define _XPENTRY
 
+#  define mysleep(x) sleep(x)
+#  define HAS_sleep     1  /* sleep(): stdlib.h, unistd.h */
 #  define HAS_snprintf  1
 #  define HAS_vsnprintf 1
 #  define HAS_getpid    1  /* getpid() in process.h */
 #  define HAS_spawnvp   1  /* spawnvp() in process.h */
 #  define HAS_strftime  1  /* strftime() in time.h  */
 #  define HAS_mktime    1  /* mktime() in time.h */
-#  define HAS_popen_close  /* popen(); pclose() */
+#  define HAS_popen_close 1 /* popen(); pclose() */
 
 #  define HAS_DIRENT_H  1  /* use "#include <dirent.h>" for opendir() etc. */
 #  define HAS_IO_H      1  /* use "#include <io.h>" */
 #  define HAS_SHARE_H   1  /* may use "#include <share.h> */
 #  define HAS_UNISTD_H  1  /* use "#include <unistd.h> */
 #  define HAS_SIGNAL_H  1  /* <signal.h> */
-#  define HAS_PROCESS_H   /* may use "#include <process.h> */
+#  define HAS_PROCESS_H 1  /* may use "#include <process.h> */
+#  define HAS_DIS_H     1  /* <dos.h> */
 
 #  define USE_STAT_MACROS
 
@@ -1981,6 +1984,7 @@ int qq(void)
 #  define O_RDWR      _O_RDWR
 #endif
 
+#include <sys/types.h>
 #include <sys/stat.h>
 #if !defined(S_IFMT) && defined(_S_IFMT)
 #  define S_IFMT      _S_IFMT
