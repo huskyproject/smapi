@@ -30,7 +30,7 @@
 
 #if defined(__OS2__)
 #define INCL_NOPM
-#define INCL_DOS    /* must be before prog.h */
+#define INCL_DOS
 
 #include <os2.h>
 #include <time.h>
