@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
           break;
         }
       }
-      if (check_stricmp(s, "?")||check_stricmp(s, "help")||check_stricmp(s, "-help"))
+      if (check_stricmp(s, "?")||check_stricmp(s, "h")||check_stricmp(s, "-help"))
       {
         usage = 1;
         break;
@@ -156,6 +156,7 @@ int main(int argc, char *argv[])
     {
       msgid = GenMsgIdEx(seqdir, seqoutrun, NULL, &msgiderr);
       if (msgiderr)
+        printf("gnmsgid - standalone msgid generator using husky smapi library\n\n");
         fprintf(stderr, "warning (id #%i): %s, fall to ugly old algorythm\n", i, msgiderr);
       printf("%08lx\n", msgid);
     }

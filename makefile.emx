@@ -4,30 +4,42 @@
 # No support for the Husky build environment
 
 
-CC=	gcc
-CFLAGS=	-Wall -Zcrtdll
-CDEFS=	-DOS2
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -funsigned-char -s
-LIB=	ar
-OBJ=	.o
+CC	= gcc
+CFLAGS	= -Wall -Zcrtdll
+CDEFS	= -DOS2
+COPT	= -O3 -fomit-frame-pointer -fstrength-reduce -funsigned-char -s
+AR	= ar
+AR_R	= r
+RM	= cmd /c del
+OBJ	= .o
+LIB	= .a
+EXE	= .exe
 
-.SUFFIXES:
-.SUFFIXES: .c .o
+TARGET	= smapiemx$(LIB)
 
-TARGET=	smapiemx.a
-
-include makefile.inc
+EXENAMEFLAG = -o 
 
 # Thunderbirds are go!
 
-.c.o:
+default: all
+
+include makefile.inc
+
+.c$(OBJ):
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 
+all:  $(TARGET) gnmsgid$(EXE)
+
 $(TARGET): $(OBJS)
-	$(LIB) r $@ $?
+	$(AR) $(AR_R) $@ $?
+
+gnmsgid$(EXE): gnmsgid$(OBJ)
+	$(CC) $(CFLAGS) $(COPT) $(EXENAMEFLAG)gnmsgid$(EXE) gnmsgid$(OBJ) $(LOPT) $(TARGET)
 
 clean:
-	-cmd /c DEL *.o
+	-$(RM) *$(OBJ)
 
-distclean:
-	-cmd /c DEL $(TARGET)
+distclean: clean
+	-$(RM) $(TARGET)
+	-$(RM) gnmsgid$(EXE)
+
