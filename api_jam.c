@@ -1696,6 +1696,7 @@ static int StrToSubfield(const unsigned char *str, dword lstr, dword *len, JAMSU
                  }
    }
    subf->LoID = subtypes;
+   subf->HiID = 0;
    subf->DatLen = lstr-(kludge-str);
    memcpy(subf->Buffer, kludge, subf->DatLen);
    subf->Buffer[subf->DatLen] = '\0';
@@ -1726,6 +1727,7 @@ static int NETADDRtoSubf(NETADDR addr, dword *len, word opt, JAMSUBFIELD2ptr sub
      *len = subf->DatLen + sizeof(JAMBINSUBFIELD);
    }
    subf->LoID = opt ? JAMSFLD_DADDRESS : JAMSFLD_OADDRESS;
+   subf->HiID = 0;
 
    msgapierr = MERR_NONE;
    return 1;
@@ -1738,6 +1740,7 @@ static int FromToSubjTOSubf(word jamsfld, unsigned char *txt, dword *len, JAMSUB
      return 0;
    }
    subf->LoID = jamsfld;
+   subf->HiID = 0;
    if(txt) memmove(subf->Buffer, txt, subf->DatLen = strlen((char*)txt));
    else{ subf->Buffer = NULL; subf->DatLen = 0; }
    if(len) *len = subf->DatLen + sizeof(JAMBINSUBFIELD);
