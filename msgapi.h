@@ -20,9 +20,9 @@
 #ifndef MSGAPI
 #define MSGAPI
 
+#include "compiler.h"
 #include "stamp.h"
 #include "typedefs.h"
-#include "compiler.h"
 
 #define MSGAREA_NORMAL  0x00
 #define MSGAREA_CREATE  0x01
