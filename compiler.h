@@ -394,14 +394,16 @@ int lock(int handle, long ofs, long length);
 #endif
 
 #include <sys/file.h>
-#define lock(a,b,c) flock(a, LOCK_EX | LOCK_NB)
-#define unlock(a,b,c) flock(a, LOCK_UN)
+#define lock(a,b,c) flock(a, LOCK_EX)
+#define unlock(a,b,c) flock(a, LOCK_SH)
 
 #define tell(a) lseek((a),0,SEEK_CUR)
 #define stricmp strcasecmp
 #define O_BINARY 0
 #define SH_DENYNONE 0
-#define sopen(a,b,c,d) open((a),(b),(d))
+#define SH_DENYNO 0
+#define SH_DENYALL 1
+#define sopen(a,b,c,d) open((a),(b)|(((c)==SH_DENYALL)?O_EXLOCK:O_SHLOCK),(d))
 
 #define EXPENTRY
 

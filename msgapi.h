@@ -336,7 +336,7 @@ byte *StripNasties(byte * str);
 
 #if defined(MSDOS) && !defined(__DJGPP__)
 sword far pascal shareloaded(void);
-#elif defined(OS2) || defined(__NT__)
+#elif defined(OS2) || defined(__NT__) || defined(UNIX)
 #define shareloaded() TRUE
 #else
 #define shareloaded() FALSE
