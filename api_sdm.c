@@ -717,9 +717,9 @@ static sword _XPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
         time_t ttime;
 
         fs_write_attr(msgh->fd, "BEOS:TYPE", B_MIME_TYPE, 0l, "message/fmsg", 13);
-        fs_write_attr(msgh->fd, "XMSG:FROM", B_STRING_TYPE, 0l, msg->from, strlen(msg->from));
-        fs_write_attr(msgh->fd, "XMSG:TO"  , B_STRING_TYPE, 0l, msg->to, strlen(msg->to));
-        fs_write_attr(msgh->fd, "XMSG:SUBJ", B_STRING_TYPE, 0l, msg->subj, strlen(msg->subj));
+        fs_write_attr(msgh->fd, "XMSG:FROM", B_STRING_TYPE, 0l, msg->from, strlen((char*)msg->from));
+        fs_write_attr(msgh->fd, "XMSG:TO"  , B_STRING_TYPE, 0l, msg->to, strlen((char*)msg->to));
+        fs_write_attr(msgh->fd, "XMSG:SUBJ", B_STRING_TYPE, 0l, msg->subj, strlen((char*)msg->subj));
         ttime = mktime(DosDate_to_TmDate((union stamp_combo *)&msg->date_written, &tmdate));
         fs_write_attr(msgh->fd, "XMSG:DATE", B_TIME_TYPE, 0l, &ttime, 4l);
         ttime = mktime(DosDate_to_TmDate((union stamp_combo *)&msg->date_arrived, &tmdate));
