@@ -1,3 +1,9 @@
+smapi (1.6.4u-11) unstable; urgency=low
+
+  * In huskymak.cfg wrong path for CFGDIR :()
+
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Tue, 10 Apr 2001 18:07:57 +0200
+
 smapi (1.6.4u-10) unstable; urgency=low
 
   * Renamed it to 1.6.4u-10 so dpkg/dselect/apt-get find it newer than
