@@ -1,3 +1,7 @@
+2002-11-26 Tuesday 13:00  stas_degteff
+
+	* compiler.h (smapi-2_2-stable.7): Prevent redefinition of S_ISREG
+
 2002-11-21 Thursday 08:01  stas_degteff
 
 	* compiler.h (smapi-2_2-stable.6): Prevent constants redefinitions
