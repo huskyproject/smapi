@@ -65,7 +65,9 @@ so we simply KNOW that a HMTX is a ULONG.
 #define INCL_DOS
 #include <os2.h>
 #else
+#ifndef _OS2EMX_H
 typedef unsigned long HMTX;
+#endif
 #endif
 
 #define SEMAPHORE HMTX
