@@ -267,6 +267,8 @@
 #define farread read
 #define farwrite write
 
+#define strcasecmp stricmp
+
 #define EXPENTRY pascal
 
 #elif defined(__HIGHC__)
