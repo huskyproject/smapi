@@ -24,27 +24,8 @@ extern "C" {
 #ifndef MSGAPI
 #define MSGAPI
 
+#include <huskylib/compiler.h>
 #include <huskylib/huskylib.h>
-/*
- * This is compiler-specific stuff for smapi only:
- *
- * SMAPI_EXT - external variables & external functions call modifier
- *             (usualy 'extern' for static linkage)
-
-#ifdef _MAKE_DLL
-#  if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#      ifndef _SMAPI_EXT
-#          define SMAPI_EXT __declspec(dllimport)
-#      else
-#          define SMAPI_EXT __declspec(dllexport)
-#      endif // _SMAPI_EXT
-#  else
-#      define SMAPI_EXT extern
-#  endif
-#else
-#  define SMAPI_EXT extern
-#endif
- */
 
 
 #ifdef __BEOS__

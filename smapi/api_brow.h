@@ -20,6 +20,8 @@
 #ifndef __API_BROW_H__
 #define __API_BROW_H__
 
+#include <huskylib/compiler.h>
+
 #define BROWSE_ACUR   0x0001    /* Scan current area only */
 #define BROWSE_ATAG   0x0002    /* Scan only marked areas */
 #define BROWSE_AALL   0x0004    /* Scan ALL areas */

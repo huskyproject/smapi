@@ -20,12 +20,14 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <huskylib/huskylib.h>
+#include <huskylib/compiler.h>
 
 
 #ifdef HAS_SIGNAL_H
 #include <signal.h>
 #endif
+
+#include <huskylib/huskylib.h>
 
 /* Swith for build DLL */
 #define DLLEXPORT

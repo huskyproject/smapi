@@ -41,7 +41,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -50,7 +49,7 @@
 
 #define MSGAPI_HANDLERS
 
-#include <huskylib/huskylib.h>
+#include <huskylib/compiler.h>
 
 #ifdef HAS_UNISTD_H
 #include <unistd.h>
@@ -58,6 +57,8 @@
 #ifdef HAS_IO_H
 #  include <io.h>
 #endif
+
+#include <huskylib/huskylib.h>
 
 /* Swith for build DLL */
 #define DLLEXPORT

@@ -5,6 +5,10 @@
 #ifndef __API_JAMP_H
 #define __API_JAMP_H
 
+#include <huskylib/compiler.h>
+
+#include "msgapi.h"
+
 static sword _XPENTRY JamCloseArea(MSGA * jm);
 static MSGH *_XPENTRY JamOpenMsg(MSGA * jm, word mode, dword msgnum);
 static sword _XPENTRY JamCloseMsg(MSGH * msgh);

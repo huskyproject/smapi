@@ -28,8 +28,11 @@ static char rcs_id[]="$Id$";
 
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-#include <huskylib/huskylib.h>
+#include <huskylib/compiler.h>
 
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
@@ -38,15 +41,11 @@ static char rcs_id[]="$Id$";
 #  include <io.h>
 #endif
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
-#if !defined(__UNIX__) && !defined(SASC)
+#ifdef HAS_SHARE_H
 #include <share.h>
 #endif
 
-#ifdef __UNIX__
+#ifdef HAS_UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -55,6 +54,8 @@ static char rcs_id[]="$Id$";
 #ifdef HAS_MALLOC_H
 #include <malloc.h>
 #endif
+
+#include <huskylib/huskylib.h>
 
 /* Swith for build DLL */
 #define DLLEXPORT

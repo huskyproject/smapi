@@ -20,6 +20,10 @@
 #ifndef __API_SDMP_H__
 #define __API_SDMP_H__
 
+#include <huskylib/compiler.h>
+
+#include "msgapi.h"
+
 static sword _XPENTRY SdmCloseArea(MSGA * mh);
 static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum);
 static sword _XPENTRY SdmCloseMsg(MSGH * msgh);

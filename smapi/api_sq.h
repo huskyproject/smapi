@@ -28,6 +28,8 @@
 
 #include <huskylib/compiler.h>
 
+#include "msgapi.h"
+
 struct _sqhdr;
 struct _sqidx;
 

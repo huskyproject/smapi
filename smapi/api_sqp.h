@@ -26,6 +26,10 @@
 #ifndef __API_SQP_H_DEFINED
 #define __API_SQP_H_DEFINED
 
+#include <huskylib/compiler.h>
+
+#include "msgapi.h"
+
 
 sword _XPENTRY apiSquishCloseArea(HAREA sq);
 HMSG  _XPENTRY apiSquishOpenMsg(HAREA sq,word mode,dword msgnum);

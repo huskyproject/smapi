@@ -25,6 +25,8 @@ extern "C" {
 #ifndef __API_JAM_H__
 #define __API_JAM_H__
 
+#include <huskylib/compiler.h>
+
 /*
 **  File extensions
 */

@@ -36,7 +36,7 @@ static char rcs_id[]="$Id$";
 #include <string.h>
 #include <limits.h>
 
-#include <huskylib/huskylib.h>
+#include <huskylib/compiler.h>
 
 #ifdef HAS_UNISTD_H
 #include <unistd.h>
@@ -50,6 +50,8 @@ static char rcs_id[]="$Id$";
 #ifdef HAS_MALLOC_H
 #include <malloc.h>
 #endif
+
+#include <huskylib/huskylib.h>
 
 /* Swith for build DLL */
 #define DLLEXPORT

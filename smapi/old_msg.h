@@ -20,6 +20,11 @@
 #ifndef __OLD_MSG_H__
 #define __OLD_MSG_H__
 
+#include <huskylib/compiler.h>
+#include <huskylib/cvtdate.h>
+
+#include "msgapi.h"
+
 /* OPUS message header structure */
 struct _omsg
 {

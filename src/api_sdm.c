@@ -26,7 +26,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <huskylib/huskylib.h>
+#include <huskylib/compiler.h>
 
 #ifdef HAS_IO_H
 #include <io.h>
@@ -50,6 +50,8 @@
 #endif
 
 #define MSGAPI_HANDLERS
+
+#include <huskylib/huskylib.h>
 
 /* Swith for build DLL */
 #define DLLEXPORT
