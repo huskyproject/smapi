@@ -1308,7 +1308,7 @@ static MSGH *Jam_OpenMsg(MSGA * jm, word mode, dword msgnum)
       if (msgh->Idx.HdrOffset != 0xffffffffUL) {
          msgh->seek_hdr = msgh->Idx.HdrOffset;
          memcpy(&(msgh->Hdr), &(Jmd->actmsg[msgnum-1].hdr), sizeof(msgh->Hdr));
-         if (stricmp((char*)&msgh->Hdr, "JAM") != 0) {
+         if (sstricmp((char*)&msgh->Hdr, "JAM") != 0) {
             pfree(msgh);
             return NULL;
          } else {

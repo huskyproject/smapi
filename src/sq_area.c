@@ -178,7 +178,7 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
   (void)strcpy(szFile, szName);
   (void)strcat(szFile, dot_lck);
 
-  ha->lck_path = strdup(szFile);
+  ha->lck_path = sstrdup(szFile);
 #endif
 
   return TRUE;
