@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "..\nd_r\obj\smapiStatic"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /Ob2 /I ".." /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "__NT__" /D "WINNT" /D "_CONSOLE" /D "USE_STAT_MACROS" /FD /c
+# ADD CPP /nologo /W3 /GX /O2 /Ob2 /I ".." /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "__NT__" /D "_CONSOLE" /FD /c
 # SUBTRACT CPP /Fr /YX /Yc /Yu
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
@@ -65,7 +65,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "..\nd_d\obj\smapiStatic"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I ".." /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "__NT__" /D "WINNT" /D "_CONSOLE" /D "USE_STAT_MACROS" /FR /FD /GZ /c
+# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I ".." /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "__NT__" /D "_CONSOLE" /FR /FD /GZ /c
 # SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
 # ADD RSC /l 0x419 /d "_DEBUG"
