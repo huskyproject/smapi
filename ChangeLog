@@ -1,3 +1,11 @@
+2002-10-04 Friday 06:50  sfpavel
+
+	* debian/changelog (1.17): New debian packages
+
+2002-10-04 Friday 05:50  sfpavel
+
+	* makefile.djg (1.16): Fix DJGPP build
+
 2002-10-03 Thursday 13:27  mche
 
 	* compiler.h (1.99): vsnprintf fix
