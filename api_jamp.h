@@ -40,7 +40,10 @@ static void near Jam_Unlock(MSG * jm);
 dword Jam_PosHdrMsg(MSG * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr);
 static dword Jam_JamAttrToMsg(MSGH *msgh);
 sword Jam_WriteHdrInfo(JAMBASEptr jambase);
-dword Jam_Crc32(unsigned char* buff, dword len);
+SMAPI_EXT void Jam_WriteHdr(MSG *jm, JAMHDR *jamhdr, dword msgnum);
+SMAPI_EXT JAMHDR *Jam_GetHdr(MSG *jm, dword msgnum);
+SMAPI_EXT dword Jam_Crc32(unsigned char* buff, dword len);
+SMAPI_EXT char *Jam_GetKludge(MSG *jm, dword msgnum, word what);
 static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield);
 static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield, dword clen, unsigned char *ctxt);
 unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,

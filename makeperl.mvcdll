@@ -60,3 +60,5 @@ clean:
 
 distclean: clean
 	-del *.lib
+	-del *.exp
+	-del *.dll
