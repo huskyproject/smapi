@@ -26,6 +26,9 @@
 #include "unused.h"
 
 void _SquishCloseOpenAreas(void);
+void _SquishInit();
+void _SquishDeInit();
+
 
 static byte *intl = (byte *) "INTL";
 static byte *fmpt = (byte *) "FMPT";
@@ -52,6 +55,8 @@ sword EXPENTRY MsgOpenApi(struct _minf *minf)
     mi = *minf;
     mi.haveshare = shareloaded();
     
+    _SquishInit();
+    
     atexit(_SquishCloseOpenAreas);
     return 0;
 }
@@ -59,6 +64,7 @@ sword EXPENTRY MsgOpenApi(struct _minf *minf)
 sword EXPENTRY MsgCloseApi(void)
 {
 	_SquishCloseOpenAreas();
+	_SquishDeInit();
     return 0;
 }
 

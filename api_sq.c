@@ -23,6 +23,8 @@
 #include <string.h>
 #include "dr.h"
 
+#include "semaphor.h"
+
 #if !defined(UNIX) && !defined(SASC)
 #include <io.h>
 #endif
@@ -46,6 +48,7 @@
 #include "apidebug.h"
 #include "unused.h"
 
+static SEMAPHORE _haopen_sem;
 
 /* The root of a simple list of open Areas */
 
@@ -54,6 +57,16 @@ static HAREA _haopen = NULL;
 /* OG: 8/12/00
    Changed returntype 'MSG *' to HAREA 
 */
+
+void _SquishInit()
+{
+  create_semaphore(&_haopen_sem);
+}
+
+void _SquishDeInit()
+{
+  delete_semaphore(&_haopen_sem);
+}
 
 HAREA MSGAPI SquishOpenArea(byte * name, word mode, word type)
 {
@@ -168,15 +181,17 @@ HAREA MSGAPI SquishOpenArea(byte * name, word mode, word type)
     sq->sz_xmsg = XMSG_SIZE;
 
 
-    /* TODO: Locking against other threads would be cool ;) */
-   
     /* 8/12/00 
        OG: Area is opened, so it can be linked to open-area list 
     */
+
+    lock_semaphore(&_haopen_sem);
  
     Sqd->hanext = _haopen;
     _haopen = sq;
 
+    unlock_semaphore(&_haopen_sem);
+    
     return sq;
 }
 
@@ -279,11 +294,11 @@ static sword EXPENTRY SquishCloseArea(HAREA sq)
     close(Sqd->ifd);
 
 
-    /* TODO: Locking against other threads is a _MUST_ */
-
     /* OG: 8/12/00
        Remove Area from open-area list 
     */
+
+    lock_semaphore(&_haopen_sem);
 
     /* Search entry */
     if (_haopen == sq)
@@ -309,6 +324,7 @@ static sword EXPENTRY SquishCloseArea(HAREA sq)
         /* Area not in open-area list ? - That's strange ! */
       }
     }
+    unlock_semaphore(&_haopen_sem);
     
     pfree(sq->api);
     pfree((char *)sq->apidata);
