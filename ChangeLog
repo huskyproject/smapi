@@ -1,3 +1,7 @@
+2002-09-19 Thursday 07:22  sfpavel
+
+	* makefile.djg (smapi-2_2-stable.1): Fix DJGPP build
+
 2002-09-18 Wednesday 13:35  sfpavel
 
 	* file_id.diz, debian/changelog (smapi-2_2-stable.[4,9]): Correct
