@@ -41,7 +41,7 @@ void _fast ParseNN(char *netnode, word * zone, word * net, word * node, word * p
 SMAPI_EXT char *_fast sc_time(union stamp_combo *sc, char *string);
 char *_fast strocpy(char *d, char *s);
 void _fast tdelay(int);
-int _fast setfsize(int fd, long size);
+SMAPI_EXT int _fast setfsize(int fd, long size);
 #ifdef INTEL
 #define put_dword(ptr, val)	(*(dword *)(ptr) = (val))
 #define put_word(ptr, val)	(*(word *)(ptr) = (val))
