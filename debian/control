@@ -14,7 +14,7 @@ Description: MsgAPI for the Husky-Packages
  formats. It is required for all other Husky-Software.
 
 Package: libsmapi-dev
-Section: devel
+Section: libdevel
 Architecture: any
 Depends: libsmapi2(=${Source-Version}), libc6-dev, huskybase(<< 2.0-0)
 Replaces: libsmapi2-dev

@@ -1,3 +1,9 @@
+smapi (2.4.0+rc2-3) unstable; urgency=low
+
+  * Move libsmapi-dev to libdevel section
+
+ -- Pavel Andreew <sfpavel@users.sourceforge.net>  Wed,  2 Jun 2004 22:39:14 +0600
+
 smapi (2.4.0+rc2-2) unstable; urgency=low
 
   * Rename libsmapi2-dev to libsmapi-dev
