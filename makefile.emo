@@ -1,8 +1,8 @@
+# makefile for PGCC/EMX 1.1.1
 CC=     gcc
-CFLAGS= -Wall -Zomf -Zsys -s
+CFLAGS= -Wall -s
 CDEFS=  -DOS2
-COPT=   -O3 -fomit-frame-pointer -fstrength-reduce
-#-m486
+COPT=   -O3 -fomit-frame-pointer -fstrength-reduce -mpentium -Zomf -Zsys
 LIB=    emxomfar
 
 .SUFFIXES:
