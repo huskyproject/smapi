@@ -49,7 +49,7 @@ $(TARGET): $(OBJS)
 	$(AR) $(AR_R) $(TARGET) $?
 ifdef RANLIB
 	$(RANLIB) $(TARGET)
-endif                                                             
+endif
 
 ifeq ($(DYNLIBS), 1)
   ifeq (~$(MKSHARED)~,~ld~)
@@ -71,7 +71,7 @@ instdyn: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
 # Better so :)
 	cd $(LIBDIR) ;\
 	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so.$(VERH) ;\
-	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so.$(VERMAJOR)
+	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so.$(VERMAJOR) ;\
 	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so
 ifneq (~$(LDCONFIG)~, ~~)
 	$(LDCONFIG)
@@ -90,7 +90,7 @@ install-h-dir: FORCE
 
 %.h: FORCE
 	-$(INSTALL) $(IIOPT) $@ $(INCDIR)$(DIRSEP)smapi
-        
+
 install-h: install-h-dir $(HEADERS)
 
 install: install-h instdyn
