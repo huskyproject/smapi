@@ -720,6 +720,11 @@ int qq(void)
 #  define _fast
 #  define near
 #  define _XPENTRY
+#  define _intr
+#  define _intcast
+#  define _veccast
+#  define _loadds
+#  define cdecl
 
 #  define strcasecmp  stricmp
 #  define strncasecmp strnicmp
@@ -1454,7 +1459,7 @@ int qq(void)
 #endif
 
 #ifndef _loadds
-#   error message("Please check your compiler to 'load data segment' code modifyer and define _loadds in compiler.h")
+#   error Please check your compiler to 'load data segment' code modifyer and define _loadds in compiler.h
 #endif
 
 #ifndef cdecl
