@@ -4,18 +4,16 @@
 CC=	gcc
 CFLAGS=	-Wall
 CDEFS=	-DUNIX
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -fPIC
-LIB=	ar
-LIBDIR= /usr/local/lib
-INCDIR= /usr/local/include
-ILOPT=  -c -m644
-LDCONFIG = /sbin/ldconfig
-VERH =  1
-VER  =  1.6.2
+COPT=	-O3
 
-ALL: $(TARGET) libsmapilnx.so.$(VER)
+# on i386, you may add this
+# -fomit-frame-pointer -fstrength-reduce -fPIC -m486
+
+LIB=	ar
 
 TARGET=	libsmapilnx.a
+
+all: $(TARGET)
 
 OBJS=	1stchar.o  \
 	api_sdm.o  \
@@ -48,29 +46,8 @@ OBJS=	1stchar.o  \
 
 $(TARGET): $(OBJS)
 
-libsmapilnx.so.$(VER): $(OBJS)
-	gcc -shared -Wl,-soname,libsmapilnx.so.$(VERH) -o libsmapilnx.so.$(VER) $(OBJS)
-
-install: libsmapilnx.so.$(VER)
-	install $(ILOPT) libsmapilnx.so.$(VER) $(LIBDIR)
-	ln -sf $(LIBDIR)/libsmapilnx.so.$(VER) $(LIBDIR)/libsmapilnx.so.$(VERH)
-	ln -sf $(LIBDIR)/libsmapilnx.so.$(VERH) $(LIBDIR)/libsmapilnx.so
-	$(LDCONFIG)
-	install alc.h $(INCDIR)/smapi
-	install api_brow.h $(INCDIR)/smapi
-	install compiler.h $(INCDIR)/smapi
-	install ffind.h $(INCDIR)/smapi
-	install msgapi.h $(INCDIR)/smapi
-	install patmat.h $(INCDIR)/smapi
-	install prog.h $(INCDIR)/smapi
-	install progprot.h $(INCDIR)/smapi
-	install stamp.h $(INCDIR)/smapi
-	install typedefs.h $(INCDIR)/smapi
-
 clean:
 	-rm *.o
+
+distclean:
 	-rm $(TARGET)
-
-distclean: clean
-	-rm libsmapilnx.so.$(VER)
-
