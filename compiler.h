@@ -539,7 +539,8 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define stricmp strcasecmp
 #endif
 
-#ifndef __BEOS__
+/* Cygwin defines O_BINARY in sys/fcntl.h. Why different from other UNIXES? */
+#if !defined(__BEOS__) && !defined(__CYGWIN__)
 #define O_BINARY 0
 #endif
 
