@@ -36,7 +36,7 @@
 #  include <direct.h>
 #endif
 
-#ifdef HAS_INUSTD_H
+#ifdef HAS_UNISTD_H
 #  include <unistd.h>
 #endif
 
