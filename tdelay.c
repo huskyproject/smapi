@@ -61,6 +61,12 @@
   }
 
 #elif defined(NT) || defined(__NT__)
+#if defined(__CYG__)
+  void _fast tdelay(int msecs)
+  {
+    _sleep((dword)msecs);
+  }
+#else
 #ifndef _MSC_VER
   extern void Sleep(dword ms);
 #else
@@ -70,6 +76,7 @@
   {
     Sleep((dword)msecs);
   }
+#endif
 
 #elif defined(__BEOS__)
 
