@@ -3,10 +3,10 @@
 # No support for the Husky build environment.
 
 # Uncomment this for compile info for gdb and display more compiler warnings
-DEBUG	= -g -pedantic
+# DEBUG	= -g -pedantic
 
 # Uncomment this for strip all simbols from binaries to reduce file sizes
-#STRIP	= -s
+STRIP	= -s
 
 
 ## programs ##
@@ -26,7 +26,7 @@ RM	= rm
 
 _C	= .c
 _OBJ	= .o
-_LIB	= .a
+_LIB	= .lib
 _EXE	= .exe
 _DLL	= .dll
 
