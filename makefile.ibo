@@ -1,4 +1,4 @@
-# Makefile for IBM CSet for OS/2
+# Makefile for IBM CSet for OS/2 with nmake
 # No support for the Husky build environment
 
 CC=	icc
@@ -42,5 +42,7 @@ $(TARGET): $(OBJS)
 
 clean:
 	-DEL *.obj
+
+distclean:
 	-DEL $(TARGET)
 
