@@ -1,3 +1,8 @@
+2004-03-09 Tuesday 09:52  sfpavel
+
+	* compiler.h (smapi-2_4-stable.10): Fix compiler.h for SUNOS (patch
+	from sir)
+
 2004-02-11 Wednesday 20:59  d_sergienko
 
 	* strextra.c (smapi-2_4-stable.1): fix for building on FreeBSD
