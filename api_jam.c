@@ -49,7 +49,7 @@
 #define NOTH 3
 
 static JAMBASE *jbOpen = NULL;
-int JamStrictActiveMsgs = 1;
+int JamStrictActiveMsgs = 0;
 
 /* Free's up a SubField-Chain */
 
@@ -130,7 +130,7 @@ MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type)
    }
    lseek(Jmd->IdxHandle, 0, SEEK_SET);
 
-   if (JamStrictActiveMsgs)
+   if (JamStrictActiveMsgs || (Jmd->HdrInfo.ActiveMsgs == 0 && len > 0))
        Jam_ActiveMsgs(jm);
 
    jm->high_water = Jmd->HdrInfo.highwater;
@@ -655,13 +655,13 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
                Jmd->actmsg[jm->num_msg].IdxOffset = msgh->seek_idx;
                Jmd->actmsg[jm->num_msg].TrueMsg = msgh->seek_hdr;
                Jmd->actmsg[jm->num_msg].UserCRC = jamidxNew.UserCRC;
-	       memcpy(&(Jmd->actmsg[jm->num_msg].hdr), &jamhdrNew, sizeof(jamhdrNew));
-	       if (Jmd->actmsg_read == 1)
-	          Jmd->actmsg[jm->num_msg].subfield = subfieldNew;
-	       else { /* not incore subfields */
-	          Jmd->actmsg[jm->num_msg].subfield = NULL;
+               memcpy(&(Jmd->actmsg[jm->num_msg].hdr), &jamhdrNew, sizeof(jamhdrNew));
+               if (Jmd->actmsg_read == 1)
+                  Jmd->actmsg[jm->num_msg].subfield = subfieldNew;
+               else { /* not incore subfields */
+                  Jmd->actmsg[jm->num_msg].subfield = NULL;
                   freejamsubfield(subfieldNew);
-	       }
+               }
             } else
                freejamsubfield(subfieldNew);
             jm->num_msg++;
@@ -693,17 +693,17 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
             Jmd->HdrInfo.ModCounter++;
             Jam_WriteHdrInfo(Jmd);
 #endif
-	    /* info from new message to msgh srtuct */
+            /* info from new message to msgh srtuct */
             if (Jmd->actmsg_read) {
                Jmd->actmsg[msgh->msgnum - 1].TrueMsg = msgh->seek_hdr;
                Jmd->actmsg[msgh->msgnum - 1].UserCRC = jamidxNew.UserCRC;
-	       memcpy(&(Jmd->actmsg[msgh->msgnum-1].hdr), &jamhdrNew, sizeof(jamhdrNew));
-	       if (Jmd->actmsg_read == 1)
-	          Jmd->actmsg[msgh->msgnum - 1].subfield = subfieldNew;
-	       else { /* subfields not incore */
-	          Jmd->actmsg[msgh->msgnum - 1].subfield = NULL;
+               memcpy(&(Jmd->actmsg[msgh->msgnum-1].hdr), &jamhdrNew, sizeof(jamhdrNew));
+               if (Jmd->actmsg_read == 1)
+                  Jmd->actmsg[msgh->msgnum - 1].subfield = subfieldNew;
+               else { /* subfields not incore */
+                  Jmd->actmsg[msgh->msgnum - 1].subfield = NULL;
                   freejamsubfield(subfieldNew);
-	       }
+               }
             } else
                freejamsubfield(subfieldNew);
          } /* endif */
@@ -799,12 +799,15 @@ static sword _XPENTRY JamKillMsg(MSGA * jm, dword msgnum)
       return -1L;
    } /* endif */
 
-   if (!Jam_PosHdrMsg(jm, msgnum-1, &jamidx, &jamhdr)) {
+   if (!Jam_PosHdrMsg(jm, msgnum, &jamidx, &jamhdr)) {
       msgapierr = MERR_BADF;
       return -1L;
    } /* endif */
 
    if (JamLock(jm) == -1) return -1L;
+
+   lseek(Jmd->HdrHandle, jamidx.HdrOffset, SEEK_SET);
+   lseek(Jmd->IdxHandle, Jmd->actmsg[msgnum - 1].IdxOffset, SEEK_SET);
 
    Jmd->modified = 1;
    Jmd->HdrInfo.ActiveMsgs--;
@@ -812,8 +815,6 @@ static sword _XPENTRY JamKillMsg(MSGA * jm, dword msgnum)
    jamhdr.Attribute |= JMSG_DELETED;
    jamidx.UserCRC = 0xFFFFFFFFL;
    jamidx.HdrOffset = 0xFFFFFFFFL;
-   lseek(Jmd->HdrHandle, -(HDR_SIZE), SEEK_CUR);
-   lseek(Jmd->IdxHandle, -(IDX_SIZE), SEEK_CUR);
    write_idx(Jmd->IdxHandle, &jamidx);
    write_hdr(Jmd->HdrHandle, &jamhdr);
 #ifdef HARD_WRITE_HDR
@@ -910,7 +911,7 @@ static UMSGID _XPENTRY JamMsgnToUid(MSGA * jm, dword msgnum)
 
 static dword _XPENTRY JamUidToMsgn(MSGA * jm, UMSGID umsgid, word type)
 {
-   dword  msgnum, left, right, new;
+   dword  msgnum, left, right, current;
    UMSGID umsg;
 
    if (InvalidMh(jm))
@@ -924,17 +925,17 @@ static dword _XPENTRY JamUidToMsgn(MSGA * jm, UMSGID umsgid, word type)
    right = jm->num_msg;
    while (left <= right)
    {
-     new = (right + left) / 2;
-     umsg = JamMsgnToUid(jm, new);
+     current = (right + left) / 2;
+     umsg = JamMsgnToUid(jm, current);
      if (umsg == -1)
        return 0;
      if (umsg < msgnum)
-       left = new + 1;
+       left = current + 1;
      else if (umsg > msgnum){
-       if( new>0 ) right = new - 1;
+       if( current > 0 ) right = current - 1;
        else right = 0;
      }else
-       return new;
+       return current;
    }
    if (type == UID_EXACT) return 0;
    if (type == UID_PREV)
@@ -1317,11 +1318,11 @@ static MSGH *Jam_OpenMsg(MSGA * jm, word mode, dword msgnum)
 
          msgh->SubFieldPtr = 0;
 
-	 if (Jmd->actmsg[msgnum-1].subfield)
+         if (Jmd->actmsg[msgnum-1].subfield)
             copy_subfield(&(msgh->SubFieldPtr), Jmd->actmsg[msgnum-1].subfield);
-	 else {
-            lseek(Jmd->HdrHandle, Jmd->actmsg[msgnum-1].TrueMsg+HDR_SIZE, SEEK_SET);
-            read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), &(Jmd->actmsg[msgnum-1].hdr.SubfieldLen));
+         else {
+               lseek(Jmd->HdrHandle, Jmd->actmsg[msgnum-1].TrueMsg+HDR_SIZE, SEEK_SET);
+               read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr), &(Jmd->actmsg[msgnum-1].hdr.SubfieldLen));
          }
          DecodeSubf(msgh);
          return (MSGH *) msgh;
@@ -1347,10 +1348,10 @@ JAMSUBFIELD2ptr Jam_GetSubField( MSGH *msgh, dword *SubPos, word what)
    SubFieldList = msgh->SubFieldPtr;
    SubField = msgh->SubFieldPtr->subfield;
    for (i=*SubPos; i<SubFieldList->subfieldCount; i++, SubField++) {
-	   if (SubField->LoID == what) {
-                   *SubPos = i;
-		   return SubField;
-           }
+      if (SubField->LoID == what) {
+         *SubPos = i;
+         return SubField;
+      }
    }
 
    return NULL;
@@ -1406,17 +1407,18 @@ char *Jam_GetKludge(MSGA *jm, dword msgnum, word what)
    }
    for (i=0, subfptr = subf->subfield; i<subf->subfieldCount; i++, subfptr++)
       if (subfptr->LoID == what) {
-	 res = palloc(subfptr->DatLen + 1);
-	 if (res == NULL) {
+         res = palloc(subfptr->DatLen + 1);
+         if (res == NULL) {
             if (Jmd->actmsg[msgnum-1].subfield == NULL) pfree(subf);
             msgapierr = MERR_NOMEM;
             return NULL;
-	 }
-	 memcpy(res, subfptr->Buffer, subfptr->DatLen);
-	 res[subfptr->DatLen] = '\0';
+         }
+         memcpy(res, subfptr->Buffer, subfptr->DatLen);
+         res[subfptr->DatLen] = '\0';
          if (Jmd->actmsg[msgnum-1].subfield == NULL) pfree(subf);
-	 return res;
+         return res;
       }
+
    if (Jmd->actmsg[msgnum-1].subfield == NULL) pfree(subf);
    return NULL;
 }
@@ -1525,7 +1527,7 @@ dword Jam_PosHdrMsg(MSGA * jm, dword msgnum, JAMIDXREC *jamidx, JAMHDR *jamhdr)
 
    if (!Jmd->actmsg_read) Jam_ActiveMsgs(jm);
 
-   jamidx->HdrOffset = Jmd->actmsg[msgnum].TrueMsg;
+   jamidx->HdrOffset = Jmd->actmsg[msgnum-1].TrueMsg;
 
    if (jamidx->HdrOffset == 0xffffffffUL) return 0;
 
@@ -2143,7 +2145,7 @@ void DecodeSubf(MSGH *msgh)
          ptr = strchr(orig, '.');
          if (ptr) {
             *ptr++ = '\0';
-	    if (atoi(ptr) != 0) fmpt = ptr;
+            if (atoi(ptr) != 0) fmpt = ptr;
          }
       }
       if (dest[0]) {
@@ -2152,7 +2154,7 @@ void DecodeSubf(MSGH *msgh)
          ptr = strchr(dest, '.');
          if (ptr) {
             *ptr++ = '\0';
-	    if (atoi(ptr) != 0) topt = ptr;
+            if (atoi(ptr) != 0) topt = ptr;
          }
       }
       if (orig[0] && dest[0]) {
