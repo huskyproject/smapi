@@ -12,12 +12,12 @@ Unix:
 
 2. compile smapi
 
-3. copy the library libsmapilnx.so.2.0 to a dir like /usr/local/lib
+3. copy the library libsmapilnx.so.1.5.7 to a dir like /usr/local/lib
 
 4. create syslinks:
 	[cd /usr/local/lib]
-	ln -s libsmapilnx.so.2.0 libsmapilnx.so.2
-	ln -s libsmapilnx.so.2 libsmapilnx.so
+	ln -s libsmapilnx.so.1.5.7 libsmapilnx.so.1
+	ln -s libsmapilnx.so.1 libsmapilnx.so
 
 5. Ensure that /usr/local/lib is in /etc/ld.so.conf
 
