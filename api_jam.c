@@ -1859,10 +1859,12 @@ void DecodeSubf(MSGH *msgh)
       else if (SubField->LoID == JAMSFLD_TZUTCINFO)
          addkludge(&pctrl, "\001TZUTC: ", SubField->Buffer, "", SubField->DatLen);
    } /* endwhile */
-   msgh->clen = pctrl-(char *)msgh->ctrl;
+   msgh->clen  = pctrl -(char *)msgh->ctrl;
    msgh->lclen = plctrl-(char *)msgh->lctrl;
-   assert(msgh->clen<msgh->SubFieldPtr->arraySize+65);
+   assert(msgh->clen <msgh->SubFieldPtr->arraySize+65);
    assert(msgh->lclen<msgh->SubFieldPtr->arraySize+65);
+   msgh->ctrl  = (unsigned char *)realloc(msgh->ctrl,  msgh->clen  + 1);
+   msgh->lctrl = (unsigned char *)realloc(msgh->lctrl, msgh->lclen + 1);
 }
 
 /***********************************************************************
