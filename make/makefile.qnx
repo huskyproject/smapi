@@ -6,7 +6,7 @@
 # No support for the Husky build environment (huskymak.cfg)
 # Use GNU version of make utility with this file.
 
-prefix=/opt
+prefix=/usr
 
 # Uncomment this for compile info for gdb and display more compiler warnings
 # DEBUG	= -g
@@ -115,6 +115,8 @@ TARGETDLL:=$(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)-$(VER)$(_DLL)
 # libraries need to build binary file (add into end of string)
 LIBS	+=
 
+SLIBS    = -L../../huskylib/make -lhuskyqnx 
+
 # Append includes dir and debug code generate options (if defined)
 CFLAGS	+= -I$(H_DIR) -I../../huskylib $(DEBUG)
 
@@ -138,7 +140,7 @@ $(TARGETLIB):	$(LIBOBJS)
 		$(STRIPLIB) $@
 
 $(TARGETDLL):	$(DLLOBJS)
-		$(CC) $(DLLOPT) $(CFLAGS) $(NAMEOPT)$@ $^
+		$(CC) $(DLLOPT) $(CFLAGS) $(SLIBS) $(NAMEOPT)$@ $^
 		$(STRIPDLL) $@
 		$(LN) -f -s $@ $(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)$(_DLL)
 
