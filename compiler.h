@@ -620,6 +620,8 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #include <io.h>
 #define mysleep(x) sleep(x)
 
+#define HAS_SPAWNVP
+
 #elif defined(SASC)
 
 /* SAS C for AmigaDOS */
