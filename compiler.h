@@ -720,7 +720,10 @@ int qq(void)
 #    undef _UNIX
 #    undef __unix__
 #    undef unix
-#  else
+#  endif
+#  ifndef __UNIX__
+#    define __UNIX__
+#  endif
 #endif
 
 /***** Platforms *************************************************************/
