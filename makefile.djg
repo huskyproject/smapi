@@ -4,7 +4,7 @@ CDEFS=	-D__FLAT__
 COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486
 LIB=	ar
 
-TARGET= smapidjg.a
+TARGET= libsmapidjg.a
 
 OBJS=	1stchar.o  \
 	api_sdm.o  \

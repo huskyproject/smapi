@@ -60,7 +60,7 @@ typedef NETADDR *PNETADDR;
 typedef dword UMSGID;
 
 #define MSGAPI_VERSION  1
-#define SMAPI_VERSION   "1.4"
+#define SMAPI_VERSION   "1.5.65.65.65.65.6"
 
 struct _minf
 {
