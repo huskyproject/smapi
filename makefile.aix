@@ -1,0 +1,75 @@
+# Settings for AIX
+
+# There is no makefile for AIX any more as we don't have a AIX machine to
+# test things any more.
+
+# To build husky on AIX with gcc, try to use makefile.lnx, but if you
+# are using IBM's C compiler, add the following parameter to the CFLAGS:
+#
+#     -qcpluscmt
+#
+# This will allow "//" style comments in ANSI C # source code. 
+
+CC=cc
+CFLAGS=-qcpluscmt -DUNIX -D_AIX -DNOSEMAPHORES
+
+LIB=	ar
+RANLIB= ranlib
+
+TARGET=	libsmapiaix.a
+
+all: $(TARGET)
+
+OBJS=	1stchar.o  \
+	api_sdm.o  \
+	sq_area.o \
+	sq_hash.o \
+	sq_help.o \
+	sq_idx.o \
+	sq_kill.o \
+	sq_lock.o \
+	sq_misc.o \
+	sq_msg.o \
+	sq_read.o \
+	sq_uid.o \
+	sq_write.o \
+	api_jam.o  \
+	cvtdate.o  \
+	date2bin.o \
+	dosdate.o  \
+	fexist.o   \
+	ffind.o    \
+	flush.o    \
+	locking.o  \
+	months.o   \
+	msgapi.o   \
+	parsenn.o  \
+	patmat.o   \
+	qksort.o   \
+	strextra.o \
+	strftim.o  \
+	strocpy.o  \
+	structrw.o \
+	trail.o    \
+	weekday.o \
+	semaphor.o \
+	setfsize.o \
+	tdelay.o
+
+
+#.c.o:
+#	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -o $(OBJS)
+
+.c~.a:
+	$(CC) -c $(CFLAGS) $(CDEFS) $(COPT) $*.c
+
+
+$(TARGET): $(OBJS)
+	$(LIB) r $@ $?
+	$(RANLIB) $(TARGET)
+
+clean:
+	-rm *.o
+
+distclean: clean
+	-rm $(TARGET)
