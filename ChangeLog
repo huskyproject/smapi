@@ -1,4 +1,4 @@
-smapi 1.6.1
+smapi 1.6.2
 -----------
 
 ----- cvs ci ------
@@ -7,6 +7,10 @@ tobi:
 - Fixed serious  Y2K bug in the SMAPI. This one affects the SDM part 
   (Fido *.MSG) of the SMAPI as well as all programs that call 
   ASCII_Date_To_Binary.
+
+	
+smapi 1.6.1
+-----------
 
 ----- cvs ci ------
 So  12 Dez 1999 09:02:13 CET
