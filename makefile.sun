@@ -8,7 +8,7 @@ COPT=	-O3 -fomit-frame-pointer -fstrength-reduce
 LIB=	ar
 RANLIB= ranlib
 
-TARGET=	smapisun.a
+TARGET=	libsmapisun.a
 
 OBJS=	1stchar.o  \
 	api_sdm.o  \
@@ -40,8 +40,8 @@ all: $(TARGET)
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
-        $(RANLIB) $(TARGET)
+	$(RANLIB) $(TARGET)
 
 clean:
 	rm *.o *~
-        rm $(TARGET)
+	rm $(TARGET)
