@@ -431,7 +431,7 @@ int lock(int handle, long ofs, long length);
 #define farwrite write
 
 #ifndef EXPENTRY
-#define EXPENTRY _syscall
+#define EXPENTRY __syscall
 #endif
 #define mysleep(x) sleep(x);
 
