@@ -42,7 +42,8 @@ OBJS=	1stchar.obj  \
 	trail.obj    \
 	weekday.obj \
 	setfsize.obj \
-	tdelday.obj
+	tdelday.obj  \
+	genmsgid.obj
 
 
 # Thunderbirds are go!

@@ -9,7 +9,7 @@ LIB=	wlib
 
 TARGET=	smapiwco.lib
 
-OBJS=	1stchar.obj api_sdm.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj patmat.obj sq_area.obj sq_hash.obj sq_help.obj sq_idx.obj sq_kill.obj sq_lock.obj sq_misc.obj sq_msg.obj sq_read.obj sq_uid.obj sq_write.obj setfsize.obj tdelay.obj
+OBJS=	1stchar.obj api_sdm.obj api_jam.obj cvtdate.obj date2bin.obj dosdate.obj fexist.obj ffind.obj flush.obj locking.obj months.obj msgapi.obj parsenn.obj qksort.obj strftim.obj strocpy.obj structrw.obj trail.obj weekday.obj patmat.obj sq_area.obj sq_hash.obj sq_help.obj sq_idx.obj sq_kill.obj sq_lock.obj sq_misc.obj sq_msg.obj sq_read.obj sq_uid.obj sq_write.obj setfsize.obj tdelay.obj genmsgid.obj
 
 
 # Thunderbirds are go!
@@ -23,7 +23,7 @@ $(TARGET): $(OBJS)
 .IGNORE
 
 clean:
-        -DEL *.OBJ
+	-DEL *.OBJ
 
 distclean:
 	-DEL $(TARGET)
