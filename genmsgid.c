@@ -51,7 +51,7 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 	new_fname = NULL;
 	if (max_outrun == 0) {
 		p = getenv("SEQOUT");
-		if (p && isdigit(*p)) {
+		if ( p && isdigit((int)(*p)) ) {
 			max_outrun = (unsigned long)atol(p);
 			switch (tolower(p[strlen(p) - 1])) {
 				case 'y':	max_outrun *= 365;
@@ -84,7 +84,7 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 			return oldGenMsgId();
 		}
 		do {
-			for (p=ff->ff_name; isxdigit(*p); p++);
+			for (p=ff->ff_name; isxdigit((int)(*p)); p++);
 			if (stricmp(p, ".seq") != 0) continue;
 			if (strlen(ff->ff_name) > 12) continue;
 			n = strtol(ff->ff_name, NULL, 16);
