@@ -61,7 +61,7 @@ long _fast fsize(char *filename)
     return ret;
 }
 
-#if defined(MSDOS)
+#if defined(MSDOS) || defined(__DJGPP__)
 
 int _fast direxist(char *directory)
 {
