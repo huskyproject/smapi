@@ -1,7 +1,18 @@
+# include Husky-Makefile-Config
+include ../huskymak.cfg
+
+include makefile.common
+
 CC=	gcc
 CFLAGS= -Wall
 CDEFS=	-D__FLAT__
-COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486
+
+ifeq ($(DEBUG), 1)
+  COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -g
+else
+  COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -s
+endif
+
 LIB=	ar
 
 TARGET= smapidjg.a
@@ -29,10 +40,23 @@ OBJS=	1stchar.o  \
 	trail.o    \
 	weekday.o
 
-# Thunderbirds are go!
+all: $(TARGET)
 
 .c.o:
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
+
+clean:
+	del *.o
+	del *.bak
+
+distclean: clean
+	del $(TARGET)
+
+install: $(TARGET)
+	copy $(TARGET) $(LIBDIR)
+	copy msgapi.h $(INCDIR)
+	copy smapi.pas $(INCDIR)
+
