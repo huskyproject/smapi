@@ -71,6 +71,7 @@ instdyn: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
 # Better so :)
 	cd $(LIBDIR) ;\
 	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so.$(VERH) ;\
+	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so.$(VERMAJOR)
 	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so
 ifneq (~$(LDCONFIG)~, ~~)
 	$(LDCONFIG)
@@ -102,6 +103,7 @@ uninstall:
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERH)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERMAJOR)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so
 
 clean:

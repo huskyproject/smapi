@@ -2,6 +2,8 @@
 #
 # Common makefiles part (include-file)
 
+VERMAJOR= 2
+VERMINOR= 4
 VERH =  2.4
 VER  =  2.4.0
 
