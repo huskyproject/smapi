@@ -1,3 +1,8 @@
+2002-10-08 Tuesday 05:45  sfpavel
+
+	* makefile.mvc, makefile.mvcdll (smapi-2_2-stable.[1,1]): Add
+	-DNOSEMAPHORES for mvc makefiles
+
 2002-09-19 Thursday 07:22  sfpavel
 
 	* makefile.djg (smapi-2_2-stable.1): Fix DJGPP build
