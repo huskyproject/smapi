@@ -5,9 +5,10 @@ COPT=	-O3 -fomit-frame-pointer -fstrength-reduce -m486 -g -fPIC
 LIB=	ar
 LIBDIR= /usr/local/lib
 ILOPT= -c -m644
+VERH = 1
+VER  = 1.5.6
 
-
-ALL: $(TARGET) libsmapilnx.so.2.0
+ALL: $(TARGET) libsmapilnx.so.$(VER)
 
 TARGET=	libsmapilnx.a
 
@@ -41,10 +42,10 @@ OBJS=	1stchar.o  \
 
 $(TARGET): $(OBJS)
 
-libsmapilnx.so.2.0: $(OBJS)
-	gcc -shared -Wl,-soname,libsmapilnx.so.2 -o libsmapilnx.so.2.0 $(OBJS)
+libsmapilnx.so.$(VER): $(OBJS)
+	gcc -shared -Wl,-soname,libsmapilnx.so.$(VERH) -o libsmapilnx.so.$(VER) $(OBJS)
 
-install: libsmapilnx.so.2.0
-	install $(ILOPT) libsmapilnx.so.2.0 $(LIBDIR)
-	ln -sf $(LIBDIR)/libsmapilnx.so.2.0 $(LIBDIR)/libsmapilnx.so.2
-	ln -sf $(LIBDIR)/libsmapilnx.so.2 $(LIBDIR)/libsmapilnx.so
+install: libsmapilnx.so.$(VER)
+	install $(ILOPT) libsmapilnx.so.$(VER) $(LIBDIR)
+	ln -sf $(LIBDIR)/libsmapilnx.so.$(VER) $(LIBDIR)/libsmapilnx.so.$(VERH)
+	ln -sf $(LIBDIR)/libsmapilnx.so.$(VERH) $(LIBDIR)/libsmapilnx.so

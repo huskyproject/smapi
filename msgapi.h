@@ -101,7 +101,7 @@ typedef struct _xmsg
 #define MSGREAD    0x0004
 #define MSGSENT    0x0008
 #define MSGFILE    0x0010
-#define MSGFWD     0x0020
+#define MSGFWD     0x0020     // is also called intransit flag
 #define MSGORPHAN  0x0040
 #define MSGKILL    0x0080
 #define MSGLOCAL   0x0100
