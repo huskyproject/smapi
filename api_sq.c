@@ -182,13 +182,26 @@ static sword EXPENTRY SquishCloseArea(MSG * sq)
         return -1;
     }
 
-    if (sq->locked)
+    /* If Base isn't locked, it MUST be locked, 'cause Writiting the header
+       is quit uncool if the base isn't locked */
+    if (!sq->locked)
     {
-        SquishUnlock(sq);
+        SquishLock(sq);
     }
 
     _SquishUpdateSq(sq, TRUE);
 
+    /* All work is done. It is sure to unlock */
+    if (sq->locked)
+    {
+      SquishUnlock(sq);
+    }
+
+    /* This is principal okay, but not a good idea.
+       It is better to close all open messages, 'cause if the app 'lost'
+       some open messages (yes, it's a byte-eater out there) it's impossible
+       to close the area ! 
+       TODO: Close all open messaged */
     if (Sqd->msgs_open)
     {
         msgapierr = MERR_EOPEN;
