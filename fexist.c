@@ -17,7 +17,6 @@
  *  author.
  */
 
-#include "compiler.h"
 
 #if defined(UNIX) || defined(__MINGW32__) || defined(EMX) || defined(RSXNT) || defined(__DJGPP__) || defined(_MSC_VER)
 /* These are compilers that have both a working stat() and (important!) the
@@ -34,14 +33,12 @@
 #if defined(UNIX) || defined(__MINGW32__) || defined(__EMX__)
 #include <unistd.h>
 #endif
+
 #ifdef USE_STAT_MACROS
 #include <sys/types.h>
 #include <sys/stat.h>
-#else
-#if !defined(__IBMC__) && !defined(MSDOS) && !defined(UNIX) && !defined(__MINGW32__) && !defined(__MSVC__)
-#include <dos.h>
 #endif
-#endif
+
 #include "ffind.h"
 #include "prog.h"
 
@@ -73,7 +70,7 @@ int _fast direxist(const char *directory)
     struct stat s;
     int rc;
 
-#if !defined(__WATCOMC__) && !(defined(_MSC_VER) && (_MSC_VER >= 1200)) && !defined(__MINGW32__)
+#if !defined(__WATCOMC__) && !defined(__MSVC__) && !defined(__MINGW32__)
     rc = stat (directory, &s);
 #else
     char *tempstr, *p;

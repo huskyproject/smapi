@@ -80,7 +80,7 @@ struct ffind
 #if defined(__TURBOC__) || defined(__DJGPP__)
     struct ffblk ffbuf;
 
-#elif defined(__WATCOMC__) || defined(__MSVC__)
+#elif defined(__WATCOMC__) || defined(__MSC__)
     struct find_t ffbuf;
     unsigned long hdir;   /* directory handle from DosFindFirst */
 
@@ -101,7 +101,7 @@ struct ffind
     char newfile[FILENAME_MAX];
     char prefix[FILENAME_MAX];
 
-#elif defined(__RSXNT__) || defined(__MINGW32__) || (defined(___MSCVC__)
+#elif defined(__RSXNT__) || defined(__MINGW32__) || defined(__MSVC__)
     WIN32_FIND_DATA InfoBuf;
     HANDLE hDirA;
     char attrib_srch;
