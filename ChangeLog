@@ -1,3 +1,18 @@
+2002-11-22 Friday 09:36  stas_degteff
+
+	* compiler.h (1.110): Define INTEL for true x86 (Watcom/x86, DJGPP,
+	EMX, mingw32); add comments about predefined macroses
+
+2002-11-22 Friday 07:34  stas_degteff
+
+	* msgapi.c (1.33), msgapi.h (1.55): Set _XPENTRY modifyer for
+	strmerr(): fix for '2002-11-18 Monday 10:58  stas_degteff'
+
+2002-11-22 Friday 06:56  stas_degteff
+
+	* compiler.h (1.109): Clean compiler-specific declarations; add
+	define __FLAT__ for DJGPP
+
 2002-11-21 Thursday 07:49  stas_degteff
 
 	* compiler.h (1.108): Prevent constants redefinitions (O_BINARY
