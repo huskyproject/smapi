@@ -183,7 +183,7 @@ static unsigned near _SquishUnlinkBaseFiles(byte  *szName)
   char szFile[PATHLEN];
   unsigned rc=TRUE;
   
-  if (szName && (strlen(szName)+5>PATHLEN)) return FALSE;
+  if ( !szName || (szName && (strlen(szName)+5>PATHLEN)) ) return FALSE;
 
   (void)strcpy(szFile, szName);
   (void)strcat(szFile, dot_sqd);
