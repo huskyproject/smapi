@@ -342,6 +342,7 @@ int lock(int handle, long ofs, long length);
 #define sleep _sleep
 #define write _write
 #define read _read
+#define stat _stat
 
 #define stricmp _strcmpi
 #define strcmpi _strcmpi
