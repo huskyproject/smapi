@@ -57,11 +57,8 @@ OBJS=	1stchar.o  \
 	tdelay.o
 
 
-#.c.o:
-#	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -o $(OBJS)
-
-.c~.a:
-	$(CC) -c $(CFLAGS) $(CDEFS) $(COPT) $*.c
+.c:
+	$(CC) -c $(CFLAGS) $*.c
 
 
 $(TARGET): $(OBJS)
