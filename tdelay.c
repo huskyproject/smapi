@@ -25,8 +25,10 @@
 #include <dos.h>
 #endif
 
+#if defined(OS2)
 #define INCL_NOPM
 #define INCL_DOS    /* must be before prog.h */
+#endif
 
 #include "prog.h"
 
@@ -40,7 +42,7 @@
   }
 
 #elif defined(__MSDOS__)
-  #include <time.h>
+#include <time.h>
 
   void _fast tdelay(int msecs)
   {
@@ -63,7 +65,7 @@
 
 #elif defined(__BEOS__)
 
-  #include <be/kernel/scheduler.h>
+#include <be/kernel/scheduler.h>
   
   void _fast tdelay(int msecs)
   {
@@ -72,7 +74,7 @@
 
 #elif defined(UNIX)
 
-  #include <unistd.h>
+#include <unistd.h>
   
   void _fast tdelay(int msecs)
   {
@@ -80,5 +82,7 @@
   }
   
 #else
-  #error Unknown OS
+#error Unknown OS
 #endif
+
+
