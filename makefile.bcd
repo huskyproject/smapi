@@ -3,7 +3,7 @@
 
 CC=	bcc
 CFLAGS=	-w -ml
-CDEFS=	-DMSDOS
+CDEFS=	-DMSDOS -DNOSEMAPHORES
 COPT=	-O2
 LIB=	tlib
 ASM=	tasm

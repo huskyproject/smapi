@@ -9,7 +9,7 @@
 
 CC=	wcl
 CFLAGS=	-zq -wx -ml -bt=dos
-CDEFS=  -DMSDOS
+CDEFS=  -DMSDOS -DNOSEMAPHORES
 COPT=	-oneatx
 LIB=	wlib
 ASM=	WASM
