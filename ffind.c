@@ -20,13 +20,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "compiler.h"
 
 #if defined(HAS_DIR_H)
 #  include <dir.h>
 #endif
 
-#if !defined( __IBMC__) && !defined(__UNIX__) && !defined(__MINGW32__) && !defined(__MSVC__)
+#if defined(HAS_DOS_H)
 #  include <dos.h>
 #endif
 
