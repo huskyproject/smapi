@@ -1,3 +1,11 @@
+2001-12-16 Sunday 12:01  mche
+
+	* api_jam.c (1.58.2.3), api_sdm.c (1.22.2.2), fexist.c (1.15.2.1),
+	progprot.h (1.9.2.1), sq_area.c (1.19.2.1): feature -
+	createDirectoryTree moved  from hpt/fcommon to smapi/fexist, now
+	when we try to write to msgbase we build DirectoryTree if needed it
+	probably increase speed of tossing to non passthrough areas.
+
 2001-12-09 Sunday 13:04  ml
 
 	* api_jam.c (1.58.2.2), api_jam.h (1.7.2.1), api_jamp.h (1.12.2.1),
