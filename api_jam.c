@@ -23,6 +23,7 @@
 
 #define MSGAPI_HANDLERS
 
+#include <errno.h>
 #include "prog.h"
 #include "stamp.h"
 #include "alc.h"
@@ -848,6 +849,23 @@ int openfilejm(char *name, word mode, mode_t permissions)
    return sopen(name, mode, SH_DENYNONE, permissions);
 }
 
+int opencreatefilejm(char *name, word mode, mode_t permissions)
+{
+  int hF =sopen(name, mode, SH_DENYNONE, permissions);
+
+  if ((hF == -1) && (mode & O_CREAT) && (errno == ENOENT) )
+  {
+     char* slash = strrchr(name, PATH_DELIM);
+     if (slash) {
+        *slash = '\0';
+        _createDirectoryTree(name);
+        *slash = PATH_DELIM;
+     }    
+     hF=sopen(name, mode, SH_DENYNONE, permissions);
+  }
+  return hF;
+}
+
 static int gettz(void)
 {
    struct tm *tm;
@@ -908,7 +926,7 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
    sprintf(lrd, "%s%s", jambase->BaseName, EXT_LRDFILE);
 
    if (*mode == MSGAREA_CREATE) {
-      jambase->HdrHandle = openfilejm(hdr, fop_wpb, permissions);
+      jambase->HdrHandle = opencreatefilejm(hdr, fop_wpb, permissions);
       jambase->TxtHandle = openfilejm(txt, fop_wpb, permissions);
       jambase->IdxHandle = openfilejm(idx, fop_wpb, permissions);
       /* jambase->LrdHandle = openfilejm(lrd, fop_wpb, permissions);
@@ -943,7 +961,7 @@ int Jam_OpenFile(JAMBASE *jambase, word *mode, mode_t permissions)
          return 0;
       }
       *mode = MSGAREA_CREATE;
-      jambase->HdrHandle = openfilejm(hdr, fop_cpb, permissions);
+      jambase->HdrHandle = opencreatefilejm(hdr, fop_cpb, permissions);
       jambase->TxtHandle = openfilejm(txt, fop_cpb, permissions);
       jambase->IdxHandle = openfilejm(idx, fop_cpb, permissions);
       /* jambase->LrdHandle = openfilejm(lrd, fop_cpb, permissions);

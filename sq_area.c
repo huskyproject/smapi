@@ -47,6 +47,7 @@ static char rcs_id[]="$Id$";
 #include <unistd.h>
 #endif
 
+#include <errno.h>
 #include "prog.h"
 #include "alc.h"
 #include "old_msg.h"
@@ -156,8 +157,21 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
   (void)strcpy(szFile, szName);
   (void)strcat(szFile, dot_sqd);
 
-  if ((Sqd->sfd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
-                      FILEMODE(ha->isecho)))==-1)
+  Sqd->sfd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
+                         FILEMODE(ha->isecho));
+
+  if ((Sqd->sfd == -1) && (mode & O_CREAT) && (errno == ENOENT) )
+  {
+     char* slash = strrchr(szName, PATH_DELIM);
+     if (slash) {
+        *slash = '\0';
+        _createDirectoryTree(szName);
+        *slash = PATH_DELIM;
+     }    
+     Sqd->sfd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
+        FILEMODE(ha->isecho));
+  }
+  if(Sqd->sfd == -1)
   {
     msgapierr=MERR_NOENT;
     return FALSE;
