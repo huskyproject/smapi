@@ -271,17 +271,29 @@ static struct flock* file_lock(short type, long ofs, long length)
 
 int lock(int handle, long ofs, long length)
 {
+#ifndef __BEOS__
     return fcntl(handle, F_SETLK, file_lock(F_WRLCK, ofs, length));
+#else
+	return 0;
+#endif   
 }
 
 int waitlock(int handle, long ofs, long length)
 {
+#ifndef __BEOS__
     return fcntl(handle, F_SETLKW, file_lock(F_WRLCK, ofs, length));
+#else
+    return 0;
+#endif
 }
 
 int unlock(int handle, long ofs, long length)
 {
+#ifndef __BEOS__
     return fcntl(handle, F_SETLK, file_lock(F_UNLCK, ofs, length));
+#else
+    return 0;
+#endif
 }
 
 #include <stdio.h>
