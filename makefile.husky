@@ -62,7 +62,7 @@ instdyn: libsmapi.so.$(VER)
 	$(INSTALL) $(ILOPT) libsmapi.so.$(VER) $(LIBDIR)
 	$(LN) $(LNOPT) $(LIBDIR)/libsmapi.so.$(VER) $(LIBDIR)/libsmapi.so.$(VERH)
 	$(LN) $(LNOPT) $(LIBDIR)/libsmapi.so.$(VERH) $(LIBDIR)/libsmapi.so
-        $(LDCONFIG)
+	$(LDCONFIG)
 
 else
 instdyn: $(TARGET)
