@@ -21,7 +21,7 @@
 #define __COMPILER_H__
 
 /*
-  BeOS is NOT Unix, but sometime it seem's to Be ... ;)
+  BeOS is NOT Unix, but sometime it seem's to Be ... ;) 
 */
 #if defined (__BEOS__)
   #ifndef UNIX
