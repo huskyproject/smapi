@@ -44,7 +44,6 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 		*pname++ = PATH_DELIM;
 	new_fname = NULL;
 	if (max_outrun == 0) {
-		max_outrun = MAX_OUTRUN;
 		p = getenv("SEQOUT");
 		if (p && isdigit(*p)) {
 			max_outrun = (unsigned long)atol(p);
@@ -59,6 +58,7 @@ dword _XPENTRY GenMsgId(char *seqdir, unsigned long max_outrun)
 						break;
 			}
 		}
+		else max_outrun = MAX_OUTRUN;
 	}
 	for (try=0;;try++) {
 		strcpy(pname, "*.*");
