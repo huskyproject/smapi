@@ -687,7 +687,7 @@ static sword EXPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * t
             return -1;
         }
 
-        if (!append && msgh->clen <= 0 && msgh->zplen == 0)
+        if (!append && msgh->clen <= 0 && msgh->zplen == 0 && !msgh->sq->isecho)
         {
             statfd = msgh->fd;
             msgh->zplen = (word) WriteZPInfo(msg, WriteToFd, ctxt);
