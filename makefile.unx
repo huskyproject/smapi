@@ -1,0 +1,38 @@
+CC=	 cc
+CFLAGS=
+CDEFS=	-DUNIX
+COPT=
+LIB=	ar
+RANLIB= ranlib
+
+TARGET=	libsmapiunix.a
+
+OBJS=	1stchar.o  \
+	api_sdm.o  \
+	api_sq.o   \
+	cvtdate.o  \
+	date2bin.o \
+	dosdate.o  \
+	fexist.o   \
+	ffind.o    \
+	flush.o    \
+	months.o   \
+	msgapi.o   \
+	parsenn.o  \
+	patmat.o   \
+	qksort.o   \
+	strextra.o \
+	strftim.o  \
+	strocpy.o  \
+	structrw.o \
+	trail.o    \
+	weekday.o
+
+# Thunderbirds are go!
+
+.c.o:
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) -c $<
+	$(LIB) r $(TARGET) $@
+
+$(TARGET): $(OBJS)
+	$(RANLIB) $(TARGET)

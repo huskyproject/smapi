@@ -54,7 +54,7 @@
 #define Mhd ((struct _sdmdata *)(mh->apidata))
 #define MsghMhd ((struct _sdmdata *)(((struct _msgh *)msgh)->sq->apidata))
 
-static byte *hwm_from = (byte *) "-=|ÿSquishMailÿ|=-";
+static byte *hwm_from = (byte *) "-=| SquishMail |=-";
 
 MSG *MSGAPI SdmOpenArea(byte * name, word mode, word type)
 {

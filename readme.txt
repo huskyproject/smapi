@@ -50,6 +50,7 @@ MAKEFILE.QCD   SMAPIQCD.LIB     Microsoft QuickC for DOS 2.5 (makefile
                                 Assembler, MASM, or the Borland Turbo
                                 Assembler, TASM)
 MAKEFILE.RXW   SMAPIRXW.LIB     GNU C for Windows NT 2.7.x (RSXNT/EMX)
+MAKEFILE.UNX   LIBSMAPIUNIX.A   Generic Unix Makefile
 MAKEFILE.WCD   SMAPIWCD.LIB     WATCOM C/C++ for 16-bit DOS 10.x
 MAKEFILE.WCO   SMAPIWCO.LIB     WATCOM C/C++ for 32-bit OS/2 10.x
 MAKEFILE.WCW   SMAPIWCW.LIB     WATCOM C/C++ for 32-bit Windows NT 10.x
@@ -58,6 +59,10 @@ MAKEFILE.WCX   SMAPIWCX.LIB     WATCOM C/C++ for 32-bit DOS 10.x
 Note that the Linux and FreeBSD makefiles must be in UNIX text file
 format (linefeeds only; no carriage returns), in addition to COMPILER.H
 and MSGAPI.H.
+
+The Linux Makefile creates a shared library and depends on GCC, while the
+generic Unix Makefile (makefile.unx) should work on any Unix system with
+any set of cc, ld and ranlib, and creates a static libarry.
 
 
 SUPPORT
