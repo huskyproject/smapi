@@ -327,7 +327,7 @@ static dword EXPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
          } /* endif */
          msgh->cur_pos += bytesread;
       } /* endif */
-      text[bytes] = '\0';
+      text[bytesread] = '\0';
    }
 
    if (clen && ctxt) {
@@ -1106,6 +1106,14 @@ static JAMSUBFIELDptr StrToSubfield(unsigned char *str, dword *len)
       kludge = str+5;
       subtypes = JAMSFLD_PID;
    }
+   else if (strstr(str, "Via ")) {
+      kludge = str+4;
+      subtypes = JAMSFLD_TRACE;
+   }
+   else if (strstr(str, "FLAGS ")) {
+      kludge = str+6;
+      subtypes = JAMSFLD_FLAGS;
+   }
    else {
       kludge = str;
       subtypes = JAMSFLD_FTSKLUDGE;
@@ -1231,7 +1239,7 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 
    /* Orig Address */
 
-   if ((SubFieldCur = NETADDRtoSubf(msg->orig, &clen, 0))) {
+   if (!msgh->sq->isecho && (SubFieldCur = NETADDRtoSubf(msg->orig, &clen, 0))) {
       SubField = (JAMSUBFIELDptr)farrealloc(SubField, sublen+clen);
       memmove((char*)SubField+sublen, SubFieldCur, clen);
       free(SubFieldCur);
@@ -1482,6 +1490,9 @@ void DecodeSubf(MSGH *msgh)
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_PID))) {
          makeKludge(&pid, "\x01PID: ", SubField->Buffer, "", SubField->DatLen);
       }
+      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_TRACE));) {
+         makeKludge(&via, "\001Via ", SubField->Buffer, "\r", SubField->DatLen);
+      }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FTSKLUDGE));) {
          if (strncasecmp(SubField->Buffer, "VIA", 3) == 0) {
             makeKludge(&via, "\x01", SubField->Buffer, "\r", SubField->DatLen);
@@ -1490,16 +1501,13 @@ void DecodeSubf(MSGH *msgh)
          }
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FLAGS));) {
-         makeKludge(&flags, "\x01", SubField->Buffer, "", SubField->DatLen);
+         makeKludge(&flags, "\001FLAGS ", SubField->Buffer, "", SubField->DatLen);
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SEENBY2D));) {
          makeKludge(&seenby, "SEEN-BY: ", SubField->Buffer, "\r", SubField->DatLen);
       }
       for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_PATH2D));) {
-         makeKludge(&seenby, "\x01PATH: ", SubField->Buffer, "\r", SubField->DatLen);
-      }
-      for (SubPos = 0; (SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_FLAGS));) {
-         makeKludge(&path, "\x01", SubField->Buffer, "\r", SubField->DatLen);
+         makeKludge(&path, "\001PATH: ", SubField->Buffer, "\r", SubField->DatLen);
       }
       msgh->ctrl = (unsigned char*)palloc(1);
       msgh->lctrl = (unsigned char*)palloc(1);
