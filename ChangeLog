@@ -1,3 +1,11 @@
+2003-01-20 Monday 09:30  stas_degteff
+
+	* compiler.h (1.156): Fix O_BINARY, SH_DENYNO, P_WAIT
+
+2003-01-20 Monday 09:12  stas_degteff
+
+	* makefile.bsd (1.31): Fix FreeBSD build
+
 2003-01-18 Saturday 19:55  stas_degteff
 
 	* ffind.c (1.23): Fix mingw warning
