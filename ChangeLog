@@ -1,3 +1,26 @@
+2002-11-27 Wednesday 15:56  stas_degteff
+
+	* msgapi.c (1.34): Full check parameters (filename, msgbase type)
+	in MsgOpenArea(), MsgDeleteBase(), MsgValidate()
+
+2002-11-27 Wednesday 15:54  stas_degteff
+
+	* msgapi.h (1.56): Declare MSGTYPE_PASSTHROUGH (from
+	fidoconf/fidoconf.h)
+
+2002-11-27 Wednesday 15:53  stas_degteff
+
+	* sq_area.c (1.24): Prevent trap on remove file with NULL filename
+
+2002-11-27 Wednesday 15:51  stas_degteff
+
+	* api_sdm.c (1.34): Prevent trap on NULL filename in
+	SdmDeleteBase()
+
+2002-11-27 Wednesday 12:14  stas_degteff
+
+	* ffind.c (1.17): Check macros __OS2__ in addition to OS2
+
 2002-11-26 Tuesday 13:30  pgul
 
 	* api_jam.c (1.97): Set high_msg to num_msg
