@@ -12,11 +12,11 @@ Unix:
 
 2. compile smapi
 
-3. copy the library libsmapilnx.so.1.5.7 to a dir like /usr/local/lib
+3. copy the library libsmapilnx.so.1.6.0 to a dir like /usr/local/lib
 
 4. create syslinks:
 	[cd /usr/local/lib]
-	ln -s libsmapilnx.so.1.5.7 libsmapilnx.so.1
+	ln -s libsmapilnx.so.1.6.0 libsmapilnx.so.1
 	ln -s libsmapilnx.so.1 libsmapilnx.so
 
 5. Ensure that /usr/local/lib is in /etc/ld.so.conf
@@ -24,4 +24,4 @@ Unix:
 6. run ldconfig
 
 You're ready. Now you can install hpt and other software which require smapi
-like fidoconfig and the upcoming KFidoEd.
+like fidoconfig or msged.
