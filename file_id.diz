@@ -1,7 +1,0 @@
-SMAPI; Modified Squish MSGAPI  version 2.3.0
-(developer version)
-Contains a modified version of Scott Dudley's
-original MSGAPI0 which supports compilation
-on a number of other platforms in addition
-to those supported by MSGAPI0 and includes
-JAM support as well.
