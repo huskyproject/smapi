@@ -182,6 +182,11 @@
 /* #include <conio.h> */
 #define mysleep(x) delay(x);
 
+#ifndef EXPENTRY
+#define EXPENTRY
+#endif
+
+
 #elif defined(__WATCOMC__) && defined(MSDOS)
 
 /* WATCOM C/C++ for MS-DOS */
