@@ -27,25 +27,25 @@
 #define __API_SQP_H_DEFINED
 
 
-sword EXPENTRY SquishCloseArea(HAREA sq);
-HMSG  EXPENTRY SquishOpenMsg(HAREA sq,word mode,dword msgnum);
-sword EXPENTRY SquishCloseMsg(HMSG msgh);
-dword EXPENTRY SquishReadMsg(HMSG msgh, PXMSG msg, dword offset, dword bytes,
+sword EXPENTRY apiSquishCloseArea(HAREA sq);
+HMSG  EXPENTRY apiSquishOpenMsg(HAREA sq,word mode,dword msgnum);
+sword EXPENTRY apiSquishCloseMsg(HMSG msgh);
+dword EXPENTRY apiSquishReadMsg(HMSG msgh, PXMSG msg, dword offset, dword bytes,
                               byte  *szText, dword clen, byte  *ctxt);
-sword EXPENTRY SquishWriteMsg(HMSG msgh,word append,PXMSG msg,byte  *text,dword textlen,dword totlen,dword clen,byte  *ctxt);
-sword EXPENTRY SquishKillMsg(HAREA sq,dword msgnum);
-sword EXPENTRY SquishLock(HAREA sq);
-sword EXPENTRY SquishUnlock(HAREA sq);
-sword EXPENTRY SquishSetCurPos(HMSG msgh,dword pos);
-dword EXPENTRY SquishGetCurPos(HMSG msgh);
-UMSGID EXPENTRY SquishMsgnToUid(HAREA sq,dword msgnum);
-dword EXPENTRY SquishUidToMsgn(HAREA sq,UMSGID umsgid,word type);
-dword EXPENTRY SquishGetHash(HAREA sq,dword msgnum);
-dword EXPENTRY SquishGetHighWater(HAREA mh);
-sword EXPENTRY SquishSetHighWater(HAREA sq,dword hwm);
-dword EXPENTRY SquishGetTextLen(HMSG msgh);
-dword EXPENTRY SquishGetCtrlLen(HMSG msgh);
-UMSGID EXPENTRY SquishGetNextUid(HAREA ha);
+sword EXPENTRY apiSquishWriteMsg(HMSG msgh,word append,PXMSG msg,byte  *text,dword textlen,dword totlen,dword clen,byte  *ctxt);
+sword EXPENTRY apiSquishKillMsg(HAREA sq,dword msgnum);
+sword EXPENTRY apiSquishLock(HAREA sq);
+sword EXPENTRY apiSquishUnlock(HAREA sq);
+sword EXPENTRY apiSquishSetCurPos(HMSG msgh,dword pos);
+dword EXPENTRY apiSquishGetCurPos(HMSG msgh);
+UMSGID EXPENTRY apiSquishMsgnToUid(HAREA sq,dword msgnum);
+dword EXPENTRY apiSquishUidToMsgn(HAREA sq,UMSGID umsgid,word type);
+dword EXPENTRY apiSquishGetHash(HAREA sq,dword msgnum);
+dword EXPENTRY apiSquishGetHighWater(HAREA mh);
+sword EXPENTRY apiSquishSetHighWater(HAREA sq,dword hwm);
+dword EXPENTRY apiSquishGetTextLen(HMSG msgh);
+dword EXPENTRY apiSquishGetCtrlLen(HMSG msgh);
+UMSGID EXPENTRY apiSquishGetNextUid(HAREA ha);
 
 /* Private functions */
 short _fast _SquishBaseThreadLock(HAREA ha);

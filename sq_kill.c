@@ -87,7 +87,7 @@ static sword _SquishKill(HAREA ha, dword dwMsg, SQHDR *psqh, FOFS fo)
 
 /* This function is used to delete a message from a Squish message base */
 
-sword EXPENTRY SquishKillMsg(HAREA ha, dword dwMsg)
+sword EXPENTRY apiSquishKillMsg(HAREA ha, dword dwMsg)
 {
   SQHDR sqh;
   sword rc;

@@ -581,7 +581,7 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #error "Don't know how to implement record locking."
 /* Using an executable that does no support record locking is
    discouraged in a multitasking environment. If you want to
-   do it anyway, you may uncomment this line. Record lokcing is used
+   do it anyway, you may uncomment this line. Record locking is used
    to obtain a lock on the very first byte of a SQD file which
    indicates that no other program should use the message area now.
 */

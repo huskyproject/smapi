@@ -1,4 +1,10 @@
 ----- cvs ci ------
+Thu Aug 24 13:18:35 UTC 2000
+sms:
+* renamed exported Squish*-functions to apiSquish* to prevent name collisions
+  (e.g. in MsgEd)
+
+----- cvs ci ------
 Thu Aug 24 12:39:45 UTC 2000
 sms:
 * added missing _SquishInit call in MsgOpenApi

@@ -127,7 +127,7 @@ unsigned _SquishCloseOpenAreas(void)
   {
     haNext=Sqd->haNext;
 
-    SquishCloseArea(ha);
+    apiSquishCloseArea(ha);
   }
 
   haOpen=NULL;
@@ -139,24 +139,24 @@ unsigned _SquishCloseOpenAreas(void)
 
 static struct _apifuncs sq_funcs=
 {
-  SquishCloseArea,
-  SquishOpenMsg,
-  SquishCloseMsg,
-  SquishReadMsg,
-  SquishWriteMsg,
-  SquishKillMsg,
-  SquishLock,
-  SquishUnlock,
-  SquishSetCurPos,
-  SquishGetCurPos,
-  SquishMsgnToUid,
-  SquishUidToMsgn,
-  SquishGetHighWater,
-  SquishSetHighWater,
-  SquishGetTextLen,
-  SquishGetCtrlLen,
-  SquishGetNextUid,
-  SquishGetHash
+  apiSquishCloseArea,
+  apiSquishOpenMsg,
+  apiSquishCloseMsg,
+  apiSquishReadMsg,
+  apiSquishWriteMsg,
+  apiSquishKillMsg,
+  apiSquishLock,
+  apiSquishUnlock,
+  apiSquishSetCurPos,
+  apiSquishGetCurPos,
+  apiSquishMsgnToUid,
+  apiSquishUidToMsgn,
+  apiSquishGetHighWater,
+  apiSquishSetHighWater,
+  apiSquishGetTextLen,
+  apiSquishGetCtrlLen,
+  apiSquishGetNextUid,
+  apiSquishGetHash
 };
 
 
@@ -532,7 +532,7 @@ static unsigned near _SquishCloseAreaMsgs(HAREA ha)
   {
     hmNext=hm->hmsgNext;
 
-    if (SquishCloseMsg(hm)==-1)
+    if (apiSquishCloseMsg(hm)==-1)
     {
       msgapierr=MERR_EOPEN;
       return FALSE;
@@ -588,7 +588,7 @@ static unsigned near _SquishRemoveAreaList(HAREA haThis)
 
 /* Close an open message area */
 
-sword EXPENTRY SquishCloseArea(HAREA ha)
+sword EXPENTRY apiSquishCloseArea(HAREA ha)
 {
   if (MsgInvalidHarea(ha))
     return -1;
@@ -616,7 +616,7 @@ sword EXPENTRY SquishCloseArea(HAREA ha)
 
     Sqd->fLockFunc=1;
 
-    SquishUnlock(ha);
+    apiSquishUnlock(ha);
   }
 
   (void)_SquishCloseIndex(Sqd->hix);
