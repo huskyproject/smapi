@@ -99,10 +99,11 @@ int _sqlock(HAREA ha, int t)
      
    if (t == 0)
      forever = 1;
-     
+    
+   t *= 10; 
    while( (rc=_alt_lock(ha)) && (t>0 || forever))
    {
-     tdelay(1000);
+     tdelay(100);
      t--;
    }
    
