@@ -1,3 +1,10 @@
+2002-12-26 Thursday 12:30  stas_degteff
+
+	* Makefile, makefile.bco, makefile.be, makefile.hco, makefile.ibo,
+	makefile.lnx, makefile.sun, makefile.unx, makefile.wco,
+	makefile.wcw (smapi-2_2-stable.[6,1,1,1,1,1,2,2,1,1]): compile with
+	 -DNOSEMAPHORES
+
 2002-11-26 Tuesday 13:00  stas_degteff
 
 	* compiler.h (smapi-2_2-stable.7): Prevent redefinition of S_ISREG
