@@ -1,3 +1,8 @@
+2003-02-19 Wednesday 08:58  stas_degteff
+
+	* compiler.h (1.166): Update DJGPP macroses: undef __UNIX__  UNIX
+	_UNIX __unix__ unix
+
 2003-02-18 Tuesday 12:14  sfpavel
 
 	* debian/: README.Debian, changelog, control, copyright, rules
