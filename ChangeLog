@@ -1,3 +1,8 @@
+2002-05-30 Thursday 15:24  stas
+
+	* patmat.c (1.5): Check for NULL string pointers & for parameters
+	pointed to one string.
+
 2002-05-28 Tuesday 08:54  pavel.gulchouck
 
 	* date2bin.c (1.8): sprintf changed to fts_time
