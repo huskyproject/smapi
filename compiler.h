@@ -1789,26 +1789,35 @@ int qq(void)
 #    define strnicmp strncasecmp
 #  endif
 
-#if !defined(USG)
-#define HAS_SYS_PARAM_H
-#endif
+#  if !defined(USG)
+#  define HAS_SYS_PARAM_H
+#  endif
 
-#if (defined(BSD) && (BSD >= 199103))
-  /* now we can be sure we are on BSD 4.4 */
-#define HAS_SYS_MOUNT_H
-#endif
-  /* we are not on any BSD-like OS */
-  /* list other UNIX os'es without getfree mechanism here */
-#if defined( __svr4__ ) || defined( __SVR4 ) || defined (__linux__) && defined (__GLIBC__)
-#define HAS_SYS_STATVFS_H
-#if !defined (__BEOS__)  /* Strange... BeOS is not SVR4, and not linux*/
-#define HAS_SYS_VFS_H
-#endif
-#endif
+#  if (defined(BSD) && (BSD >= 199103))
+    /* now we can be sure we are on BSD 4.4 */
+#  define HAS_SYS_MOUNT_H
+#  endif
+    /* we are not on any BSD-like OS */
+    /* list other UNIX os'es without getfree mechanism here */
+#  if defined( __svr4__ ) || defined( __SVR4 ) || defined (__linux__) && defined (__GLIBC__)
+#  define HAS_SYS_STATVFS_H
+#  if !defined (__BEOS__)  /* Strange... BeOS is not SVR4, and not linux*/
+#  define HAS_SYS_VFS_H
+#  endif
+#  endif
 
-#if defined (__LINUX__) && !defined(__GLIBC__)
-#define HAS_SYS_VFS_H
-#endif
+#  if defined (__LINUX__) && !defined(__GLIBC__)
+#  define HAS_SYS_VFS_H
+#  endif
+
+#  include <fcntl.h>
+#  ifndef O_BINARY
+#   define O_BINARY 0 /* O_BINARY flag has no effect under UNIX */
+#  endif
+
+#  ifndef O_TEXT
+#   define O_TEXT   0 /* O_TEXT flag has no effect under UNIX */
+#  endif
 
 #  ifndef SH_DENYNONE
 #    define SH_DENYNONE 0
@@ -1824,13 +1833,7 @@ int qq(void)
 
 /* Other OS's may sleep with other functions */
 
-#  ifdef __BEOS__
-#    define mysleep(x) snooze(x*1000000l)
-#    define sleep(x) snooze(x*1000000l)
-#    define HAS_sleep     1
-#    define HAS_SYS_SYSEXITS_H     1  /*  <sys/sysexits.h> */
-#    define HAS_mktime    1
-#  elif defined(__SUN__)
+#  if defined(__SUN__)
 #    define mysleep(x) usleep(x*1000000l)
 #    define sleep(x)   usleep(x*1000000l)
 #    define HAS_sleep     1
@@ -1844,24 +1847,13 @@ int qq(void)
 #    define HAS_vsnprintf 1
 #  endif
 
-#  ifndef __BEOS__
-#    define HAS_SYSEXITS_H     1  /*  <sysexits.h> */
-#  endif
+#  define HAS_SYSEXITS_H       1  /*  <sysexits.h> */
 #  define HAS_UNISTD_H         1  /* <unistd.h> */
 #  define HAS_PWD_H            1  /* <pwd.h> */
 #  define HAS_GRP_H            1  /* may be used "#include <grp.h>" */
 #  define HAS_SIGNAL_H         1  /* <signal.h> */
 #  define HAS_SYS_WAIT_H       1  /* <sys/wait.h> */
 #  define USE_STAT_MACROS
-
-#include <fcntl.h>
-#ifndef O_BINARY
-# define O_BINARY 0 /* O_BINARY flag has no effect under UNIX */
-#endif
-
-#ifndef O_TEXT
-# define O_TEXT   0 /* O_TEXT flag has no effect under UNIX */
-#endif
 
 #if defined(__LINUX__) || defined(__BSD__) || defined(__CYGWIN__)
 #  define HAS_mktime	/* <time.h> */
