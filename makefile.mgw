@@ -1,16 +1,20 @@
 # $Id$
+#
 # Makefile for Building SMAPI with cross-compiler Mingw32
 # No support for the Husky build environment.
 
-CC=gcc
-LIB=ar
-RANLIB=ranlib
+CC	= gcc
+LIB	= ar
+
+RANLIB	= ranlib
 ifeq ($(TERM),msys)
-RM=rm
+RM	= rm
 else
-RM=del
+RM	= del
 endif
-OBJ=	.o
+
+OBJ	= .o
+EXE	=.exe
 
 # __MINGW32__ is predefined macros, __NT__ defined in compiler.h
 # use __MINGW32__ in source code please (if possible)
@@ -28,18 +32,19 @@ include makefile.inc
 
 all: $(TARGET) gnmsgid.exe
 
-.c.o:
+.c$(OBJ):
 	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $<
 	$(LIB) r $(TARGET) $@
 
 $(TARGET): $(OBJS)
 	$(RANLIB) $(TARGET)
 
-gnmsgid.exe: $(OBJS)
-	$(CC) -Wall $(CDEFS) $(COPT) gnmsgid.c -o$@ $(MGOBJS)
-clean:
-	-$(RM) *.o
+gnmsgid$(EXE): $(OBJS)
+	$(CC) -Wall $(CDEFS) $(COPT) gnmsgid.c -o$@ $(MGOBJS) $(TARGET)
 
-distclean:
+clean:
+	-$(RM) *$(OBJ)
+
+distclean: clean
 	-$(RM) $(TARGET)
-	-$(RM) gnmsgid.exe
+	-$(RM) gnmsgid$(EXE)
