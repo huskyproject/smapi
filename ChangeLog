@@ -1,3 +1,25 @@
+2001-12-27 Thursday 21:11  pavel.gulchouck
+
+	* api_jam.c (1.75): "#ifndef LAZY_WRITE_HDR" changed to "#ifdef
+	HARD_WRITE_HDR"
+
+2001-12-27 Thursday 18:47  pavel.gulchouck
+
+	* api_jam.c (1.74): bugfix -- bad TOPT/FMPT/INTL in echomail if
+	open without MSGTYPE_ECHO (hptlink, sqpack)
+
+2001-12-27 Thursday 15:01  mche
+
+	* compiler.h (1.73), msgapi.c (1.21), msgapi.h (1.37): - changed
+	memory allocation function
+	
+	conversion from static library to dynamic under win32 makes
+	smapimvc.dll  with MSVC compiler
+
+2001-12-27 Thursday 01:40  pavel.gulchouck
+
+	* api_jam.c (1.73): bugfix
+
 2001-12-26 Wednesday 09:41  pavel.gulchouck
 
 	* api_jam.c (1.72): Create jdt-file if not exists
