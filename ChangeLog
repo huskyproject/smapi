@@ -1,3 +1,7 @@
+2002-07-22 Monday 17:25  pavel.gulchouck
+
+	* api_jam.c (1.85): Jam_OpenFile() bugfix
+
 2002-07-17 Wednesday 22:00  tobi
 
 	* compiler.h (1.87), strextra.c (1.5): Added support for MacOS X
