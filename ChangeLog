@@ -1,3 +1,7 @@
+2003-02-06 Thursday 11:40  sfpavel
+
+	* makefile.inc (1.10): Fix install of api_jam.h
+
 2003-02-05 Wednesday 11:49  sfpavel
 
 	* msgapi.c (1.40), msgapi.h (1.65): Add CheckSmapiVersion() into
