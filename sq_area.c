@@ -65,6 +65,7 @@ static SEMAPHORE lock_sem;
 static char dot_sqd[]=".sqd";
 static char dot_sqi[]=".sqi";
 static char dot_sql[]=".sql";
+static char dot_lck[]=".lck";
 
 short _SquishInitSem()
 {
@@ -172,6 +173,13 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
     return FALSE;
   }
 
+#ifdef ALTLOCKING
+  (void)strcpy(szFile, szName);
+  (void)strcat(szFile, dot_lck);
+  
+  ha->lck_path = strdup(szFile);
+#endif
+
   return TRUE;
 }
 
@@ -200,6 +208,12 @@ static unsigned near _SquishUnlinkBaseFiles(byte  *szName)
 
   (void)strcpy(szFile, szName);
   (void)strcat(szFile, dot_sql);
+
+  if (unlink(szFile) != 0)
+    rc=FALSE;
+
+  (void)strcpy(szFile, szName);
+  (void)strcat(szFile, dot_lck);
 
   if (unlink(szFile) != 0)
     rc=FALSE;
@@ -625,6 +639,9 @@ sword EXPENTRY apiSquishCloseArea(HAREA ha)
 
   delete_semaphore(&(ha->sem));
 
+  if (ha->lck_path)
+    pfree(ha->lck_path);
+    
   pfree(ha->api);
   pfree(ha->apidata);
   pfree(ha);
