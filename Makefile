@@ -79,9 +79,9 @@ endif
 
 .c$(OBJ):
 	$(CC) $(CFLAGS) $(CDEFS)  $<
-	$(AR) $(AR_R) $(TARGET) $@
 
 $(TARGET): $(OBJS)
+	$(AR) $(AR_R) $(TARGET) $?
 ifdef RANLIB
 	$(RANLIB) $(TARGET)
 endif
