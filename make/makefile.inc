@@ -20,10 +20,10 @@ VERMINOR= 5
 VERH	= $(VERMAJOR).$(VERMINOR)
 VER	= $(VERH).0
 
-OBJS1	= api_jam$(_OBJ) api_sdm$(_OBJ) msgapi$(_OBJ) qksort$(_OBJ)
-OBJS2	= sq_area$(_OBJ) sq_hash$(_OBJ) sq_help$(_OBJ) sq_idx$(_OBJ)
-OBJS3	= sq_kill$(_OBJ) sq_lock$(_OBJ) sq_misc$(_OBJ) sq_msg$(_OBJ)
-OBJS4	= sq_read$(_OBJ) sq_uid$(_OBJ) sq_write$(_OBJ) structrw$(_OBJ)
+OBJS1	= api_jam$(_OBJ) api_sdm$(_OBJ) msgapi$(_OBJ) sq_area$(_OBJ)
+OBJS2	= sq_hash$(_OBJ) sq_help$(_OBJ) sq_idx$(_OBJ) sq_kill$(_OBJ)
+OBJS3	= sq_lock$(_OBJ) sq_misc$(_OBJ) sq_msg$(_OBJ) sq_read$(_OBJ)
+OBJS4	= sq_uid$(_OBJ) sq_write$(_OBJ) structrw$(_OBJ)
 OBJS	= $(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4)
 
 HEADERS = api_brow.h api_jam.h msgapi.h

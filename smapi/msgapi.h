@@ -447,8 +447,6 @@ HUSKYEXT int _XPENTRY CheckSmapiVersion( int need_major, int need_minor,
  */
 HUSKYEXT char * _XPENTRY  strmerr(int msgapierr);
 
-extern void _fast qksort(int a[], size_t n);
-
 
 #if !defined(__OS2__) && !defined(__FLAT__) && !defined(__UNIX__) && !defined(__NT__)
 #ifndef farread
