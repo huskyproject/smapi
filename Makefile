@@ -9,76 +9,65 @@ else
 include ../huskymak.cfg
 endif
 
+ifeq ($(OSTYPE), UNIX)
+  LIBPREFIX=lib
+  DLLPREFIX=lib
+endif
+
 include makefile.inc
 
 ifeq ($(DEBUG), 1)
-  CFLAGS=	$(WARNFLAGS) $(DEBCFLAGS)
-# CFLAGS=	$(WARNFLAGS) $(DEBCFLAGS) -DNO_LOCKING
+  CFLAGS=$(WARNFLAGS) $(DEBCFLAGS)
+# CFLAGS=$(WARNFLAGS) $(DEBCFLAGS) -DNO_LOCKING
 else
-  CFLAGS=	$(WARNFLAGS) $(OPTCFLAGS)
-# CFLAGS=	$(WARNFLAGS) $(OPTCFLAGS) -DNO_LOCKING
+  CFLAGS=$(WARNFLAGS) $(OPTCFLAGS)
+# CFLAGS=$(WARNFLAGS) $(OPTCFLAGS) -DNO_LOCKING
 endif
 
-ifneq ($(OSTYPE), UNIX)
-#  LIBPREFIX=
-else
-  LIBPREFIX=lib
-endif
-
-CDEFS=	-D$(OSTYPE) $(ADDCDEFS) -I$(INCDIR)
-
-TARGET=	$(LIBPREFIX)smapi$(LIB)
-
+CDEFS=-D$(OSTYPE) $(ADDCDEFS) -I$(INCDIR)
 
 ifeq ($(DYNLIBS), 1)
-ALL: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
+all: $(TARGETLIB) $(TARGETDLL).$(VER)
 else
-ALL: $(TARGET)
+all: $(TARGETLIB)
 endif
 
 
-ifeq ($(DYNLIBS), 1)
-all: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
-else
-all: $(TARGET)
-endif
-
-.c$(OBJ):
+.c$(_OBJ):
 	$(CC) $(CFLAGS) $(CDEFS)  $<
 
-$(TARGET): $(OBJS)
-	$(AR) $(AR_R) $(TARGET) $?
+$(TARGETLIB): $(OBJS)
+	$(AR) $(AR_R) $(TARGETLIB) $?
 ifdef RANLIB
-	$(RANLIB) $(TARGET)
+	$(RANLIB) $(TARGETLIB)
 endif                                                             
 
 ifeq ($(DYNLIBS), 1)
   ifeq (~$(MKSHARED)~,~ld~)
-$(LIBPREFIX)smapi.so.$(VER): $(OBJS)
-	$(LD) $(OPTLFLAGS) \
-	      -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
+$(TARGETDLL).$(VER): $(OBJS)
+	$(LD) $(OPTLFLAGS) -o $(TARGETDLL).$(VER) $(OBJS)
   else
-$(LIBPREFIX)smapi.so.$(VER): $(OBJS)
-	$(CC) -shared -Wl,-soname,$(LIBPREFIX)smapi.so.$(VERH) \
-          -o $(LIBPREFIX)smapi.so.$(VER) $(OBJS)
+$(TARGETDLL).$(VER): $(OBJS)
+	$(CC) -shared -Wl,-soname,$(TARGETDLL).$(VERH) \
+          -o $(TARGETDLL).$(VER) $(OBJS)
   endif
 
 instdyn: $(TARGET) $(LIBPREFIX)smapi.so.$(VER)
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
-	$(INSTALL) $(ILOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBDIR)
-	-$(RM) $(RMOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so.$(VERH)
-	-$(RM) $(RMOPT) $(LIBDIR)/$(LIBPREFIX)smapi.so
+	$(INSTALL) $(ILOPT) $(TARGETDLL).$(VER) $(LIBDIR)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL).$(VERH)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL)
 # Changed the symlinks from symlinks with full path to just symlinks.
 # Better so :)
 	cd $(LIBDIR) ;\
-	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so.$(VERH) ;\
-	$(LN) $(LNOPT) $(LIBPREFIX)smapi.so.$(VER) $(LIBPREFIX)smapi.so
+	$(LN) $(LNOPT) $(TARGETDLL).$(VER) $(TARGETDLL).$(VERH) ;\
+	$(LN) $(LNOPT) $(TARGETDLL).$(VER) $(TARGETDLL)
 ifneq (~$(LDCONFIG)~, ~~)
 	$(LDCONFIG)
 endif
 
 else
-instdyn: $(TARGET)
+instdyn: $(TARGETLIB)
 
 endif
 
@@ -86,31 +75,28 @@ FORCE:
 
 install-h-dir: FORCE
 	-$(MKDIR) $(MKDIROPT) $(INCDIR)
-	-$(MKDIR) $(MKDIROPT) $(INCDIR)$(DIRSEP)smapi
+	-$(MKDIR) $(MKDIROPT) $(INCDIR)$(DIRSEP)$(LIBNAME)
 
 %.h: FORCE
-	-$(INSTALL) $(IIOPT) $@ $(INCDIR)$(DIRSEP)smapi
+	-$(INSTALL) $(IIOPT) $@ $(INCDIR)$(DIRSEP)$(LIBNAME)
         
 install-h: install-h-dir $(HEADERS)
 
 install: install-h instdyn
 	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
-	$(INSTALL) $(ISLOPT) $(TARGET) $(LIBDIR)
+	$(INSTALL) $(ISLOPT) $(TARGETLIB) $(LIBDIR)
 
 uninstall:
-	-cd $(INCDIR)$(DIRSEP)smapi$(DIRSEP) ;\
+	-cd $(INCDIR)$(DIRSEP)$(LIBNAME)$(DIRSEP) ;\
 	$(RM) $(RMOPT) $(HEADERS)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGET)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VER)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so.$(VERH)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(LIBPREFIX)smapi.so
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETLIB)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL).$(VER)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL).$(VERH)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL)
 
 clean:
-	-$(RM) $(RMOPT) *$(OBJ)
-	-$(RM) $(RMOPT) *~
+	-$(RM) $(RMOPT) *$(_OBJ)
 
 distclean: clean
-	-$(RM) $(RMOPT) $(TARGET)
-	-$(RM) $(RMOPT) $(LIBPREFIX)smapi.so.$(VER)
-
-all: $(TARGET)
+	-$(RM) $(RMOPT) $(TARGETLIB)
+	-$(RM) $(RMOPT) $(TARGETDLL).$(VER)
