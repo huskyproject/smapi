@@ -1,3 +1,8 @@
+2002-10-14 Monday 17:43  sfpavel
+
+	* debian/: changelog, libsmapi2-dev.dirs, libsmapi2.dirs
+	(smapi-2_2-stable.[10,1,1]): New debian package
+
 2002-10-11 Friday 13:36  stas_degteff
 
 	* api_jam.c, api_sdm.c (smapi-2_2-stable.[5,1]): Fix bug with
