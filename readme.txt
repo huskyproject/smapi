@@ -1,11 +1,12 @@
-SMAPI; Modified Squish MSGAPI - version 2.5-current
+SMAPI; Modified Squish MSGAPI - version 2.4
 
 This version of the SMAPI library is part of the HUSKY fidosoft project.
-This version are development (unstable). Use carefully!
 
 
-Squish MSGAPI0 is copyright 1991 by Scott J. Dudley.  All rights reserved.
-Modifications released to the public domain.
+Squish MSGAPI0 is copyright 1991 by Scott J. Dudley. The terms of use are
+those of the GNU LESSER GENERAL PUBLIC LICENSE (LGPL). In 2003 Scott has
+agreed to change the terms of use to those of the LGPL. See LICENSE for
+details.
 
 Contained in this archive is the source code for the Squish MSGAPI which
 can be used to access Squish format message bases.  It is based heavily
@@ -17,16 +18,6 @@ Edwards and David Begley to produce the MSGAPI3x series of archives
 (MSGAPI38 being the most well-known).  Craig Morrison also provided a bug
 fix.  The objective of SMAPI was to rationalise MSGAPI38 and to avoid
 future confusion in version numbering standards.
-
-All source code modifications are in the public domain, however most of
-the source files in this archive are subject to the restrictions
-contained in the MSGAPI0 licensing agreement.  The licensing agreement is
-contained in this archive in the file LICENCE.TXT.  If you do not have
-this file you should contact Scott Dudley at FidoNet node 1:249/106 or
-Internet e-mail Scott.Dudley@f106.n249.z1.fidonet.org.  In no event
-should you proceed to use any of the source files in this archive without
-having accepted the terms of the MSGAPI0 licensing agreement, or such
-other agreement as you are able to reach with the author.
 
 
 TRADEMARKS
