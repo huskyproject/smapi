@@ -46,17 +46,18 @@ makefile.bco   smapibco.lib     Borland C++ for OS/2 1.0
 makefile.bcw   smapibco.lib     Borland C++ for Windows 4.0
 makefile.be    libsmapibe.a     GNU C for BeOS 2.7.x
 makefile.bsd   libsmapibsd.a    GNU C for FreeBSD 2.7.x
-makefile.bsd4  libsmapibsd.a    GNU C for FreeBSD 2.7.x, use make (FreeBSD 4.*)
+makefile.bsd4  libsmapibsd.a    GNU C for FreeBSD 2.9.x, use BSD make
+                                on FreeBSD 4.x
 makefile.cyg   libsmapicyg.a    GNU C for Cygwin 2.7.x
-makefile.djg   smapidjg.a       GNU C for MS-DOS 2.7.x (DJGPP)
-makefile.emo   smapiemo.lib     GNU C for OS/2 2.7.x (EMX 0.9) with OMF-Style
-                                linkage
+makefile.djg   smapidjg.a       GNU C for MS-DOS DPMI 2.7.x-3.x (DJGPP)
+makefile.emo   smapiemo.lib     GNU C for OS/2 2.7.x (EMX 0.9) and above with
+                                OMF-Style linkage
 makefile.emx   smapiemx.a       GNU C for OS/2 2.7.x (EMX 0.9) a.out-style
                                 linkage (EMX Runtime)
 makefile.hco   smapihco.lib     MetaWare High C for OS/2 3.2
 makefile.ibo   smapiibo.lib     IBM C/Set++ for OS/2 2.0
 makefile.lnx   smapilnx.a       GNU C for Linux 2.7.x
-makefile.mgw   libsmapimgw.a    Mingw32 for NT
+makefile.mgw   libsmapimgw.a    Mingw32 for NT and cross-compilation
 makefile.mvc   smapimvc.lib     Microsoft Visual C/C++ 6.0
 makefile.mvcdll smapimvc.dll    Microsoft Visual C/C++ 6.0
                                 (shared library produced)
@@ -86,7 +87,8 @@ any set of cc, ld and ranlib, and creates a static libarry.
 SUPPORT
 
 SMAPI is no longer supported by Andrew Clarke.
-
+Post your support requests into FIDOSOFT.HUSKY or RU.HUSKY (russian) FIDOnet
+echoes or support/bugtrack area on http://sourceforge.net/projects/husky
 
 PORTING
 
