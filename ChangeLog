@@ -1,3 +1,13 @@
+2005-04-01 Friday 10:24  nick_voronin
+
+	* api_jam.c (smapi-2_4-stable.6): Null reserved HiID in jam
+	subfield structure
+
+2005-03-31 Thursday 23:57  nick_voronin
+
+	* api_jam.c (smapi-2_4-stable.5): Write correct ReplyCRC in message
+	header if no REPLYID string exists.
+
 2005-03-20 Sunday 00:11  sfpavel
 
 	* debian/changelog (smapi-2_4-stable.11): 1.4-RC3 release
