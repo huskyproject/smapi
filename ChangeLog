@@ -1,3 +1,7 @@
+2003-10-01 Wednesday 08:41  pgul
+
+	* tdelay.c (smapi-2_4-stable.3): Remove obsoleted comment
+
 2003-09-26 Friday 01:26  andr_lukyanov
 
 	* tdelay.c (smapi-2_4-stable.2): Fixed OS/2 EMX/WatcomC compilation
@@ -1711,8 +1715,8 @@
 2001-11-26 Monday 21:06  tobi
 
 	* makefile.bcd (1.13), makefile.wcd (1.17) (utags:
-	smapi-2_2_1-release, smapi-2_2_2-release, smapi-2_2_3-release,
-	smapi-2_2_4-release): reduce DOS DGROUP size
+	smapi-2_2_2-release, smapi-2_2_4-release, smapi-2_2_1-release,
+	smapi-2_2_3-release): reduce DOS DGROUP size
 
 2001-11-26 Monday 14:52  tobi
 
@@ -3201,6 +3205,17 @@
 
 1998-05-11 Monday 07:40  tw
 
+	* apidebug.h (1.1.1.1), dosdate.c (1.1.1.1), flushasm.asm
+	(1.1.1.1), licence.txt (1.1.1.1), months.c (1.1.1.1), qksort.c
+	(1.1.1.1), sqasm.asm (1.1.1.1), strocpy.c (1.1.1.1), trail.c
+	(1.1.1.1), unused.h (1.1.1.1), weekday.c (1.1.1.1) (utags:
+	smapi-1_6_4a-release, smapi-2_2_3-release, smapi-2_0_1-release,
+	smapi_1_4, smapi-2_2_2-release, smapi-2_0_0-release,
+	smapi-2_2_1-release, smapi-2_2_4-release, smapi-1_5_6,
+	smapi-1_6_4b-release): smapi 1.4
+
+1998-05-11 Monday 07:40  tw
+
 	* 1stchar.c (1.1), api_brow.h (1.1), api_sdm.c (1.1), api_sdm.h
 	(1.1), api_sdmp.h (1.1), api_sq.h (1.1), api_sqp.h (1.1),
 	compiler.h (1.1), cvtdate.c (1.1), date2bin.c (1.1), dr.h (1.1),
@@ -3214,15 +3229,4 @@
 	(1.1), progprot.h (1.1), readme.txt (1.1), stamp.h (1.1),
 	strextra.c (1.1), strextra.h (1.1), strftim.c (1.1), typedefs.h
 	(1.1): Initial revision
-
-1998-05-11 Monday 07:40  tw
-
-	* apidebug.h (1.1.1.1), dosdate.c (1.1.1.1), flushasm.asm
-	(1.1.1.1), licence.txt (1.1.1.1), months.c (1.1.1.1), qksort.c
-	(1.1.1.1), sqasm.asm (1.1.1.1), strocpy.c (1.1.1.1), trail.c
-	(1.1.1.1), unused.h (1.1.1.1), weekday.c (1.1.1.1) (utags:
-	smapi-1_6_4a-release, smapi_1_4, smapi-2_2_2-release,
-	smapi-2_0_1-release, smapi-2_2_4-release, smapi-1_5_6,
-	smapi-1_6_4b-release, smapi-2_2_1-release, smapi-2_0_0-release,
-	smapi-2_2_3-release): smapi 1.4
 
