@@ -138,7 +138,7 @@ distclean:
 
 
 package: static programs
-        @echo husky library v.$(VER) for Win32 platform (Mingw32 compiler)> file_id.diz
+	@echo husky library v.$(VER) for Win32 platform (Mingw32 compiler)> file_id.diz
 	@echo (Part of HUSKY Fidonet Software Project) >> file_id.diz
 	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) $(TARGETLIB) $(PROGRAMS)
 	$(ARCHIVER) $(ARCFLAGS) $(PACKAGENAME) ../VERSION ../README ../License
