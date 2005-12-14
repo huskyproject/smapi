@@ -405,8 +405,8 @@ static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
     {
         if (mh->num_msg + 1 >= Mhd->msgnum_len)
         {
-            Mhd->msgnum_len += (word) SDM_BLOCK;
-            Mhd->msgnum = realloc(Mhd->msgnum, Mhd->msgnum_len * sizeof(unsigned));
+            word msgnum_len_new = Mhd->msgnum_len + (word) SDM_BLOCK;
+            Mhd->msgnum = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
 
             if (!Mhd->msgnum)
             {
@@ -415,6 +415,7 @@ static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
                 msgapierr = MERR_NOMEM;
 		return NULL;
             }
+            Mhd->msgnum_len = msgnum_len_new;
         }
 
         /*
@@ -1104,14 +1105,15 @@ static sword near _SdmRescanArea(MSGA * mh)
 
             if (mn >= Mhd->msgnum_len)
             {
-            	Mhd->msgnum_len += (word) SDM_BLOCK;
-                Mhd->msgnum = realloc(Mhd->msgnum, Mhd->msgnum_len * sizeof(unsigned));
+                word msgnum_len_new = Mhd->msgnum_len + (word) SDM_BLOCK;
+                Mhd->msgnum = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
 
                 if (!Mhd->msgnum)
                 {
                     msgapierr = MERR_NOMEM;
                     return FALSE;
                 }
+                Mhd->msgnum_len = msgnum_len_new;
             }
 
             thismsg = (word) atoi(ff->ff_name);
