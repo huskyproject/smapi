@@ -326,6 +326,7 @@ extern struct _minf _stdc mi;
 #define MERR_BADMSG 11    /* Bad message frame (Squish)                     */
 #define MERR_TOOBIG 12    /* Too much text/ctrlinfo to fit in frame (Squish)*/
 #define MERR_BADNAME 13   /* Bad area name or file name */
+#define MERR_LIMIT  14    /* Messagebase limit is reached */
 
 /*
  *  Now, a set of macros, which call the specified API function.  These

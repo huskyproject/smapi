@@ -527,6 +527,7 @@ char * _XPENTRY strmerr(int msgapierr)
 	case MERR_BADMSG: return "Bad message frame (Squish)";
 	case MERR_TOOBIG: return "Too much text/ctrlinfo to fit in frame (Squish)";
 	case MERR_BADNAME:return "Bad area name or file name";
+	case MERR_LIMIT:  return "Messagebase limit is reached";
     }
     return "Unknown error";
 }

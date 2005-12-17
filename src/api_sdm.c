@@ -63,7 +63,7 @@
 #include "api_sdmp.h"
 #include "apidebug.h"
 
-#define SDM_BLOCK 256
+#define SDM_BLOCK 256     /* Should be exp2(x) */
 #define Mhd ((struct _sdmdata *)(mh->apidata))
 #define MsghMhd ((struct _sdmdata *)(((struct _msgh *)msgh)->sq->apidata))
 
@@ -412,6 +412,13 @@ static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
 
     if (mode == MOPEN_CREATE)
     {
+        if (mh->num_msg == sizeof(mh->num_msg)*256)
+        {   /* Messagebase implementaion (size) limit (messages counter is full)*/
+            pfree(msgh);
+            close(handle);
+            msgapierr = MERR_LIMIT;
+            return NULL;
+        }
         if (mh->num_msg + 1 >= Mhd->msgnum_len)
         {
             word msgnum_len_new = Mhd->msgnum_len + (word) SDM_BLOCK;
@@ -1128,6 +1135,11 @@ static sword near _SdmRescanArea(MSGA * mh)
             }
 #endif
 
+            if (mh->num_msg == sizeof(mh->num_msg)*256)
+            {   /* Messagebase implementaion (size) limit (messages counter is full)*/
+                msgapierr = MERR_LIMIT;
+                return NULL;
+            }
             if (mn >= Mhd->msgnum_len)
             {
                 word msgnum_len_new = Mhd->msgnum_len + (word) SDM_BLOCK;
