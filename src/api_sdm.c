@@ -412,7 +412,7 @@ static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
 
     if (mode == MOPEN_CREATE)
     {
-        if (mh->num_msg == sizeof(mh->num_msg)*256)
+        if (mh->num_msg == (1 << (sizeof(mh->num_msg) * 8 - 1)))
         {   /* Messagebase implementaion (size) limit (messages counter is full)*/
             pfree(msgh);
             close(handle);
@@ -1135,7 +1135,7 @@ static sword near _SdmRescanArea(MSGA * mh)
             }
 #endif
 
-            if (mh->num_msg == sizeof(mh->num_msg)*256)
+            if (mh->num_msg == (1 << (sizeof(mh->num_msg) * 8 - 1)))
             {   /* Messagebase implementaion (size) limit (messages counter is full)*/
                 msgapierr = MERR_LIMIT;
                 return NULL;
