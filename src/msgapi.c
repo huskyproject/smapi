@@ -210,9 +210,9 @@ byte *StripNasties(byte * str)
 
 /* Copy the text itself to a buffer, or count its length if out==NULL */
 
-static word near _CopyToBuf(byte * p, byte * out, byte ** end)
+static dword near _CopyToBuf(byte * p, byte * out, byte ** end)
 {
-    word len = 0;
+    dword len = 0;
 
     if (out)
     {
@@ -289,7 +289,7 @@ byte *_XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned *length)
 {
     byte *cbuf, *end;
 
-    word clen;
+    dword clen;
 
     /* Figure out how long the control info is */
 
