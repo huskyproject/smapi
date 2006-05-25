@@ -213,8 +213,26 @@ static sword _XPENTRY JamCloseArea(MSGA * jm)
 
 void JamCloseOpenAreas()
 {
+JAMBASE *broken, **current = &broken;
+	*current = NULL;
+
     while(jbOpen)
-        JamCloseArea(jbOpen->jm);
+        if(-1 == JamCloseArea(jbOpen->jm))
+		{	/* avoid infinite loop possibility in case of error in JamCloseArea */
+			/* not closed bases are stored in the broken list */
+			printf("SMAPI ERROR: can't close '%s' properly!", jbOpen->BaseName); /* at least we must say something */
+			*current = jbOpen;
+			current = &(JAMBASE *)(jbOpen->jbNext);
+			jbOpen = jbOpen->jbNext;
+			*current = NULL;
+		}
+
+	/* TODO: implement 'forced close' mode to do as much cleanup work as possible */
+/*
+	jbOpen = broken;
+	while(jbOpen)
+		JamForceCloseArea();
+*/
 }
 
 static MSGH *_XPENTRY JamOpenMsg(MSGA * jm, word mode, dword msgnum)
