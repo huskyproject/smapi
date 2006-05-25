@@ -1,12 +1,50 @@
+2006-05-25 Thursday 14:26  nick_voronin
+
+	* api_jam.c (smapi-2_4-stable.7): This fix prevents infinite loop
+	  in cleanup procedure on abnormal termination (opened messages in
+	  jam databases).
+
+2006-04-24 Monday 17:39  sfpavel
+
+	* debian/changelog (smapi-2_4-stable.13): Husky 1.4-RC5 pre-release
+
+2006-02-09 Thursday 12:08  nick_voronin
+
+	* msgapi.c (smapi-2_4-stable.3): bug with kludges > 64k fixed
+
+2006-01-14 Saturday 12:14  stas_degteff
+
+	* api_sdm.c (smapi-2_4-stable.4): Fix OPUS messagebase limit check.
+	  Thanks to Alexander Shiyan 2:5030/39.2
+
+2005-12-17 Saturday 20:45  stas_degteff
+
+	* api_sdm.c (smapi-2_4-stable.3): Prevent unsigned overflow of
+	  message counter
+
+2005-12-14 Wednesday 15:23  stas_degteff
+
+	* api_sdm.c (smapi-2_4-stable.2): Fix SEGFAULT if memory low at msg
+	  creating. Bugreport from Andrew A. Leonov
+
+2005-06-07 Tuesday 15:19  sfpavel
+
+	* debian/changelog (smapi-2_4-stable.12): 2.4-RC4 pre-release
+
+2005-06-03 Friday 07:12  stas_degteff
+
+	* VERSION (smapi-2_4-stable.3): Change version information to
+	  2.4-stable
+
 2005-04-01 Friday 10:24  nick_voronin
 
 	* api_jam.c (smapi-2_4-stable.6): Null reserved HiID in jam
-	subfield structure
+	  subfield structure
 
 2005-03-31 Thursday 23:57  nick_voronin
 
 	* api_jam.c (smapi-2_4-stable.5): Write correct ReplyCRC in message
-	header if no REPLYID string exists.
+	  header if no REPLYID string exists.
 
 2005-03-20 Sunday 00:11  sfpavel
 
@@ -15,50 +53,25 @@
 2004-07-20 Tuesday 15:01  pgul
 
 	* api_jam.c, structrw.c (smapi-2_4-stable.[4,1]): Migrate jam
-	bugfix from current
+	  bugfix from current
 
 2004-06-02 Wednesday 17:24  sfpavel
 
 	* debian/: changelog, control (smapi-2_4-stable.[10,7]): New debian
-	version
-
-2004-04-13 Tuesday 09:37  sfpavel
-
-	* debian/compat (1.1): file compat was initially added on branch
-	smapi-2_4-stable.
-
-2004-04-13 Tuesday 09:37  sfpavel
-
-	* debian/libsmapi2.install (1.1): file libsmapi2.install was
-	initially added on branch smapi-2_4-stable.
-
-2004-04-13 Tuesday 09:37  sfpavel
-
-	* debian/libsmapi-dev.preinst (1.1): file libsmapi-dev.preinst was
-	initially added on branch smapi-2_4-stable.
+	  version
 
 2004-04-13 Tuesday 09:37  sfpavel
 
 	* debian/: changelog, compat, control, libsmapi-dev.install,
-	libsmapi-dev.links, libsmapi-dev.preinst, libsmapi2-dev.files,
-	libsmapi2-dev.links, libsmapi2-dev.preinst, libsmapi2.files,
-	libsmapi2.install, rules
-	(smapi-2_4-stable.[9,1,6,1,1,1,1,1,1,1,1,3]): New debian version
-
-2004-04-13 Tuesday 09:37  sfpavel
-
-	* debian/libsmapi-dev.install (1.1): file libsmapi-dev.install was
-	initially added on branch smapi-2_4-stable.
-
-2004-04-13 Tuesday 09:37  sfpavel
-
-	* debian/libsmapi-dev.links (1.1): file libsmapi-dev.links was
-	initially added on branch smapi-2_4-stable.
+	  libsmapi-dev.links, libsmapi-dev.preinst, libsmapi2-dev.files,
+	  libsmapi2-dev.links, libsmapi2-dev.preinst, libsmapi2.files,
+	  libsmapi2.install, rules
+	  (smapi-2_4-stable.[9,1,6,1,1,1,1,1,1,1,1,3]): New debian version
 
 2004-03-09 Tuesday 09:52  sfpavel
 
 	* compiler.h (smapi-2_4-stable.10): Fix compiler.h for SUNOS (patch
-	from sir)
+	  from sir)
 
 2004-02-11 Wednesday 20:59  d_sergienko
 
@@ -67,12 +80,12 @@
 2004-01-10 Saturday 14:54  d_sergienko
 
 	* api_jam.c (smapi-2_4-stable.3): fixed bug with reading messages
-	from JAM base
+	  from JAM base
 
 2004-01-09 Friday 04:46  andr_lukyanov
 
 	* ffind.h, makefile.mvc, makefile.mvcdll
-	(smapi-2_4-stable.[2,1,1]): Fix MSVC compilation
+	  (smapi-2_4-stable.[2,1,1]): Fix MSVC compilation
 
 2004-01-07 Wednesday 23:40  d_sergienko
 
@@ -81,18 +94,18 @@
 2004-01-07 Wednesday 16:38  d_sergienko
 
 	* api_jam.c (smapi-2_4-stable.1): fix activemsgs if JAM header is
-	broken (patch from Igor Romanovsky)
+	  broken (patch from Igor Romanovsky)
 
 2004-01-07 Wednesday 04:14  d_sergienko
 
 	* ffind.c (smapi-2_4-stable.4): backported mche's patch which fixes
-	work with hidden files on Win32.
+	  work with hidden files on Win32.
 
 2003-12-27 Saturday 21:26  d_sergienko
 
 	* ffind.c, locking.c, msgapi.c, sq_help.c
-	(smapi-2_4-stable.[3,2,2,1]): fix compiler warnings about unused
-	wariables
+	  (smapi-2_4-stable.[3,2,2,1]): fix compiler warnings about unused
+	  wariables
 
 2003-10-01 Wednesday 08:41  pgul
 
@@ -105,17 +118,17 @@
 2003-09-22 Monday 04:52  andr_lukyanov
 
 	* tdelay.c, compiler.h (smapi-2_4-stable.[1,9]): Fixed OS/2 WatcomC
-	compilation
+	  compilation
 
 2003-09-18 Thursday 05:49  sfpavel
 
 	* debian/changelog (smapi-2_4-stable.8): New stable version:
-	2.4-RC2
+	  2.4-RC2
 
 2003-08-10 Sunday 08:35  pgul
 
 	* msgapi.c (smapi-2_4-stable.1): Do not skip first SoftCR when
-	write SDM message
+	  write SDM message
 
 2003-05-29 Thursday 20:45  d_sergienko
 
@@ -124,23 +137,23 @@
 2003-04-30 Wednesday 09:41  sfpavel
 
 	* debian/: changelog, control (smapi-2_4-stable.[7,5]): New stable
-	version: 2.4-RC1
+	  version: 2.4-RC1
 
 2003-03-19 Wednesday 11:55  sfpavel
 
 	* debian/control (smapi-2_4-stable.4): debian: add conflicts with
-	huskybase-2.0 for libsmapi2-dev package
+	  huskybase-2.0 for libsmapi2-dev package
 
 2003-03-19 Wednesday 11:44  sfpavel
 
 	* debian/: changelog, control, docs, libsmapi2.dirs, overrides,
-	rules, shlibs (smapi-2_4-stable.[6,3,2,1,1,2,2]): New debian
-	version
+	  rules, shlibs (smapi-2_4-stable.[6,3,2,1,1,2,2]): New debian
+	  version
 
 2003-03-18 Tuesday 06:06  stas_degteff
 
 	* sq_area.c (smapi-2_4-stable.2): Fix _SquishCreateNewBase(): don't
-	rewrite old file
+	  rewrite old file
 
 2003-03-13 Thursday 16:03  stas_degteff
 
@@ -149,7 +162,7 @@
 2003-03-13 Thursday 08:59  stas_degteff
 
 	* Makefile, makefile.inc (smapi-2_4-stable.[1,3]): Fix
-	install/uninstall library
+	  install/uninstall library
 
 2003-03-12 Wednesday 21:41  d_sergienko
 
@@ -158,12 +171,12 @@
 2003-03-12 Wednesday 07:32  stas_degteff
 
 	* prog.h (smapi-2_4-stable.1): Fix EMX build. Thanks to Andr
-	Luk'yanov
+	  Luk'yanov
 
 2003-03-12 Wednesday 06:15  stas_degteff
 
 	* ffind.c (smapi-2_4-stable.2): Fix EMX warnings. Thanks to Andr
-	Luk'yanov  2:5001/7
+	  Luk'yanov  2:5001/7
 
 2003-03-11 Tuesday 08:20  stas_degteff
 
@@ -172,7 +185,7 @@
 2003-03-11 Tuesday 08:17  stas_degteff
 
 	* api_sdm.c, locking.c (smapi-2_4-stable.[1,1]): Fix compiler
-	warnings on BeOS. Thanks to Paul Galashin <wblaze@yandex.ru>
+	  warnings on BeOS. Thanks to Paul Galashin <wblaze@yandex.ru>
 
 2003-03-07 Friday 13:28  stas_degteff
 
@@ -185,17 +198,17 @@
 2003-03-05 Wednesday 12:43  stas_degteff
 
 	* compiler.h, dr.h, makefile.emx (smapi-2_4-stable.[7,1,1]): Fix
-	EXM build
+	  EXM build
 
 2003-03-05 Wednesday 10:30  sfpavel
 
 	* debian/: libsmapi2.dirs (1.3), overrides (1.1): Fix warnings for
-	debian package
+	  debian package
 
 2003-03-05 Wednesday 08:55  stas_degteff
 
 	* compiler.h (smapi-2_4-stable.6): Fix EMX build: define macro
-	SMAPI_EXT
+	  SMAPI_EXT
 
 2003-03-05 Wednesday 08:33  stas_degteff
 
@@ -212,18 +225,18 @@
 2003-03-04 Tuesday 12:54  stas_degteff
 
 	* compiler.h (smapi-2_4-stable.2): Use sleep() from unistd.h in
-	BeOS build
+	  BeOS build
 
 2003-03-04 Tuesday 12:51  stas_degteff
 
 	* compiler.h (smapi-2_4-stable.1): Prevent warnings in BeOS (use
-	unistd.h)
+	  unistd.h)
 
 2003-03-03 Monday 13:10  stas_degteff
 
 	* apidebug.h, ffind.c, ffind.h, flush.c, msgapi.h, sq_area.c,
-	strextra.h (smapi-2_4-stable.[1,1,1,1,3,1,1]): Final implement
-	macros defined in compiler.h: bugfix for BeOS
+	  strextra.h (smapi-2_4-stable.[1,1,1,1,3,1,1]): Final implement
+	  macros defined in compiler.h: bugfix for BeOS
 
 2003-03-01 Saturday 18:54  stas_degteff
 
@@ -240,7 +253,7 @@
 2003-02-25 Tuesday 09:48  sfpavel
 
 	* debian/changelog (smapi-2_4-stable.5): New debian version:
-	2.4-beta2
+	  2.4-beta2
 
 2003-02-21 Friday 19:20  stas_degteff
 
@@ -249,7 +262,7 @@
 2003-02-21 Friday 07:51  sfpavel
 
 	* debian/: changelog, docs (smapi-2_4-stable.[4,1]): Add HISTORY to
-	debian package
+	  debian package
 
 2003-02-20 Thursday 12:07  stas_degteff
 
@@ -270,13 +283,13 @@
 2003-02-19 Wednesday 08:58  stas_degteff
 
 	* compiler.h (1.166): Update DJGPP macroses: undef __UNIX__  UNIX
-	_UNIX __unix__ unix
+	  _UNIX __unix__ unix
 
 2003-02-18 Tuesday 12:14  sfpavel
 
 	* debian/: README.Debian, changelog, control, copyright, rules
-	(smapi-2_4-stable.[1,3,2,1,1]): New debian version - change section
-	to main
+	  (smapi-2_4-stable.[1,3,2,1,1]): New debian version - change
+	  section to main
 
 2003-02-18 Tuesday 11:48  sfpavel
 
@@ -285,12 +298,12 @@
 2003-02-18 Tuesday 11:36  sfpavel
 
 	* COPYING, LICENSE, licence.txt (smapi-2_4-stable.[1,1,1]): Changed
-	license terms to LGPL in agreement with Scott Dudley
+	  license terms to LGPL in agreement with Scott Dudley
 
 2003-02-18 Tuesday 11:06  os2tobi
 
 	* LICENSE (1.1): Changed license terms to LGPL in agreement with
-	Scott Dudley.
+	  Scott Dudley.
 
 2003-02-18 Tuesday 04:54  stas_degteff
 
@@ -299,49 +312,49 @@
 2003-02-16 Sunday 12:44  stas_degteff
 
 	* makefile.bsd, readme.txt (smapi-2_4-stable.[1,2]): Change BSD
-	makefile for using BSD version of make utility
+	  makefile for using BSD version of make utility
 
-2003-02-16 Sunday 12:44  stas_degteff
+2003-02-16 Sunday 12:43  stas_degteff
 
 	* INSTALL (smapi-2_4-stable.1): Rewrite installation instructions
 
 2003-02-11 Tuesday 12:30  sfpavel
 
 	* debian/changelog (smapi-2_4-stable.2): Change debian version to
-	2.4.0-beta1
+	  2.4.0-beta1
 
 2003-02-11 Tuesday 07:16  sfpavel
 
 	* debian/: changelog, control, shlibs (smapi-2_4-stable.[1,1,1]):
-	New debian version
+	  New debian version
 
 2003-02-11 Tuesday 01:18  sfpavel
 
 	* makefile.inc, msgapi.h, readme.txt (smapi-2_4-stable.[2,2,1]):
-	Add to previous changes
+	  Add to previous changes
 
 2003-02-11 Tuesday 01:00  sfpavel
 
 	* VERSION, file_id.diz, msgapi.h (smapi-2_4-stable.[1,1,1]): Change
-	version to 2.4.0
+	  version to 2.4.0
 
 2003-02-07 Friday 08:21  stas_degteff
 
 	* msgapi.h (1.66): Add comments for CheckSmapiVersion()
 
-2003-02-06 Thursday 11:42  sfpavel
+2003-02-06 Thursday 11:40  sfpavel
 
 	* makefile.inc (smapi-2_4-stable.1): Fix install of api_jam.h
 
 2003-02-05 Wednesday 11:49  sfpavel
 
 	* msgapi.c (1.40), msgapi.h (1.65): Add CheckSmapiVersion() into
-	msgapi.h
+	  msgapi.h
 
 2003-02-05 Wednesday 11:09  sfpavel
 
 	* Makefile (1.38), debian/changelog (1.20), debian/control (1.9):
-	New debian package
+	  New debian package
 
 2003-02-05 Wednesday 07:52  sfpavel
 
@@ -358,23 +371,23 @@
 2003-02-01 Saturday 22:14  stas_degteff
 
 	* api_jam.c (1.102), makefile.cyg (1.12), msgapi.c (1.38),
-	sq_area.c (1.28), sq_write.c (1.13): Fix warnings: differ in
-	signedness
+	  sq_area.c (1.28), sq_write.c (1.13): Fix warnings: differ in
+	  signedness
 
 2003-02-01 Saturday 16:02  d_sergienko
 
 	* Makefile (1.36): join cd && rm into one shell execution in
-	uninstall target
+	  uninstall target
 
 2003-02-01 Saturday 15:20  d_sergienko
 
 	* Makefile (1.35), makefile.inc (1.9): move headers into
-	makefile.inc from Makefile
+	  makefile.inc from Makefile
 
 2003-02-01 Saturday 10:26  d_sergienko
 
 	* Makefile (1.34): use $(OBJS), $(VER) and $(VERH) from
-	makefile.inc
+	  makefile.inc
 
 2003-01-31 Friday 05:58  stas_degteff
 
@@ -391,7 +404,7 @@
 2003-01-27 Monday 20:27  stas_degteff
 
 	* compiler.h (1.160): Fix BSD compilation: sleep() and mktime()
-	presents.
+	  presents.
 
 2003-01-27 Monday 16:22  stas_degteff
 
@@ -400,7 +413,7 @@
 2003-01-23 Thursday 22:17  d_sergienko
 
 	* Makefile (1.33): install static library when invoking 'make
-	install' instead of 'make' and only then 'make install'
+	  install' instead of 'make' and only then 'make install'
 
 2003-01-23 Thursday 10:37  stas_degteff
 
@@ -409,7 +422,7 @@
 2003-01-22 Wednesday 05:54  stas_degteff
 
 	* genmsgid.c (1.20): Fix: segdir existents check. Thanks to
-	Alexander Reznikov <homebrewer@yandex.ru>
+	  Alexander Reznikov <homebrewer@yandex.ru>
 
 2003-01-21 Tuesday 11:52  quetschke
 
@@ -426,12 +439,12 @@
 2003-01-21 Tuesday 09:38  stas_degteff
 
 	* genmsgid.c (1.18): Fix seqdir creation and improve performance.
-	Thanks to Alexander Reznikov 2:4600/220
+	  Thanks to Alexander Reznikov 2:4600/220
 
 2003-01-21 Tuesday 06:06  stas_degteff
 
 	* smapiDll.dsp (1.6), smapiStatic.dsp (1.3): 0x0a --> 0x0d0x0a for
-	*.dsp
+	  *.dsp
 
 2003-01-20 Monday 09:30  stas_degteff
 
@@ -452,8 +465,8 @@
 2003-01-17 Friday 15:39  d_sergienko
 
 	* compiler.h (1.154), strextra.c (1.6), strextra.h (1.6), strftim.c
-	(1.7): 
-	implement strupr() for all systems except MSVC
+	  (1.7):
+	  implement strupr() for all systems except MSVC
 
 2003-01-17 Friday 12:57  stas_degteff
 
@@ -474,12 +487,12 @@
 2003-01-17 Friday 07:33  stas_degteff
 
 	* compiler.h (1.150): Fix mingw/cygwin defines: HAS_DIRECT_H -->
-	HAS_DIRENT_H
+	  HAS_DIRENT_H
 
 2003-01-17 Friday 07:23  stas_degteff
 
 	* strftim.c (1.6): Do not compile unised code (strftim() used on
-	some compilers only); More accuracy fix for strupr()
+	  some compilers only); More accuracy fix for strupr()
 
 2003-01-16 Thursday 16:58  gerritkuehn
 
@@ -492,13 +505,13 @@
 2003-01-16 Thursday 16:56  gerritkuehn
 
 	* genmsgid.c (1.17), sq_area.c (1.27): Added inclusion of
-	compiler.h.
+	  compiler.h.
 
 2003-01-16 Thursday 16:56  gerritkuehn
 
 	* compiler.h (1.149): Added defines for FreeBSD and Linux
-	(HAS_sleep, HAS_strftime).  Fixed syntax error (define <fcntl.h> ->
-	include <fcntl.h>).  Fixed pragma/warning cut&paste error.
+	  (HAS_sleep, HAS_strftime).  Fixed syntax error (define <fcntl.h>
+	  -> include <fcntl.h>).  Fixed pragma/warning cut&paste error.
 
 2003-01-16 Thursday 14:53  mche
 
@@ -506,13 +519,13 @@
 
 2003-01-16 Thursday 13:13  stas_degteff
 
-	* compiler.h (1.147): New defines: HAS_SYS_SYSEXITS_H 
-	HAS_SYSEXITS_H	HAS_GRP_H
+	* compiler.h (1.147): New defines: HAS_SYS_SYSEXITS_H
+	  HAS_SYSEXITS_H  HAS_GRP_H
 
 2003-01-16 Thursday 10:10  stas_degteff
 
 	* compiler.h (1.146): Remove obsoleted checks; add defines for some
-	unixes
+	  unixes
 
 2003-01-16 Thursday 08:07  stas_degteff
 
@@ -533,7 +546,7 @@
 2003-01-15 Wednesday 11:03  stas_degteff
 
 	* msgapi.h (1.64), old_msg.h (1.3): Add comments about XMSG_SIZE
-	and OMSG_SIZE: this is sizes of data on disk
+	  and OMSG_SIZE: this is sizes of data on disk
 
 2003-01-15 Wednesday 09:42  stas_degteff
 
@@ -549,8 +562,8 @@
 
 2003-01-15 Wednesday 09:20  mche
 
-	* genmsgid.c (1.16), gnmsgid.c (1.6): patch by [Alexander Reznikov 
-			2:4600/220]
+	* genmsgid.c (1.16), gnmsgid.c (1.6): patch by [Alexander Reznikov
+			  2:4600/220]
 
 2003-01-15 Wednesday 08:33  mche
 
@@ -559,12 +572,12 @@
 2003-01-15 Wednesday 08:25  mche
 
 	* compiler.h (1.139): fix macro redefenition for MSVC probably
-	other compilers have the same problem with compilation smapi
+	  other compilers have the same problem with compilation smapi
 
 2003-01-15 Wednesday 06:28  stas_degteff
 
 	* api_jam.c (1.101), api_sdm.c (1.37): Replace '#include  "alc.h"'
-	with it;s code: '#include <malloc.h>'
+	  with it;s code: '#include <malloc.h>'
 
 2003-01-15 Wednesday 05:56  stas_degteff
 
@@ -577,15 +590,15 @@
 2003-01-15 Wednesday 05:40  stas_degteff
 
 	* msgapi.c (1.37), prog.h (1.9), sq_area.c (1.26), sq_hash.c (1.7),
-	sq_help.c (1.9), sq_idx.c (1.10), sq_kill.c (1.7), sq_lock.c
-	(1.23), sq_msg.c (1.9), sq_read.c (1.10), sq_uid.c (1.8),
-	sq_write.c (1.12), sq_misc.c (1.8): Replace '#include  "alc.h"'
-	with it;s code: '#include <malloc.h>'
+	  sq_help.c (1.9), sq_idx.c (1.10), sq_kill.c (1.7), sq_lock.c
+	  (1.23), sq_msg.c (1.9), sq_read.c (1.10), sq_uid.c (1.8),
+	  sq_write.c (1.12), sq_misc.c (1.8): Replace '#include  "alc.h"'
+	  with it;s code: '#include <malloc.h>'
 
 2003-01-15 Wednesday 05:35  stas_degteff
 
 	* makefile.wcd (1.26), makefile.wco (1.23), makefile.wcw (1.28),
-	makefile.wcx (1.23): Fix gnmsgid.exe build for Watcom C
+	  makefile.wcx (1.23): Fix gnmsgid.exe build for Watcom C
 
 2003-01-15 Wednesday 05:34  stas_degteff
 
@@ -606,12 +619,12 @@
 2003-01-14 Tuesday 09:35  stas_degteff
 
 	* compiler.h (1.137): Add information about some compilers. Thanks
-	to  Andr Luk'yanov
+	  to  Andr Luk'yanov
 
 2003-01-14 Tuesday 09:14  stas_degteff
 
 	* compiler.h (1.136): Use macroses from documentation of MS Visual
-	C/C++
+	  C/C++
 
 2003-01-14 Tuesday 08:10  mche
 
@@ -631,21 +644,21 @@
 
 2003-01-14 Tuesday 07:21  mche
 
-	* compiler.h (1.131), locking.c (1.35): do not define 
-	__LITTLE_ENDIAN__ for Alpha processors for MSVC
+	* compiler.h (1.131), locking.c (1.35): do not define
+	  __LITTLE_ENDIAN__ for Alpha processors for MSVC
 
 2003-01-14 Tuesday 07:10  stas_degteff
 
 	* compiler.h (1.130), makefile.mvc (1.14): Try to select intel x86
-	or alpha for MS VC compilation
+	  or alpha for MS VC compilation
 
 2003-01-14 Tuesday 06:48  stas_degteff
 
 	* compiler.h (1.129), fexist.c (1.30), flush.c (1.17), locking.c
-	(1.34), makefile.cyg (1.11), makefile.wcd (1.25), makefile.wco
-	(1.22), makefile.wcw (1.27), makefile.wcx (1.22), msgapi.h (1.63),
-	progprot.h (1.22), setfsize.c (1.15), structrw.c (1.37): Make new
-	code compilable on Watcom C
+	  (1.34), makefile.cyg (1.11), makefile.wcd (1.25), makefile.wco
+	  (1.22), makefile.wcw (1.27), makefile.wcx (1.22), msgapi.h
+	  (1.63), progprot.h (1.22), setfsize.c (1.15), structrw.c (1.37):
+	  Make new code compilable on Watcom C
 
 2003-01-14 Tuesday 06:48  mche
 
@@ -658,7 +671,7 @@
 2003-01-13 Monday 14:39  stas_degteff
 
 	* makefile.inc (1.7): Fix dependencies list. Thanks to Alexander
-	Reznikov 2:4600/220
+	  Reznikov 2:4600/220
 
 2003-01-13 Monday 13:46  stas_degteff
 
@@ -679,13 +692,14 @@
 2003-01-13 Monday 10:43  stas_degteff
 
 	* api_jam.c (1.100), api_sdm.c (1.36), compiler.h (1.122), dr.h
-	(1.2), ffind.c (1.22), genmsgid.c (1.15), gnmsgid.c (1.5),
-	locking.c (1.33), msgapi.c (1.36), msgapi.h (1.62), progprot.h
-	(1.21), sq_area.c (1.25), sq_hash.c (1.6), sq_help.c (1.8),
-	sq_idx.c (1.9), sq_kill.c (1.6), sq_lock.c (1.22), sq_misc.c (1.7),
-	sq_msg.c (1.8), sq_read.c (1.9), sq_uid.c (1.7), sq_write.c (1.11),
-	stamp.h (1.5), strftim.c (1.4), structrw.c (1.36), typedefs.h
-	(1.6): Use new defines for compiler-cpecific code
+	  (1.2), ffind.c (1.22), genmsgid.c (1.15), gnmsgid.c (1.5),
+	  locking.c (1.33), msgapi.c (1.36), msgapi.h (1.62), progprot.h
+	  (1.21), sq_area.c (1.25), sq_hash.c (1.6), sq_help.c (1.8),
+	  sq_idx.c (1.9), sq_kill.c (1.6), sq_lock.c (1.22), sq_misc.c
+	  (1.7), sq_msg.c (1.8), sq_read.c (1.9), sq_uid.c (1.7),
+	  sq_write.c (1.11), stamp.h (1.5), strftim.c (1.4), structrw.c
+	  (1.36), typedefs.h (1.6): Use new defines for compiler-cpecific
+	  code
 
 2003-01-13 Monday 08:20  stas_degteff
 
@@ -694,7 +708,7 @@
 2003-01-13 Monday 08:12  stas_degteff
 
 	* makefile.inc (1.6), makefile.bcd (1.17): Fix makefile for Borland
-	C/DOS
+	  C/DOS
 
 2003-01-12 Sunday 16:05  mche
 
@@ -707,12 +721,12 @@
 2003-01-12 Sunday 15:11  mche
 
 	* compiler.h (1.119), smapiDll.dsp (1.5): define INTEL for MSVC in
-	compiler.h
+	  compiler.h
 
 2003-01-11 Saturday 17:36  mche
 
 	* compiler.h (1.118), ffind.h (1.20), flush.c (1.16), prog.h (1.7):
-	fix MSVC dll compilation
+	  fix MSVC dll compilation
 
 2003-01-11 Saturday 16:08  mche
 
@@ -725,21 +739,21 @@
 2003-01-11 Saturday 12:55  stas_degteff
 
 	* compiler.h (1.116), fexist.c (1.29), ffind.c (1.21), ffind.h
-	(1.19), flush.c (1.15), gnmsgid.c (1.4), makefile.cyg (1.9),
-	makefile.emo (1.25), makefile.emx (1.18), msgapi.h (1.60), prog.h
-	(1.5), progprot.h (1.20), setfsize.c (1.14), strftim.c (1.3),
-	tdelay.c (1.14): Update compiler-specific code
+	  (1.19), flush.c (1.15), gnmsgid.c (1.4), makefile.cyg (1.9),
+	  makefile.emo (1.25), makefile.emx (1.18), msgapi.h (1.60), prog.h
+	  (1.5), progprot.h (1.20), setfsize.c (1.14), strftim.c (1.3),
+	  tdelay.c (1.14): Update compiler-specific code
 
 2003-01-10 Friday 15:39  mche
 
 	* fexist.c (1.28), ffind.c (1.20), ffind.h (1.18): fix smapi
-	compilation with MSVC
+	  compilation with MSVC
 
 2003-01-10 Friday 14:48  stas_degteff
 
 	* makefile.inc (1.5), makefile.wcd (1.24), makefile.wco (1.21),
-	makefile.wcw (1.26), makefile.wcx (1.21): Update makefiles for
-	Watcom C 10.0: use makefile.inc
+	  makefile.wcw (1.26), makefile.wcx (1.21): Update makefiles for
+	  Watcom C 10.0: use makefile.inc
 
 2003-01-10 Friday 14:46  stas_degteff
 
@@ -748,7 +762,7 @@
 2003-01-10 Friday 14:38  stas_degteff
 
 	* ffind.c (1.19), ffind.h (1.17), flush.c (1.14), locking.c (1.32),
-	setfsize.c (1.13), tdelay.c (1.13): replace OS@ to __OS2__ & etc.
+	  setfsize.c (1.13), tdelay.c (1.13): replace OS@ to __OS2__ & etc.
 
 2003-01-10 Friday 14:13  stas_degteff
 
@@ -761,8 +775,8 @@
 2003-01-10 Friday 13:46  stas_degteff
 
 	* fexist.c (1.26), ffind.c (1.18), ffind.h (1.16), flush.c (1.12),
-	locking.c (1.31), prog.h (1.4), progprot.h (1.19), stamp.h (1.4):
-	fix WATCOM C warnings
+	  locking.c (1.31), prog.h (1.4), progprot.h (1.19), stamp.h (1.4):
+	  fix WATCOM C warnings
 
 2003-01-10 Friday 13:36  mche
 
@@ -771,12 +785,12 @@
 2003-01-10 Friday 13:18  stas_degteff
 
 	* compiler.h (1.114): Update compiler declarations. hanks to Igor
-	Romanovsky
+	  Romanovsky
 
 2003-01-10 Friday 09:42  sfpavel
 
 	* debian/: changelog (1.19), copyright (1.4), libsmapi2-dev.preinst
-	(1.3), libsmapi2.files (1.4): New debian version
+	  (1.3), libsmapi2.files (1.4): New debian version
 
 2003-01-10 Friday 09:25  sfpavel
 
@@ -789,7 +803,7 @@
 2003-01-10 Friday 06:10  andr_lukyanov
 
 	* gnmsgid.c (1.2), makefile.emx (1.17): Fix output and EMX
-	compilation
+	  compilation
 
 2003-01-10 Friday 01:17  andr_lukyanov
 
@@ -798,60 +812,60 @@
 2003-01-09 Thursday 12:44  stas_degteff
 
 	* Makefile (1.29): set permissions for install documentations &
-	libraries. Patch from Max Khon <fjoe@iclub.nsu.ru>
+	  libraries. Patch from Max Khon <fjoe@iclub.nsu.ru>
 
 2003-01-09 Thursday 11:42  mche
 
 	* makefile.cyg (1.8), makefile.mgw (1.19): correct makefiles for
-	building gnmsgid.exe
+	  building gnmsgid.exe
 
 2003-01-09 Thursday 08:51  andr_lukyanov
 
 	* makefile.djg (1.22), makefile.wcd (1.23), makefile.wco (1.19),
-	makefile.wcw (1.25), makefile.wcx (1.20): Update makefiles for
-	Watcom C and DJGPP, incleded last patch from mche
+	  makefile.wcw (1.25), makefile.wcx (1.20): Update makefiles for
+	  Watcom C and DJGPP, incleded last patch from mche
 
 2003-01-09 Thursday 07:40  mche
 
 	* makefile.inc (1.4), makefile.mvc (1.13), makefile.mvcdll (1.15):
-	correct previous patch
+	  correct previous patch
 
 2003-01-09 Thursday 07:09  mche
 
 	* genmsgid.c (1.14), gnmsgid.c (1.1), makefile.mgw (1.18),
-	makefile.mvc (1.12), makefile.mvcdll (1.14), msgapi.h (1.59):
-	advanced msgid generation patch by [Alexander Reznikov		   
-	    2:4600/220]
+	  makefile.mvc (1.12), makefile.mvcdll (1.14), msgapi.h (1.59):
+	  advanced msgid generation patch by [Alexander Reznikov
+		2:4600/220]
 
 2003-01-09 Thursday 02:54  andr_lukyanov
 
 	* makefile.wcd (1.22), makefile.wco (1.18), makefile.wcw (1.24),
-	makefile.wcx (1.19): Update makefiles for Watcom C
+	  makefile.wcx (1.19): Update makefiles for Watcom C
 
 2003-01-08 Wednesday 10:58  stas_degteff
 
 	* setfsize.c (1.12), tdelay.c (1.12): Fix compilation for borland
-	C/w32. Thanks to Igor Romanovsky
+	  C/w32. Thanks to Igor Romanovsky
 
 2003-01-08 Wednesday 10:35  stas_degteff
 
 	* compiler.h (1.113): Fix compilation for borland C/w32. Thanks to
-	Igor Romanovsky
+	  Igor Romanovsky
 
 2003-01-08 Wednesday 09:59  andr_lukyanov
 
 	* makefile.wcd (1.21), makefile.wco (1.17), makefile.wcw (1.23),
-	makefile.wcx (1.18): Update makefiles for Watcom C
+	  makefile.wcx (1.18): Update makefiles for Watcom C
 
 2003-01-08 Wednesday 09:48  andr_lukyanov
 
 	* api_jam.c (1.99), api_sdm.c (1.35): Replace C++ syntax with C
-	standard syntax
+	  standard syntax
 
 2003-01-08 Wednesday 09:25  stas_degteff
 
 	* compiler.h (1.112), makefile.bcw (1.14): fix BorlandC/TurboC
-	compilation
+	  compilation
 
 2003-01-05 Sunday 12:26  mche
 
@@ -860,12 +874,12 @@
 2003-01-04 Saturday 11:58  stas_degteff
 
 	* api_jam.c (1.98), msgapi.h (1.58): Check malloc(), calloc() and
-	realloc() return values.
+	  realloc() return values.
 
 2002-12-17 Tuesday 12:44  stas_degteff
 
 	* makefile.mvcdll (1.13): Fix dll makefile: distclean & etc. Thanks
-	to Alexander Reznikov 2:4600/220.
+	  to Alexander Reznikov 2:4600/220.
 
 2002-12-06 Friday 14:55  stas_degteff
 
@@ -878,7 +892,7 @@
 2002-12-05 Thursday 07:53  stas_degteff
 
 	* makefile.wcd (1.20), makefile.wco (1.16), makefile.wcw (1.22),
-	makefile.wcx (1.17): Update makefiles for Watcom C
+	  makefile.wcx (1.17): Update makefiles for Watcom C
 
 2002-11-28 Thursday 08:20  stas_degteff
 
@@ -887,12 +901,12 @@
 2002-11-27 Wednesday 15:56  stas_degteff
 
 	* msgapi.c (1.34): Full check parameters (filename, msgbase type)
-	in MsgOpenArea(), MsgDeleteBase(), MsgValidate()
+	  in MsgOpenArea(), MsgDeleteBase(), MsgValidate()
 
 2002-11-27 Wednesday 15:54  stas_degteff
 
 	* msgapi.h (1.56): Declare MSGTYPE_PASSTHROUGH (from
-	fidoconf/fidoconf.h)
+	  fidoconf/fidoconf.h)
 
 2002-11-27 Wednesday 15:53  stas_degteff
 
@@ -901,7 +915,7 @@
 2002-11-27 Wednesday 15:51  stas_degteff
 
 	* api_sdm.c (1.34): Prevent trap on NULL filename in
-	SdmDeleteBase()
+	  SdmDeleteBase()
 
 2002-11-27 Wednesday 12:14  stas_degteff
 
@@ -918,7 +932,7 @@
 2002-11-23 Saturday 20:12  stas_degteff
 
 	* api_jam.c (1.96): Fix Watcom C for NT comilation warning: remove
-	spare type conversion
+	  spare type conversion
 
 2002-11-23 Saturday 20:08  stas_degteff
 
@@ -927,22 +941,22 @@
 2002-11-22 Friday 09:36  stas_degteff
 
 	* compiler.h (1.110): Define INTEL for true x86 (Watcom/x86, DJGPP,
-	EMX, mingw32); add comments about predefined macroses
+	  EMX, mingw32); add comments about predefined macroses
 
 2002-11-22 Friday 07:34  stas_degteff
 
 	* msgapi.c (1.33), msgapi.h (1.55): Set _XPENTRY modifyer for
-	strmerr(): fix for '2002-11-18 Monday 10:58  stas_degteff'
+	  strmerr(): fix for '2002-11-18 Monday 10:58  stas_degteff'
 
 2002-11-22 Friday 06:56  stas_degteff
 
 	* compiler.h (1.109): Clean compiler-specific declarations; add
-	define __FLAT__ for DJGPP
+	  define __FLAT__ for DJGPP
 
 2002-11-21 Thursday 07:49  stas_degteff
 
 	* compiler.h (1.108): Prevent constants redefinitions (O_BINARY
-	O_RDWR S_IFMT S_IFDIR)
+	  O_RDWR S_IFMT S_IFDIR)
 
 2002-11-18 Monday 15:40  stas_degteff
 
@@ -951,12 +965,12 @@
 2002-11-18 Monday 10:58  stas_degteff
 
 	* msgapi.c (1.32): Fix Watcom C compilation error (_XPENTRY is
-	pascal calling convertion Watcom C/NT!)
+	  pascal calling convertion Watcom C/NT!)
 
 2002-11-17 Sunday 01:54  stas_degteff
 
 	* compiler.h (1.106): Define HAS_SPAWNVP for Watcom, MSVC, Mingw32
-	& Cygwin
+	  & Cygwin
 
 2002-11-16 Saturday 11:44  pgul
 
@@ -981,7 +995,7 @@
 2002-11-13 Wednesday 13:57  stas_degteff
 
 	* 1stchar.c (1.2), api_jam.c (1.94), cvtdate.c (1.12), msgapi.c
-	(1.29), msgapi.h (1.52): Fix: check pointers before use
+	  (1.29), msgapi.h (1.52): Fix: check pointers before use
 
 2002-11-13 Wednesday 10:55  stas_degteff
 
@@ -994,24 +1008,24 @@
 2002-11-12 Tuesday 13:47  stas_degteff
 
 	* makefile.aix (1.6), makefile.bcd (1.16), makefile.bco (1.14),
-	makefile.bcw (1.13), makefile.be (1.8), makefile.bsd (1.29),
-	makefile.bsd4 (1.10), makefile.cyg (1.6), makefile.djg (1.21),
-	makefile.emo (1.24), makefile.emx (1.16), makefile.hco (1.15),
-	makefile.ibo (1.20), makefile.inc (1.2), makefile.lnx (1.32),
-	makefile.mgw (1.17), makefile.mvc (1.11), makefile.mvcdll (1.12),
-	makefile.qcd (1.18), makefile.rxw (1.17), makefile.sun (1.22),
-	makefile.unx (1.19): Continue previous
+	  makefile.bcw (1.13), makefile.be (1.8), makefile.bsd (1.29),
+	  makefile.bsd4 (1.10), makefile.cyg (1.6), makefile.djg (1.21),
+	  makefile.emo (1.24), makefile.emx (1.16), makefile.hco (1.15),
+	  makefile.ibo (1.20), makefile.inc (1.2), makefile.lnx (1.32),
+	  makefile.mgw (1.17), makefile.mvc (1.11), makefile.mvcdll (1.12),
+	  makefile.qcd (1.18), makefile.rxw (1.17), makefile.sun (1.22),
+	  makefile.unx (1.19): Continue previous
 
 2002-11-12 Tuesday 13:39  stas_degteff
 
 	* makefile.aix (1.5), makefile.be (1.7), makefile.bsd (1.28),
-	makefile.bsd4 (1.9), makefile.cyg (1.5), makefile.djg (1.20),
-	makefile.emo (1.23), makefile.emx (1.15), makefile.hco (1.14),
-	makefile.ibo (1.19), makefile.inc (1.1), makefile.lnx (1.31),
-	makefile.mgw (1.16), makefile.mvc (1.10), makefile.mvcdll (1.11),
-	makefile.qcd (1.17), makefile.rxw (1.16), makefile.sun (1.21),
-	makefile.unx (1.18): Change makefiles: place common part into
-	makefile.inc
+	  makefile.bsd4 (1.9), makefile.cyg (1.5), makefile.djg (1.20),
+	  makefile.emo (1.23), makefile.emx (1.15), makefile.hco (1.14),
+	  makefile.ibo (1.19), makefile.inc (1.1), makefile.lnx (1.31),
+	  makefile.mgw (1.16), makefile.mvc (1.10), makefile.mvcdll (1.11),
+	  makefile.qcd (1.17), makefile.rxw (1.16), makefile.sun (1.21),
+	  makefile.unx (1.18): Change makefiles: place common part into
+	  makefile.inc
 
 2002-11-12 Tuesday 05:51  stas_degteff
 
@@ -1032,7 +1046,7 @@
 2002-11-11 Monday 12:41  stas_degteff
 
 	* genmsgid.c (1.11): Fix syntax error in preprocessor directive
-	after previous patch
+	  after previous patch
 
 2002-11-11 Monday 11:21  pgul
 
@@ -1053,18 +1067,18 @@
 2002-11-10 Sunday 20:18  pgul
 
 	* api_jam.c (1.92), structrw.c (1.33), api_jamp.h (1.19): Fixed
-	segfault on read corrupted jam area
+	  segfault on read corrupted jam area
 
 2002-11-05 Tuesday 14:52  stas_degteff
 
 	* compiler.h (1.104), fexist.c (1.25), sq_lock.c (1.21): Convert
-	C++ comments into pure C comments to prevent compilation
-	warnings/errors
+	  C++ comments into pure C comments to prevent compilation
+	  warnings/errors
 
 2002-11-03 Sunday 00:05  d_sergienko
 
 	* api_jam.c (1.91), api_jam.h (1.11), msgapi.c (1.28), msgapi.h
-	(1.51): Added closing all opened JAM areas on MsgCloseApi()
+	  (1.51): Added closing all opened JAM areas on MsgCloseApi()
 
 2002-11-01 Friday 23:51  stas_degteff
 
@@ -1073,17 +1087,17 @@
 2002-11-01 Friday 20:24  stas_degteff
 
 	* makefile.bsd (1.27), makefile.bsd4 (1.8): Small fix makefiles for
-	FreeBSD
+	  FreeBSD
 
 2002-11-01 Friday 10:42  pgul
 
 	* structrw.c (1.32): Autofix incorrect ActiveMsgs value in jam
-	header
+	  header
 
 2002-10-31 Thursday 08:30  pgul
 
 	* genmsgid.c (1.8): minor bugfix - errno for non-destructive
-	rename()
+	  rename()
 
 2002-10-31 Thursday 08:11  pgul
 
@@ -1104,7 +1118,7 @@
 2002-10-25 Friday 11:35  stas_degteff
 
 	* progprot.h (1.18): Bugfix: include required header files into
-	progprot.h
+	  progprot.h
 
 2002-10-25 Friday 06:14  stas_degteff
 
@@ -1113,7 +1127,7 @@
 2002-10-24 Thursday 19:29  pgul
 
 	* genmsgid.c (1.4), msgapi.h (1.49): Add args for GenMsgId(),
-	create seqdir if not exists
+	  create seqdir if not exists
 
 2002-10-24 Thursday 19:03  pgul
 
@@ -1122,7 +1136,7 @@
 2002-10-24 Thursday 14:11  stas_degteff
 
 	* compiler.h (1.103): Insert warning about unofficial gcc versions
-	(gcc 2.96 now)
+	  (gcc 2.96 now)
 
 2002-10-24 Thursday 13:33  mche
 
@@ -1131,19 +1145,19 @@
 2002-10-24 Thursday 13:01  pgul
 
 	* makefile.aix (1.4), makefile.bcd (1.15), makefile.bco (1.13),
-	makefile.bcw (1.12), makefile.be (1.6), makefile.bsd (1.26),
-	makefile.bsd4 (1.7), makefile.cyg (1.4), makefile.djg (1.18),
-	makefile.emo (1.22), makefile.emx (1.14), makefile.hco (1.13),
-	makefile.ibo (1.18), makefile.lnx (1.30), makefile.mgw (1.15),
-	makefile.mvc (1.9), makefile.mvcdll (1.10), makefile.qcd (1.16),
-	makefile.rxw (1.15), makefile.sun (1.20), makefile.unx (1.17),
-	makefile.wcd (1.19), makefile.wco (1.15), makefile.wcw (1.20),
-	makefile.wcx (1.16): add genmsgid.c
+	  makefile.bcw (1.12), makefile.be (1.6), makefile.bsd (1.26),
+	  makefile.bsd4 (1.7), makefile.cyg (1.4), makefile.djg (1.18),
+	  makefile.emo (1.22), makefile.emx (1.14), makefile.hco (1.13),
+	  makefile.ibo (1.18), makefile.lnx (1.30), makefile.mgw (1.15),
+	  makefile.mvc (1.9), makefile.mvcdll (1.10), makefile.qcd (1.16),
+	  makefile.rxw (1.15), makefile.sun (1.20), makefile.unx (1.17),
+	  makefile.wcd (1.19), makefile.wco (1.15), makefile.wcw (1.20),
+	  makefile.wcx (1.16): add genmsgid.c
 
 2002-10-24 Thursday 12:51  pgul
 
 	* Makefile (1.28), genmsgid.c (1.1), msgapi.h (1.48): Add
-	GenMsgId() function
+	  GenMsgId() function
 
 2002-10-23 Wednesday 10:06  mche
 
@@ -1152,7 +1166,7 @@
 2002-10-23 Wednesday 09:19  pgul
 
 	* compiler.h (1.102): define SMAPI_EXT as extern for vars
-	declaration (msgapierr)
+	  declaration (msgapierr)
 
 2002-10-22 Tuesday 11:26  stas_degteff
 
@@ -1161,7 +1175,7 @@
 2002-10-22 Tuesday 08:21  sfpavel
 
 	* debian/: changelog (1.18), libsmapi2.dirs (1.2): New debian
-	packages
+	  packages
 
 2002-10-22 Tuesday 06:35  stas_degteff
 
@@ -1174,22 +1188,22 @@
 2002-10-20 Sunday 11:26  mche
 
 	* smapiDll.dsp (1.3), smapiStatic.dsp (1.2): Microsoft Developer
-	Studio Project Files added
+	  Studio Project Files added
 
 2002-10-20 Sunday 09:36  mche
 
 	* compiler.h (1.101), makefile.mvc (1.8), makefile.mvcdll (1.9):
-	defenition for USE_SYSTEM_COPY in smapi/compiler.h for MSVC
+	  defenition for USE_SYSTEM_COPY in smapi/compiler.h for MSVC
 
 2002-10-18 Friday 06:34  mche
 
 	* smapiDll.dsp (1.2): Microsoft Developer Studio Project Files
-	added
+	  added
 
 2002-10-18 Friday 06:28  mche
 
 	* .cvsignore (1.5), smapiDll.dsp (1.1), smapiStatic.dsp (1.1):
-	Microsoft Developer Studio Project Files added
+	  Microsoft Developer Studio Project Files added
 
 2002-10-18 Friday 06:10  mche
 
@@ -1202,7 +1216,7 @@
 2002-10-11 Friday 13:27  stas_degteff
 
 	* api_jam.c (1.89): Fix bug with signed use unsigned var in
-	JamUidToMsgn()
+	  JamUidToMsgn()
 
 2002-10-11 Friday 13:17  stas_degteff
 
@@ -1211,28 +1225,28 @@
 2002-10-11 Friday 08:38  mche
 
 	* .cvsignore (1.3), Makefile (1.27), api_sqp.h (1.9), makefile.aix
-	(1.3), makefile.bcd (1.14), makefile.bco (1.12), makefile.bcw
-	(1.11), makefile.be (1.5), makefile.bsd (1.25), makefile.bsd4
-	(1.6), makefile.cyg (1.3), makefile.djg (1.17), makefile.emo
-	(1.21), makefile.emx (1.13), makefile.hco (1.12), makefile.ibo
-	(1.17), makefile.lnx (1.29), makefile.mgw (1.14), makefile.mvc
-	(1.7), makefile.mvcdll (1.8), makefile.qcd (1.14), makefile.rxw
-	(1.14), makefile.sun (1.18), makefile.unx (1.16), makefile.wcd
-	(1.18), makefile.wco (1.14), makefile.wcw (1.19), makefile.wcx
-	(1.15), msgapi.h (1.46), sq_area.c (1.23), sq_kill.c (1.5),
-	sq_lock.c (1.20), sq_misc.c (1.6), sq_msg.c (1.7), sq_read.c (1.8),
-	sq_uid.c (1.6), sq_write.c (1.10): remove obsolete code for
-	semaphores support
+	  (1.3), makefile.bcd (1.14), makefile.bco (1.12), makefile.bcw
+	  (1.11), makefile.be (1.5), makefile.bsd (1.25), makefile.bsd4
+	  (1.6), makefile.cyg (1.3), makefile.djg (1.17), makefile.emo
+	  (1.21), makefile.emx (1.13), makefile.hco (1.12), makefile.ibo
+	  (1.17), makefile.lnx (1.29), makefile.mgw (1.14), makefile.mvc
+	  (1.7), makefile.mvcdll (1.8), makefile.qcd (1.14), makefile.rxw
+	  (1.14), makefile.sun (1.18), makefile.unx (1.16), makefile.wcd
+	  (1.18), makefile.wco (1.14), makefile.wcw (1.19), makefile.wcx
+	  (1.15), msgapi.h (1.46), sq_area.c (1.23), sq_kill.c (1.5),
+	  sq_lock.c (1.20), sq_misc.c (1.6), sq_msg.c (1.7), sq_read.c
+	  (1.8), sq_uid.c (1.6), sq_write.c (1.10): remove obsolete code
+	  for semaphores support
 
 2002-10-10 Thursday 06:51  sfpavel
 
 	* makefile.bsd (1.24), makefile.bsd4 (1.5): Disable SEMAPHORES for
-	BSD build
+	  BSD build
 
 2002-10-08 Tuesday 05:42  sfpavel
 
 	* makefile.mvc (1.6), makefile.mvcdll (1.7): Add -DNOSEMAPHORES for
-	mvc makefiles
+	  mvc makefiles
 
 2002-10-04 Friday 06:50  sfpavel
 
@@ -1257,30 +1271,30 @@
 2002-09-30 Monday 09:43  mche
 
 	* api_brow.h (1.2), api_jam.c (1.88), api_jamp.h (1.18), api_sdm.c
-	(1.31), api_sdm.h (1.5), api_sdmp.h (1.4), api_sqp.h (1.8),
-	compiler.h (1.98), fexist.c (1.24), ffind.c (1.14), flush.c (1.11),
-	locking.c (1.29), msgapi.c (1.27), msgapi.h (1.45), sq_area.c
-	(1.22), sq_hash.c (1.5), sq_kill.c (1.4), sq_lock.c (1.19),
-	sq_misc.c (1.5), sq_msg.c (1.6), sq_read.c (1.7), sq_uid.c (1.5),
-	sq_write.c (1.8): global defines are changed to prevent conflicts
-	with <windows.h>
-	
-	MSG -->MSGA EXPENTRY --> _XPENTRY
+	  (1.31), api_sdm.h (1.5), api_sdmp.h (1.4), api_sqp.h (1.8),
+	  compiler.h (1.98), fexist.c (1.24), ffind.c (1.14), flush.c
+	  (1.11), locking.c (1.29), msgapi.c (1.27), msgapi.h (1.45),
+	  sq_area.c (1.22), sq_hash.c (1.5), sq_kill.c (1.4), sq_lock.c
+	  (1.19), sq_misc.c (1.5), sq_msg.c (1.6), sq_read.c (1.7),
+	  sq_uid.c (1.5), sq_write.c (1.8): global defines are changed to
+	  prevent conflicts with <windows.h>
+
+	  MSG -->MSGA EXPENTRY --> _XPENTRY
 
 2002-09-30 Monday 08:42  mche
 
 	* progprot.h (1.17), structrw.c (1.31): use macro get_dword &
-	get_word in sqpack
+	  get_word in sqpack
 
 2002-09-30 Monday 08:31  mche
 
 	* fexist.c (1.23), makefile.mvc (1.5), makefile.mvcdll (1.6):
-	USE_STAT_MACROS defined in code, INTEL defined for msvc makefiles
+	  USE_STAT_MACROS defined in code, INTEL defined for msvc makefiles
 
 2002-09-29 Sunday 13:35  d_sergienko
 
 	* compiler.h (1.97): added alias strnicmp for strncasecmp() under
-	UNIXes
+	  UNIXes
 
 2002-09-28 Saturday 08:49  pgul
 
@@ -1289,7 +1303,7 @@
 2002-09-28 Saturday 08:20  stas_degteff
 
 	* fexist.c (1.22), progprot.h (1.16): Add const modifier to
-	fexist(), fsize() and direxists() parameter
+	  fexist(), fsize() and direxists() parameter
 
 2002-09-27 Friday 09:20  mche
 
@@ -1306,20 +1320,20 @@
 2002-09-25 Wednesday 09:38  stas_degteff
 
 	* fexist.c (1.21), ffind.h (1.14), flush.c (1.10), makefile.cyg
-	(1.2), msgapi.h (1.44), setfsize.c (1.11), tdelay.c (1.11),
-	typedefs.h (1.5): Remove unused macros WINNT; remove macros __CYG__
-	(use pre-defined __MINGW32__ instead). Remove macros __NT__ from
-	makefile.cyg (use __MINGW32__)
+	  (1.2), msgapi.h (1.44), setfsize.c (1.11), tdelay.c (1.11),
+	  typedefs.h (1.5): Remove unused macros WINNT; remove macros
+	  __CYG__ (use pre-defined __MINGW32__ instead). Remove macros
+	  __NT__ from makefile.cyg (use __MINGW32__)
 
 2002-09-25 Wednesday 07:27  mche
 
 	* typedefs.h (1.4): feature: FileFixEchoLimit patch by <Алексей
-	Сухотин <pscorporation@mail.ru>>
+	  Сухотин <pscorporation@mail.ru>>
 
 2002-09-22 Sunday 14:06  pgul
 
 	* api_jam.c (1.87): Update index after hdr&text, jam msgbase is in
-	stable state any time now
+	  stable state any time now
 
 2002-09-19 Thursday 08:30  sfpavel
 
@@ -1328,7 +1342,7 @@
 2002-09-18 Wednesday 16:28  pgul
 
 	* api_jam.c (1.86), structrw.c (1.30): Optimize memory usage for
-	huge jam areas
+	  huge jam areas
 
 2002-09-18 Wednesday 08:34  sfpavel
 
@@ -1337,8 +1351,8 @@
 2002-09-16 Monday 08:00  sfpavel
 
 	* debian/: changelog (1.16), libsmapi2-dev.links (1.2),
-	libsmapi2-dev.preinst (1.2), libsmapi2.files (1.3), rules (1.8):
-	New debian packages
+	  libsmapi2-dev.preinst (1.2), libsmapi2.files (1.3), rules (1.8):
+	  New debian packages
 
 2002-09-12 Thursday 11:13  stas_degteff
 
@@ -1346,38 +1360,26 @@
 
 2002-09-11 Wednesday 11:57  mche
 
-	* makefile.aix (1.2, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release): make fidoconf compilable
-	under AIX
+	* makefile.aix (1.2): make fidoconf compilable under AIX
 
 2002-09-11 Wednesday 10:28  mche
 
 	* compiler.h (1.92), makefile.aix (1.1): make smapi compilable
-	under AIX
+	  under AIX
 
 2002-09-08 Sunday 18:39  pgul
 
 	* compiler.h (1.91): Added HAS_SNPRINTF and HAS_VSNPRINTF for
-	os2/emx, os2/watcom, cygwin, mingw32, unix
+	  os2/emx, os2/watcom, cygwin, mingw32, unix
 
 2002-09-05 Thursday 08:26  mche
 
 	* msgapi.h (1.43): fix MSGAPI function usage
 
-2002-09-05 Thursday 02:51  sfpavel
-
-	* debian/libsmapi2-dev.links (1.1): file libsmapi2-dev.links was
-	initially added on branch smapi-2_2-stable.
-
-2002-09-05 Thursday 02:51  sfpavel
-
-	* debian/libsmapi2-dev.preinst (1.1): file libsmapi2-dev.preinst
-	was initially added on branch smapi-2_2-stable.
-
 2002-09-02 Monday 12:30  stas_degteff
 
 	* msgapi.h (1.42): Update condition compilation: enable shares for
-	cygwin & mingw
+	  cygwin & mingw
 
 2002-08-30 Friday 12:15  mche
 
@@ -1386,12 +1388,12 @@
 2002-08-26 Monday 07:18  sfpavel
 
 	* readme.txt (1.6), debian/README.Debian (1.5), debian/changelog
-	(1.15), debian/copyright (1.3): Update http location
+	  (1.15), debian/copyright (1.3): Update http location
 
 2002-08-22 Thursday 06:52  sfpavel
 
 	* debian/: changelog (1.14), control (1.8), copyright (1.2), docs
-	(1.3), rules (1.7): New debian package
+	  (1.3), rules (1.7): New debian package
 
 2002-08-17 Saturday 11:50  d_sergienko
 
@@ -1400,19 +1402,19 @@
 2002-08-05 Monday 13:54  quetschke
 
 	* Makefile (1.26): Changed from hardcoded options to OPTLFLAGS when
-	not linking with GCC.
+	  not linking with GCC.
 
 2002-08-04 Sunday 09:23  quetschke
 
 	* compiler.h (1.89): Macro O_BINARY is already defined in cygwin.
-	Prevent redefinition of the macro for cygwin. (2:2411/12.99)
+	  Prevent redefinition of the macro for cygwin. (2:2411/12.99)
 
 2002-07-29 Monday 10:39  quetschke
 
 	* compiler.h (1.88): Removed definition of __NT__ for cygwin. This
-	partly (only for cygwin) reverts stas patch from the 2002-07-13.
-	Added __CYGWIN__ to the definition of macro mymkdir(a).
-	(2:2411/12.99)
+	  partly (only for cygwin) reverts stas patch from the 2002-07-13.
+	  Added __CYGWIN__ to the definition of macro mymkdir(a).
+	  (2:2411/12.99)
 
 2002-07-22 Monday 15:25  pavel.gulchouck
 
@@ -1441,18 +1443,18 @@
 2002-07-07 Sunday 09:37  pavel.gulchouck
 
 	* api_jam.c (1.84): Create zero-length jdt-file when creating new
-	jam area
+	  jam area
 
 2002-07-04 Thursday 06:09  stas
 
 	* debian/: changelog (1.12), control (1.7), rules (1.6), shlibs
-	(1.9): new Debian version [patch from Pavel Andreew]
+	  (1.9): new Debian version [patch from Pavel Andreew]
 
 2002-07-02 Tuesday 13:51  stas
 
 	* debian/: changelog (1.11), control (1.6), libsmapi2.files (1.2),
-	rules (1.5), shlibs (1.8): Change debian control files (like in
-	-stable branch)
+	  rules (1.5), shlibs (1.8): Change debian control files (like in
+	  -stable branch)
 
 2002-07-02 Tuesday 13:46  stas
 
@@ -1461,12 +1463,12 @@
 2002-07-02 Tuesday 13:41  stas
 
 	* Makefile (1.25), makefile.bsd (1.23), makefile.bsd4 (1.4): Change
-	library version number.
+	  library version number.
 
 2002-06-25 Tuesday 14:04  stas
 
 	* VERSION (1.4), file_id.diz (1.3), readme.txt (1.4): Change
-	version information and documentation.
+	  version information and documentation.
 
 2002-06-23 Sunday 19:57  stas
 
@@ -1476,10 +1478,14 @@
 
 	* makefile.bsd (1.22): Change for support smapi version 2.1
 
+2002-06-22 Saturday 07:02  pavel.gulchouck
+
+	* makefile.bsd (1.21): [no log message]
+
 2002-06-21 Friday 13:01  stas
 
 	* makefile.bsd (1.20): Fix install (define INSTALL) ; add uninstall
-	; define RM and use it.
+	  ; define RM and use it.
 
 2002-06-21 Friday 11:48  pavel.gulchouck
 
@@ -1495,28 +1501,17 @@
 
 2002-06-10 Monday 12:59  mche
 
-	* api_jam.c (1.82), api_jamp.h (1.17, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release),
-	api_sdm.c (1.30), api_sdm.h (1.4, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release),
-	api_sq.h (1.6, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release), sq_help.c (1.6,
-	smapi-2_2_4-release, smapi-2_2_3-release, smapi-2_2_2-release,
-	smapi-2_2_1-release), sq_idx.c (1.7, smapi-2_2_2-release,
-	smapi-2_2_1-release), sq_read.c (1.6, smapi-2_2_2-release,
-	smapi-2_2_1-release), sq_write.c (1.7, smapi-2_2_2-release,
-	smapi-2_2_1-release), structrw.c (1.28): roll back previos changes
+	* api_jam.c (1.82), api_jamp.h (1.17), api_sdm.c (1.30), api_sdm.h
+	  (1.4), api_sq.h (1.6), sq_help.c (1.6), sq_idx.c (1.7), sq_read.c
+	  (1.6), sq_write.c (1.7), structrw.c (1.28): roll back previos
+	  changes
 
 2002-06-10 Monday 11:44  mche
 
-	* api_jam.c (1.81), api_sdm.c (1.29), ffind.c (1.13,
-	smapi-2_2_4-release, smapi-2_2_3-release, smapi-2_2_2-release,
-	smapi-2_2_1-release), msgapi.c (1.26, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release),
-	patmat.c (1.6, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release), sq_help.c (1.5),
-	sq_idx.c (1.6), sq_read.c (1.5), sq_write.c (1.6), structrw.c
-	(1.27): fix type mismatch (under msvc compiler)
+	* api_jam.c (1.81), api_sdm.c (1.29), ffind.c (1.13), msgapi.c
+	  (1.26), patmat.c (1.6), sq_help.c (1.5), sq_idx.c (1.6),
+	  sq_read.c (1.5), sq_write.c (1.6), structrw.c (1.27): fix type
+	  mismatch (under msvc compiler)
 
 2002-06-10 Monday 11:19  pavel.gulchouck
 
@@ -1529,42 +1524,46 @@
 2002-05-31 Friday 07:31  pavel.gulchouck
 
 	* locking.c (1.28): removed static flock struct, it's not
-	thread-safe
+	  thread-safe
 
 2002-05-30 Thursday 13:24  stas
 
 	* patmat.c (1.5): Check for NULL string pointers & for parameters
-	pointed to one string.
+	  pointed to one string.
 
 2002-05-28 Tuesday 06:54  pavel.gulchouck
 
-	* date2bin.c (1.8, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release): sprintf changed to
-	fts_time
+	* date2bin.c (1.8): sprintf changed to fts_time
 
 2002-05-19 Sunday 09:00  pavel.gulchouck
 
-	* sq_area.c (1.21, smapi-2_2_2-release, smapi-2_2_1-release): avoid
-	warning
+	* sq_area.c (1.21): avoid warning
 
 2002-05-14 Tuesday 14:12  pavel.gulchouck
 
-	* ffind.h (1.13, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release): mingw32 compilation fix
+	* ffind.h (1.13): mingw32 compilation fix
 
 2002-05-07 Tuesday 11:31  mche
 
 	* compiler.h (1.83): make mvcdll version compilable
 
+2002-05-06 Monday 18:39  pavel.gulchouck
+
+	* Makefile (1.24): [no log message]
+
 2002-05-06 Monday 18:01  pavel.gulchouck
 
 	* Makefile (1.23): install/uninstall minor fix (patch from Michael
-	Kuzmin)
+	  Kuzmin)
+
+2002-04-23 Tuesday 19:55  pavel.gulchouck
+
+	* cvtdate.c (1.10): [no log message]
 
 2002-04-23 Tuesday 18:59  pavel.gulchouck
 
 	* cvtdate.c (1.9), date2bin.c (1.7), progprot.h (1.15): Added
-	fts_time()
+	  fts_time()
 
 2002-03-31 Sunday 05:57  ml
 
@@ -1592,8 +1591,7 @@
 
 2002-03-04 Monday 13:26  mche
 
-	* setfsize.c (1.10, smapi-2_2_2-release, smapi-2_2_1-release): fix
-	for mvc compiler
+	* setfsize.c (1.10): fix for mvc compiler
 
 2002-03-04 Monday 12:17  pavel.gulchouck
 
@@ -1622,12 +1620,11 @@
 2002-02-26 Tuesday 08:18  ml
 
 	* msgapi.h (1.41): changes for compiling mscv6 dll version with
-	perl support
+	  perl support
 
 2002-02-24 Sunday 11:23  mche
 
-	* .cvsignore (1.2, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release): *.obj
+	* .cvsignore (1.2): *.obj
 
 2002-02-20 Wednesday 09:50  ml
 
@@ -1652,12 +1649,11 @@
 2002-02-13 Wednesday 10:42  ml
 
 	* progprot.h (1.14), setfsize.c (1.8): fixed setfsize() for msvc6
-	compiler
+	  compiler
 
 2002-02-10 Sunday 23:27  pavel.gulchouck
 
-	* fexist.c (1.20, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release): MSVC compiling
+	* fexist.c (1.20): MSVC compiling
 
 2002-02-10 Sunday 17:33  pavel.gulchouck
 
@@ -1670,7 +1666,7 @@
 2002-01-29 Tuesday 10:55  mche
 
 	* api_sq.h (1.5), compiler.h (1.78), msgapi.h (1.39): making
-	hptsqfix compilable with dlls under win32
+	  hptsqfix compilable with dlls under win32
 
 2002-01-26 Saturday 13:38  mche
 
@@ -1682,21 +1678,20 @@
 
 2002-01-10 Thursday 18:05  tobi
 
-	* makefile.wcx (1.14, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release), setfsize.c (1.7): fixes
-	for dos386; nt no longer broken
+	* makefile.wcx (1.14), setfsize.c (1.7): fixes for dos386; nt no
+	  longer broken
 
 2002-01-08 Tuesday 16:06  ml
 
 	* makefile.bsd (1.18), makefile.bsd4 (1.2): makefile.bsd4 &
-	makefile.bsd corrections by Stas Degteff <g@grumbler.org>
-	2:5080/102
+	  makefile.bsd corrections by Stas Degteff <g@grumbler.org>
+	  2:5080/102
 
 2002-01-07 Monday 20:09  tobi
 
 	* fexist.c (1.18), makefile.wcx (1.13), setfsize.c (1.6), tdelay.c
-	(1.10, smapi-2_2_2-release, smapi-2_2_1-release): Fixes for wcx
-	(Watcom C in flat DOS-extended mode), merged from -stable
+	  (1.10): Fixes for wcx (Watcom C in flat DOS-extended mode),
+	  merged from -stable
 
 2002-01-05 Saturday 13:15  mche
 
@@ -1705,16 +1700,13 @@
 2002-01-03 Thursday 09:30  mche
 
 	* compiler.h (1.75), progprot.h (1.13): build smapimvc.dll with
-	msvcrt.dll to provide build sqpack with this dlls fixed bug with
-	watcom compilation
+	  msvcrt.dll to provide build sqpack with this dlls fixed bug with
+	  watcom compilation
 
 2002-01-02 Wednesday 18:07  mche
 
-	* compiler.h (1.74), makefile.mvcdll (1.2), strextra.c (1.4,
-	smapi-2_2_4-release, smapi-2_2_3-release, smapi-2_2_2-release,
-	smapi-2_2_1-release), strextra.h (1.5, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release):
-	build smapimvc.dll with msvcrt.dll
+	* compiler.h (1.74), makefile.mvcdll (1.2), strextra.c (1.4),
+	  strextra.h (1.5): build smapimvc.dll with msvcrt.dll
 
 2002-01-02 Wednesday 12:14  ml
 
@@ -1723,20 +1715,20 @@
 2001-12-27 Thursday 20:11  pavel.gulchouck
 
 	* api_jam.c (1.75): "#ifndef LAZY_WRITE_HDR" changed to "#ifdef
-	HARD_WRITE_HDR"
+	  HARD_WRITE_HDR"
 
 2001-12-27 Thursday 17:47  pavel.gulchouck
 
 	* api_jam.c (1.74): bugfix -- bad TOPT/FMPT/INTL in echomail if
-	open without MSGTYPE_ECHO (hptlink, sqpack)
+	  open without MSGTYPE_ECHO (hptlink, sqpack)
 
 2001-12-27 Thursday 14:01  mche
 
 	* compiler.h (1.73), msgapi.c (1.21), msgapi.h (1.37): - changed
-	memory allocation function
-	
-	conversion from static library to dynamic under win32 makes
-	smapimvc.dll  with MSVC compiler
+	  memory allocation function
+
+	  conversion from static library to dynamic under win32 makes
+	  smapimvc.dll	with MSVC compiler
 
 2001-12-27 Thursday 00:40  pavel.gulchouck
 
@@ -1757,10 +1749,9 @@
 2001-12-24 Monday 07:55  mche
 
 	* compiler.h (1.72), msgapi.c (1.20), msgapi.h (1.36), patmat.c
-	(1.4), patmat.h (1.2, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release), progprot.h (1.12),
-	makefile.mvcdll (1.1): conversion from static library to dynamic
-	under win32 makes smapimvc.dll under windows with MSVC compiler
+	  (1.4), patmat.h (1.2), progprot.h (1.12), makefile.mvcdll (1.1):
+	  conversion from static library to dynamic under win32 makes
+	  smapimvc.dll under windows with MSVC compiler
 
 2001-12-23 Sunday 20:08  pavel.gulchouck
 
@@ -1768,10 +1759,9 @@
 
 2001-12-23 Sunday 12:38  pavel.gulchouck
 
-	* api_jam.c (1.69), api_jam.h (1.10, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release),
-	api_jamp.h (1.15), cvtdate.c (1.8), structrw.c (1.25): Speedup,
-	many changes (a lot of jam code rewrited)
+	* api_jam.c (1.69), api_jam.h (1.10), api_jamp.h (1.15), cvtdate.c
+	  (1.8), structrw.c (1.25): Speedup, many changes (a lot of jam
+	  code rewrited)
 
 2001-12-21 Friday 23:20  pavel.gulchouck
 
@@ -1780,12 +1770,12 @@
 2001-12-20 Thursday 19:37  pavel.gulchouck
 
 	* api_jam.c (1.67), fexist.c (1.17), tdelay.c (1.9): Fixes for
-	compile under mingw32
+	  compile under mingw32
 
 2001-12-20 Thursday 17:27  pavel.gulchouck
 
 	* api_jam.c (1.66), api_jam.h (1.9), api_jamp.h (1.14), structrw.c
-	(1.24): Jam link (and others) speedup
+	  (1.24): Jam link (and others) speedup
 
 2001-12-18 Tuesday 16:40  ml
 
@@ -1794,36 +1784,45 @@
 2001-12-17 Monday 08:14  pavel.gulchouck
 
 	* api_jam.c (1.64): JamWriteMsg returns bad retcode if write fails
-	(disk full etc.)
+	  (disk full etc.)
 
 2001-12-13 Thursday 15:46  mche
 
 	* api_jam.c (1.63), api_sdm.c (1.25), fexist.c (1.16), progprot.h
-	(1.10), sq_area.c (1.20): fiture - createDirectoryTree moved  from
-	hpt/fcommon to smapi/fexist, now when we try to write to msgbase we
-	build DirectoryTree if needed it probably increase speed of tossing
-	to non passthrough areas.
+	  (1.10), sq_area.c (1.20): fiture - createDirectoryTree moved
+	  from hpt/fcommon to smapi/fexist, now when we try to write to
+	  msgbase we build DirectoryTree if needed it probably increase
+	  speed of tossing to non passthrough areas.
+
+2001-12-09 Sunday 16:37  ml
+
+	* compiler.h (1.71): [no log message]
 
 2001-11-27 Tuesday 13:44  ml
 
 	* compiler.h (1.70): MSVC definitions
 
-2001-11-26 Monday 21:06  tobi
+2001-11-26 Monday 21:05  tobi
 
-	* makefile.bcd (1.13), makefile.wcd (1.17) (utags:
-	smapi-2_2_2-release, smapi-2_2_4-release, smapi-2_2_1-release,
-	smapi-2_2_3-release): reduce DOS DGROUP size
+	* makefile.bcd (1.13), makefile.wcd (1.17): reduce DOS DGROUP size
 
 2001-11-26 Monday 14:52  tobi
 
 	* setfsize.c (1.5), tdelay.c (1.8): Make smapi compile for DOS
-	again.
+	  again.
+
+2001-11-26 Monday 07:25  ml
+
+	* compiler.h (1.69): [no log message]
+
+2001-11-06 Tuesday 12:25  ml
+
+	* makefile.bsd (1.17), makefile.bsd4 (1.1): [no log message]
 
 2001-11-06 Tuesday 07:56  ml
 
-	* compiler.h (1.68), makefile.cyg (1.1, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release),
-	tdelay.c (1.7): cygwin adaptation
+	* compiler.h (1.68), makefile.cyg (1.1), tdelay.c (1.7): cygwin
+	  adaptation
 
 2001-09-23 Sunday 19:25  pavel.gulchouck
 
@@ -1836,7 +1835,7 @@
 2001-09-18 Tuesday 09:18  pavel.gulchouck
 
 	* api_jam.c (1.62), api_jamp.h (1.13): bugfix: O_EXCL and O_TRUNC
-	incompartible under mingw
+	  incompartible under mingw
 
 2001-09-17 Monday 13:07  pavel.gulchouck
 
@@ -1845,12 +1844,12 @@
 2001-09-15 Saturday 08:56  pavel.gulchouck
 
 	* api_jam.c (1.60), api_sdm.c (1.24), msgapi.h (1.35): Sqpack saves
-	times_read and cost for Jam and Msg msgbases now
+	  times_read and cost for Jam and Msg msgbases now
 
 2001-09-10 Monday 09:17  pavel.gulchouck
 
 	* api_sdm.c (1.23), api_sdm.h (1.3): Kludge size not limited by 512
-	bytes for msg now, read all msg for ctrl info
+	  bytes for msg now, read all msg for ctrl info
 
 2001-08-08 Wednesday 19:32  joerg.jaspert
 
@@ -1863,50 +1862,46 @@
 2001-07-24 Tuesday 11:13  pavel.gulchouck
 
 	* api_jam.c (1.59): Assertation fixed when writing message not
-	terminated with \r to jam
+	  terminated with \r to jam
 
 2001-07-22 Sunday 11:23  twm
 
-	* smapi.pas (1.2, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release): As of now I will stop
-	maintaining smapi.pas. It turned out that because of the alignment
-	of the structures passed between sampi and calling programs is left
-	to the compiler, it is likely to need constant rechecking whether
-	the fields are still in sync. I am not going to do that.  So this
-	is the last update I will post.
+	* smapi.pas (1.2): As of now I will stop maintaining smapi.pas. It
+	  turned out that because of the alignment of the structures passed
+	  between sampi and calling programs is left to the compiler, it is
+	  likely to need constant rechecking whether the fields are still
+	  in sync. I am not going to do that.  So this is the last update I
+	  will post.
 
 2001-07-09 Monday 20:52  joerg.jaspert
 
-	* debian/: changelog (1.8), control (1.5), docs (1.2,
-	smapi-2_2_4-release, smapi-2_2_3-release, smapi-2_2_2-release,
-	smapi-2_2_1-release): Smapi has a very bullshit licence so i have
-	to change the section to non-free.  NO Husky Program which depend
-	on smapi will ever be in the Main Part of Debian just because of
-	this *#censored#* licence (you may not sell -> non-free :( )
+	* debian/: changelog (1.8), control (1.5), docs (1.2): Smapi has a
+	  very bullshit licence so i have to change the section to
+	  non-free.  NO Husky Program which depend on smapi will ever be in
+	  the Main Part of Debian just because of this *#censored#* licence
+	  (you may not sell -> non-free :( )
 
 2001-07-02 Monday 20:46  joerg.jaspert
 
 	* debian/: changelog (1.7), shlibs (1.6): Changed shlibs file.
-	SONAME of libsmapi2 is libsmapi.so.2.1 and not only libsmapi.so.2
-	:)
+	  SONAME of libsmapi2 is libsmapi.so.2.1 and not only libsmapi.so.2
+	  :)
 
 2001-07-02 Monday 20:45  joerg.jaspert
 
-	* debian/libsmapi2-dev.files (1.1, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release): 2
-	Files with wrong name, shit
+	* debian/libsmapi2-dev.files (1.1): 2 Files with wrong name, shit
 
 2001-07-01 Sunday 18:27  joerg.jaspert
 
 	* debian/: README.Debian (1.4), changelog (1.6), control (1.4),
-	libsmapi2.dirs (1.1), libsmapi2.files (1.1), rules (1.4), shlibs
-	(1.5): Rebuild the Package. Now its a real library package for
-	debian, splitted into libsmapi and libsmapi-dev.
+	  libsmapi2.dirs (1.1), libsmapi2.files (1.1), rules (1.4), shlibs
+	  (1.5): Rebuild the Package. Now its a real library package for
+	  debian, splitted into libsmapi and libsmapi-dev.
 
 2001-06-26 Tuesday 09:28  tobi
 
 	* makefile.bsd (1.16): removed VER and VERH from legacy makefile
-	(which builds static libs and hence does not need this info)
+	  (which builds static libs and hence does not need this info)
 
 2001-06-02 Saturday 23:23  tobi
 
@@ -1914,52 +1909,49 @@
 
 2001-06-02 Saturday 23:21  tobi
 
-	* INSTALL (1.7, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release): point to huskybse for install instructions
+	* INSTALL (1.7): point to huskybse for install instructions
+
+2001-05-27 Sunday 04:30  ml
+
+	* BUGS (1.8): [no log message]
 
 2001-05-26 Saturday 16:52  oliver.grimm
 
 	* api_jam.c (1.58): og: Fixed "path-before-seenby" bug in
-	api_jam.c.
+	  api_jam.c.
 
 2001-05-09 Wednesday 08:56  oliver.grimm
 
 	* api_jam.c (1.57): OG: The kludges should be now in the right
-	order in JAM Areas.
+	  order in JAM Areas.
 
 2001-05-09 Wednesday 08:42  oliver.grimm
 
 	* api_jam.c (1.56): OG: Speed up and reduce stacke usage in
-	freejamsubfield()
+	  freejamsubfield()
 
 2001-05-08 Tuesday 22:38  tobi
 
-	* structrw.c (1.22, smapi-2_0_0-release): bogus fix to stop
-	boundary checking from complaining
+	* structrw.c (1.22): bogus fix to stop boundary checking from
+	  complaining
 
 2001-05-08 Tuesday 22:38  tobi
 
 	* api_jam.c (1.55): fixed coredump when sqpack was run on a jam
-	area
+	  area
 
 2001-05-08 Tuesday 22:34  tobi
 
-	* BEOS.TXT (1.2, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release): corrected some errors
+	* BEOS.TXT (1.2): corrected some errors
 
 2001-05-08 Tuesday 22:33  tobi
 
-	* makefile.emo (1.20), makefile.emx (1.12) (utags:
-	smapi-2_0_0-release, smapi-2_0_1-release): fixed emx makefiles for
-	gmake
+	* makefile.emo (1.20), makefile.emx (1.12): fixed emx makefiles for
+	  gmake
 
 2001-05-06 Sunday 19:52  ml
 
-	* .cvs2cl (1.1, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release): added .cvs2cl file
+	* .cvs2cl (1.1): added .cvs2cl file
 
 2001-05-06 Sunday 11:04  tobi
 
@@ -1967,7 +1959,7 @@
 
 2001-05-06 Sunday 11:04  tobi
 
-	* api_jam.h (1.7, smapi-2_0_0-release): removed cr's
+	* api_jam.h (1.7): removed cr's
 
 2001-05-06 Sunday 10:58  tobi
 
@@ -1975,24 +1967,21 @@
 
 2001-05-06 Sunday 10:57  tobi
 
-	* api_jamp.h (1.12, smapi-2_0_0-release): removed cr's
+	* api_jamp.h (1.12): removed cr's
 
 2001-05-06 Sunday 10:55  tobi
 
-	* sq_area.c (1.19, smapi-2_0_0-release): portability fix for DOS
+	* sq_area.c (1.19): portability fix for DOS
 
 2001-05-06 Sunday 10:52  tobi
 
-	* makefile.bcd (1.12), makefile.djg (1.14, smapi-2_0_1-release,
-	smapi-2_0_0-release), makefile.qcd (1.13, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release,
-	smapi-2_0_1-release, smapi-2_0_0-release), makefile.wcd (1.16):
-	-DNOSEMAPHORES for DOS makefiles
+	* makefile.bcd (1.12), makefile.djg (1.14), makefile.qcd (1.13),
+	  makefile.wcd (1.16): -DNOSEMAPHORES for DOS makefiles
 
 2001-05-04 Friday 10:08  oliver.grimm
 
-	* msgapi.c (1.19, smapi-2_0_1-release, smapi-2_0_0-release),
-	msgapi.h (1.33): OG: Add verion information to the _minf structure
+	* msgapi.c (1.19), msgapi.h (1.33): OG: Add verion information to
+	  the _minf structure
 
 2001-04-30 Monday 06:09  kazimirow
 
@@ -2001,8 +1990,8 @@
 2001-04-21 Saturday 14:11  joerg.jaspert
 
 	* debian/: changelog (1.5), control (1.3), rules (1.3), shlibs
-	(1.4): Changed it so it compiles now with debug enabled. From now
-	on i compile only stable versions without debug.
+	  (1.4): Changed it so it compiles now with debug enabled. From now
+	  on i compile only stable versions without debug.
 
 2001-04-14 Saturday 12:47  tobi
 
@@ -2011,25 +2000,27 @@
 2001-04-14 Saturday 12:45  tobi
 
 	* tdelay.c (1.5): preprocessor directives must start at column #1
-	!!!
+	  !!!
 
 2001-04-14 Saturday 12:40  tobi
 
-	* sq_help.c (1.4), sq_idx.c (1.5), sq_msg.c (1.5,
-	smapi-2_2_4-release, smapi-2_2_3-release, smapi-2_2_2-release,
-	smapi-2_2_1-release) (utags: smapi-2_0_0-release,
-	smapi-2_0_1-release): replaced malloc.h with stdlib.h acccording to
-	ANSI C and in order to remove warnings on Unix systems
+	* sq_help.c (1.4), sq_idx.c (1.5), sq_msg.c (1.5): replaced
+	  malloc.h with stdlib.h acccording to ANSI C and in order to
+	  remove warnings on Unix systems
 
 2001-04-13 Friday 13:05  joerg.jaspert
 
 	* debian/: README.Debian (1.2), changelog (1.4), control (1.2),
-	rules (1.2), shlibs (1.3): To much
+	  rules (1.2), shlibs (1.3): To much
 
 2001-04-13 Friday 13:04  joerg.jaspert
 
 	* Makefile (1.20): Removed most of my changes.	Changed symlinks to
-	be symlinks without path.
+	  be symlinks without path.
+
+2001-04-12 Thursday 15:13  ml
+
+	* msgapi.c (1.18): [no log message]
 
 2001-04-10 Tuesday 16:13  joerg.jaspert
 
@@ -2038,117 +2029,130 @@
 2001-04-10 Tuesday 15:38  joerg.jaspert
 
 	* debian/changelog (1.2): Renamed to 1.6.4u-10 so
-	dpkg/dselect/apt-get find it newer than 1.6.4
-	
-	Could we please increment the version-number for the
-	develop-versions everytime we release a stable-package ? So stable
-	iss 1.6.4, unstable iss 1.6.5 (stable can go 1.6.4a, 1.6.4b,...)
-	The next stable release is 1.6.5 and the develop-version at this
-	time goes to 1.6.6 ?
+	  dpkg/dselect/apt-get find it newer than 1.6.4
+
+	  Could we please increment the version-number for the
+	  develop-versions everytime we release a stable-package ? So
+	  stable iss 1.6.4, unstable iss 1.6.5 (stable can go 1.6.4a,
+	  1.6.4b,...) The next stable release is 1.6.5 and the
+	  develop-version at this time goes to 1.6.6 ?
 
 2001-04-10 Tuesday 14:52  joerg.jaspert
 
 	* debian/: README.Debian (1.1), changelog (1.1), control (1.1),
-	copyright (1.1), docs (1.1), rules (1.1), shlibs (1.1): The
-	Controlfiles needed to build a debian-Package.
+	  copyright (1.1), docs (1.1), rules (1.1), shlibs (1.1): The
+	  Controlfiles needed to build a debian-Package.
 
 2001-04-10 Tuesday 14:51  joerg.jaspert
 
 	* Makefile (1.19): Hmm, huskymak.cfg is in debian/...  Why do i not
-	write it in here ? :)
+	  write it in here ? :)
 
 2001-04-10 Tuesday 14:49  joerg.jaspert
 
 	* Makefile (1.18): Debian specific changes. Included in
-	ifeq...else...endif
+	  ifeq...else...endif
+
+2001-03-25 Sunday 18:21  ml
+
+	* BUGS (1.7), api_jam.c (1.54): [no log message]
+
+2001-03-16 Friday 07:18  ml
+
+	* api_jam.c (1.53): [no log message]
 
 2001-03-15 Thursday 22:59  tobi
 
 	* api_jam.c (1.52): portability fix
 
+2001-03-15 Thursday 18:59  ml
+
+	* BUGS (1.6), api_jam.c (1.51): [no log message]
+
 2001-03-07 Wednesday 19:33  oliver.grimm
 
-	* locking.c (1.27, smapi-2_0_1-release, smapi-2_0_0-release): OG:
-	Uhh. Fixed missing parameter in waitlock2() under OS/2 ...
+	* locking.c (1.27): OG: Uhh. Fixed missing parameter in waitlock2()
+	  under OS/2 ...
 
 2001-03-06 Tuesday 19:44  oliver.grimm
 
-	* locking.c (1.26), sq_lock.c (1.18, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release,
-	smapi-2_0_1-release, smapi-2_0_0-release), sq_write.c (1.5,
-	smapi-2_0_1-release, smapi-2_0_0-release), tdelay.c (1.4): OG: Some
-	Win32 specified fixes.
+	* locking.c (1.26), sq_lock.c (1.18), sq_write.c (1.5), tdelay.c
+	  (1.4): OG: Some Win32 specified fixes.
+
+2001-03-04 Sunday 11:54  ml
+
+	* msgapi.c (1.17): [no log message]
+
+2001-03-04 Sunday 09:04  ml
+
+	* makefile.lnx (1.28), makefile.sun (1.17): [no log message]
 
 2001-03-03 Saturday 14:48  oliver.grimm
 
 	* locking.c (1.25), sq_lock.c (1.17): OG: Making locking more
-	smooth when using tdelay(). Now trys every 1/10s.
+	  smooth when using tdelay(). Now trys every 1/10s.
 
 2001-03-03 Saturday 14:38  oliver.grimm
 
 	* locking.c (1.24): OG: Displaced all mysleep() with tdelay() -
-	mysleep isn't used anymore.
+	  mysleep isn't used anymore.
 
 2001-03-03 Saturday 14:21  oliver.grimm
 
 	* sq_area.c (1.18), sq_lock.c (1.16): OG: When locking fails,
-	fLocked flags that base is locked. fixed.
+	  fLocked flags that base is locked. fixed.
 
 2001-03-03 Saturday 14:02  oliver.grimm
 
 	* msgapi.h (1.32), sq_area.c (1.17), sq_lock.c (1.15): OG: Some
-	ALTLOCKING fixes.
+	  ALTLOCKING fixes.
 
 2001-03-03 Saturday 13:41  oliver.grimm
 
 	* compiler.h (1.63), locking.c (1.23), msgapi.c (1.16), msgapi.h
-	(1.31), sq_area.c (1.16), sq_lock.c (1.14): OG: Some changes to
-	make filelocking smoother on most modern os (*ix, os2).
+	  (1.31), sq_area.c (1.16), sq_lock.c (1.14): OG: Some changes to
+	  make filelocking smoother on most modern os (*ix, os2).
+
+2001-03-03 Saturday 11:33  oliver.grimm
+
+	* api_jam.c (1.50): [no log message]
 
 2001-03-03 Saturday 11:14  oliver.grimm
 
-	* compiler.h (1.62), makefile.bcd (1.11), makefile.bcw (1.10,
-	smapi-2_2_4-release, smapi-2_2_3-release, smapi-2_2_2-release,
-	smapi-2_2_1-release, smapi-2_0_1-release, smapi-2_0_0-release),
-	makefile.be (1.4, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release), makefile.bsd (1.15), makefile.djg (1.13),
-	makefile.emx (1.11), makefile.lnx (1.27), makefile.mgw (1.11,
-	smapi-2_0_1-release, smapi-2_0_0-release), makefile.mvc (1.4,
-	smapi-2_0_1-release, smapi-2_0_0-release), makefile.qcd (1.12),
-	makefile.rxw (1.13, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release), makefile.sun (1.16), makefile.unx (1.15,
-	smapi-2_0_1-release, smapi-2_0_0-release), makefile.wcd (1.15),
-	makefile.wcw (1.18, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release), makefile.wcx (1.12, smapi-2_0_0-release),
-	sq_lock.c (1.13), tdelay.c (1.3): OG: Added native mysleep for
-	Linux, BeOS and SunOS/Solaris.	OG: Changed behavior of locking
-	Squishbases. MsgLock() won't sleep forever.  OG: Updating
-	makefile.xxx ! (tdelay.o(bj) is missing in some of them)
+	* compiler.h (1.62), makefile.bcd (1.11), makefile.bcw (1.10),
+	  makefile.be (1.4), makefile.bsd (1.15), makefile.djg (1.13),
+	  makefile.emx (1.11), makefile.lnx (1.27), makefile.mgw (1.11),
+	  makefile.mvc (1.4), makefile.qcd (1.12), makefile.rxw (1.13),
+	  makefile.sun (1.16), makefile.unx (1.15), makefile.wcd (1.15),
+	  makefile.wcw (1.18), makefile.wcx (1.12), sq_lock.c (1.13),
+	  tdelay.c (1.3): OG: Added native mysleep for Linux, BeOS and
+	  SunOS/Solaris.  OG: Changed behavior of locking Squishbases.
+	  MsgLock() won't sleep forever.  OG: Updating makefile.xxx !
+	  (tdelay.o(bj) is missing in some of them)
 
 2001-03-02 Friday 18:54  oliver.grimm
 
 	* api_jam.c (1.49), api_jam.h (1.6), api_jamp.h (1.11), structrw.c
-	(1.21): OG: Jam should now work on non-intel systems (sparc,
-	alpha...) OG: Fixed a memory allocation bug in structrw.c.
+	  (1.21): OG: Jam should now work on non-intel systems (sparc,
+	  alpha...) OG: Fixed a memory allocation bug in structrw.c.
 
 2001-02-27 Tuesday 19:26  oliver.grimm
 
 	* locking.c (1.22), sq_lock.c (1.12): OG: Some bugfixes in locking
-	& semphores.
+	  & semphores.
 
 2001-02-23 Friday 14:00  tobi
 
-	* sq_hash.c (1.4, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release), sq_help.c (1.3), sq_idx.c (1.4), sq_read.c
-	(1.4, smapi-2_0_1-release, smapi-2_0_0-release), sq_write.c (1.4):
-	portability fixes for borland c
+	* sq_hash.c (1.4), sq_help.c (1.3), sq_idx.c (1.4), sq_read.c
+	  (1.4), sq_write.c (1.4): portability fixes for borland c
+
+2001-02-18 Sunday 19:03  ml
+
+	* compiler.h (1.61): [no log message]
 
 2001-02-11 Sunday 16:44  oliver.grimm
 
-	* api_sdm.c (1.22, smapi-2_0_0-release): More attributes and
-	filetyping for BeOS !
+	* api_sdm.c (1.22): More attributes and filetyping for BeOS !
 
 2001-02-11 Sunday 16:43  oliver.grimm
 
@@ -2157,8 +2161,12 @@
 2001-02-10 Saturday 14:00  oliver.grimm
 
 	* api_sdm.c (1.21): Added support for attributes under BeOS with
-	BFS Filesystems.  (today only the "from"-Field is implemented - for
-	a first test)
+	  BFS Filesystems.  (today only the "from"-Field is implemented -
+	  for a first test)
+
+2001-01-27 Saturday 09:21  ml
+
+	* TODO (1.3): [no log message]
 
 2001-01-26 Friday 16:11  ml
 
@@ -2178,13 +2186,9 @@
 
 2001-01-16 Tuesday 00:45  tobi
 
-	* api_sdm.c (1.20), compiler.h (1.60), makefile.bco (1.11,
-	smapi-2_2_1-release, smapi-2_0_1-release, smapi-2_0_0-release),
-	makefile.emo (1.19), makefile.hco (1.11, smapi-2_2_1-release,
-	smapi-2_0_1-release, smapi-2_0_0-release), makefile.ibo (1.16,
-	smapi-2_2_1-release, smapi-2_0_1-release, smapi-2_0_0-release),
-	makefile.wco (1.13, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release): portability fixes for os/2
+	* api_sdm.c (1.20), compiler.h (1.60), makefile.bco (1.11),
+	  makefile.emo (1.19), makefile.hco (1.11), makefile.ibo (1.16),
+	  makefile.wco (1.13): portability fixes for os/2
 
 2001-01-16 Tuesday 00:31  tobi
 
@@ -2193,37 +2197,42 @@
 2001-01-07 Sunday 17:23  oliver.grimm
 
 	* sq_area.c (1.15), sq_lock.c (1.11): og: Urgs. Removing some ugly
-	debugging-messages.
+	  debugging-messages.
 
 2001-01-07 Sunday 17:15  oliver.grimm
 
 	* compiler.h (1.58), locking.c (1.21), msgapi.h (1.30), sq_area.c
-	(1.14), sq_lock.c (1.10): og: Some changes to get alternative
-	locking running.
+	  (1.14), sq_lock.c (1.10): og: Some changes to get alternative
+	  locking running.
 
 2001-01-07 Sunday 15:06  oliver.grimm
 
 	* compiler.h (1.57): og: If ALTLOCKING defined, declare alternative
-	locking functions.
+	  locking functions.
 
 2001-01-07 Sunday 15:05  oliver.grimm
 
 	* sq_area.c (1.13): og: Initialising lck_path in _msgapi if
-	ALTLOCKING is used.
+	  ALTLOCKING is used.
 
 2001-01-07 Sunday 15:04  oliver.grimm
 
 	* sq_lock.c (1.9): og: If ALTLOCKING is defined, use
-	alternative-locking instead of the 'normal' one.
+	  alternative-locking instead of the 'normal' one.
 
 2001-01-07 Sunday 15:03  oliver.grimm
 
 	* locking.c (1.20): og: Alternative locking-functions. (Begin with
-	"alt_")
+	  "alt_")
 
 2001-01-07 Sunday 15:02  oliver.grimm
 
 	* msgapi.h (1.29): OG: Add char *lck_path to _msgapi structure.
+
+2000-12-11 Monday 18:48  ml
+
+	* compiler.h (1.56), makefile.lnx (1.26), setfsize.c (1.4): [no log
+	  message]
 
 2000-12-05 Tuesday 21:35  sms
 
@@ -2236,47 +2245,49 @@
 2000-12-03 Sunday 15:51  sms
 
 	* api_jam.c (1.45), api_jamp.h (1.10), api_sdm.c (1.19), msgapi.h
-	(1.28), sq_area.c (1.12): permissions fix (different permissions
-	for netmail/echomail, but the same for all formats)
+	  (1.28), sq_area.c (1.12): permissions fix (different permissions
+	  for netmail/echomail, but the same for all formats)
 
 2000-10-16 Monday 18:10  tobi
 
 	* api_jam.c (1.44): fix for my last checkin
 
+2000-10-16 Monday 05:05  ml
+
+	* progprot.h (1.9), structrw.c (1.20): [no log message]
+
 2000-10-15 Sunday 20:09  tobi
 
 	* api_jam.c (1.43), api_jamp.h (1.9): reduced memory fragmentation
-	in JAM api
+	  in JAM api
+
+2000-10-15 Sunday 17:15  ml
+
+	* fexist.c (1.15): [no log message]
 
 2000-10-15 Sunday 12:18  ml
 
 	* api_jam.c (1.42), makefile.emo (1.18), msgapi.h (1.27): see
-	ChangeLog Oct 15
+	  ChangeLog Oct 15
 
 2000-10-14 Saturday 20:03  tobi
 
 	* api_sdm.c (1.18), sq_area.c (1.11), sq_hash.c (1.3), sq_help.c
-	(1.2), sq_idx.c (1.3), sq_kill.c (1.3, smapi-2_2_2-release,
-	smapi-2_2_1-release, smapi-2_0_1-release, smapi-2_0_0-release),
-	sq_lock.c (1.8), sq_misc.c (1.4, smapi-2_2_2-release,
-	smapi-2_2_1-release, smapi-2_0_1-release, smapi-2_0_0-release),
-	sq_msg.c (1.4), sq_read.c (1.3), sq_uid.c (1.4,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release), sq_write.c (1.3), structrw.c (1.19), tdelay.c
-	(1.2): changes to make smapi compile with emx on os/2 fcntl.h must
-	come AFTER sys/types.h !!!
+	  (1.2), sq_idx.c (1.3), sq_kill.c (1.3), sq_lock.c (1.8),
+	  sq_misc.c (1.4), sq_msg.c (1.4), sq_read.c (1.3), sq_uid.c (1.4),
+	  sq_write.c (1.3), structrw.c (1.19), tdelay.c (1.2): changes to
+	  make smapi compile with emx on os/2 fcntl.h must come AFTER
+	  sys/types.h !!!
 
 2000-10-14 Saturday 18:46  ml
 
 	* api_jam.c (1.41): * JAM fix: hpt link works good after deleting
-	msgs from golded
+	  msgs from golded
 
 2000-10-14 Saturday 17:31  ml
 
-	* api_jam.c (1.40), strftim.c (1.2, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release,
-	smapi-2_0_1-release, smapi-2_0_0-release): JAM fix: sqpack don't
-	crashes on areas when msgs deleted from golded
+	* api_jam.c (1.40), strftim.c (1.2): JAM fix: sqpack don't crashes
+	  on areas when msgs deleted from golded
 
 2000-10-11 Wednesday 16:48  tobi
 
@@ -2288,8 +2299,7 @@
 
 2000-10-09 Monday 03:06  ml
 
-	* ffind.c (1.12, smapi-2_0_1-release, smapi-2_0_0-release):
-	FFindOpen() postfix
+	* ffind.c (1.12): FFindOpen() postfix
 
 2000-10-07 Saturday 07:10  ml
 
@@ -2298,7 +2308,11 @@
 2000-10-03 Tuesday 16:16  tobi
 
 	* api_jam.c (1.37), msgapi.h (1.26): create a mapping for
-	JMSG_IMMEDIATE
+	  JMSG_IMMEDIATE
+
+2000-10-03 Tuesday 13:13  fedor.lizunkov
+
+	* api_jam.c (1.36), msgapi.h (1.25): [no log message]
 
 2000-10-02 Monday 22:16  tobi
 
@@ -2306,8 +2320,7 @@
 
 2000-09-17 Sunday 11:49  tobi
 
-	* cvtdate.c (1.7, smapi-2_0_1-release, smapi-2_0_0-release):
-	cosmetic fix
+	* cvtdate.c (1.7): cosmetic fix
 
 2000-09-16 Saturday 13:31  ml
 
@@ -2340,14 +2353,14 @@
 2000-09-04 Monday 10:07  ml
 
 	* Makefile (1.15), api_jam.c (1.32), api_sdm.c (1.17), makefile.lnx
-	(1.24), msgapi.h (1.24), setfsize.c (1.2), sq_area.c (1.10),
-	sq_idx.c (1.2), sq_lock.c (1.7), sq_msg.c (1.3), sq_uid.c (1.3):
-	see changelog sep 04
+	  (1.24), msgapi.h (1.24), setfsize.c (1.2), sq_area.c (1.10),
+	  sq_idx.c (1.2), sq_lock.c (1.7), sq_msg.c (1.3), sq_uid.c (1.3):
+	  see changelog sep 04
 
 2000-09-03 Sunday 12:52  ml
 
 	* api_jam.c (1.31), cvtdate.c (1.6), makefile.emx (1.10): see
-	ChangeLog Sep 03
+	  ChangeLog Sep 03
 
 2000-08-29 Tuesday 17:02  ml
 
@@ -2357,10 +2370,14 @@
 
 	* sq_area.c (1.9): fixed segfault if area could not be opened
 
+2000-08-27 Sunday 14:30  ml
+
+	* sq_area.c (1.8): [no log message]
+
 2000-08-27 Sunday 14:07  sms
 
 	* Makefile (1.14): remove existing files before creating symlinks
-	(-f option of ln does not always work :( )
+	  (-f option of ln does not always work :( )
 
 2000-08-24 Thursday 20:29  oliver.grimm
 
@@ -2369,13 +2386,13 @@
 2000-08-24 Thursday 20:16  oliver.grimm
 
 	* makefile.bcd (1.10), makefile.bco (1.10), makefile.bcw (1.9),
-	makefile.be (1.3), makefile.bsd (1.14), makefile.djg (1.12),
-	makefile.emo (1.17), makefile.emx (1.9), makefile.hco (1.10),
-	makefile.ibo (1.15), makefile.lnx (1.23), makefile.mgw (1.10),
-	makefile.mvc (1.3), makefile.qcd (1.11), makefile.rxw (1.12),
-	makefile.sun (1.13), makefile.unx (1.14), makefile.wcd (1.14),
-	makefile.wco (1.12), makefile.wcw (1.17), makefile.wcx (1.11): Add
-	missing setfsize.c
+	  makefile.be (1.3), makefile.bsd (1.14), makefile.djg (1.12),
+	  makefile.emo (1.17), makefile.emx (1.9), makefile.hco (1.10),
+	  makefile.ibo (1.15), makefile.lnx (1.23), makefile.mgw (1.10),
+	  makefile.mvc (1.3), makefile.qcd (1.11), makefile.rxw (1.12),
+	  makefile.sun (1.13), makefile.unx (1.14), makefile.wcd (1.14),
+	  makefile.wco (1.12), makefile.wcw (1.17), makefile.wcx (1.11):
+	  Add missing setfsize.c
 
 2000-08-24 Thursday 13:55  sms
 
@@ -2384,16 +2401,16 @@
 2000-08-24 Thursday 13:24  sms
 
 	* sq_misc.c (1.3), sq_read.c (1.2): renamed apiSquishHash back to
-	SquishHash, renamed SquishReadMsg to apiSquishReadMsg in sq_read.c
+	  SquishHash, renamed SquishReadMsg to apiSquishReadMsg in
+	  sq_read.c
 
 2000-08-24 Thursday 13:19  sms
 
-	* api_sqp.h (1.7, smapi-2_2_2-release, smapi-2_2_1-release,
-	smapi-2_0_1-release, smapi-2_0_0-release), compiler.h (1.54),
-	sq_area.c (1.7), sq_hash.c (1.2), sq_kill.c (1.2), sq_lock.c (1.5),
-	sq_misc.c (1.2), sq_msg.c (1.2), sq_uid.c (1.2), sq_write.c (1.2):
-	renamed exported Squish*-functions to apiSquish* to prevent name
-	collisions (e.g. in MsgEd)
+	* api_sqp.h (1.7), compiler.h (1.54), sq_area.c (1.7), sq_hash.c
+	  (1.2), sq_kill.c (1.2), sq_lock.c (1.5), sq_misc.c (1.2),
+	  sq_msg.c (1.2), sq_uid.c (1.2), sq_write.c (1.2): renamed
+	  exported Squish*-functions to apiSquish* to prevent name
+	  collisions (e.g. in MsgEd)
 
 2000-08-24 Thursday 12:40  sms
 
@@ -2402,7 +2419,7 @@
 2000-08-24 Thursday 12:18  sms
 
 	* msgapi.c (1.14), sq_area.c (1.6): init semaphores for squish
-	routines in MsgOpenApi, destroy them in MsgCloseApi
+	  routines in MsgOpenApi, destroy them in MsgCloseApi
 
 2000-08-24 Thursday 10:11  sms
 
@@ -2411,13 +2428,13 @@
 2000-08-23 Wednesday 19:32  oliver.grimm
 
 	* makefile.bcd (1.9), makefile.bco (1.9), makefile.bcw (1.8),
-	makefile.be (1.2), makefile.bsd (1.13), makefile.djg (1.11),
-	makefile.emo (1.16), makefile.emx (1.8), makefile.hco (1.9),
-	makefile.ibo (1.14), makefile.lnx (1.22), makefile.mgw (1.9),
-	makefile.mvc (1.2), makefile.qcd (1.10), makefile.rxw (1.11),
-	makefile.sun (1.12), makefile.unx (1.13), makefile.wcd (1.13),
-	makefile.wco (1.11), makefile.wcw (1.16), makefile.wcx (1.10):
-	Hopfully working old-style makefiles
+	  makefile.be (1.2), makefile.bsd (1.13), makefile.djg (1.11),
+	  makefile.emo (1.16), makefile.emx (1.8), makefile.hco (1.9),
+	  makefile.ibo (1.14), makefile.lnx (1.22), makefile.mgw (1.9),
+	  makefile.mvc (1.2), makefile.qcd (1.10), makefile.rxw (1.11),
+	  makefile.sun (1.12), makefile.unx (1.13), makefile.wcd (1.13),
+	  makefile.wco (1.11), makefile.wcw (1.16), makefile.wcx (1.10):
+	  Hopfully working old-style makefiles
 
 2000-08-23 Wednesday 19:16  oliver.grimm
 
@@ -2426,7 +2443,11 @@
 2000-08-23 Wednesday 05:08  oliver.grimm
 
 	* sq_area.c (1.5), sq_lock.c (1.4): Out-Sourced multithreadding to
-	semaphor.c
+	  semaphor.c
+
+2000-08-22 Tuesday 15:53  ml
+
+	* date2bin.c (1.6): [no log message]
 
 2000-08-21 Monday 22:44  sms
 
@@ -2439,7 +2460,7 @@
 2000-08-21 Monday 06:12  oliver.grimm
 
 	* sq_area.c (1.4), sq_lock.c (1.3): Remove temporarly semaphores
-	from unix-version
+	  from unix-version
 
 2000-08-20 Sunday 07:52  oliver.grimm
 
@@ -2449,6 +2470,10 @@
 
 	* sq_area.c (1.2): Lx support for Semaphores
 
+2000-08-17 Thursday 05:36  ml
+
+	* sq_lock.c (1.2): [no log message]
+
 2000-08-14 Monday 18:03  oliver.grimm
 
 	* date2bin.c (1.5): Fix for empty __FTSC_DATE field
@@ -2456,15 +2481,13 @@
 2000-08-14 Monday 17:00  oliver.grimm
 
 	* api_jam.c (1.29), api_sdm.c (1.16), locking.c (1.18), msgapi.c
-	(1.13), setfsize.c (1.1), sq_area.c (1.1), sq_hash.c (1.1),
-	sq_help.c (1.1), sq_idx.c (1.1), sq_kill.c (1.1), sq_lock.c (1.1),
-	sq_misc.c (1.1), sq_msg.c (1.1), sq_read.c (1.1), sq_uid.c (1.1),
-	sq_write.c (1.1), structrw.c (1.16), tdelay.c (1.1), api_jamp.h
-	(1.8), api_sdmp.h (1.3, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release), api_sq.h (1.4, smapi-2_0_1-release,
-	smapi-2_0_0-release), api_sqp.h (1.6), msgapi.h (1.22), progprot.h
-	(1.8), Makefile (1.10): Complete new Squish-API
+	  (1.13), setfsize.c (1.1), sq_area.c (1.1), sq_hash.c (1.1),
+	  sq_help.c (1.1), sq_idx.c (1.1), sq_kill.c (1.1), sq_lock.c
+	  (1.1), sq_misc.c (1.1), sq_msg.c (1.1), sq_read.c (1.1), sq_uid.c
+	  (1.1), sq_write.c (1.1), structrw.c (1.16), tdelay.c (1.1),
+	  api_jamp.h (1.8), api_sdmp.h (1.3), api_sq.h (1.4), api_sqp.h
+	  (1.6), msgapi.h (1.22), progprot.h (1.8), Makefile (1.10):
+	  Complete new Squish-API
 
 2000-08-13 Sunday 08:16  oliver.grimm
 
@@ -2480,9 +2503,15 @@
 
 2000-08-12 Saturday 14:31  oliver.grimm
 
-	* api_sq.h (1.3), api_sqp.h (1.5), msgapi.c (1.11): Added open-area
-	and open-message lists. When closing an area all messages will be
-	closed. MsgCloseApi will also close all open areas
+	* api_sqp.h (1.5), msgapi.c (1.11): Added open-area and
+	  open-message lists. When closing an area all messages will be
+	  closed. MsgCloseApi will also close all open areas
+
+2000-08-12 Saturday 14:28  oliver.grimm
+
+	* api_sq.h (1.3): Added open-area and open-message lists. When
+	  closing an area all messages will be closed. MsgCloseApi will
+	  also close all open areas
 
 2000-08-07 Monday 19:50  oliver.grimm
 
@@ -2496,6 +2525,35 @@
 
 	* compiler.h (1.53): Added BeOS support
 
+2000-08-05 Saturday 11:40  oliver.grimm
+
+	* Makefile (1.7): [no log message]
+
+2000-08-05 Saturday 11:34  oliver.grimm
+
+	* Makefile (1.6): [no log message]
+
+2000-08-05 Saturday 09:46  oliver.grimm
+
+	* compiler.h (1.52): [no log message]
+
+2000-08-05 Saturday 09:41  oliver.grimm
+
+	* makefile.be (1.1): [no log message]
+
+2000-08-05 Saturday 09:37  oliver.grimm
+
+	* compiler.h (1.51): [no log message]
+
+2000-07-31 Monday 18:09  ml
+
+	* api_jam.c (1.28), api_sdm.c (1.15), api_sdmp.h (1.2), api_sqp.h
+	  (1.4), msgapi.c (1.9), msgapi.h (1.21): [no log message]
+
+2000-07-26 Wednesday 08:44  ml
+
+	* BUGS (1.4), api_jam.c (1.27): [no log message]
+
 2000-07-25 Tuesday 15:08  ml
 
 	* BUGS (1.3), api_jam.c (1.26): jam @Via fixes
@@ -2507,12 +2565,21 @@
 2000-07-14 Friday 09:50  tobi
 
 	* makefile.wcd (1.12), makefile.wco (1.10), makefile.wcw (1.15),
-	makefile.wcx (1.9): watcom makefiles cosmetic fix
+	  makefile.wcx (1.9): watcom makefiles cosmetic fix
+
+2000-07-13 Thursday 14:05  ml
+
+	* makefile.emo (1.15), makefile.emx (1.7): [no log message]
+
+2000-07-13 Thursday 12:28  ml
+
+	* BUGS (1.2), api_jam.c (1.25), api_jamp.h (1.7), makefile.emo
+	  (1.14), makefile.emx (1.6), structrw.c (1.15): [no log message]
 
 2000-07-07 Friday 21:47  tobi
 
 	* compiler.h (1.50), makefile.mgw (1.8): Adapted MINGW32 code to
-	the latest mingw32 vers www.mingw.org.
+	  the latest mingw32 vers www.mingw.org.
 
 2000-07-07 Friday 00:37  tobi
 
@@ -2520,15 +2587,13 @@
 
 2000-07-05 Wednesday 11:46  tobi
 
-	* flush.c (1.9, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release), makefile.wcd (1.11), progprot.h (1.7): more
-	watcom fixes
+	* flush.c (1.9), makefile.wcd (1.11), progprot.h (1.7): more watcom
+	  fixes
 
 2000-07-05 Wednesday 11:13  tobi
 
 	* api_jam.c (1.24), compiler.h (1.49), flush.c (1.8), makefile.wcd
-	(1.10), progprot.h (1.6): some changes for Watcom/DOS
+	  (1.10), progprot.h (1.6): some changes for Watcom/DOS
 
 2000-07-05 Wednesday 10:05  tobi
 
@@ -2537,6 +2602,14 @@
 2000-07-05 Wednesday 00:02  tobi
 
 	* compiler.h (1.47): fix for watcom/2
+
+2000-06-29 Thursday 14:59  ml
+
+	* api_jam.c (1.23), structrw.c (1.14): [no log message]
+
+2000-06-27 Tuesday 17:33  ml
+
+	* api_jam.c (1.22), api_jamp.h (1.6): [no log message]
 
 2000-06-08 Thursday 17:22  tobi
 
@@ -2558,6 +2631,21 @@
 
 	* Makefile (1.2): changed version number
 
+2000-05-22 Monday 05:28  ml
+
+	* fexist.c (1.14): [no log message]
+
+2000-05-09 Tuesday 05:37  ml
+
+	* api_jam.c (1.21), structrw.c (1.13): [no log message]
+
+2000-05-08 Monday 10:59  ml
+
+	* api_jam.c (1.20), compiler.h (1.45), fexist.c (1.13), ffind.c
+	  (1.10), ffind.h (1.11), flush.c (1.7), locking.c (1.17),
+	  makefile.mvc (1.1), msgapi.h (1.20), prog.h (1.3), progprot.h
+	  (1.5), stamp.h (1.3), structrw.c (1.12): [no log message]
+
 2000-04-21 Friday 11:14  sms
 
 	* Makefile (1.1): renamed makefile.husky to Makefile
@@ -2568,13 +2656,11 @@
 
 2000-04-16 Sunday 10:54  tobi
 
-	* makefile.sun (1.11, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	sun makefile fixes
+	* makefile.sun (1.11): sun makefile fixes
 
 2000-04-15 Saturday 21:01  tobi
 
-	* makefile.lnx (1.21, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	small fix
+	* makefile.lnx (1.21): small fix
 
 2000-04-15 Saturday 18:09  tobi
 
@@ -2584,20 +2670,28 @@
 
 	* flush.c (1.6): Fixed RSXNT bug
 
+2000-04-15 Saturday 02:41  ml
+
+	* structrw.c (1.11): [no log message]
+
 2000-04-12 Wednesday 20:29  tobi
 
 	* makefile.ibo (1.12), makefile.wcd (1.9), makefile.wco (1.9):
-	legacy makefile fixes
+	  legacy makefile fixes
+
+2000-04-10 Monday 14:16  ml
+
+	* api_jam.c (1.19), api_sdm.c (1.14): [no log message]
 
 2000-04-09 Sunday 22:16  tobi
 
 	* ffind.c (1.9), ffind.h (1.10): removed the last realm of pragma
-	pack from smapi
+	  pack from smapi
 
 2000-04-09 Sunday 21:30  tobi
 
 	* compiler.h (1.44), msgapi.h (1.19): removed remaining pragma
-	pack()'s
+	  pack()'s
 
 2000-04-09 Sunday 16:30  tobi
 
@@ -2610,13 +2704,12 @@
 2000-04-09 Sunday 14:11  nestyurkin.nikolay
 
 	* ffind.h (1.8), msgapi.h (1.18): #pragma pack() fix for Watcom &
-	DJGPP
+	  DJGPP
 
 2000-04-08 Saturday 09:33  tobi
 
-	* makefile.unx (1.12, smapi-1_6_4b-release, smapi-1_6_4a-release),
-	makefile.wcd (1.8), makefile.wco (1.8), makefile.wcw (1.13),
-	makefile.wcx (1.8): legacy makefile fixes
+	* makefile.unx (1.12), makefile.wcd (1.8), makefile.wco (1.8),
+	  makefile.wcw (1.13), makefile.wcx (1.8): legacy makefile fixes
 
 2000-04-08 Saturday 08:36  tobi
 
@@ -2628,8 +2721,8 @@
 
 2000-04-08 Saturday 08:32  tobi
 
-	* ffind.h (1.7), makefile.rxw (1.10, smapi-1_6_4b-release,
-	smapi-1_6_4a-release): rsxnt fixes, legacy makefile fixes
+	* ffind.h (1.7), makefile.rxw (1.10): rsxnt fixes, legacy makefile
+	  fixes
 
 2000-04-08 Saturday 01:04  tobi
 
@@ -2637,13 +2730,13 @@
 
 2000-04-08 Saturday 01:03  tobi
 
-	* compiler.h (1.40), locking.c (1.16), makefile.qcd (1.9,
-	smapi-1_6_4b-release, smapi-1_6_4a-release): More Quick C fixes
+	* compiler.h (1.40), locking.c (1.16), makefile.qcd (1.9): More
+	  Quick C fixes
 
 2000-04-08 Saturday 00:16  tobi
 
 	* api_jam.c (1.18), api_sqp.h (1.3), compiler.h (1.39), locking.c
-	(1.15), makefile.qcd (1.8): Bugfixes for Quick C / Microsoft C
+	  (1.15), makefile.qcd (1.8): Bugfixes for Quick C / Microsoft C
 
 2000-04-07 Friday 22:51  tobi
 
@@ -2659,62 +2752,65 @@
 
 2000-04-04 Tuesday 16:16  tobi
 
-	* makefile.hco (1.8, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	hco legacy makefile fix
+	* makefile.hco (1.8): hco legacy makefile fix
 
 2000-04-04 Tuesday 16:15  tobi
 
-	* fexist.c (1.12), makefile.emx (1.5, smapi-1_6_4b-release,
-	smapi-1_6_4a-release): Removed warnings for emx, and legacy
-	makefile fixes
+	* fexist.c (1.12), makefile.emx (1.5): Removed warnings for emx,
+	  and legacy makefile fixes
 
 2000-04-04 Tuesday 16:13  tobi
 
-	* locking.c (1.14), makefile.emo (1.13, smapi-1_6_4b-release,
-	smapi-1_6_4a-release), parsenn.c (1.2, smapi-2_2_4-release,
-	smapi-2_2_3-release, smapi-2_2_2-release, smapi-2_2_1-release,
-	smapi-2_0_1-release, smapi-2_0_0-release, smapi-1_6_4b-release,
-	smapi-1_6_4a-release): Removed warnings for EMO, and makefile fixes
+	* locking.c (1.14), makefile.emo (1.13), parsenn.c (1.2): Removed
+	  warnings for EMO, and makefile fixes
 
 2000-04-04 Tuesday 16:09  tobi
 
-	* makefile.djg (1.10, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	legacy makefile fixes
+	* makefile.djg (1.10): legacy makefile fixes
+
+2000-04-04 Tuesday 16:03  tobi
+
+	* makefile.bsd (1.12), structrw.c (1.10): [no log message]
 
 2000-04-04 Tuesday 16:00  tobi
 
-	* compiler.h (1.38), locking.c (1.13), makefile.bco (1.8,
-	smapi-1_6_4b-release, smapi-1_6_4a-release): Removed warnings for
-	Borland C OS/2
+	* compiler.h (1.38), locking.c (1.13), makefile.bco (1.8): Removed
+	  warnings for Borland C OS/2
 
 2000-04-04 Tuesday 15:52  tobi
 
-	* makefile.bcd (1.8, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	legacy makefile fixes
+	* makefile.bcd (1.8): legacy makefile fixes
 
 2000-04-04 Tuesday 15:51  tobi
 
 	* api_jam.c (1.17), api_sdm.c (1.13), structrw.c (1.9): Removed
-	warnings for Borland C DOS
+	  warnings for Borland C DOS
+
+2000-04-01 Saturday 11:34  ml
+
+	* flush.c (1.5): [no log message]
 
 2000-04-01 Saturday 10:12  tobi
 
 	* fexist.c (1.11): fexist.c didn't compile on UNIX
 
+2000-04-01 Saturday 09:49  fedor.lizunkov
+
+	* api_jam.c (1.16): [no log message]
+
 2000-03-31 Friday 15:57  tobi
 
 	* compiler.h (1.37), fexist.c (1.10), flush.c (1.4), locking.c
-	(1.12), msgapi.h (1.17), patmat.c (1.3, smapi-2_0_1-release,
-	smapi-2_0_0-release, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	Fr  31 Mar 2000 17:53:23 CEST tobi (patches mostly from Alex S.
-	Aganichev) * Modified the routines in fexist.c to use stat() if
-	available, instead   of opendir/readdir/closedir. This should speed
-	up things a lot and also   produce more reliable results.  * Some
-	small corrections in compiler.h for various compilers.	* Fixed
-	flush_handle2 for DJGPP and for RSXNT (the RSXNT code previously  
-	did use wrong handle numbers, which could produce very interesting 
-	 results ...) * Accelerated patmat routine for sequences with
-	multiple wildcards.  * Added shareloaded function for DJGPP.
+	  (1.12), msgapi.h (1.17), patmat.c (1.3): Fr  31 Mar 2000 17:53:23
+	  CEST tobi (patches mostly from Alex S. Aganichev) * Modified the
+	  routines in fexist.c to use stat() if available, instead   of
+	  opendir/readdir/closedir. This should speed up things a lot and
+	  also	 produce more reliable results.  * Some small corrections
+	  in compiler.h for various compilers.	* Fixed flush_handle2 for
+	  DJGPP and for RSXNT (the RSXNT code previously   did use wrong
+	  handle numbers, which could produce very interesting	 results
+	  ...) * Accelerated patmat routine for sequences with multiple
+	  wildcards.  * Added shareloaded function for DJGPP.
 
 2000-03-26 Sunday 11:37  tobi
 
@@ -2728,10 +2824,22 @@
 
 	* compiler.h (1.34): Fix for Solaris.
 
+2000-03-23 Thursday 12:42  tobi
+
+	* compiler.h (1.33), locking.c (1.11): [no log message]
+
+2000-03-20 Monday 17:43  ml
+
+	* makefile.sun (1.9): [no log message]
+
+2000-03-20 Monday 04:51  ml
+
+	* BUGS (1.1): [no log message]
+
 2000-03-13 Monday 22:47  sms
 
 	* makefile.bsd (1.11), makefile.lnx (1.19), makefile.sun (1.8),
-	makefile.unx (1.11): updated legacy makefiles
+	  makefile.unx (1.11): updated legacy makefiles
 
 2000-03-07 Tuesday 14:34  tobi
 
@@ -2744,12 +2852,37 @@
 2000-02-10 Thursday 08:24  sms
 
 	* makefile.lnx (1.17): added ldconfig to makefile.husky and
-	makefile.lnx of smapi and fidoconfig
+	  makefile.lnx of smapi and fidoconfig
+
+2000-02-07 Monday 18:49  ml
+
+	* ffind.c (1.8): [no log message]
+
+2000-02-04 Friday 12:27  fedor.lizunkov
+
+	* api_jam.c (1.15), msgapi.h (1.16): [no log message]
 
 2000-01-16 Sunday 13:13  sms
 
 	* INSTALL (1.6): added reference to husky-common-package to
-	INSTALL; updated makefile.husky
+	  INSTALL; updated makefile.husky
+
+2000-01-10 Monday 21:00  ml
+
+	* fexist.c (1.9): [no log message]
+
+2000-01-09 Sunday 15:54  ml
+
+	* makefile.wcw (1.12): [no log message]
+
+2000-01-07 Friday 22:21  ml
+
+	* fexist.c (1.8): [no log message]
+
+2000-01-06 Thursday 20:44  ml
+
+	* fexist.c (1.7), ffind.c (1.7), makefile.wcw (1.11): [no log
+	  message]
 
 1999-12-31 Friday 01:01  tobi
 
@@ -2759,6 +2892,10 @@
 
 	* makefile.emx (1.3): sorry ....
 
+1999-12-31 Friday 01:00  tobi
+
+	* ffind.h (1.6), makefile.emx (1.2): [no log message]
+
 1999-12-31 Friday 00:59  tobi
 
 	* compiler.h (1.31):  Fixed a structure packing problem with DJGPP.
@@ -2766,22 +2903,25 @@
 1999-12-29 Wednesday 11:34  mt
 
 	* makefile.bsd (1.10), makefile.lnx (1.16), makefile.unx (1.10):
-	more version changes added
+	  more version changes added
 
 1999-12-14 Tuesday 23:52  tobi
 
-	* date2bin.c (1.4, smapi-1_6_4b-release, smapi-1_6_4a-release): -
-	Fixed serious  Y2K bug in the SMAPI. This one affects the SDM part 
-	 (Fido *.MSG) of the SMAPI as well as all programs that call  
-	ASCII_Date_To_Binary.
+	* date2bin.c (1.4): - Fixed serious  Y2K bug in the SMAPI. This one
+	  affects the SDM part	 (Fido *.MSG) of the SMAPI as well as all
+	  programs that call   ASCII_Date_To_Binary.
 
 1999-12-12 Sunday 08:05  tobi
 
 	* cvtdate.c (1.5): Fixed Y2K bug in the SMAPI. It does not affect
-	Squish and Msg, but JAM, and it does affect any program (no matter
-	what storage type) that explicitly calls the sc_time routine. The
-	bug results in years 2000 ... 2009 being filled in as "0" .. "9"
-	instead of "00" .. "09".
+	  Squish and Msg, but JAM, and it does affect any program (no
+	  matter what storage type) that explicitly calls the sc_time
+	  routine. The bug results in years 2000 ... 2009 being filled in
+	  as "0" .. "9" instead of "00" .. "09".
+
+1999-12-11 Saturday 07:14  ml
+
+	* makefile.sun (1.7): [no log message]
 
 1999-12-06 Monday 13:17  tobi
 
@@ -2790,7 +2930,7 @@
 1999-11-30 Tuesday 21:15  sms
 
 	* api_jam.c (1.14), api_sdm.c (1.12): fixed some misuses of ++ in
-	api_jam.c and api_sdm.c
+	  api_jam.c and api_sdm.c
 
 1999-11-28 Sunday 11:50  tobi
 
@@ -2799,7 +2939,7 @@
 1999-11-28 Sunday 00:39  tobi
 
 	* compiler.h (1.30), makefile.emx (1.1), msgapi.h (1.15): Some
-	portability fixes for mgw
+	  portability fixes for mgw
 
 1999-11-27 Saturday 23:43  tobi
 
@@ -2812,10 +2952,10 @@
 1999-11-27 Saturday 12:13  tobi
 
 	* makefile.bcd (1.7), makefile.bco (1.7), makefile.bcw (1.6),
-	makefile.emo (1.12), makefile.hco (1.7), makefile.ibo (1.10),
-	makefile.mgw (1.5), makefile.qcd (1.7), makefile.rxw (1.9),
-	makefile.wcd (1.7), makefile.wco (1.7), makefile.wcx (1.7): Fixed
-	makefiles
+	  makefile.emo (1.12), makefile.hco (1.7), makefile.ibo (1.10),
+	  makefile.mgw (1.5), makefile.qcd (1.7), makefile.rxw (1.9),
+	  makefile.wcd (1.7), makefile.wco (1.7), makefile.wcx (1.7): Fixed
+	  makefiles
 
 1999-11-27 Saturday 11:31  tobi
 
@@ -2825,6 +2965,11 @@
 
 	* api_jam.c (1.13): Also adds the "date arrived" field.
 
+1999-11-04 Thursday 20:04  ml
+
+	* compiler.h (1.26), makefile.wcw (1.10), progprot.h (1.4): [no log
+	  message]
+
 1999-10-24 Sunday 21:55  tobi
 
 	* makefile.bsd (1.9): Fixed BSD makefile (JAM api)
@@ -2833,6 +2978,10 @@
 
 	* makefile.lnx (1.15): Fixes spaces (replaced with TABs)
 
+1999-10-23 Saturday 07:58  ml
+
+	* api_jam.c (1.12), makefile.wcw (1.9): [no log message]
+
 1999-10-21 Thursday 07:13  mt
 
 	* cvtdate.c (1.4), patmat.c (1.2): fixed some date code
@@ -2840,12 +2989,12 @@
 1999-10-20 Wednesday 20:56  tobi
 
 	* makefile.bcd (1.6), makefile.bco (1.6), makefile.bcw (1.5),
-	makefile.bsd (1.8), makefile.djg (1.9), makefile.emo (1.11),
-	makefile.hco (1.6), makefile.ibo (1.9), makefile.lnx (1.14),
-	makefile.mgw (1.4), makefile.qcd (1.6), makefile.rxw (1.8),
-	makefile.sun (1.6), makefile.wcd (1.6), makefile.wco (1.6),
-	makefile.wcw (1.8), makefile.wcx (1.6): Reintroduced the original
-	"legacy" makefiles.
+	  makefile.bsd (1.8), makefile.djg (1.9), makefile.emo (1.11),
+	  makefile.hco (1.6), makefile.ibo (1.9), makefile.lnx (1.14),
+	  makefile.mgw (1.4), makefile.qcd (1.6), makefile.rxw (1.8),
+	  makefile.sun (1.6), makefile.wcd (1.6), makefile.wco (1.6),
+	  makefile.wcw (1.8), makefile.wcx (1.6): Reintroduced the original
+	  "legacy" makefiles.
 
 1999-10-20 Wednesday 20:44  tobi
 
@@ -2870,38 +3019,48 @@
 1999-10-14 Thursday 16:07  sms
 
 	* makefile.djg (1.7), makefile.unx (1.8): reorganized Makefiles,
-	read husky-common/README.Makefiles \!\!\!
+	  read husky-common/README.Makefiles \!\!\!
 
 1999-10-14 Thursday 15:40  sms
 
 	* makefile.bcd (1.5), makefile.bco (1.5), makefile.bcw (1.4),
-	makefile.bsd (1.6), makefile.emo (1.10), makefile.hco (1.5),
-	makefile.ibo (1.8), makefile.lnx (1.13), makefile.mgw (1.3),
-	makefile.qcd (1.5), makefile.rxw (1.7), makefile.sun (1.5),
-	makefile.wcd (1.5), makefile.wco (1.5), makefile.wcw (1.7),
-	makefile.wcx (1.5): reorganized Makefiles, read
-	husky-common/README.Makefiles \!\!\!
+	  makefile.bsd (1.6), makefile.emo (1.10), makefile.hco (1.5),
+	  makefile.ibo (1.8), makefile.lnx (1.13), makefile.mgw (1.3),
+	  makefile.qcd (1.5), makefile.rxw (1.7), makefile.sun (1.5),
+	  makefile.wcd (1.5), makefile.wco (1.5), makefile.wcw (1.7),
+	  makefile.wcx (1.5): reorganized Makefiles, read
+	  husky-common/README.Makefiles \!\!\!
 
 1999-10-12 Tuesday 07:28  tobi
 
 	* ffind.h (1.5): Really ugly workaround for a watcom c problem.
-	Better rewrite ffind.c!
+	  Better rewrite ffind.c!
 
 1999-10-12 Tuesday 07:17  tobi
 
 	* api_jam.c (1.10), api_jamp.h (1.5), structrw.c (1.8): Fxied
-	warnings abound signed/unsigned char pointer conversions
+	  warnings abound signed/unsigned char pointer conversions
+
+1999-10-10 Sunday 18:38  ml
+
+	* strextra.h (1.4): [no log message]
 
 1999-10-09 Saturday 20:55  tobi
 
 	* api_jam.c (1.9), makefile.djg (1.6): Portability changes for -
-	Borland C (api_jam.c) - DJGPP (makefile.djg)
+	  Borland C (api_jam.c) - DJGPP (makefile.djg)
+
+1999-10-06 Wednesday 14:43  fedor.lizunkov
+
+	* api_jam.c (1.8): [no log message]
+
+1999-10-01 Friday 16:29  fedor.lizunkov
+
+	* api_jam.c (1.7), msgapi.h (1.12): [no log message]
 
 1999-09-27 Monday 11:48  mt
 
-	* file_id.diz (1.2, smapi-2_0_1-release, smapi-2_0_0-release,
-	smapi-1_6_4b-release, smapi-1_6_4a-release): removed whatsnew.txt,
-	use Chengelog now
+	* file_id.diz (1.2): removed whatsnew.txt, use Chengelog now
 
 1999-09-24 Friday 09:07  mt
 
@@ -2911,20 +3070,65 @@
 
 	* api_sdm.c (1.11): bugfixes
 
+1999-09-18 Saturday 17:43  ml
+
+	* api_sdm.c (1.10): [no log message]
+
+1999-09-16 Thursday 08:28  ml
+
+	* strextra.c (1.3), strextra.h (1.3): [no log message]
+
+1999-09-14 Tuesday 17:22  fedor.lizunkov
+
+	* api_jam.c (1.6), api_jam.h (1.5), api_jamp.h (1.4), structrw.c
+	  (1.7): [no log message]
+
+1999-09-13 Monday 09:54  fedor.lizunkov
+
+	* api_jam.c (1.5), api_jam.h (1.4), api_jamp.h (1.3), structrw.c
+	  (1.6): [no log message]
+
+1999-09-12 Sunday 03:32  ml
+
+	* strextra.c (1.2), strextra.h (1.2): [no log message]
+
+1999-09-07 Tuesday 17:06  fedor.lizunkov
+
+	* api_jam.c (1.4), msgapi.h (1.11): [no log message]
+
 1999-09-06 Monday 13:47  tobi
 
 	* api_jamp.h (1.2), api_jam.c (1.3), api_jam.h (1.3): Removed
-	carriage returns
+	  carriage returns
 
 1999-09-06 Monday 13:31  tobi
 
 	* compiler.h (1.25), makefile.unx (1.7), msgapi.h (1.10): Removed
-	superfluous pragma pack statements.
+	  superfluous pragma pack statements.
+
+1999-09-02 Thursday 15:11  fedor.lizunkov
+
+	* api_jam.c (1.2), api_jam.h (1.2), makefile.bcd (1.4),
+	  makefile.bco (1.4), makefile.bcw (1.3), makefile.bsd (1.5),
+	  makefile.djg (1.5), makefile.emo (1.9), makefile.hco (1.4),
+	  makefile.ibo (1.7), makefile.mgw (1.2), makefile.qcd (1.4),
+	  makefile.rxw (1.6), makefile.sun (1.4), makefile.unx (1.6),
+	  makefile.wcd (1.4), makefile.wcw (1.6), makefile.wcx (1.4): [no
+	  log message]
 
 1999-08-31 Tuesday 23:15  sms
 
-	* smapi.pas (1.1, smapi-2_0_0-release, smapi-1_6_4b-release,
-	smapi-1_6_4a-release): added pascal unit smapi.pas
+	* smapi.pas (1.1): added pascal unit smapi.pas
+
+1999-08-26 Thursday 19:37  fedor.lizunkov
+
+	* api_jam.c (1.1), api_jam.h (1.1), api_jamp.h (1.1), makefile.lnx
+	  (1.11), makefile.wco (1.4), msgapi.c (1.8), msgapi.h (1.9): [no
+	  log message]
+
+1999-08-11 Wednesday 16:24  ml
+
+	* progprot.h (1.2), fexist.c (1.5): [no log message]
 
 1999-07-26 Monday 20:13  mt
 
@@ -2933,36 +3137,33 @@
 1999-07-11 Sunday 09:41  mt
 
 	* compiler.h (1.24), makefile.lnx (1.10): does work under libc2.1
-	now
+	  now
 
 1999-06-27 Sunday 22:26  tobi
 
 	* compiler.h (1.23), fexist.c (1.4), ffind.c (1.6), ffind.h (1.4),
-	flush.c (1.3), locking.c (1.10), makefile.ibo (1.6), makefile.wcw
-	(1.5), msgapi.h (1.8), structrw.c (1.5): - Bug fix for CSet/2:
-	*.MSG was not working (couldn't open Msg Area) - Important bug fix
-	for RSXNT and MINGW32 compiler: Binaries created   with those
-	compilers completely messed up *.MSG areas.  - Numerous changes to
-	the code to make it compile with MINGW32.  - Removed CRs from
-	makefile.wcw
+	  flush.c (1.3), locking.c (1.10), makefile.ibo (1.6), makefile.wcw
+	  (1.5), msgapi.h (1.8), structrw.c (1.5): - Bug fix for CSet/2:
+	  *.MSG was not working (couldn't open Msg Area) - Important bug
+	  fix for RSXNT and MINGW32 compiler: Binaries created	 with those
+	  compilers completely messed up *.MSG areas.  - Numerous changes
+	  to the code to make it compile with MINGW32.	- Removed CRs from
+	  makefile.wcw
 
 1999-06-27 Sunday 22:21  tobi
 
 	* makefile.mgw (1.1): Added makefile.mgw. This makefile is for the
-	MingW32 GNU C compiler.  This is a compiler that generates Windows
-	95/98/NT binaries. It has two main advantages: First, it creates
-	very small executables, because it uses CRTDLL.DLL as its C runtime
-	library. Second, "MINGW32 CPD" is a cross compiler edition of this
-	compiler that can be used to compile Windows binaries on Unix
-	boxes.
+	  MingW32 GNU C compiler.  This is a compiler that generates
+	  Windows 95/98/NT binaries. It has two main advantages: First, it
+	  creates very small executables, because it uses CRTDLL.DLL as its
+	  C runtime library. Second, "MINGW32 CPD" is a cross compiler
+	  edition of this compiler that can be used to compile Windows
+	  binaries on Unix boxes.
 
 1999-06-27 Sunday 14:25  tobi
 
 	* compiler.h (1.22), flush.c (1.2), locking.c (1.9), makefile.ibo
-	(1.5), typedefs.h (1.3, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release, smapi-1_6_4b-release, smapi-1_6_4a-release):
-	Some small changes for IBM CSet/2
+	  (1.5), typedefs.h (1.3): Some small changes for IBM CSet/2
 
 1999-05-16 Sunday 23:23  mt
 
@@ -2971,7 +3172,20 @@
 1999-04-09 Friday 09:02  mt
 
 	* INSTALL (1.3), VERSION (1.3): removed autoconf files because they
-	do not work correct and create much confusion, sorry Michael
+	  do not work correct and create much confusion, sorry Michael
+
+1999-03-18 Thursday 17:36  ml
+
+	* compiler.h (1.21): [no log message]
+
+1999-03-17 Wednesday 16:56  ml
+
+	* compiler.h (1.20): [no log message]
+
+1999-03-15 Monday 17:33  ml
+
+	* compiler.h (1.19), ffind.h (1.3), makefile.wcw (1.4): [no log
+	  message]
 
 1999-03-06 Saturday 23:09  tobi
 
@@ -2979,17 +3193,13 @@
 
 1999-03-01 Monday 18:56  mt
 
-	* makefile.djg (1.4), msgapi.h (1.7) (utags: smapi-1_5_6): djgpp
-	updates
+	* makefile.djg (1.4), msgapi.h (1.7): djgpp updates
 
 1999-02-09 Tuesday 10:28  mt
 
-	* COPYING (1.2, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release, smapi-1_6_4b-release, smapi-1_6_4a-release,
-	smapi-1_5_6), VERSION (1.2, smapi-1_5_6), makefile.lnx (1.9,
-	smapi-1_5_6), msgapi.h (1.6): changed the makefiles to generate a
-	smapilnx with version 1.5.6 which is the right value
+	* COPYING (1.2), VERSION (1.2), makefile.lnx (1.9), msgapi.h (1.6):
+	  changed the makefiles to generate a smapilnx with version 1.5.6
+	  which is the right value
 
 1999-02-07 Sunday 07:20  me
 
@@ -3001,31 +3211,30 @@
 
 1999-02-01 Monday 19:51  mt
 
-	* INSTALL (1.2, smapi-1_5_6), api_sdm.c (1.9, smapi-1_5_6),
-	makefile.lnx (1.8): changed rights for created files and dirs under
-	unix
+	* INSTALL (1.2), api_sdm.c (1.9), makefile.lnx (1.8): changed
+	  rights for created files and dirs under unix
 
 1999-02-01 Monday 18:28  tobi
 
-	* api_sdm.c (1.8), msgapi.c (1.7, smapi-1_5_6): Portability fixes
-	for DEC OSF C and other strict ANSI C compilers.
+	* api_sdm.c (1.8), msgapi.c (1.7): Portability fixes for DEC OSF C
+	  and other strict ANSI C compilers.
 
 1999-02-01 Monday 17:21  tobi
 
-	* typedefs.h (1.2, smapi-1_5_6): 64 bit fix
+	* typedefs.h (1.2): 64 bit fix
 
 1999-01-29 Friday 22:56  tobi
 
-	* structrw.c (1.4, smapi-1_5_6): Removed some warnings
+	* structrw.c (1.4): Removed some warnings
 
 1999-01-28 Thursday 23:45  fjoe
 
-	* makefile.bsd (1.4, smapi-1_5_6): build shared smapi library along
-	with static one.
+	* makefile.bsd (1.4): build shared smapi library along with static
+	  one.
 
 1999-01-28 Thursday 16:11  tobi
 
-	* date2bin.c (1.3, smapi-1_5_6): removed cr's
+	* date2bin.c (1.3): removed cr's
 
 1999-01-27 Wednesday 17:58  mt
 
@@ -3033,8 +3242,8 @@
 
 1999-01-25 Monday 23:32  me
 
-	* compiler.h (1.17, smapi-1_5_6): the changes to make kfe compile
-	without warings.  Hopes this doesn't break anything else.  ME
+	* compiler.h (1.17): the changes to make kfe compile without
+	  warings.  Hopes this doesn't break anything else.  ME
 
 1999-01-22 Friday 12:24  tobi
 
@@ -3042,9 +3251,9 @@
 
 1999-01-08 Friday 17:04  tobi
 
-	* makefile.unx (1.5, smapi-1_5_6): final version of the unix
-	makefile ... on systems which do not support shared objects, you
-	will have to do install by hand.
+	* makefile.unx (1.5): final version of the unix makefile ... on
+	  systems which do not support shared objects, you will have to do
+	  install by hand.
 
 1999-01-08 Friday 16:19  tobi
 
@@ -3060,8 +3269,7 @@
 
 1998-12-27 Sunday 17:43  mt
 
-	* locking.c (1.7), makefile.emo (1.6) (utags: smapi-1_5_6): added
-	watcom to locking.c
+	* locking.c (1.7), makefile.emo (1.6): added watcom to locking.c
 
 1998-12-17 Thursday 22:44  mt
 
@@ -3069,8 +3277,8 @@
 
 1998-12-14 Monday 15:22  mtt
 
-	* compiler.h (1.14), makefile.sun (1.3, smapi-1_5_6): got it
-	working on an ultrasparc
+	* compiler.h (1.14), makefile.sun (1.3): got it working on an
+	  ultrasparc
 
 1998-11-26 Thursday 12:50  tobi
 
@@ -3091,17 +3299,17 @@
 1998-10-12 Monday 09:28  tobi
 
 	* msgapi.c (1.6): Dear Matthias,
-	
-	not all C compilers understand C++ style comments in plain C source
-	code.
-	
-	:-)
+
+	  not all C compilers understand C++ style comments in plain C
+	  source code.
+
+	  :-)
 
 1998-10-07 Wednesday 20:25  mt
 
 	* msgapi.c (1.5): removed the code which removes intl, fmpt and
-	topt kludges from message text.  Nobody should change the msg->text
-	written by the user or the editor.
+	  topt kludges from message text.  Nobody should change the
+	  msg->text written by the user or the editor.
 
 1998-09-22 Tuesday 23:22  tobi
 
@@ -3109,14 +3317,14 @@
 
 1998-09-22 Tuesday 22:04  tobi
 
-	* makefile.bcw (1.2), makefile.rxw (1.5) (utags: smapi-1_5_6):
-	Adaptions to the NT makefile to prevent obscure bugs ...
+	* makefile.bcw (1.2), makefile.rxw (1.5): Adaptions to the NT
+	  makefile to prevent obscure bugs ...
 
 1998-09-16 Wednesday 22:13  tobi
 
 	* makefile.emo (1.5): Fix for the EMX (OS/2) makefile: Use -Zsys so
-	that no runtime is needed, and fix the makefile to be usable with
-	gmake.
+	  that no runtime is needed, and fix the makefile to be usable with
+	  gmake.
 
 1998-09-16 Wednesday 22:13  tobi
 
@@ -3129,11 +3337,11 @@
 1998-09-16 Wednesday 22:12  tobi
 
 	* compiler.h (1.13), makefile.bcw (1.1): Ported to Borland C 4.0
-	for Windows NT
+	  for Windows NT
 
 1998-09-15 Tuesday 15:35  tobi
 
-	* makefile.ibo (1.4, smapi-1_5_6): Fixed makefile.ibo for VAC++ 3.0
+	* makefile.ibo (1.4): Fixed makefile.ibo for VAC++ 3.0
 
 1998-08-19 Wednesday 21:24  tobi
 
@@ -3149,13 +3357,13 @@
 
 1998-08-13 Thursday 11:23  mt
 
-	* ffind.c (1.5, smapi-1_5_6): bugfixes for unix
+	* ffind.c (1.5): bugfixes for unix
 
 1998-08-08 Saturday 12:38  mt
 
 	* compiler.h (1.11), ffind.c (1.4), structrw.c (1.3): fixed
-	unix-relevant parts of ffind.c	fixed by gert troeger fixed *.msg
-	handling in structrw.c	  fixed by gert troeger
+	  unix-relevant parts of ffind.c  fixed by gert troeger fixed *.msg
+	  handling in structrw.c    fixed by gert troeger
 
 1998-07-28 Tuesday 13:39  tobi
 
@@ -3163,19 +3371,17 @@
 
 1998-07-25 Saturday 00:07  tobi
 
-	* api_sqp.h (1.2, smapi-1_5_6), compiler.h (1.10), locking.c (1.3),
-	makefile.bcd (1.3, smapi-1_5_6), makefile.bco (1.3, smapi-1_5_6),
-	makefile.djg (1.3), makefile.hco (1.3, smapi-1_5_6), makefile.ibo
-	(1.3), makefile.qcd (1.3, smapi-1_5_6), makefile.sun (1.2),
-	makefile.wcd (1.3, smapi-1_5_6), makefile.wco (1.3, smapi-1_5_6),
-	makefile.wcw (1.3, smapi-1_5_6), makefile.wcx (1.3, smapi-1_5_6):
-	Bug fixes and enhancements on the record locking and Squish locking
-	routines.
+	* api_sqp.h (1.2), compiler.h (1.10), locking.c (1.3), makefile.bcd
+	  (1.3), makefile.bco (1.3), makefile.djg (1.3), makefile.hco
+	  (1.3), makefile.ibo (1.3), makefile.qcd (1.3), makefile.sun
+	  (1.2), makefile.wcd (1.3), makefile.wco (1.3), makefile.wcw
+	  (1.3), makefile.wcx (1.3): Bug fixes and enhancements on the
+	  record locking and Squish locking routines.
 
 1998-07-23 Thursday 11:00  tobi
 
 	* locking.c (1.2), makefile.rxw (1.2): Implemented record locking
-	for the RSXNT version.
+	  for the RSXNT version.
 
 1998-07-23 Thursday 11:00  tobi
 
@@ -3184,12 +3390,12 @@
 1998-07-22 Wednesday 13:54  tobi
 
 	* compiler.h (1.8), locking.c (1.1), makefile.bsd (1.3),
-	makefile.emo (1.4), makefile.lnx (1.5), makefile.unx (1.2): Rewrote
-	the record locking routines for Unix to use fcntl() instead of
-	flock() because fcntl() is more portable and also supports file
-	locking via NFS-mounted volumes. Tested on AIX and OSF only, I hope
-	this does not break the Linux version. :-). In case of problems:
-	e-mail tobi@bland.fido.de
+	  makefile.emo (1.4), makefile.lnx (1.5), makefile.unx (1.2):
+	  Rewrote the record locking routines for Unix to use fcntl()
+	  instead of flock() because fcntl() is more portable and also
+	  supports file locking via NFS-mounted volumes. Tested on AIX and
+	  OSF only, I hope this does not break the Linux version. :-). In
+	  case of problems: e-mail tobi@bland.fido.de
 
 1998-07-16 Thursday 09:02  tobi
 
@@ -3198,23 +3404,23 @@
 1998-07-10 Friday 17:41  tobi
 
 	* compiler.h (1.6): Quick hack to allow the SMAPI to compile on
-	Non-BSD systems. This partially removes some of the locking
-	mechanisms previously introduced. I will fix it rightly later on.
+	  Non-BSD systems. This partially removes some of the locking
+	  mechanisms previously introduced. I will fix it rightly later on.
 
 1998-07-09 Thursday 22:52  tobi
 
 	* compiler.h (1.5), msgapi.h (1.4): Introduced locking mechanism
-	with flock on Unix. Changed the locking mode to "blocking", which
-	means that the program will simply stop until the area it wants to
-	use is released. This is a dirty hack, but as 99% of
-	MSGAPI-programs do not check for any return codes, it seems to be
-	the only safe way to do it.
+	  with flock on Unix. Changed the locking mode to "blocking", which
+	  means that the program will simply stop until the area it wants
+	  to use is released. This is a dirty hack, but as 99% of
+	  MSGAPI-programs do not check for any return codes, it seems to be
+	  the only safe way to do it.
 
 1998-07-09 Thursday 22:48  tobi
 
 	* structrw.c (1.2): Fixed a bug in structrw.c that could lead to
-	message base corruption under certain circumstances (especially on
-	small areas).
+	  message base corruption under certain circumstances (especially
+	  on small areas).
 
 1998-07-06 Monday 09:20  tobi
 
@@ -3223,20 +3429,17 @@
 1998-06-30 Tuesday 22:25  tobi
 
 	* compiler.h (1.3), makefile.emo (1.3): The UNIX version now uses
-	flock() for squish locking. Better than nothing.
+	  flock() for squish locking. Better than nothing.
 
 1998-06-30 Tuesday 08:10  tobi
 
-	* stamp.h (1.2, smapi-1_5_6): Cosmetic fix to make it compile on
-	AIX 3.2
+	* stamp.h (1.2): Cosmetic fix to make it compile on AIX 3.2
 
 1998-06-29 Monday 06:56  tobi
 
-	* api_sdm.c (1.4), makefile.unx (1.1), readme.txt (1.3,
-	smapi-2_0_1-release, smapi-2_0_0-release, smapi-1_6_4b-release,
-	smapi-1_6_4a-release, smapi-1_5_6): - Added a generic UNIX makefile
-	that should work with any set of cc, ld and   ranlib.  - Removed
-	special characters from api_sdm.c.
+	* api_sdm.c (1.4), makefile.unx (1.1), readme.txt (1.3): - Added a
+	  generic UNIX makefile that should work with any set of cc, ld and
+	  ranlib.  - Removed special characters from api_sdm.c.
 
 1998-06-07 Sunday 19:06  mt
 
@@ -3248,34 +3451,31 @@
 
 1998-05-27 Wednesday 22:39  tobi
 
-	* api_sdm.c (1.3), api_sdm.h (1.2, smapi-2_0_0-release,
-	smapi-1_6_4b-release, smapi-1_6_4a-release, smapi-1_5_6), api_sq.h
-	(1.2, smapi-1_6_4b-release, smapi-1_6_4a-release, smapi-1_5_6),
-	compiler.h (1.2), cvtdate.c (1.3, smapi-1_5_6), fexist.c (1.3,
-	smapi-1_5_6), ffind.c (1.3), ffind.h (1.2, smapi-1_5_6),
-	makefile.bcd (1.2), makefile.bco (1.2), makefile.bsd (1.2),
-	makefile.djg (1.2), makefile.emo (1.2), makefile.hco (1.2),
-	makefile.ibo (1.2), makefile.lnx (1.3), makefile.qcd (1.2),
-	makefile.rxw (1.1), makefile.wcd (1.2), makefile.wco (1.2),
-	makefile.wcw (1.2), makefile.wcx (1.2), msgapi.c (1.3), msgapi.h
-	(1.3), old_msg.h (1.2, smapi-2_2_4-release, smapi-2_2_3-release,
-	smapi-2_2_2-release, smapi-2_2_1-release, smapi-2_0_1-release,
-	smapi-2_0_0-release, smapi-1_6_4b-release, smapi-1_6_4a-release,
-	smapi-1_5_6), readme.txt (1.2), structrw.c (1.1): Changes done on
-	05/28/98 by Tobias Ernst:
-	
-	  - Removed all structure-packing and endianness dependencies. The
-	new
-	    portable I/O routines are collected in structrw.c. We could now
-	    totally leave out the whole #pragma pack stuff if we want, and
-	the
-	    SMAPI should work on big endian and even more exotic machines.
-	
-	  - Ported the SMAPI to GNU C for Windows NT using RSXNT/EMX.
-	Because
-	    I had to use a Win32 API called FindClose, I had to rename the
-	    SMAPI-internal routines FindOpen, FindNext and FindClose to
-	    FFindOpen, FFindNext and FFindClose.
+	* api_sdm.c (1.3), api_sdm.h (1.2), api_sq.h (1.2), compiler.h
+	  (1.2), cvtdate.c (1.3), fexist.c (1.3), ffind.c (1.3), ffind.h
+	  (1.2), makefile.bcd (1.2), makefile.bco (1.2), makefile.bsd
+	  (1.2), makefile.djg (1.2), makefile.emo (1.2), makefile.hco
+	  (1.2), makefile.ibo (1.2), makefile.lnx (1.3), makefile.qcd
+	  (1.2), makefile.rxw (1.1), makefile.wcd (1.2), makefile.wco
+	  (1.2), makefile.wcw (1.2), makefile.wcx (1.2), msgapi.c (1.3),
+	  msgapi.h (1.3), old_msg.h (1.2), readme.txt (1.2), structrw.c
+	  (1.1): Changes done on 05/28/98 by Tobias Ernst:
+
+	    - Removed all structure-packing and endianness dependencies.
+	  The new
+	      portable I/O routines are collected in structrw.c. We could
+	  now
+	      totally leave out the whole #pragma pack stuff if we want,
+	  and the
+	      SMAPI should work on big endian and even more exotic
+	  machines.
+
+	    - Ported the SMAPI to GNU C for Windows NT using RSXNT/EMX.
+	  Because
+	      I had to use a Win32 API called FindClose, I had to rename
+	  the
+	      SMAPI-internal routines FindOpen, FindNext and FindClose to
+	      FFindOpen, FFindNext and FFindClose.
 
 1998-05-27 Wednesday 16:33  mt
 
@@ -3292,37 +3492,33 @@
 1998-05-19 Tuesday 16:48  mt
 
 	* msgapi.h (1.2): changed order of including the header-files to
-	preserve pragma pack statements (
+	  preserve pragma pack statements (
 
 1998-05-11 Monday 07:50  tw
 
 	* api_sdm.c (1.2), cvtdate.c (1.2), fexist.c (1.2), ffind.c (1.2),
-	msgapi.c (1.2): smapi_1_4_a:  files from smchange
-
-1998-05-11 Monday 07:40  tw
-
-	* apidebug.h (1.1.1.1), dosdate.c (1.1.1.1), flushasm.asm
-	(1.1.1.1), licence.txt (1.1.1.1), months.c (1.1.1.1), qksort.c
-	(1.1.1.1), sqasm.asm (1.1.1.1), strocpy.c (1.1.1.1), trail.c
-	(1.1.1.1), unused.h (1.1.1.1), weekday.c (1.1.1.1) (utags:
-	smapi-1_6_4a-release, smapi-2_2_3-release, smapi-2_0_1-release,
-	smapi_1_4, smapi-2_2_2-release, smapi-2_0_0-release,
-	smapi-2_2_1-release, smapi-2_2_4-release, smapi-1_5_6,
-	smapi-1_6_4b-release): smapi 1.4
+	  msgapi.c (1.2): smapi_1_4_a:	files from smchange
 
 1998-05-11 Monday 07:40  tw
 
 	* 1stchar.c (1.1), api_brow.h (1.1), api_sdm.c (1.1), api_sdm.h
-	(1.1), api_sdmp.h (1.1), api_sq.h (1.1), api_sqp.h (1.1),
-	compiler.h (1.1), cvtdate.c (1.1), date2bin.c (1.1), dr.h (1.1),
-	fexist.c (1.1), ffind.c (1.1), ffind.h (1.1), file_id.diz (1.1),
-	flush.c (1.1), makefile.bcd (1.1), makefile.bco (1.1), makefile.bsd
-	(1.1), makefile.djg (1.1), makefile.emo (1.1), makefile.hco (1.1),
-	makefile.ibo (1.1), makefile.lnx (1.1), makefile.qcd (1.1),
-	makefile.wcd (1.1), makefile.wco (1.1), makefile.wcw (1.1),
-	makefile.wcx (1.1), msgapi.c (1.1), msgapi.h (1.1), old_msg.h
-	(1.1), parsenn.c (1.1), patmat.c (1.1), patmat.h (1.1), prog.h
-	(1.1), progprot.h (1.1), readme.txt (1.1), stamp.h (1.1),
-	strextra.c (1.1), strextra.h (1.1), strftim.c (1.1), typedefs.h
-	(1.1): Initial revision
+	  (1.1), api_sdmp.h (1.1), api_sq.h (1.1), api_sqp.h (1.1),
+	  compiler.h (1.1), cvtdate.c (1.1), date2bin.c (1.1), dr.h (1.1),
+	  fexist.c (1.1), ffind.c (1.1), ffind.h (1.1), file_id.diz (1.1),
+	  flush.c (1.1), makefile.bcd (1.1), makefile.bco (1.1),
+	  makefile.bsd (1.1), makefile.djg (1.1), makefile.emo (1.1),
+	  makefile.hco (1.1), makefile.ibo (1.1), makefile.lnx (1.1),
+	  makefile.qcd (1.1), makefile.wcd (1.1), makefile.wco (1.1),
+	  makefile.wcw (1.1), makefile.wcx (1.1), msgapi.c (1.1), msgapi.h
+	  (1.1), old_msg.h (1.1), parsenn.c (1.1), patmat.c (1.1), patmat.h
+	  (1.1), prog.h (1.1), progprot.h (1.1), readme.txt (1.1), stamp.h
+	  (1.1), strextra.c (1.1), strextra.h (1.1), strftim.c (1.1),
+	  typedefs.h (1.1): Initial revision
+
+1998-05-11 Monday 07:40  tw
+
+	* apidebug.h (1.1.1.1), dosdate.c (1.1.1.1), flushasm.asm
+	  (1.1.1.1), licence.txt (1.1.1.1), months.c (1.1.1.1), qksort.c
+	  (1.1.1.1), sqasm.asm (1.1.1.1), strocpy.c (1.1.1.1), trail.c
+	  (1.1.1.1), unused.h (1.1.1.1), weekday.c (1.1.1.1): smapi 1.4
 
