@@ -405,7 +405,7 @@ int SquishDeleteBase(char * name);
 MSGA *MSGAPI JamOpenArea(byte * name, word mode, word type);
 sword MSGAPI JamValidate(byte * name);
 int JamDeleteBase(char * name);
-void JamCloseOpenAreas();
+int JamCloseOpenAreas();
 
 HUSKYEXT byte *_XPENTRY CvtCtrlToKludge(byte * ctrl);
 HUSKYEXT byte *_XPENTRY GetCtrlToken(byte * where, byte * what);
