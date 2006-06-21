@@ -49,14 +49,16 @@ word _stdc msgapierr = 0;
 
 struct _minf _stdc mi;
 
-void _MsgCloseApi(void)
+int _MsgCloseApi(void)
 {
+int result = 0;
 /*
   TODO: DeInit (close open areas etc.) for all msgbase types
 */
-
     _SquishDeInit();
-    JamCloseOpenAreas();
+    result = JamCloseOpenAreas();
+
+return result;
 }
 
 #ifdef __UNIX__
@@ -85,7 +87,7 @@ sword _XPENTRY MsgOpenApi(struct _minf *minf)
 
     _SquishInit();
 
-    atexit(_MsgCloseApi);
+	atexit((void (*)(void))_MsgCloseApi);
 
     /*
      * Set the dummy alarm-fcnt to supress stupid messages.
@@ -101,8 +103,7 @@ sword _XPENTRY MsgOpenApi(struct _minf *minf)
 
 sword _XPENTRY MsgCloseApi(void)
 {
-    _MsgCloseApi();
-    return 0;
+    return (sword) _MsgCloseApi();
 }
 
 MSGA *_XPENTRY MsgOpenArea(byte * name, word mode, word type)

@@ -196,7 +196,7 @@ static sword _XPENTRY JamCloseArea(MSGA * jm)
    return 0;
 }
 
-void JamCloseOpenAreas()
+int JamCloseOpenAreas()
 {
 JAMBASE *broken, **current = &broken;
 	*current = NULL;
@@ -205,19 +205,32 @@ JAMBASE *broken, **current = &broken;
         if(-1 == JamCloseArea(jbOpen->jm))
 		{	/* avoid infinite loop possibility in case of error in JamCloseArea */
 			/* not closed bases are stored in the broken list */
-			printf("SMAPI ERROR: can't close '%s' properly!", jbOpen->BaseName); /* at least we must say something */
+			printf("SMAPI ERROR: can't close '%s' properly!\n", jbOpen->BaseName); /* at least we must say something */
 			*current = jbOpen;
-			current = &(JAMBASE *)(jbOpen->jbNext);
+			current = (JAMBASE **)(&jbOpen->jbNext);
 			jbOpen = jbOpen->jbNext;
 			*current = NULL;
 		}
 
 	/* TODO: implement 'forced close' mode to do as much cleanup work as possible */
-/*
+
 	jbOpen = broken;
-	while(jbOpen)
-		JamForceCloseArea();
+
+/*
+	do something tricky with it
+
+	JamForceCloseArea();
 */
+	if(jbOpen) /* If we still have unclosed areas then return -1
+				  in hope that somebody (most likely somebody in heaven)
+				  will do something with it */
+		return -1;
+	if(broken) /* If we had problems with closing areas but have closed
+				  them anyway then return -2. Really, does anybody expect we will
+				  just suffer here in silence? NO, WE WON'T! =) */
+		return -2;
+
+return 0;
 }
 
 static MSGH *_XPENTRY JamOpenMsg(MSGA * jm, word mode, dword msgnum)
