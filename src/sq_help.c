@@ -395,7 +395,9 @@ unsigned _SquishFreeIndex(HAREA ha, dword dwMsg, SQIDX *psqi,
 {
   unsigned rc=TRUE;
   long ofs;
-
+  
+  unused(dwIdxSize);
+  
 #ifdef __WATCOMC__
 dwIdxSize=dwIdxSize; /* To prevent warning */
 #endif
