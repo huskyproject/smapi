@@ -482,7 +482,8 @@ void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
     byte *p;
     unsigned int len = strlen((char *)what);
 
-    while (1) {
+    for (;;)
+    {
 	ctrl = (unsigned char *)strchr((char *)ctrl, '\001');
 	if (ctrl == NULL) return;
 	if (strncmp((char *)ctrl+1, (char *)what, len)) {
