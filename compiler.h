@@ -1448,6 +1448,7 @@ int qq(void)
 #  define HAS_DIRENT_H   /* may use "#include <dirent.h> */
 #  define HAS_SYS_UTIME_H  /* #include <sys/utime.h> in alternate to <utime.h> */
 #  define HAS_PROCESS_H   /* may use "#include <process.h> */
+#  define HAS_SYS_PARAM_H /* may use "#include <sys/param.h> */
 
 #  define USE_STAT_MACROS
 
