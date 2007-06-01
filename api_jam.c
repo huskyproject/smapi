@@ -398,22 +398,23 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
       /* get "from name" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SENDERNAME))) {
-         strncpy((char*)(msg->from), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->from)));
+         strncpy((char*)(msg->from), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->from)-1));
       } /* endif */
 
       /* get "to name" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_RECVRNAME))) {
-         strncpy((char*)(msg->to), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->to)));
+         strncpy((char*)(msg->to), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->to)-1));
       } /* endif */
 
       /* get "subj" line */
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SUBJECT))) {
-         strncpy((char*)(msg->subj), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->subj)));
+         strncpy((char*)(msg->subj), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->subj)-1));
       } /* endif */
 
-      if (!msgh->sq->isecho) {
+      /* try to fetch orig/dest addresses even for echomail */
+/*      if (!msgh->sq->isecho) { */
           /* get "orig address" line */
           SubPos = 0;
           if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS))) {
@@ -425,7 +426,13 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
           if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS))) {
              parseAddr(&(msg->dest), SubField->Buffer, SubField->DatLen);
           } /* endif */
-      } /* endif */
+/*      } else { */
+          /* get "orig address" from MSGID */
+          SubPos = 0;
+          if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID)))
+             if (!(msg->orig.zone || msg->orig.net || msg->orig.node))
+                 parseAddr(&(msg->orig), SubField->Buffer, SubField->DatLen);
+/*      } */ /* endif */
 
 
       s_time = gmtime((time_t *)(&(msgh->Hdr.DateWritten)));
@@ -1628,6 +1635,7 @@ static dword Jam_JamAttrToMsg(MSGH *msgh)
    if (msgh->Hdr.Attribute & JMSG_LOCKED)      attr |= MSGLOCKED;
    if (msgh->Hdr.Attribute & JMSG_DIRECT)      attr |= MSGXX2;
    if (msgh->Hdr.Attribute & JMSG_IMMEDIATE)   attr |= MSGIMM;
+   if (msgh->Hdr.Attribute2 & 0x00000800L)     attr |= MSGREADTMR;
 
    return attr;
 }
@@ -1658,6 +1666,15 @@ static dword Jam_MsgAttrToJam(XMSG *msg)
 
    return attr;
 }
+
+static dword Jam_MsgAttr2ToJam(XMSG *msg)
+{
+   if (InvalidMsg(msg))
+      return 0;
+   if (msg->attr & MSGREADTMR) return 0x00000800L;
+   return 0L;
+}
+
 
 static int StrToSubfield(const unsigned char *str, dword lstr, dword *len, JAMSUBFIELD2ptr subf)
 {
@@ -1804,6 +1821,8 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    subfield[0]->subfield[0].Buffer = (unsigned char *)&(subfield[0]->subfield[clen+1]);
 
    jamhdr->Attribute = Jam_MsgAttrToJam(msg);
+   jamhdr->Attribute2 = Jam_MsgAttr2ToJam(msg);
+
    if (msgh->sq->isecho != NOTH) {
       if (msgh->sq->isecho) {
          jamhdr->Attribute |= JMSG_TYPEECHO;
@@ -2066,9 +2085,10 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,
    return onlytext;
 }
 
-void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
+void parseAddr(NETADDR *netAddr, const unsigned char *str, dword len)
 {
-   char *strAddr, *ptr, *tmp, ch[10];
+   char *strAddr, *ptr, *tmp;
+   int addrLen = len;
 
    if(!str || !netAddr)
    {
@@ -2076,51 +2096,55 @@ void parseAddr(NETADDR *netAddr, unsigned char *str, dword len)
         return;
    }
 
-   strAddr = (char*)calloc(len+1, sizeof(char*));
+   memset(netAddr, '\0', sizeof(NETADDR));
+
+   if ((ptr = memchr(str, ' ', addrLen)) != NULL)
+        addrLen = (char*)ptr - (char*)str;
+
+   if ((ptr = memchr(str, '@', addrLen)) != NULL)
+        addrLen = (char*)ptr - (char*)str;
+
+   strAddr = (char*)malloc(addrLen+1);
    if (!strAddr) {
         msgapierr = MERR_NOMEM;
         return;
    }
-   memset(netAddr, '\0', sizeof(NETADDR));
 
-   strncpy(strAddr, (char *)str, len);
+   memcpy(strAddr, str, addrLen);
+   strAddr[addrLen] = '\0';
 
-   ptr = strchr(strAddr, '@');
+   ptr = tmp = strAddr;
 
-   if (ptr)  *ptr = '\0';
+   while(*tmp<='9' && *tmp>='0') ++tmp;
 
-   ptr = strchr(strAddr, ':');
-   if (ptr) {
-      memset(ch, '\0', sizeof(ch));
-      strncpy(ch, strAddr, ptr-strAddr);
-      netAddr->zone = atoi(ch);
-      tmp = ++ptr;
-   } else {
-      tmp = strAddr;
-      netAddr->zone = 0;
-   } /* endif */
+   if(*tmp == ':')
+   {
+        netAddr->zone = atoi(ptr);
+        ptr = ++tmp;
+   }
 
-   ptr = strchr(tmp, '/');
-   if (ptr) {
-      memset(ch, '\0', sizeof(ch));
-      strncpy(ch, tmp, ptr-tmp);
-      netAddr->net = atoi(ch);
-      tmp = ++ptr;
-   } else {
-      netAddr->net = 0;
-   } /* endif */
+   while(*tmp<='9' && *tmp>='0') ++tmp;
 
-   ptr = strchr(tmp, '.');
-   if (ptr) {
-      memset(ch, '\0', sizeof(ch));
-      strncpy(ch, tmp, ptr-tmp);
-      netAddr->node = atoi(ch);
-      ptr++;
-      netAddr->point = atoi(ptr);
-   } else {
-      netAddr->node = atoi(tmp);
-      netAddr->point = 0;
-   } /* endif */
+   if(*tmp == '/')
+   {
+        netAddr->net = atoi(ptr);
+        ptr = ++tmp;
+   }
+
+   while(*tmp<='9' && *tmp>='0') ++tmp;
+
+   netAddr->node = atoi(ptr);
+
+   if(*tmp == '.')
+   {
+       ptr = ++tmp;
+
+       if(*tmp<='9' && *tmp>='0')
+           netAddr->point = atoi(ptr);
+    }
+
+   free(strAddr);
+
    msgapierr = MERR_NONE;
 }
 
@@ -2147,7 +2171,9 @@ void DecodeSubf(MSGH *msgh)
    JAMSUBFIELD2ptr SubField;
    JAMSUBFIELD2LISTptr sfl;
    char *ptr, *pctrl, *plctrl, *fmpt, *topt;
-   char orig[30], dest[30];
+   char orig[101], dest[101]; /* by JAM's spec DADDRESS and OADDRESS
+                               * subfield's DATLEN must not exceed 100 bytes.
+                               * 101 for last \0 */
    dword  i;
 
    if( InvalidMsgh(msgh) ) return;
@@ -2169,10 +2195,16 @@ void DecodeSubf(MSGH *msgh)
    if (!msgh->sq->isecho) {
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS)))
-         strncpy(orig, (char *)(SubField->Buffer), min(SubField->DatLen, sizeof(orig)));
+      {
+         memcpy(orig, SubField->Buffer, min(SubField->DatLen, sizeof(orig)-1));
+         orig[min(SubField->DatLen, sizeof(orig)-1)] = '\0';
+      }
       SubPos = 0;
       if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS)))
-         strncpy(dest, (char *)(SubField->Buffer), min(SubField->DatLen, sizeof(dest)));
+      {
+         memcpy(dest, SubField->Buffer, min(SubField->DatLen, sizeof(dest)-1));
+         dest[min(SubField->DatLen, sizeof(dest)-1)] = '\0';
+      }
       fmpt = topt = NULL;
       if (orig[0]) {
          ptr = strchr(orig, '@');

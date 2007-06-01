@@ -148,7 +148,7 @@ typedef struct _xmsg
 #define MSGIMM     0x00040000L /* Use only if msgtype == MSGTYPE_JAM !
                                   Used to map the Jam "immediate" attribute. */
 #define MSGLOCKED  0x40000000L /* this seems to be a feature of golded  */
-
+#define MSGREADTMR 0x80000000L /* Taimyr */
 
     dword attr;
 
