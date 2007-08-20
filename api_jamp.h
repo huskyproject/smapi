@@ -48,7 +48,7 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield, dword clen, unsigned char *ctxt);
 unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,
                          unsigned char *text, size_t textlen);
-void parseAddr(NETADDR *netAddr, unsigned char *str, dword len);
+void parseAddr(NETADDR *netAddr, const unsigned char *str, dword len);
 void DecodeSubf(MSGH *msgh);
 
 struct _msgh
