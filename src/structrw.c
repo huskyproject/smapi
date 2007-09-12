@@ -452,7 +452,8 @@ int write_sqidx(int handle, SQIDX *psqidx, dword n)
 {
     byte buf[SQIDX_SIZE], *pbuf = NULL;
     byte *accel_buffer = NULL;
-    dword i, maxbuf = 0, wr;
+    dword i, maxbuf = 0;
+	int wr;
 
     if (n > 1)
     {
@@ -975,7 +976,7 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 
    pbuf = buf;
    i = 0;
-   while ((pbuf - buf + 8) < *SubfieldLen) {
+   while ((dword)(pbuf - buf + 8) < *SubfieldLen) {
       i++;
       pbuf += get_dword(pbuf+4) + sizeof(JAMBINSUBFIELD);
    }
@@ -988,7 +989,7 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
    subfieldNext = subfield[0]->subfield;
    pbuf = buf;
 
-   while ((pbuf - buf + 8) < *SubfieldLen) {
+   while ((dword)(pbuf - buf + 8) < *SubfieldLen) {
       /* 02 bytes LoID */
       subfieldNext->LoID = get_word(pbuf);
       pbuf += 2;
@@ -1031,7 +1032,7 @@ int read_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen)
 
    buf = (byte*)palloc(*SubfieldLen);
 
-   if (farread(handle, (byte far *)buf, *SubfieldLen) != *SubfieldLen) {
+   if ((dword)farread(handle, (byte far *)buf, *SubfieldLen) != *SubfieldLen) {
       pfree(buf);
       return 0;
    } /* endif */
@@ -1071,7 +1072,7 @@ int read_allidx(JAMBASEptr jmb)
       /* read all headers in core */
       hdrbuf = (byte *)palloc(hlen);
 
-      if (farread(jmb->HdrHandle, (byte far *)hdrbuf, hlen) != hlen) {
+      if ((dword)farread(jmb->HdrHandle, (byte far *)hdrbuf, hlen) != hlen) {
          pfree(hdrbuf);
          pfree(buf);
          return 0;
@@ -1080,7 +1081,7 @@ int read_allidx(JAMBASEptr jmb)
    } else
       jmb->actmsg_read = 2;
    allocated = jmb->HdrInfo.ActiveMsgs;
-   if (allocated > len/IDX_SIZE) allocated = len/IDX_SIZE;
+   if (allocated > (dword)len/IDX_SIZE) allocated = (dword)len/IDX_SIZE;
    if (allocated) {
       jmb->actmsg = (JAMACTMSGptr)farmalloc(allocated * sizeof(JAMACTMSG));
       if (jmb->actmsg == NULL) {
@@ -1321,7 +1322,7 @@ int write_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLen)
       memmove(pbuf, subfieldNext->Buffer, datlen);
       pbuf += datlen;
    } /* endwhile */
-   rc =(farwrite(handle, (byte far *)buf, SubfieldLen) == SubfieldLen);
+   rc =((dword)farwrite(handle, (byte far *)buf, SubfieldLen) == SubfieldLen);
 
    pfree(buf);
 
