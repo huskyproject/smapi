@@ -433,20 +433,20 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
           /* get "orig address" line */
           SubPos = 0;
           if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS)) != NULL) {
-             parseAddr(&(msg->orig), SubField->Buffer, SubField->DatLen);
+             parseFtnAddrS((char*)SubField->Buffer, &(msg->orig), SubField->DatLen);
           } /* endif */
 
           /* get "dest address" line */
           SubPos = 0;
           if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS)) != NULL) {
-             parseAddr(&(msg->dest), SubField->Buffer, SubField->DatLen);
+             parseFtnAddrS((char*)SubField->Buffer, &(msg->dest), SubField->DatLen);
           } /* endif */
 /*      } else { */
           /* get "orig address" from MSGID */
           SubPos = 0;
           if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID)) != NULL)
              if (!(msg->orig.zone || msg->orig.net || msg->orig.node))
-                 parseAddr(&(msg->orig), SubField->Buffer, SubField->DatLen);
+                 parseFtnAddrS((char*)SubField->Buffer, &(msg->dest), SubField->DatLen);
 /*      } */ /* endif */
 
 
@@ -2088,69 +2088,6 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,
 
    msgapierr = MERR_NONE;
    return onlytext;
-}
-
-void parseAddr(NETADDR *netAddr, const unsigned char *str, dword len)
-{
-   char *strAddr, *ptr, *tmp;
-   int addrLen = len;
-
-   if(!str || !netAddr)
-   {
-        msgapierr = MERR_BADA;
-        return;
-   }
-
-   memset(netAddr, '\0', sizeof(NETADDR));
-
-   if ((ptr = memchr(str, ' ', addrLen)) != NULL)
-        addrLen = (char*)ptr - (char*)str;
-
-   if ((ptr = memchr(str, '@', addrLen)) != NULL)
-        addrLen = (char*)ptr - (char*)str;
-
-   strAddr = (char*)malloc(addrLen+1);
-   if (!strAddr) {
-        msgapierr = MERR_NOMEM;
-        return;
-   }
-
-   memcpy(strAddr, str, addrLen);
-   strAddr[addrLen] = '\0';
-
-   ptr = tmp = strAddr;
-
-   while(*tmp<='9' && *tmp>='0') ++tmp;
-
-   if(*tmp == ':')
-   {
-        netAddr->zone = atoi(ptr);
-        ptr = ++tmp;
-   }
-
-   while(*tmp<='9' && *tmp>='0') ++tmp;
-
-   if(*tmp == '/')
-   {
-        netAddr->net = atoi(ptr);
-        ptr = ++tmp;
-   }
-
-   while(*tmp<='9' && *tmp>='0') ++tmp;
-
-   netAddr->node = atoi(ptr);
-
-   if(*tmp == '.')
-   {
-       ptr = ++tmp;
-
-       if(*tmp<='9' && *tmp>='0')
-           netAddr->point = atoi(ptr);
-    }
-
-   free(strAddr);
-
-   msgapierr = MERR_NONE;
 }
 
 static void addkludge(char **line, char *kludge, char *ent, char *lf, dword len)
