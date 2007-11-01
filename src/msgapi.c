@@ -354,6 +354,9 @@ byte *_XPENTRY GetCtrlToken(byte *where, byte *what)
     return out;
 }
 
+/* NETADDR content is rewritten with discovered information */
+/* If some address pieces aren't discovered then they stay intact */
+/* Be sure these structures don't contain junk before this call */
 void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
 {
     byte *p, *s;
@@ -374,19 +377,14 @@ void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
         /* Parse the destination part of the kludge */
 
         s += 5;
-        Parse_NetNode((char *) s, &ndest.zone, &ndest.net, &ndest.node, &ndest.point);
+        parseFtnAddrZ((char *) s, &ndest, FTNADDR_GOOD, (char **)&s);
 
-        while (*s != ' ' && *s)
+        while (*s != ' ' && *s) /* TODO: Should'n be the case! Maybe remove it and skip intl processing. */
         {
             s++;
         }
 
-        if (*s)
-        {
-            s++;
-        }
-
-        Parse_NetNode((char *) s, &norig.zone, &norig.net, &norig.node, &norig.point);
+        parseFtnAddrZS((char *) s, &norig);
 
         pfree(p);
 
