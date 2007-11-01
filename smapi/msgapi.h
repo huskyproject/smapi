@@ -101,23 +101,6 @@ struct _minf
 };
 
 /*
- *  The network address structure.  The zone/net/node/point fields are
- *  always maintained in parallel to the 'ascii' field, which is simply
- *  an ASCII representation of the address.  In addition, the 'ascii' field
- *  can be used for other purposes (such as Internet addresses), so the
- *  contents of this field are implementation-defined, but for most cases,
- *  should be in the format "1:123/456.7" for Fido addresses.
- */
-
-struct _netaddr
-{
-    word zone;
-    word net;
-    word node;
-    word point;
-};
-
-/*
  *  The eXtended message structure.  Translation between this structure,
  *  and the structure used by the individual message base formats, is done
  *  on-the-fly by the API routines.
