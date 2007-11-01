@@ -662,7 +662,9 @@ sword MSGAPI SquishValidate(byte  *szName)
   (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sqi);
 
-  return fexist(szFile);
+  if (!fexist(szFile))
+    return FALSE;
+  return TRUE;
 }
 
 void _SquishInit()

@@ -525,7 +525,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
     if (InvalidMsgh(msgh))
     {
-        return -1L;
+        return (dword)-1L;
     }
 
     if (!(clen && ctxt))
@@ -550,7 +550,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
         if (!read_omsg(msgh->fd, &fmsg))
         {
             msgapierr = MERR_BADF;
-            return -1L;
+            return (dword)-1L;
         }
 
         fmsg.to[sizeof(fmsg.to) - 1] = '\0';
@@ -598,7 +598,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
         if (text == NULL)
         {
             msgapierr = MERR_NOMEM;
-            return -1;
+            return (dword)-1L;
         }
 
         text[st.st_size - OMSG_SIZE] = '\0';
@@ -908,7 +908,7 @@ static dword _XPENTRY SdmGetCurPos(MSGH * msgh)
 {
     if (InvalidMsgh(msgh))
     {
-        return -1L;
+        return (dword)-1L;
     }
 
     msgapierr = MERR_NONE;
@@ -923,7 +923,7 @@ static UMSGID _XPENTRY SdmMsgnToUid(MSGA * mh, dword msgnum)
     }
 
     msgapierr = MERR_NONE;
-    if (msgnum > mh->num_msg) return -1;
+    if (msgnum > mh->num_msg) return (UMSGID)-1;
     if (msgnum <= 0) return 0;
     return (UMSGID) Mhd->msgnum[msgnum - 1];
 }
@@ -934,7 +934,7 @@ static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type)
     UMSGID umsg;
 
     if (InvalidMh(mh))
-        return -1L;
+        return (dword)-1L;
     if (umsgid <= 0)
 	return 0;
     left = 1;
@@ -966,7 +966,7 @@ static dword _XPENTRY SdmGetHighWater(MSGA * mh)
 
     if (InvalidMh(mh))
     {
-        return -1;
+        return (dword)-1L;
     }
 
     /* If we've already fetched the highwater mark... */
@@ -1025,7 +1025,7 @@ static dword _XPENTRY SdmGetTextLen(MSGH * msgh)
 
     if(InvalidMsgh(msgh))
     {
-        return -1;
+        return (dword)-1L;
     }
 
     /* Figure out the physical length of the message */
@@ -1064,7 +1064,7 @@ static dword _XPENTRY SdmGetCtrlLen(MSGH * msgh)
 
     if(InvalidMsgh(msgh))
     {
-        return -1;
+        return (dword)-1L;
     }
 
     /* If we've already figured out the length of the control info */
