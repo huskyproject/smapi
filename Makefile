@@ -24,7 +24,7 @@ else
 endif
 
 SRC_DIR = src/
-H_DIR   = smapi/
+H_DIR   = smapi
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS) -I$(H_DIR) -I$(INCDIR)
 
@@ -61,8 +61,8 @@ instdyn: $(TARGETLIB) $(TARGETDLL).$(VER)
 	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL)
 # Changed the symlinks from symlinks with full path to just symlinks.
 # Better so :)
-	cd $(LIBDIR) ;\
-	$(LN) $(LNOPT) $(TARGETDLL).$(VER) $(TARGETDLL).$(VERH) ;\
+	cd $(LIBDIR)
+	$(LN) $(LNOPT) $(TARGETDLL).$(VER) $(TARGETDLL).$(VERH)
 	$(LN) $(LNOPT) $(TARGETDLL).$(VER) $(TARGETDLL)
 ifneq (~$(LDCONFIG)~, ~~)
 	$(LDCONFIG)
@@ -76,10 +76,10 @@ endif
 FORCE:
 
 install-h-dir: FORCE
-	-$(MKDIR) $(MKDIROPT) $(INCDIR)/$(H_DIR)
+	-$(MKDIR) $(MKDIROPT) $(INCDIR)$(DIRSEP)$(H_DIR)
 
 %.h: FORCE
-	-$(INSTALL) $(IIOPT) $(H_DIR)$@ $(INCDIR)/$(H_DIR)
+	-$(INSTALL) $(IIOPT) $(H_DIR)$(DIRSEP)$@ $(INCDIR)$(DIRSEP)$(H_DIR)
         
 install-h: install-h-dir $(HEADERS)
 
@@ -88,10 +88,10 @@ install: install-h instdyn
 	$(INSTALL) $(ISLOPT) $(TARGETLIB) $(LIBDIR)
 
 uninstall:
-	-cd $(INCDIR)/$(H_DIR) ;\
+	-cd $(INCDIR)$(DIRSEP)$(H_DIR)
 	$(RM) $(RMOPT) $(HEADERS)
-	-$(RM) $(RMOPT) $(LIBDIR)/$(TARGETLIB)
-	-$(RM) $(RMOPT) $(LIBDIR)/$(TARGETDLL)*
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETLIB)
+	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL)*
 
 clean:
 	-$(RM) $(RMOPT) *$(_OBJ)
