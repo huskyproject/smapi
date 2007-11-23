@@ -37,7 +37,7 @@ static dword _XPENTRY SdmGetCurPos(MSGH * msgh);
 static UMSGID _XPENTRY SdmMsgnToUid(MSGA * mh, dword msgnum);
 static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type);
 static dword _XPENTRY SdmGetHighWater(MSGA * mh);
-static sword _XPENTRY SdmSetHighWater(MSGA * sq, dword hwm);
+static sword _XPENTRY SdmSetHighWater(MSGA * mh, dword hwm);
 static dword _XPENTRY SdmGetTextLen(MSGH * msgh);
 static dword _XPENTRY SdmGetCtrlLen(MSGH * msgh);
 static UMSGID _XPENTRY SdmGetNextUid(HAREA ha);

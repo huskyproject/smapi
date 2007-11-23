@@ -22,7 +22,7 @@ static dword _XPENTRY JamGetCurPos(MSGH * msgh);
 static UMSGID _XPENTRY JamMsgnToUid(MSGA * jm, dword msgnum);
 static dword _XPENTRY JamUidToMsgn(MSGA * jm, UMSGID umsgid, word type);
 static dword _XPENTRY JamGetHighWater(MSGA * jm);
-static sword _XPENTRY JamSetHighWater(MSGA * sq, dword hwm);
+static sword _XPENTRY JamSetHighWater(MSGA * jm, dword hwm);
 static dword _XPENTRY JamGetTextLen(MSGH * msgh);
 static dword _XPENTRY JamGetCtrlLen(MSGH * msgh);
 static UMSGID _XPENTRY JamGetNextUid(HAREA ha);

@@ -31,7 +31,7 @@
 #include "msgapi.h"
 
 
-sword _XPENTRY apiSquishCloseArea(HAREA sq);
+sword _XPENTRY apiSquishCloseArea(HAREA ha);
 HMSG  _XPENTRY apiSquishOpenMsg(HAREA sq,word mode,dword msgnum);
 sword _XPENTRY apiSquishCloseMsg(HMSG msgh);
 dword _XPENTRY apiSquishReadMsg(HMSG msgh, PXMSG msg, dword offset, dword bytes,
