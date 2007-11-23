@@ -1014,7 +1014,7 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
       subfieldNext[1].Buffer = subfieldNext->Buffer + subfieldNext->DatLen + 1;
       subfieldNext++;
       assert((byte *)(subfieldNext + 1) <= subfield[0]->subfield[0].Buffer);
-      assert(subfieldNext->Buffer < =(byte *)*subfield + subfield[0]->arraySize);
+      assert(subfieldNext->Buffer <= (byte *)*subfield + subfield[0]->arraySize);
       pbuf += datlen;
 
    } /* endwhile */
