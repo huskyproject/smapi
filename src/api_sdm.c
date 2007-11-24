@@ -170,6 +170,8 @@ int SdmDeleteBase(char *name)
     if(!name || !*name){ msgapierr=MERR_BADNAME; return FALSE; }
 
     temp = malloc(strlen(name)+6);
+    if (temp == NULL)
+      return FALSE;
     sprintf(temp, "%s*.msg", name);
 
     ff = FFindOpen(temp, 0);
@@ -181,6 +183,11 @@ int SdmDeleteBase(char *name)
       do
 	  {
 	    temp = malloc(strlen(name) + strlen(ff->ff_name) + 1);
+	    if (temp == NULL)
+	    {
+	        FFindClose(ff);
+	        return FALSE;
+	    }
 	    sprintf(temp, "%s%s", name, ff->ff_name);
 	    unlink(temp);
 	    free(temp);
@@ -193,7 +200,7 @@ int SdmDeleteBase(char *name)
     unlink(temp);
     rmdir(name);
 
-    return 1; /* rmdir error is ok */
+    return TRUE; /* rmdir error is ok */
 }
 
 static sword _XPENTRY SdmCloseArea(MSGA * mh)
@@ -412,14 +419,14 @@ static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
 
     if (mode == MOPEN_CREATE)
     {
-        if (mh->num_msg == (1 << (sizeof(mh->num_msg) * 8 - 1)))
+        if (mh->num_msg == (dword)(1 << (sizeof(mh->num_msg) * 8 - 1)))
         {   /* Messagebase implementaion (size) limit (messages counter is full)*/
             pfree(msgh);
             close(handle);
             msgapierr = MERR_LIMIT;
             return NULL;
         }
-        if (mh->num_msg + 1 >= Mhd->msgnum_len)
+        if ((mh->num_msg + 1) >= Mhd->msgnum_len)
         {
             word msgnum_len_new = Mhd->msgnum_len + (word) SDM_BLOCK;
             Mhd->msgnum = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
@@ -520,7 +527,6 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
     dword realbytes, got;
     struct _omsg fmsg;
     word need_ctrl;
-    NETADDR *orig, *dest;
     byte *fake_msgbuf = NULL, *newtext;
 
     if (InvalidMsgh(msgh))
@@ -539,9 +545,6 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
         bytes = 0L;
         text = NULL;
     }
-
-    orig = &msg->orig;
-    dest = &msg->dest;
 
     if (msg)
     {
@@ -662,7 +665,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
     if (msg && msgh->ctrl)
     {
-        ConvertControlInfo(msgh->ctrl, orig, dest);
+        ConvertControlInfo(msgh->ctrl, &msg->orig, &msg->dest);
     }
 
     /* And if the app requested ctrlinfo, put it in its place. */
@@ -930,7 +933,7 @@ static UMSGID _XPENTRY SdmMsgnToUid(MSGA * mh, dword msgnum)
 
 static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type)
 {
-    dword  left, right, new;
+    dword  left, right, nnew;
     UMSGID umsg;
 
     if (InvalidMh(mh))
@@ -941,17 +944,17 @@ static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type)
     right = mh->num_msg;
     while (left <= right)
     {
-	new = (right + left) / 2;
-	umsg = SdmMsgnToUid(mh, new);
-	if (umsg == -1)
+	nnew = (right + left) / 2;
+	umsg = SdmMsgnToUid(mh, nnew);
+	if (umsg == (UMSGID)-1)
 	    return 0;
 	if (umsg < umsgid)
-	    left = new + 1;
+	    left = nnew + 1;
 	else if (umsg > umsgid){
-	    if(new>0) right = new - 1;
+	    if(nnew>0) right = nnew - 1;
 	    else right=0;
 	}else
-	    return new;
+	    return nnew;
     }
     if (type == UID_EXACT) return 0;
     if (type == UID_PREV)
@@ -1030,7 +1033,7 @@ static dword _XPENTRY SdmGetTextLen(MSGH * msgh)
 
     /* Figure out the physical length of the message */
 
-    if (msgh->msg_len == (dword) - 1)
+    if (msgh->msg_len == -1)
     {
         pos = (dword) tell(msgh->fd);
         end = lseek(msgh->fd, 0L, SEEK_END);
@@ -1049,7 +1052,7 @@ static dword _XPENTRY SdmGetTextLen(MSGH * msgh)
 
     /* If we've already figured out the length of the control info */
 
-    if (msgh->clen == (dword) - 1 && _Grab_Clen(msgh) == -1)
+    if ((msgh->clen == -1) && (_Grab_Clen(msgh) == -1))
     {
         return 0;
     }
@@ -1069,7 +1072,7 @@ static dword _XPENTRY SdmGetCtrlLen(MSGH * msgh)
 
     /* If we've already figured out the length of the control info */
 
-    if (msgh->clen == (dword) - 1 && _Grab_Clen(msgh) == -1)
+    if ((msgh->clen == -1) && (_Grab_Clen(msgh) == -1))
     {
         return 0;
     }
@@ -1114,6 +1117,8 @@ static sword near _SdmRescanArea(MSGA * mh)
     Mhd->msgnum_len = SDM_BLOCK;
 
     temp = malloc(strlen((char *)Mhd->base)+6);
+    if (temp == NULL)
+      return -1;
     sprintf((char *) temp, "%s*.msg", Mhd->base);
 
     ff = FFindOpen((char *) temp, 0);
@@ -1135,7 +1140,7 @@ static sword near _SdmRescanArea(MSGA * mh)
             }
 #endif
 
-            if (mh->num_msg == (1 << (sizeof(mh->num_msg) * 8 - 1)))
+            if (mh->num_msg == (dword)(1 << (sizeof(mh->num_msg) * 8 - 1)))
             {   /* Messagebase implementaion (size) limit (messages counter is full)*/
                 msgapierr = MERR_LIMIT;
                 return FALSE;
@@ -1243,7 +1248,7 @@ static void MSGAPI Convert_Fmsg_To_Xmsg(struct _omsg *fmsg, XMSG * msg,
 
     /* Convert 4d pointnets */
 
-    if (fmsg->times == ~fmsg->cost && fmsg->times)
+    if (((word)fmsg->times == (word)~fmsg->cost) && fmsg->times)
     {
         msg->orig.point = fmsg->times;
     }
@@ -1393,7 +1398,8 @@ static dword _XPENTRY SdmGetHash(HAREA mh, dword msgnum)
   HMSG msgh;
   dword rc = 0l;
 
-  if ((msgh=SdmOpenMsg(mh, MOPEN_READ, msgnum))==NULL)
+  msgh=SdmOpenMsg(mh, MOPEN_READ, msgnum);
+  if (msgh==NULL)
     return (dword) 0l;
 
   if (SdmReadMsg(msgh, &xmsg, 0L, 0L, NULL, 0L, NULL)!=(dword)-1)
