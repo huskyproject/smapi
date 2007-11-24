@@ -412,19 +412,22 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 
       /* get "from name" line */
       SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SENDERNAME)) != NULL) {
+      SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SENDERNAME);
+      if (SubField != NULL) {
          strncpy((char*)(msg->from), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->from)-1));
       } /* endif */
 
       /* get "to name" line */
       SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_RECVRNAME)) != NULL) {
+      SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_RECVRNAME);
+      if (SubField != NULL) {
          strncpy((char*)(msg->to), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->to)-1));
       } /* endif */
 
       /* get "subj" line */
       SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SUBJECT)) != NULL) {
+      SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SUBJECT);
+      if (SubField != NULL) {
          strncpy((char*)(msg->subj), (char*)(SubField->Buffer), min(SubField->DatLen, sizeof(msg->subj)-1));
       } /* endif */
 
@@ -432,32 +435,38 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
 /*      if (!msgh->sq->isecho) { */
           /* get "orig address" line */
           SubPos = 0;
-          if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS)) != NULL) {
+          SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS);
+          if (SubField != NULL) {
              parseFtnAddrS((char*)SubField->Buffer, &(msg->orig), SubField->DatLen);
           } /* endif */
 
           /* get "dest address" line */
           SubPos = 0;
-          if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS)) != NULL) {
+          SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS);
+          if (SubField != NULL) {
              parseFtnAddrS((char*)SubField->Buffer, &(msg->dest), SubField->DatLen);
           } /* endif */
 /*      } else { */
           /* get "orig address" from MSGID */
           SubPos = 0;
-          if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID)) != NULL)
+          SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID);
+          if (SubField != NULL)
              if (!(msg->orig.zone || msg->orig.net || msg->orig.node))
                  parseFtnAddrS((char*)SubField->Buffer, &(msg->dest), SubField->DatLen);
 /*      } */ /* endif */
 
-
-      s_time = gmtime((time_t *)(&(msgh->Hdr.DateWritten)));
+      {
+        const time_t c_time = msgh->Hdr.DateWritten;
+        s_time = gmtime(&c_time);
+      }
       scombo = (SCOMBO*)(&(msg->date_written));
       scombo = TmDate_to_DosDate(s_time, scombo);
       /* ftsdate = msg->__ftsc_date; */
       ftsdate = (unsigned char *)sc_time(scombo, (char *)(msg->__ftsc_date));
 
       if (msgh->Hdr.DateProcessed) {
-         s_time = gmtime((time_t *)(&(msgh->Hdr.DateProcessed)));
+         const time_t c_time = msgh->Hdr.DateProcessed;
+         s_time = gmtime(&c_time);
          scombo = (SCOMBO*)(&(msg->date_arrived));
          scombo = TmDate_to_DosDate(s_time, scombo);
       }
@@ -597,7 +606,8 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
      }
 
    if (!jm->locked) {
-      if ((didlock = Jam_Lock(jm, 1)) == 0) {
+      didlock = Jam_Lock(jm, 1);
+      if (didlock == 0) {
          freejamsubfield(subfieldNew);
          msgapierr = MERR_SHARE;
          return -1;
@@ -986,7 +996,7 @@ static dword _XPENTRY JamUidToMsgn(MSGA * jm, UMSGID umsgid, word type)
    {
      current = (right + left) / 2;
      umsg = JamMsgnToUid(jm, current);
-     if (umsg == -1)
+     if (umsg == (UMSGID)-1)
        return 0;
      if (umsg < msgnum)
        left = current + 1;
@@ -1747,6 +1757,9 @@ static int StrToSubfield(const unsigned char *str, dword lstr, dword *len, JAMSU
                     kludge = str+4;
                     subtypes = JAMSFLD_TRACE;
                  }
+                 break;
+      default:
+                 break;
    }
    subf->LoID = subtypes;
    subf->HiID = 0;
@@ -2045,7 +2058,7 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,
        while (*first) {
            ptr = (unsigned char *)strchr((char *)first, '\r');
            if (ptr) *ptr = '\0';
-           firstlen = ptr ? (ptr-first) : strlen((char *)first);
+           firstlen = ptr ? (dword)(ptr-first) : strlen((char *)first);
            if ((firstlen > 9 && strncmp((char *)first, "SEEN-BY: ", 9) == 0)  ||
                *first == '\001') {
 
@@ -2065,7 +2078,7 @@ unsigned char *DelimText(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr *subfield,
                   SubField++;
                }
            } else {
-               assert((curtext - onlytext) + firstlen +1  <= textlen);
+               assert((size_t)((curtext - onlytext) + firstlen + 1) <= textlen);
                strcpy((char *)curtext, (char *)first);
                curtext+=firstlen;
                *curtext++ = '\r';
@@ -2136,13 +2149,15 @@ void DecodeSubf(MSGH *msgh)
 
    if (!msgh->sq->isecho) {
       SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS)) != NULL)
+      SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS);
+      if (SubField != NULL)
       {
          memcpy(orig, SubField->Buffer, min(SubField->DatLen, sizeof(orig)-1));
          orig[min(SubField->DatLen, sizeof(orig)-1)] = '\0';
       }
       SubPos = 0;
-      if ((SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS)) != NULL)
+      SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_DADDRESS);
+      if (SubField != NULL)
       {
          memcpy(dest, SubField->Buffer, min(SubField->DatLen, sizeof(dest)-1));
          dest[min(SubField->DatLen, sizeof(dest)-1)] = '\0';
@@ -2309,7 +2324,8 @@ static dword _XPENTRY JamGetHash(HAREA mh, dword msgnum)
   HMSG msgh;
   dword rc = 0l;
 
-  if ((msgh=JamOpenMsg(mh, MOPEN_READ, msgnum))==NULL)
+  msgh=JamOpenMsg(mh, MOPEN_READ, msgnum);
+  if (msgh==NULL)
     return (dword) 0l;
 
   if (JamReadMsg(msgh, &xmsg, 0L, 0L, NULL, 0L, NULL)!=(dword)-1)
