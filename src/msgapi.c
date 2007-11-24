@@ -70,7 +70,7 @@ return result;
 #ifdef HAS_SIGNAL_H /* old: #ifdef __UNIX__ */
 /* Just a dummy alarm-fnct */
 static void alrm(int x)
-{}
+{ unused(x); }
 #endif
 
 sword _XPENTRY MsgOpenApi(struct _minf *minf)
@@ -359,7 +359,8 @@ byte *_XPENTRY GetCtrlToken(byte *where, byte *what)
 /* Be sure these structures don't contain junk before this call */
 void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
 {
-    byte *p, *s;
+    byte *s;
+    char *p;
 
     s = GetCtrlToken(ctrl, intl);
 
@@ -367,7 +368,7 @@ void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
     {
         NETADDR norig, ndest;
 
-        p = s;
+        p = (char*)s;
 
         /* Copy the defaults from the original address */
 
@@ -376,17 +377,16 @@ void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
 
         /* Parse the destination part of the kludge */
 
-        s += 5;
-        parseFtnAddrZ((char *) s, &ndest, FTNADDR_GOOD, (char **)&s);
+        parseFtnAddrZ(p + 5, &ndest, FTNADDR_GOOD, &p);
 
-        while (*s != ' ' && *s) /* TODO: Should'n be the case! Maybe remove it and skip intl processing. */
+        while (*p != ' ' && *p) /* TODO: Should'n be the case! Maybe remove it and skip intl processing. */
         {
-            s++;
+            p++;
         }
 
-        parseFtnAddrZS((char *) s, &norig);
+        parseFtnAddrZS(p, &norig);
 
-        pfree(p);
+        pfree(s);
 
         /*
          *  Only use this as the "real" zonegate address if the net/node
@@ -529,6 +529,7 @@ char * _XPENTRY strmerr(int msgapierr)
 	case MERR_TOOBIG: return "Too much text/ctrlinfo to fit in frame (Squish)";
 	case MERR_BADNAME:return "Bad area name or file name";
 	case MERR_LIMIT:  return "Messagebase limit is reached";
+	default: break;
     }
     return "Unknown error";
 }
