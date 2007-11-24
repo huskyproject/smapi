@@ -117,7 +117,8 @@ sword _XPENTRY apiSquishKillMsg(HAREA ha, dword dwMsg)
 
   /* Get the offset of the frame to delete */
 
-  if ((fo=_SquishGetFrameOfs(ha, dwMsg))==NULL_FRAME)
+  fo=_SquishGetFrameOfs(ha, dwMsg);
+  if (fo==NULL_FRAME)
   {
     return -1;
   }

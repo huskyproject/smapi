@@ -249,7 +249,8 @@ dword _XPENTRY apiSquishReadMsg(HMSG hmsg, PXMSG pxm, dword dwOfs,
   {
     hmsg->cur_pos=dwOfs;
 
-    if ((dwGot=_SquishReadTxt(hmsg, szTxt, dwTxtLen, &dwSeekOfs))==(dword)-1L)
+    dwGot=_SquishReadTxt(hmsg, szTxt, dwTxtLen, &dwSeekOfs);
+    if (dwGot==(dword)-1L)
       fOkay=FALSE;
   }
 

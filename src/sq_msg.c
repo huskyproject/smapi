@@ -69,7 +69,8 @@ static HMSG near NewHmsg(HAREA ha, word wMode)
 
   /* Allocate memory for the message handle */
 
-  if ((hmsg=palloc(sizeof *hmsg))==NULL)
+  hmsg=palloc(sizeof *hmsg);
+  if (hmsg==NULL)
     return NULL;
 
   (void)memset(hmsg, 0, sizeof *hmsg);
@@ -191,7 +192,8 @@ static unsigned near _SquishOpenMsgExisting(HMSG hmsg, dword dwMsg)
 
   /* Get the frame offset for this message */
 
-  if ((foMsg=_SquishGetFrameOfs(hmsg->ha, dwMsg))==NULL_FRAME)
+  foMsg=_SquishGetFrameOfs(hmsg->ha, dwMsg);
+  if (foMsg==NULL_FRAME)
     return FALSE;
 
   /* Read the frame header for this message and make sure that it's okay    *
@@ -580,7 +582,8 @@ HMSG _XPENTRY apiSquishOpenMsg(HAREA ha, word wMode, dword dwMsg)
 
   /* Allocate a handle for this message */
 
-  if ((hmsg=NewHmsg(ha, wMode))==NULL)
+  hmsg=NewHmsg(ha, wMode);
+  if (hmsg==NULL)
   {
 
     return NULL;

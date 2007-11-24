@@ -207,7 +207,8 @@ dword _XPENTRY SquishHash(byte  *f)
   {
     hash=(hash << 4) + (dword)tolower(*f);
 
-    if ((g=(hash & 0xf0000000L)) != 0L)
+    g = hash & 0xf0000000L;
+    if (g != 0L)
     {
       hash |= g >> 24;
       hash |= g;
