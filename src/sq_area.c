@@ -166,8 +166,8 @@ static unsigned near _SquishOpenBaseFiles(HAREA ha, byte  *szName, int mode)
   (void)strcpy(szFile, (char*)szName);
   (void)strcat(szFile, dot_sqi);
 
-  if ((Sqd->ifd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO,
-                      FILEMODE(ha->isecho)))==-1)
+  Sqd->ifd=sopen(szFile, mode | O_RDWR | O_BINARY, SH_DENYNO, FILEMODE(ha->isecho));
+  if (Sqd->ifd==-1)
   {
     (void)close(Sqd->sfd);
     msgapierr=MERR_NOENT;
@@ -415,7 +415,8 @@ static HAREA NewHarea(word wType)
 
   /* Try to allocate memory for the area handle */
 
-  if ((ha=(HAREA)palloc(sizeof(*ha)))==NULL)
+  ha=(HAREA)palloc(sizeof(*ha));
+  if (ha==NULL)
     return NULL;
 
   (void)memset(ha, 0, sizeof *ha);
@@ -445,12 +446,14 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
 
   /* Allocate memory for the Squish handle */
 
-  if ((ha=NewHarea(wType))==NULL)
+  ha=NewHarea(wType);
+  if (ha==NULL)
     return NULL;
 
   /* Allocate memory for the Squish-specific part of the handle */
 
-  if ((ha->apidata=(void *)palloc(sizeof(struct _sqdata)))==NULL)
+  ha->apidata=(void *)palloc(sizeof(struct _sqdata));
+  if (ha->apidata==NULL)
   {
     pfree(ha);
     return NULL;
@@ -461,7 +464,8 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
 
   /* Allocate memory to hold the function pointers */
 
-  if ((ha->api=(struct _apifuncs *)palloc(sizeof(struct _apifuncs)))==NULL)
+  ha->api=(struct _apifuncs *)palloc(sizeof(struct _apifuncs));
+  if (ha->api==NULL)
   {
     pfree(ha->apidata);
     pfree(ha);
@@ -474,7 +478,8 @@ HAREA MSGAPI SquishOpenArea(byte  *szName, word wMode, word wType)
 
   /* Open the index interface for this area */
 
-  if ((Sqd->hix=_SquishOpenIndex(ha))==NULL)
+  Sqd->hix=_SquishOpenIndex(ha);
+  if (Sqd->hix==NULL)
     return NULL;
 
   fOpened=FALSE;
