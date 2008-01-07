@@ -49,7 +49,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_movefiles
+	dh_install
 #	dh_installdebconf	
 	dh_installdocs
 	dh_installexamples

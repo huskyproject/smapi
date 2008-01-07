@@ -1,9 +1,9 @@
 Source: smapi-cur
 Section: libs
 Priority: optional
-Maintainer: Pavel Andreew <pavel@collage.etel.ru>
-Build-Depends: debhelper (>> 4.0.0), binutils, libhusky-dev
-Standards-Version: 3.5.8
+Maintainer: Stanislav Maslovski <stanislav.maslovski@gmail.com>
+Build-Depends: debhelper (>> 4.0.0), binutils, libhusky-dev, huskybase (>= 2.0-0)
+Standards-Version: 3.6.1
 
 Package: libsmapi2cur
 Architecture: any
@@ -16,8 +16,9 @@ Description: MsgAPI for the Husky-Packages
 Package: libsmapi2cur-dev
 Section: devel
 Architecture: any
-Depends: libsmapi2cur(=${Source-Version}), libc6-dev, libhusky-dev
-Conflicts: libsmapi2-dev
+Depends: libsmapi2cur(=${Source-Version}), libc6-dev, libhusky-dev, huskybase (>= 2.0-0)
+Provides: libsmapi-dev
+Conflicts: libsmapi-dev, libsmapi2-dev
 Replaces: libsmapi2-dev
 Description: MsgAPI for the Husky-Packages
  smapi is a modified message api for *.MSG, SQUISH (C) and JAM-Messagebase

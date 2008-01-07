@@ -1,3 +1,11 @@
+smapi-cur (2.5-20070915-1) unstable; urgency=low
+
+  * New CVS version
+  * Packaging synced with smapi 2.4.0+rc3-1 from Pavel Andreew
+  * Updated maintainer info
+
+ -- Stanislav Maslovski <stanislav.maslovski@gmail.com>  Sat, 15 Sep 2007 19:47:01 +0400
+
 smapi-cur (2.5-20030319-1) unstable; urgency=low
 
   * New cvs version
