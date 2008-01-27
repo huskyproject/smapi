@@ -52,7 +52,7 @@ OBJOPT	= -c
 # options for build static library
 LIBOPT	= -static
 # options for build dll
-DLLOPT  =
+DLLOPT  = -shared
 # option for specify output file name
 NAMEOPT	= -o
 # options for $(AR) program
@@ -86,11 +86,11 @@ PACKAGENAME=$(LIBNAME)$(LIBSUFFIX)
 
 ## Default make rule ##
 
-default: all
-#	@echo Run 'make dll' to build dll version \($(TARGETDLL), $(PROGRAMS)\)
-#	@echo Run 'make static' to build static version \($(TARGETLIB), $(PROGRAMS)\)
-#	@echo Run 'make dllprograms' to build dll version of programs \($(PROGRAMS)\)
-#	@echo Run 'make programs' to build static version of programs \($(PROGRAMS)\)
+default:
+	@echo (Recommended) Run 'make dll' to build dll version \($(TARGETDLL), $(PROGRAMS)\)
+	@echo Run 'make static' to build static version \($(TARGETLIB), $(PROGRAMS)\)
+	@echo Run 'make dllprograms' to build dll version of programs \($(PROGRAMS)\)
+	@echo Run 'make programs' to build static version of programs \($(PROGRAMS)\)
 #	@echo Run 'make all' to build all above
 
 ## include common makefiles part ##
@@ -98,7 +98,8 @@ default: all
 include makefile.inc
 
 # libraries need to build binary file
-LIBS	+=
+DLLOPT	+= ../../huskylib/make/husky.dll 
+LIBS	+= ../../huskylib/make/libhusky.a
 
 ## other, usualy not modify below ##
 
@@ -107,7 +108,7 @@ CFLAGS	+= -I$(H_DIR) -I../../huskylib $(DEBUG)
 
 ## make rules ##
 
-all:	static programs
+all:	static dll
 
 static:	$(TARGETLIB)
 dll:	$(TARGETDLL)
@@ -132,10 +133,9 @@ clean:
 	-$(RM) $(RMOPT) *$(_OBJ)
 
 distclean:
-#	-$(RM) $(RMOPT) $(TARGETDLL)
+	-$(RM) $(RMOPT) $(TARGETDLL)
 	-$(RM) $(RMOPT) $(TARGETLIB)
 	-$(RM) $(RMOPT) $(PROGRAMS)
-
 
 package: static programs
 	@echo husky library v.$(VER) for Win32 platform (Mingw32 compiler)> file_id.diz
