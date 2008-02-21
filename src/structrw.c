@@ -976,7 +976,7 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 
    pbuf = buf;
    i = 0;
-   while ((dword)(pbuf - buf + 8) < *SubfieldLen) {
+   while ((dword)(pbuf - buf + 8) <= *SubfieldLen) {
       i++;
       pbuf += get_dword(pbuf+4) + sizeof(JAMBINSUBFIELD);
    }
@@ -984,6 +984,7 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
    *subfield = palloc(len);
    subfield[0]->arraySize = len;
    subfield[0]->subfieldCount = 0;
+   /* reserve memory for (real count + 1)*JAMSUBFIELD2 */
    subfield[0]->subfield[0].Buffer = (byte *)&(subfield[0]->subfield[i+1]);
 
    subfieldNext = subfield[0]->subfield;
@@ -1011,9 +1012,11 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
       /* DatLen bytes Buffer */
       subfieldNext->DatLen = datlen;
       memmove(subfieldNext->Buffer, pbuf, datlen);
+
+      /* Set up next element */
+      assert((byte *)(subfieldNext + 1) < subfield[0]->subfield[0].Buffer);
       subfieldNext[1].Buffer = subfieldNext->Buffer + subfieldNext->DatLen + 1;
       subfieldNext++;
-      assert((byte *)(subfieldNext + 1) <= subfield[0]->subfield[0].Buffer);
       assert(subfieldNext->Buffer <= (byte *)*subfield + subfield[0]->arraySize);
       pbuf += datlen;
 
