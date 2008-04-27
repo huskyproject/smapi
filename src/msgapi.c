@@ -215,6 +215,7 @@ byte *StripNasties(byte * str)
 static dword near _CopyToBuf(byte * p, byte * out, byte ** end)
 {
     dword len = 0;
+    byte *p_text = p;
 
     if (out)
     {
@@ -255,6 +256,12 @@ static dword near _CopyToBuf(byte * p, byte * out, byte ** end)
 
         len++;
 
+        if (*p == '\015' || *p == '\012'){
+            if ((p[0] == '\015' && p[1] == '\012')||(p[0] == '\012' && p[1] == '\015'))
+                p_text = p+=2;
+            else
+                p_text = ++p;
+        }
         while (*p == '\015' || *p == '\012')
         {
             p++;
@@ -281,7 +288,7 @@ static dword near _CopyToBuf(byte * p, byte * out, byte ** end)
 
     if (end)
     {
-        *end = p;
+        *end = p_text;
     }
 
     return len;
