@@ -825,11 +825,14 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh, word append, XMSG * msg,
       memmove(&(msgh->Hdr), &(jamhdrNew), sizeof(JAMHDR));
       freejamsubfield(msgh->SubFieldPtr);
       msgh->SubFieldPtr = subfieldNew;
+      pfree(msgh->ctrl);
+      pfree(msgh->lctrl);
       DecodeSubf(msgh);
       if (Jmd->actmsg_read) {
          Jmd->actmsg[msgh->msgnum - 1].TrueMsg = msgh->seek_hdr;
          Jmd->actmsg[msgh->msgnum - 1].UserCRC = jamidxNew.UserCRC;
          memcpy(&(Jmd->actmsg[msgh->msgnum - 1].hdr), &jamhdrNew, sizeof(jamhdrNew));
+         freejamsubfield(Jmd->actmsg[msgh->msgnum - 1].subfield);
          if (Jmd->actmsg_read == 1)
             copy_subfield(&(Jmd->actmsg[msgh->msgnum - 1].subfield), subfieldNew);
          else
@@ -2120,6 +2123,7 @@ static void addkludge(char **line, char *kludge, char *ent, char *lf, dword len)
     *line += strlen(*line);
 }
 
+/* WARNING: rewrites clen, ctrl, lclen, lctrl */
 void DecodeSubf(MSGH *msgh)
 {
    dword  SubPos;
