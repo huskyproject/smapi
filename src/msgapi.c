@@ -256,6 +256,7 @@ static dword near _CopyToBuf(byte * p, byte * out, byte ** end)
 
         len++;
 
+        /* preserve empty lines between kludges and text */
         if (*p == '\015' || *p == '\012'){
             if ((p[0] == '\015' && p[1] == '\012')||(p[0] == '\012' && p[1] == '\015'))
                 p_text = p+=2;
