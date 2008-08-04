@@ -368,7 +368,7 @@ byte *_XPENTRY GetCtrlToken(byte *where, byte *what)
 void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest)
 {
     byte *s;
-    char *p;
+    const char *p;
 
     s = GetCtrlToken(ctrl, intl);
 
