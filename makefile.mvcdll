@@ -2,9 +2,9 @@
 # Microsoft Visual C++ Makefile for build DLL
 
 CC=     cl
-CFLAGS= -nologo -MD -Zp1
+CFLAGS= -nologo -MD
 CDEFS=  -D__NT__ -D_CONSOLE -D_MAKE_DLL -D_SMAPI_EXT
-COPT=   -Ob2
+#COPT=   -Ob2
 LINK=   link
 LINKOPTS = msvcrt.lib Kernel32.lib /nologo /opt:nowin98 /dll /nodefaultlib /out:"smapimvc.dll" /implib:"smapimvc.lib"
 OBJ=	.obj
