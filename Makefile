@@ -56,13 +56,13 @@ $(TARGETDLL).$(VER): $(OBJS)
   endif
 
 instdyn: $(TARGETLIB) $(TARGETDLL).$(VER)
-	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
-	$(INSTALL) $(ILOPT) $(TARGETDLL).$(VER) $(LIBDIR)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL).$(VERH)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL)
+	-$(MKDIR) $(MKDIROPT) $(DESTDIR)$(DIRSEP)$(LIBDIR)
+	$(INSTALL) $(ILOPT) $(TARGETDLL).$(VER) $(DESTDIR)$(DIRSEP)$(LIBDIR)
+	-$(RM) $(RMOPT) $(DESTDIR)$(DIRSEP)$(LIBDIR)$(DIRSEP)$(TARGETDLL).$(VERH)
+	-$(RM) $(RMOPT) $(DESTDIR)$(DIRSEP)$(LIBDIR)$(DIRSEP)$(TARGETDLL)
 # Changed the symlinks from symlinks with full path to just symlinks.
 # Better so :)
-	cd $(LIBDIR) ;\
+	cd $(DESTDIR)$(DIRSEP)$(LIBDIR) ;\
 	$(LN) $(LNOPT) $(TARGETDLL).$(VER) $(TARGETDLL).$(VERH) ;\
 	$(LN) $(LNOPT) $(TARGETDLL).$(VER) $(TARGETDLL)
 ifneq (~$(LDCONFIG)~, ~~)
@@ -77,22 +77,22 @@ endif
 FORCE:
 
 install-h-dir: FORCE
-	-$(MKDIR) $(MKDIROPT) $(INCDIR)$(DIRSEP)$(H_DIR)
+	-$(MKDIR) $(MKDIROPT) $(DESTDIR)$(DIRSEP)$(INCDIR)$(DIRSEP)$(H_DIR)
 
 %.h: FORCE
-	-$(INSTALL) $(IIOPT) $(H_DIR)$(DIRSEP)$@ $(INCDIR)$(DIRSEP)$(H_DIR)
+	-$(INSTALL) $(IIOPT) $(H_DIR)$(DIRSEP)$@ $(DESTDIR)$(DIRSEP)$(INCDIR)$(DIRSEP)$(H_DIR)
         
 install-h: install-h-dir $(HEADERS)
 
 install: install-h instdyn
-	-$(MKDIR) $(MKDIROPT) $(LIBDIR)
-	$(INSTALL) $(ISLOPT) $(TARGETLIB) $(LIBDIR)
+	-$(MKDIR) $(MKDIROPT) $(DESTDIR)$(DIRSEP)$(LIBDIR)
+	$(INSTALL) $(ISLOPT) $(TARGETLIB) $(DESTDIR)$(DIRSEP)$(LIBDIR)
 
 uninstall:
-	-cd $(INCDIR)$(DIRSEP)$(H_DIR) ;\
+	-cd $(DESTDIR)$(DIRSEP)$(INCDIR)$(DIRSEP)$(H_DIR) ;\
 	$(RM) $(RMOPT) $(HEADERS)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETLIB)
-	-$(RM) $(RMOPT) $(LIBDIR)$(DIRSEP)$(TARGETDLL)*
+	-$(RM) $(RMOPT) $(DESTDIR)$(DIRSEP)$(LIBDIR)$(DIRSEP)$(TARGETLIB)
+	-$(RM) $(RMOPT) $(DESTDIR)$(DIRSEP)$(LIBDIR)$(DIRSEP)$(TARGETDLL)*
 
 clean:
 	-$(RM) $(RMOPT) *$(_OBJ)
