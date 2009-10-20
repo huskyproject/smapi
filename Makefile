@@ -108,7 +108,6 @@ uninstall:
 
 clean:
 	-$(RM) $(RMOPT) *$(OBJ)
-	-$(RM) $(RMOPT) *~
 
 distclean: clean
 	-$(RM) $(RMOPT) $(TARGET)
