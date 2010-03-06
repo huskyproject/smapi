@@ -362,6 +362,7 @@ extern struct _minf _stdc mi;
 
 #define MsgCvtFTSCDateToBinary(a, b) ASCII_Date_To_Binary(a,b)
 
+HUSKYEXT const char *  _XPENTRY smapi_cvs_date();
 HUSKYEXT sword _XPENTRY MsgOpenApi(struct _minf *minf);
 HUSKYEXT sword _XPENTRY MsgCloseApi(void);
 

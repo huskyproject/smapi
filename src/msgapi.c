@@ -54,6 +54,12 @@ word _stdc msgapierr = 0;
 
 struct _minf _stdc mi;
 
+const char *  _XPENTRY smapi_cvs_date(){
+  static
+#include "../cvsdate.h"
+  return cvs_date;
+}
+
 int _MsgCloseApi(void)
 {
 int result = 0;
