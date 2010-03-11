@@ -1954,7 +1954,7 @@ static void resize_subfields(JAMSUBFIELD2LISTptr *sflist, dword newcount,
    new_list->arraySize = len;
    new_list->subfieldCount = old_list->subfieldCount;
    if (old_list->subfieldCount == 0)
-      new_list->subfield[0].Buffer = (unsigned char *)&(new_list->subfield[new_list->subfieldCount + newcount]);
+      new_list->subfield[0].Buffer = (unsigned char *)&(new_list->subfield[newcount]);
    else {
       memcpy(new_list->subfield, old_list->subfield,
              new_list->subfieldCount * sizeof(JAMSUBFIELD2));
