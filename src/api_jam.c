@@ -1930,46 +1930,49 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
    msgapierr = MERR_NONE;
 }
 
-static void resize_subfields(JAMSUBFIELD2LISTptr *subfield, dword newcount,
+static void resize_subfields(JAMSUBFIELD2LISTptr *sflist, dword newcount,
                              dword len)
 {
    dword offs;
    int i;
-   JAMSUBFIELD2LISTptr SubField;
+   JAMSUBFIELD2LISTptr new_list, old_list;
+   byte *new_data, *old_data;
 
-   if( !subfield || len==0 )
+   if( !sflist || !*sflist || len==0 )
    {
         msgapierr = MERR_BADA;
         return;
    }
 
-   SubField = palloc(len);
-   if (!SubField) {
+   old_list = *sflist;
+   new_list = palloc(len);
+   if (!new_list) {
       msgapierr = MERR_NOMEM;
       return;
    }
 
-   SubField->arraySize = len;
-   SubField->subfieldCount = subfield[0]->subfieldCount;
-   if (subfield[0]->subfieldCount == 0)
-      SubField->subfield[0].Buffer = (unsigned char *)&(SubField->subfield[SubField->subfieldCount + newcount]);
+   new_list->arraySize = len;
+   new_list->subfieldCount = old_list->subfieldCount;
+   if (old_list->subfieldCount == 0)
+      new_list->subfield[0].Buffer = (unsigned char *)&(new_list->subfield[new_list->subfieldCount + newcount]);
    else {
-      memcpy(SubField->subfield, subfield[0]->subfield,
-             SubField->subfieldCount * sizeof(JAMSUBFIELD2));
-      SubField->subfield[SubField->subfieldCount].Buffer =
-         subfield[0]->subfield[SubField->subfieldCount-1].Buffer +
-         subfield[0]->subfield[SubField->subfieldCount-1].DatLen;
+      memcpy(new_list->subfield, old_list->subfield,
+             new_list->subfieldCount * sizeof(JAMSUBFIELD2));
+      new_list->subfield[new_list->subfieldCount].Buffer =
+         old_list->subfield[new_list->subfieldCount-1].Buffer +
+         old_list->subfield[new_list->subfieldCount-1].DatLen;
    }
-   offs=(byte *)&(SubField->subfield[newcount])-subfield[0]->subfield[0].Buffer;
-   for (i=subfield[0]->subfieldCount; i>=0; i--)
-      SubField->subfield[i].Buffer += offs;
-   memcpy(SubField->subfield[0].Buffer, subfield[0]->subfield[0].Buffer,
-    subfield[0]->arraySize-((char *)(subfield[0]->subfield[0].Buffer)-(char *)(*subfield)));
 
-   freejamsubfield(*subfield);
-   *subfield = SubField;
-   assert(subfield[0]->subfield[subfield[0]->subfieldCount].Buffer<=(byte *)*subfield+subfield[0]->arraySize);
-   assert((byte *)&(subfield[0]->subfield[newcount])==subfield[0]->subfield[0].Buffer);
+   offs=(byte *)&(new_list->subfield[newcount])-old_list->subfield[0].Buffer;
+   for (i=old_list->subfieldCount; i>=0; i--)
+      new_list->subfield[i].Buffer += offs;
+   memcpy(new_list->subfield[0].Buffer, old_list->subfield[0].Buffer,
+    old_list->arraySize-((char *)(old_list->subfield[0].Buffer)-(char *)old_list));
+
+   freejamsubfield(old_list);
+   *sflist = new_list;
+   assert(old_list->subfield[old_list->subfieldCount].Buffer<=(byte *)*sflist+old_list->arraySize);
+   assert((byte *)&(old_list->subfield[newcount])==old_list->subfield[0].Buffer);
    msgapierr = MERR_NONE;
 }
 
@@ -2247,7 +2250,7 @@ void DecodeSubf(MSGH *msgh)
 **  Crc32 lookup table
 **
 ***********************************************************************/
-static long crc32tab[256]= {
+static hINT32 crc32tab[256]= {
               0L,  1996959894L,  -301047508L, -1727442502L,   124634137L,
      1886057615L,  -379345611L, -1637575261L,   249268274L,  2044508324L,
      -522852066L, -1747789432L,   162941995L,  2125561021L,  -407360249L,
