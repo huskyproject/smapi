@@ -1933,7 +1933,6 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 static void resize_subfields(JAMSUBFIELD2LISTptr *sflist, dword newcount,
                              dword len)
 {
-   dword offs;
    int i;
    JAMSUBFIELD2LISTptr new_list, old_list;
    byte *new_data, *old_data;
@@ -1956,18 +1955,19 @@ static void resize_subfields(JAMSUBFIELD2LISTptr *sflist, dword newcount,
    if (old_list->subfieldCount == 0)
       new_list->subfield[0].Buffer = (unsigned char *)&(new_list->subfield[newcount]);
    else {
+      dword offs;
       memcpy(new_list->subfield, old_list->subfield,
              new_list->subfieldCount * sizeof(JAMSUBFIELD2));
       new_list->subfield[new_list->subfieldCount].Buffer =
          old_list->subfield[new_list->subfieldCount-1].Buffer +
          old_list->subfield[new_list->subfieldCount-1].DatLen;
+      offs=(byte *)&(new_list->subfield[newcount])-old_list->subfield[0].Buffer;
+      for (i=old_list->subfieldCount; i>=0; i--)
+         new_list->subfield[i].Buffer += offs;
+      memcpy(new_list->subfield[0].Buffer, old_list->subfield[0].Buffer,
+       old_list->arraySize-((char *)(old_list->subfield[0].Buffer)-(char *)old_list));
    }
 
-   offs=(byte *)&(new_list->subfield[newcount])-old_list->subfield[0].Buffer;
-   for (i=old_list->subfieldCount; i>=0; i--)
-      new_list->subfield[i].Buffer += offs;
-   memcpy(new_list->subfield[0].Buffer, old_list->subfield[0].Buffer,
-    old_list->arraySize-((char *)(old_list->subfield[0].Buffer)-(char *)old_list));
 
    freejamsubfield(old_list);
    *sflist = new_list;
