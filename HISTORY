@@ -5,6 +5,8 @@ Changes after smapi 2.4
    - Fetch orig address from MSGID if it is not presend in header (JAM)
 
 2. IMPORTANT bugfixes:
+   - remove unused function MsgBrowseArea()
+   - use 32-bit types instead platform-depended "long"
 
 
 SMAPI 2.4

@@ -27,8 +27,8 @@ OBJS3	= sq_lock$(_OBJ) sq_misc$(_OBJ) sq_msg$(_OBJ) sq_read$(_OBJ)
 OBJS4	= sq_uid$(_OBJ) sq_write$(_OBJ) structrw$(_OBJ)
 OBJS	= $(OBJS1) $(OBJS2) $(OBJS3) $(OBJS4)
 
-HEADERS = api_brow.h api_jam.h msgapi.h
-
+#HEADERS = api_brow.h api_jam.h msgapi.h
+HEADERS = api_jam.h msgapi.h
 
 # Binary file(s) to build from sources
 PROGRAMS=

@@ -428,10 +428,6 @@
 			Filter="*.h"
 			>
 			<File
-				RelativePath="..\smapi\api_brow.h"
-				>
-			</File>
-			<File
 				RelativePath="..\smapi\api_jam.h"
 				>
 			</File>

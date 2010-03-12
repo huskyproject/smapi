@@ -107,6 +107,7 @@ const
   MERR_BADA = 6; // Bad argument passed to msgapi function
   MERR_EOPEN = 7; // Couldn't close - messages still open
 
+{: used nowhere
   BROWSE_ACUR = $0001;
   BROWSE_ATAG = $0002;
   BROWSE_AALL = $0004;
@@ -123,6 +124,7 @@ const
   BROWSE_AREA = (BROWSE_ACUR or BROWSE_ATAG) or BROWSE_AALL;
   BROWSE_TYPE = ((BROWSE_ALL or BROWSE_NEW) or BROWSE_SEARCH) or BROWSE_FROM;
   BROWSE_DISPLAY = (BROWSE_READ or BROWSE_LIST) or BROWSE_QWK;
+}
   SF_HAS_ATTR = $01;
   SF_NOT_ATTR = $02;
   SF_OR = $04;
@@ -141,8 +143,9 @@ type
   PXMSG = ^TXMSG;
   PNETADDR = ^TNETADDR;
   PSEARCH = ^TSEARCH;
+{: used nowhere
   PBROWSE = ^TBROWSE;
-
+}
   TUMsgId = dword;
 
   { Timestamp }
@@ -253,6 +256,7 @@ type
     where: char;
   end;
 
+{: used nowhere
   TBROWSE = packed record
     path: Pchar;
     _type: sword;
@@ -273,7 +277,7 @@ type
     End_Ptr: function(b: pBROWSE): longint;
     Match_Ptr: function(b: pBROWSE): longint;
   end;
-
+}
 //Var
 //  msgapierr: sword; cvar; external;
 //  mi: minf; cvar; external;
@@ -839,10 +843,6 @@ function MsgOpenArea(_Name: PChar; _Mode: sword; _Type: sword): PAreaHandle; cde
    @returns the value 1 if the area exists and is valid. 0 otherwise. }
 function MsgValidate(_Type: sword; _Name: PChar): sword; cdecl;
 
-{: This function is not part of the original MsgApi and therefore I don't have
-   any clue what it does. }
-function MsgBrowseArea(b: PBROWSE): sword; cdecl;
-
 function MsgCurMsg(_AreaHandle: PAreaHandle): integer;
 function MsgNumMsg(_AreaHandle: PAreaHandle): integer;
 function MsgHighMsg(_AreaHandle: PAreaHandle): integer;
@@ -1007,8 +1007,6 @@ function MsgCloseApi: sword; cdecl; external LIBSMAPI_NAME name 'MsgCloseApi';
 function MsgOpenArea(_Name: PChar; _Mode: sword; _Type: sword): PAreaHandle; cdecl; external LIBSMAPI_NAME name 'MsgOpenArea';
 
 function MsgValidate(_Type: sword; _Name: PChar): sword; cdecl; external LIBSMAPI_NAME name 'MsgValidate';
-
-function MsgBrowseArea(b: PBROWSE): sword; cdecl; external LIBSMAPI_NAME name 'MsgBrowseArea';
 
 function InvalidMsgh(msgh: PMsgHandle): sword; cdecl; external LIBSMAPI_NAME name 'InvalidMsgh';
 

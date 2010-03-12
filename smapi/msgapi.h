@@ -272,7 +272,7 @@ struct _msgh
 };
 #endif
 
-#include "api_brow.h"
+/* #include "api_brow.h" */
 
 /*
  *  This variable is modified whenever an error occurs with the MsgXxx()
@@ -369,7 +369,7 @@ HUSKYEXT sword _XPENTRY MsgCloseApi(void);
 HUSKYEXT MSGA *_XPENTRY MsgOpenArea(byte * name, word mode, word type);
 HUSKYEXT int MsgDeleteBase(char * name, word type);
 sword _XPENTRY MsgValidate(word type, byte * name);
-sword _XPENTRY MsgBrowseArea(BROWSE * b);
+/* sword _XPENTRY MsgBrowseArea(BROWSE * b);  // used nowhere */
 
 sword MSGAPI InvalidMsgh(MSGH * msgh);
 sword MSGAPI InvalidMh(MSGA * mh);
