@@ -1933,9 +1933,11 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH *msgh, XMSG *msg, JAMHDRptr jamhdr, 
 static void resize_subfields(JAMSUBFIELD2LISTptr *sflist, dword newcount,
                              dword len)
 {
-   int i;
+#define LASTFIELD(x) ((x)->subfield[(x)->subfieldCount-1])
+   dword i;
    JAMSUBFIELD2LISTptr new_list, old_list;
-   byte *new_data, *old_data;
+   byte *new_buffer, *old_buffer;
+   size_t new_buffer_size, old_buffer_size;
 
    if( !sflist || !*sflist || len==0 )
    {
@@ -1944,6 +1946,22 @@ static void resize_subfields(JAMSUBFIELD2LISTptr *sflist, dword newcount,
    }
 
    old_list = *sflist;
+   if(old_list->subfieldCount == 0)
+   {
+	   old_buffer = (byte*)&(old_list->subfield[0]);
+       old_buffer_size = 0;
+   }
+   else
+   {
+      old_buffer = old_list->subfield[0].Buffer;
+      /* really used size */
+      old_buffer_size = LASTFIELD(old_list).Buffer + LASTFIELD(old_list).DatLen - old_buffer;
+   }
+   /* Check consistency of source structure */
+   assert(old_buffer + old_buffer_size <= (byte*)old_list+old_list->arraySize);
+
+   assert(newcount > old_list->subfieldCount); /* Code below relies on this */
+
    new_list = palloc(len);
    if (!new_list) {
       msgapierr = MERR_NOMEM;
@@ -1952,28 +1970,32 @@ static void resize_subfields(JAMSUBFIELD2LISTptr *sflist, dword newcount,
 
    new_list->arraySize = len;
    new_list->subfieldCount = old_list->subfieldCount;
-   if (old_list->subfieldCount == 0)
-      new_list->subfield[0].Buffer = (unsigned char *)&(new_list->subfield[newcount]);
-   else {
-      dword offs;
+
+   new_buffer = (byte*)&(new_list->subfield[newcount]);
+   new_buffer_size = new_list->arraySize - (new_buffer - (byte*)new_list);
+
+   assert(new_buffer_size >= old_buffer_size);
+
+   if (old_list->subfieldCount > 0)
+   { 
+      /* copy array of JAMSUBFIELD2 */
       memcpy(new_list->subfield, old_list->subfield,
              new_list->subfieldCount * sizeof(JAMSUBFIELD2));
-      new_list->subfield[new_list->subfieldCount].Buffer =
-         old_list->subfield[new_list->subfieldCount-1].Buffer +
-         old_list->subfield[new_list->subfieldCount-1].DatLen;
-      offs=(byte *)&(new_list->subfield[newcount])-old_list->subfield[0].Buffer;
-      for (i=old_list->subfieldCount; i>=0; i--)
-         new_list->subfield[i].Buffer += offs;
-      memcpy(new_list->subfield[0].Buffer, old_list->subfield[0].Buffer,
-       old_list->arraySize-((char *)(old_list->subfield[0].Buffer)-(char *)old_list));
+      /* fix pointers. note brackets: that's right, subtracting pointers 
+       * referring to two different objects gives UB */
+      for (i = 0; i < old_list->subfieldCount; ++i)
+         new_list->subfield[i].Buffer = 
+            new_buffer + (old_list->subfield[i].Buffer - old_buffer);
+      /* copy data */
+      memcpy(new_buffer, old_buffer, old_buffer_size);
    }
-
+   /* Set up next subfield's buffer */
+   new_list->subfield[new_list->subfieldCount].Buffer = new_buffer + old_buffer_size;
 
    freejamsubfield(old_list);
    *sflist = new_list;
-   assert(old_list->subfield[old_list->subfieldCount].Buffer<=(byte *)*sflist+old_list->arraySize);
-   assert((byte *)&(old_list->subfield[newcount])==old_list->subfield[0].Buffer);
    msgapierr = MERR_NONE;
+#undef LASTFIELD
 }
 
 static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr, JAMSUBFIELD2LISTptr
