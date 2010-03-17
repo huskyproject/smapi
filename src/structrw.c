@@ -967,6 +967,7 @@ int copy_subfield(JAMSUBFIELD2LISTptr *to, JAMSUBFIELD2LISTptr from)
    return 0;
 }
 
+/* Define DEBUG to catch more weirdness in databases */
 static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen)
 {
    JAMSUBFIELD2ptr subfieldNext;
@@ -976,9 +977,43 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 
    pbuf = buf;
    i = 0;
-   while ((dword)(pbuf - buf + 8) <= *SubfieldLen) {
+   while ((pbuf - buf + 8) <= *SubfieldLen) {
+      dword size;
+#ifdef DEBUG
+	  word loID, hiID;
+	  loID = get_word(pbuf);
+	  hiID = get_word(pbuf+2);
+	  if(!(loID <= JAMSFLD_ENCLINDFILE ||
+		  loID == JAMSFLD_EMBINDAT ||
+		  loID >= JAMSFLD_FTSKLUDGE && loID <= JAMSFLD_TZUTCINFO))
+	  { /* This subfield type is not supported and is most 
+		   probably sign of error in messagebase */
+         printf("SMAPI ERROR: weird subfield type! (%X)\n", (unsigned int)loID); 
+		 break;
+	  }
+#endif
+	  size = get_dword(pbuf+4);
+#ifdef DEBUG
+	  if(size == 0) /* While possible, it isn't normal value */
+	  {
+         printf("SMAPI ERROR: subfield of 0 size!\n"); 
+	  }
+#endif
+      if((pbuf - buf + size + sizeof(JAMBINSUBFIELD)) > 
+		 *SubfieldLen) /* it means that subfield claims to be longer 
+						  than header says. can't be. */ 
+	  { /* just break, ideally there shall be a setting for lax treatment of messagebase */
+         printf("SMAPI ERROR: wrongly sized subfield occured!\n"); 
+		 break;
+	  }
+	  if(size >=0xFFFF) /* realistic check: single subfield 
+						   longer than 64k is not realistic */
+	  {
+         printf("SMAPI ERROR: subfield is suspiciously large! (%u bytes)\n", size); 
+		 break;
+	  }
       i++;
-      pbuf += get_dword(pbuf+4) + sizeof(JAMBINSUBFIELD);
+      pbuf += size + sizeof(JAMBINSUBFIELD);
    }
    len = sizeof(JAMSUBFIELD2LIST)+i*(sizeof(JAMSUBFIELD2)-sizeof(JAMBINSUBFIELD)+1)+*SubfieldLen;
    *subfield = palloc(len);
