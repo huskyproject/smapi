@@ -989,14 +989,14 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 	  { /* This subfield type is not supported and is most 
 		   probably sign of error in messagebase */
          printf("SMAPI ERROR: weird subfield type! (%X)\n", (unsigned int)loID); 
-		 break;
+//		 break;
 	  }
 #endif
 	  size = get_dword(pbuf+4);
 #ifdef DEBUG
-	  if(size == 0) /* While possible, it isn't normal value */
+	  if(size == 0 && loID != JAMSFLD_SUBJECT) /* While possible, it isn't normal value */
 	  {
-         printf("SMAPI ERROR: subfield of 0 size!\n"); 
+         printf("SMAPI ERROR: subfield of 0 size! (%X)\n", (unsigned int)loID); 
 	  }
 #endif
       if((pbuf - buf + size + sizeof(JAMBINSUBFIELD)) > 
