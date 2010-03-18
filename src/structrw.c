@@ -1009,7 +1009,7 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 	  if(size >=0xFFFF) /* realistic check: single subfield 
 						   longer than 64k is not realistic */
 	  {
-         printf("SMAPI ERROR: subfield is suspiciously large! (%u bytes)\n", size); 
+         printf("SMAPI ERROR: subfield is suspiciously large! (%lu bytes)\n", (unsigned long)size); 
 		 break;
 	  }
       i++;
