@@ -972,12 +972,13 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 {
    JAMSUBFIELD2ptr subfieldNext;
    dword datlen;
-   int i, len;
-   byte *pbuf;
+   unsigned int count, len;
+   byte *pbuf, *limit;
 
    pbuf = buf;
-   i = 0;
-   while ((pbuf - buf + 8) <= *SubfieldLen) {
+   limit = buf + *SubfieldLen;
+   count = 0;
+   while (pbuf + JAM_SF_HEADER_SIZE <= limit) {
       dword size;
 #ifdef DEBUG
 	  word loID, hiID;
@@ -989,7 +990,7 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 	  { /* This subfield type is not supported and is most 
 		   probably sign of error in messagebase */
          printf("SMAPI ERROR: weird subfield type! (%X)\n", (unsigned int)loID); 
-//		 break;
+        /* Keep going, these fields won't hurt unless they have improper size too */
 	  }
 #endif
 	  size = get_dword(pbuf+4);
@@ -999,9 +1000,9 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
          printf("SMAPI ERROR: subfield of 0 size! (%X)\n", (unsigned int)loID); 
 	  }
 #endif
-      if((pbuf - buf + size + sizeof(JAMBINSUBFIELD)) > 
-		 *SubfieldLen) /* it means that subfield claims to be longer 
-						  than header says. can't be. */ 
+      if(pbuf + JAM_SF_HEADER_SIZE + size > limit)
+		/* it means that subfield claims to be longer 
+		   than header says. can't be. */ 
 	  { /* just break, ideally there shall be a setting for lax treatment of messagebase */
          printf("SMAPI ERROR: wrongly sized subfield occured!\n"); 
 		 break;
@@ -1012,20 +1013,20 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
          printf("SMAPI ERROR: subfield is suspiciously large! (%lu bytes)\n", (unsigned long)size); 
 		 break;
 	  }
-      i++;
-      pbuf += size + sizeof(JAMBINSUBFIELD);
+      ++count;
+      pbuf += JAM_SF_HEADER_SIZE + size;
    }
-   len = sizeof(JAMSUBFIELD2LIST)+i*(sizeof(JAMSUBFIELD2)-sizeof(JAMBINSUBFIELD)+1)+*SubfieldLen;
+   len = sizeof(JAMSUBFIELD2LIST)+count*(sizeof(JAMSUBFIELD2)-JAM_SF_HEADER_SIZE+1)+*SubfieldLen;
    *subfield = palloc(len);
    subfield[0]->arraySize = len;
    subfield[0]->subfieldCount = 0;
    /* reserve memory for (real count + 1)*JAMSUBFIELD2 */
-   subfield[0]->subfield[0].Buffer = (byte *)&(subfield[0]->subfield[i+1]);
+   subfield[0]->subfield[0].Buffer = (byte *)&(subfield[0]->subfield[count+1]);
 
    subfieldNext = subfield[0]->subfield;
    pbuf = buf;
 
-   while ( *SubfieldLen - (pbuf - buf) >= 8) {
+   while ( subfield[0]->subfieldCount < count && pbuf + JAM_SF_HEADER_SIZE <= limit ) {
       /* 02 bytes LoID */
       subfieldNext->LoID = get_word(pbuf);
       pbuf += 2;
