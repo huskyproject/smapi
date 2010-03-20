@@ -977,6 +977,8 @@ static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *Sub
 
    pbuf = buf;
    limit = buf + *SubfieldLen;
+   assert(limit >= buf); 
+
    count = 0;
    while (pbuf + JAM_SF_HEADER_SIZE <= limit) {
       dword size;
