@@ -150,9 +150,9 @@ typedef struct
   word id;                            /* Must be ID_HIDX */
   HAREA ha;                           /* Area to which this index belongs */
 
-  dword lAllocatedRecords;             /* Space allocated in idx file */
-  dword lDeltaLo;                      /* Low # of changed msg */
-  dword lDeltaHi;                      /* High # of changed msg */
+  long lAllocatedRecords;             /* Space allocated in idx file */
+  long lDeltaLo;                      /* Low # of changed msg */
+  long lDeltaHi;                      /* High # of changed msg */
 
   int fBuffer;                        /* Use index buffer? */
   int cSeg;                           /* Number of segments used */
