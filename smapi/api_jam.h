@@ -183,7 +183,7 @@ typedef struct
     dword DatLen;                    /* Length of buffer that follows */
     }
     JAMBINSUBFIELD, *JAMBINSUBFIELDptr;
-
+#define JAM_SF_HEADER_SIZE 8
 /*
 **  Message index record
 */
