@@ -434,15 +434,18 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword by
                  parseAddr(&(msg->orig), SubField->Buffer, SubField->DatLen);
 /*      } */ /* endif */
 
-
-      s_time = gmtime((time_t *)(&(msgh->Hdr.DateWritten)));
+      {
+      const time_t c_time = msgh->Hdr.DateWritten;
+      s_time = gmtime(&c_time);
+      }
       scombo = (SCOMBO*)(&(msg->date_written));
       scombo = TmDate_to_DosDate(s_time, scombo);
       /* ftsdate = msg->__ftsc_date; */
       ftsdate = (unsigned char *)sc_time(scombo, (char *)(msg->__ftsc_date));
 
       if (msgh->Hdr.DateProcessed) {
-         s_time = gmtime((time_t *)(&(msgh->Hdr.DateProcessed)));
+         const time_t c_time = msgh->Hdr.DateProcessed;
+         s_time = gmtime(&c_time);
          scombo = (SCOMBO*)(&(msg->date_arrived));
          scombo = TmDate_to_DosDate(s_time, scombo);
       }
