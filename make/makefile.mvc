@@ -16,8 +16,6 @@ OBJOUT =$(OBJOUT)smapi/
 
 !endif
 
-H_PFX=$(H_DIR)
-
 !include makefile.inc
 
 IMPLIBNAME=$(LIBOUT)$(IMPLIBPREFIX)$(LIBNAME)$(DLLSUFFIX)
