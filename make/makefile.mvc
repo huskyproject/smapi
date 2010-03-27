@@ -4,31 +4,13 @@
 
 
 ## include common makefiles part ##
-!include ../../huskymak.cfg
-
-!if "$(OBJOUT)" != ""
-
-OBJOUT2=$(OBJOUT)smapi/
-
-!if [if not exist $(OBJOUT2:/=\) $(MKDIR) $(OBJOUT2:/=\)] == 0
-OBJOUT =$(OBJOUT)smapi/
-!endif
-
-!endif
-
 !include makefile.inc
-
-IMPLIBNAME=$(LIBOUT)$(IMPLIBPREFIX)$(LIBNAME)$(DLLSUFFIX)
-DLLNAME=$(BINOUT)$(DLLPREFIX)$(LIBNAME)$(DLLSUFFIX)
-DLLIMPORTLIB=$(IMPLIBNAME)$(_LIB)
-PROGRAMSILK=$(PROGRAMS:.exe=.ilk)
-PROGRAMSPDB=$(PROGRAMS:.exe=.pdb)
+!include ../../huskymak.cfg
 
 
 ## program options ##
 
 ## options for compiler ##
-
 CINCL	= -I$(H_DIR) -I../../huskylib
 
 CFLAGS	= $(CFLAGS) $(CINCL)
@@ -39,13 +21,9 @@ LFLAGS=$(LFLAGS) $(LINKPDBOPT)$(BINOUT)
 LDLLFLAGS=$(LDLLFLAGS) $(LINKNAMEOPT)$(TARGETDLL) \
 	  $(LINKPDBOPT)$(BINOUT) /implib:"$(DLLIMPORTLIB)"
 
-# libraries need to build binary file
-# for dynamic libraries:
-#DLLS	= $(LIBS)
-
-# for executables
-#LIBSL	= $(LIBS)
-
+# List of HUSKY libraries required to build binary file(s)
+# for executables -- $(LIBSL)
+# for dynamic libraries -- $(DLLS)
 !if $(DYNLIBS)==1
 DLLS    = $(LIBS) $(IMPLIBPREFIX)husky$(DLLSUFFIX)$(_LIB)
 
@@ -75,9 +53,6 @@ all: lib programs
 
 $(OBJS) $(PRGOBJS) : $(HEADERS) makefile.mvc ../../huskymak.cfg makefile.inc
 
-#$(OBJS) $(PRGOBJS):: $(SRC_DIR)$(@B)$(_C)
-#	@$(CC) $(CFLAGS) $(OBJOPT) $(OBJNAMEOPT)$(O) $?
-
 {$(SRC_DIR)}$(_C){$(O)}$(_OBJ)::
 	@$(CC) $(CFLAGS) $(OBJOPT) $(OBJNAMEOPT)$(O) @<<
 $<
@@ -106,10 +81,9 @@ clean:
 	-$(RM) $(RMOPT) $(OBJS:/=\)
 	-$(RM) $(RMOPT) VC*$(_PDB)
 	-$(RM) $(RMOPT) $(IMPLIBNAME:/=\)$(_EXP)
-	-$(RM) $(RMOPT) $(DLLNAME:/=\)$(ILK)
+	-$(RM) $(RMOPT) $(DLLNAME:/=\)$(_ILK)
 	-$(RM) $(RMOPT) $(PRGOBJS:/=\)
 	-$(RM) $(RMOPT) $(PROGRAMSILK:/=\)
-	-$(RM) $(RMOPT) $(DLLNAME:/=\)$(_ILK)
 
 distclean: clean
 	-$(RM) $(RMOPT) $(DLLNAME:/=\)$(_PDB)
