@@ -1039,6 +1039,7 @@ int qq(void)
 #    define chsize       _chsize
 #    define open         _open
 #    define access       _access
+#    define spawnl       _spawnl
 #    define spawnvp      _spawnvp
 #    define dup          _dup
 #    define mktemp       _mktemp
@@ -1046,6 +1047,7 @@ int qq(void)
 #    define chdir        _chdir
 #    define getcwd       _getcwd
 #    define isatty       _isatty
+#    define pclose       _pclose
 
 #  else  /* ifdef _MAKE_DLL */
 #    define SMAPI_EXT    extern

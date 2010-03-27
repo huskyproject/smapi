@@ -92,11 +92,11 @@ void far *farcalloc(int n, int m);
 #define eqstri(str1,str2)     (stricmp(str1,str2)==0)
 #define eqstrn(str1,str2,n)   (strncmp(str1,str2,n)==0)
 
-extern char _stdc months[][10];
-extern char _stdc weekday[][10];
+SMAPI_EXT char _stdc months[][10];
+SMAPI_EXT char _stdc weekday[][10];
 
-extern char _stdc months_ab[][4];
-extern char _stdc weekday_ab[][4];
+SMAPI_EXT char months_ab[][4];
+SMAPI_EXT char weekday_ab[][4];
 
 #include "progprot.h"
 

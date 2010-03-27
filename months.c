@@ -17,6 +17,8 @@
  *  author.
  */
 
+#include "prog.h"
+
 char months[][10] =
 {
     "January",

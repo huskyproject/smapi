@@ -17,6 +17,8 @@
  *  author.
  */
 
+#include "prog.h"
+
 char weekday[][10] =
 {
     "Sunday",
