@@ -25,14 +25,14 @@ default:
 
 all:	static dll programs
 
-static:	$(TARGETLIB)
+static: $(TARGETLIB)
 dll:	$(TARGETDLL)
 programs: $(TARGETLIB) $(PROGRAMS)
 dllprograms: $(TARGETLIB) $(TARGETDLL) $(PROGRAMS)
 
 %$(_EXE): $(SRC_DIR)%$(_C) $(TARGETLIB)
 	@echo Create $(PROGRAMS)
-	@$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(CINCL) $(EXENAMEFLAG)$@ $^
+	@$(CC) $(CFLAGS) $(CDEFS) $(CINCL) $(EXENAMEFLAG) $@ $^
 
 %$(_OBJ): $(SRC_DIR)%$(_C)
 	@echo Compiling $<
@@ -44,5 +44,4 @@ $(TARGETLIB):	$(OBJS)
 
 $(TARGETDLL):	$(OBJS)
 	@echo Create $(TARGETDLL)
-	@$(CC) $(DLLOPT) $(CFLAGS) $(EXENAMEFLAG)$@ $^ $(LIBS)
-
+	@$(CC) $(DLLOPT) $(CFLAGS) $(EXENAMEFLAG) $@ $^ $(LIBS)
