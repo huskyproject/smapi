@@ -1369,7 +1369,10 @@ int _XPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc) (byte * str), byte * k
 static void _stdc WriteToFd(byte * str)
 {
   if(str && *str)
-    farwrite(statfd, str, strlen((char *) str));
+  {
+    if( 0 > farwrite(statfd, str, strlen((char *) str)) )
+      msgapierr = MERR_BADF;
+  }
   else msgapierr = MERR_BADH;
 }
 
