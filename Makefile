@@ -51,11 +51,11 @@ endif
 ifeq ($(DYNLIBS), 1)
   ifeq (~$(MKSHARED)~,~ld~)
 $(TARGETDLL).$(VER): $(OBJS)
-	$(LD) $(LFLAGS) -o $(TARGETDLL).$(VER) $(OBJS) $(LIBS)
+	$(LD) $(LFLAGS) -o $(TARGETDLL).$(VER) $(OBJS) -L$(LIBDIR) $(LIBS)
   else
 $(TARGETDLL).$(VER): $(OBJS)
 	$(CC) -shared -Wl,-soname,$(TARGETDLL).$(VERH) \
-          -o $(TARGETDLL).$(VER) $(OBJS) $(LIBS)
+          -o $(TARGETDLL).$(VER) $(OBJS) -L$(LIBDIR) $(LIBS)
   endif
 
 instdyn: $(TARGETLIB) $(TARGETDLL).$(VER)
