@@ -16,3 +16,5 @@ GMOBJS	= genmsgid$(OBJ) fexist$(OBJ) ffind$(OBJ) trail$(OBJ) patmat$(OBJ)
 GNMSGID	= gnmsgid
 
 PROGRAMS= $(GNMSGID)$(EXE)
+
+WARNFLAGS+= -fno-strict-aliasing

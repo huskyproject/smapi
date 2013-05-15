@@ -3,7 +3,7 @@
 # No support for the Husky build environment
 
 CC=	gcc
-CFLAGS=	-Wall -funsigned-char
+CFLAGS=	-Wall -funsigned-char -fno-strict-aliasing
 CDEFS=	-DUNIX
 COPT=	-O3
 OBJ=	.o
