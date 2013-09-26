@@ -26,6 +26,7 @@ make
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 cp cvsdate.h %{buildroot}%{_includedir}/smapi
+chmod -R a+rX,u+w,go-w %{buildroot}
 
 %clean
 rm -rf %{buildroot}
