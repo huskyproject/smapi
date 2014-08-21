@@ -9,7 +9,7 @@ Group: Libraries/FTN
 Summary: Squish Messagebase API
 URL: http://husky.sf.net
 License: GPL
-Requires: huskylib >= 1.9
+BuildRequires: huskylib >= 1.9
 Source: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 
@@ -37,5 +37,5 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%{_prefix}/*
-
+%{_includedir}/%{name}/*
+%{_libdir}/*
