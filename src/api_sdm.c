@@ -1245,13 +1245,6 @@ static void MSGAPI Convert_Fmsg_To_Xmsg(struct _omsg *fmsg, XMSG * msg,
     msg->attr = (dword) fmsg->attr;
     msg->xmtimesread = fmsg->times;
     msg->xmcost = fmsg->cost;
-
-    /* Convert 4d pointnets */
-
-    if (((word)fmsg->times == (word)~fmsg->cost) && fmsg->times)
-    {
-        msg->orig.point = fmsg->times;
-    }
 }
 
 static void MSGAPI Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg)
@@ -1307,17 +1300,6 @@ static void MSGAPI Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg)
     fmsg->attr = (word) (msg->attr & 0xffffL);
     fmsg->times = (word)msg->xmtimesread;
     fmsg->cost =  (word)msg->xmcost;
-
-    /*
-     *  Non-standard point kludge to ensure that 4D pointmail works
-     *  correctly.
-     */
-
-    if (orig->point)
-    {
-        fmsg->times = orig->point;
-        fmsg->cost = (word) ~fmsg->times;
-    }
 }
 
 int _XPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc) (byte * str), byte * kludges)

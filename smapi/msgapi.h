@@ -87,7 +87,7 @@ typedef dword UMSGID;
 
 #define MSGAPI_VERSION    2
 #define MSGAPI_SUBVERSION 0x250
-#define SMAPI_VERSION   "2.5.0"
+#define SMAPI_VERSION   "2.5.1"
 
 struct _minf
 {

@@ -24,8 +24,8 @@
    <QPG:Values>
       <QPG:Files>
          <QPG:Add file="./COPYING" install="LicenseUrl/" handling="repdata"/>
-         <QPG:Add permissions="0755" file="./make/libsmapiqnx-2.5.0.so" install="/opt/lib/"/>
-         <QPG:Add filetype="symlink" file="libsmapiqnx.so" install="/opt/lib/" linkto="libsmapiqnx-2.5.0.so"/>
+         <QPG:Add permissions="0755" file="./make/libsmapiqnx-2.5.1.so" install="/opt/lib/"/>
+         <QPG:Add filetype="symlink" file="libsmapiqnx.so" install="/opt/lib/" linkto="libsmapiqnx-2.5.1.so"/>
          <QPG:Add permissions="0644" file="./make/libsmapiqnx.a" install="/opt/lib/"/>
          <QPG:Add permissions="0644" file="./smapi/*.h" install="/opt/include/smapi/"/>
          <QPG:Add permissions="0644" file="./BUGS" install="/usr/doc/husky/smapi/"/>
@@ -69,7 +69,7 @@
                <QPM:ProductDescriptionEmbedURL/>
             </QPM:ProductDescription>
             <QPM:ReleaseDescription>
-               <QPM:ReleaseVersion>2.5.0</QPM:ReleaseVersion>
+               <QPM:ReleaseVersion>2.5.1</QPM:ReleaseVersion>
                <QPM:ReleaseUrgency>Low</QPM:ReleaseUrgency>
                <QPM:ReleaseStability>Experimental</QPM:ReleaseStability>
                <QPM:ReleaseNoteMinor/>
