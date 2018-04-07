@@ -18,7 +18,7 @@
  */
 
 #ifndef __API_SDM_H__
-#define __API_SFM_H__
+#define __API_SDM_H__
 
 #include <huskylib/compiler.h>
 
