@@ -10,6 +10,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y rpm; fi
   - git clone https://github.com/askovpen/huskylib ~/askovpen/huskylib
 script:
+  - pwd
   - cd  ~/askovpen/huskylib
   - mkdir build
   - cd build
