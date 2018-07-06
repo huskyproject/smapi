@@ -20,6 +20,6 @@ script:
   - cd  ~/build/askovpen/smapi
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_INSTALL_PREFIX=/tmp -DCMAKE_CXX_FLAGS=-isystem\ /tmp/include -DCMAKE_C_FLAGS=-isystem\ /tmp/include
+  - cmake .. -DCMAKE_INSTALL_PREFIX=/tmp -DCMAKE_C_FLAGS=-I/tmp/include
   - cmake --build .
   - cpack
