@@ -6,19 +6,9 @@ image:
   - Visual Studio 2017
 platform:
   - Win32
-environment:
-  matrix:
-    - TARGET: MSYS
-    - TARGET: MSVC2017
 install:
-  - cmd: if "%TARGET%"=="MSYS" C:\msys64\usr\bin\pacman -S --noconfirm --needed zlib-devel mingw-w64-x86_64-pkg-config cmake
-  - cmd: if "%TARGET%"=="MSYS" git clone https://github.com/askovpen/huskylib  C:\msys64\home\appveyor\huskylib
-  - cmd: if "%TARGET%"=="MSVC2017" git clone https://github.com/askovpen/huskylib  C:\projects\huskylib
+  - cmd: git clone https://github.com/askovpen/huskylib  C:\projects\huskylib
 build_script:
-  - cmd: if "%TARGET%"=="MSYS" (
-      xcopy /i /q /s C:\projects\smapi C:\msys64\home\appveyor\smapi &&
-      C:\msys64\usr\bin\bash -e -l -c "cd /home/appveyor/huskylib && mkdir build && cd build && cmake .. -G \"Unix Makefiles\" && cmake --build . && make install" &&
-      C:\msys64\usr\bin\bash -e -l -c "cd /home/appveyor/smapi && mkdir build && cd build && cmake .. -G \"Unix Makefiles\" && cmake --build ." )
-  - cmd: if "%TARGET%"=="MSVC2017" (
+  - cmd: (
       cd C:\projects\huskylib && mkdir build && cd build && cmake --version &&  cmake .. -G "Visual Studio 15 2017" && cmake --build . -- /P:Configuration=Release &&
       cd C:\projects\smapi && mkdir build && cd build && cmake --version &&  cmake .. -G "Visual Studio 15 2017" && cmake --build . -- /P:Configuration=Release)
