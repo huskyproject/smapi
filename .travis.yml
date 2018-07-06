@@ -14,12 +14,12 @@ script:
   - cd  ~/build/askovpen/huskylib
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake .. -DCMAKE_INSTALL_PREFIX=/tmp
   - cmake --build .
   - make install
   - cd  ~/build/askovpen/smapi
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake .. -DCMAKE_INSTALL_PREFIX=/tmp
   - cmake --build .
   - cpack
