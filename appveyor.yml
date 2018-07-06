@@ -9,6 +9,6 @@ platform:
 install:
   - cmd: git clone https://github.com/askovpen/huskylib  C:\projects\huskylib
 build_script:
-  - cmd: (
+  - cmd: 
       cd C:\projects\huskylib && mkdir build && cd build && cmake --version &&  cmake .. -G "Visual Studio 15 2017" && cmake --build . -- /P:Configuration=Release &&
-      cd C:\projects\smapi && mkdir build && cd build && cmake --version &&  cmake .. -G "Visual Studio 15 2017" && cmake --build . -- /P:Configuration=Release)
+      cd C:\projects\smapi && mkdir build && cd build && cmake --version &&  cmake .. -G "Visual Studio 15 2017" && cmake --build . -- /P:Configuration=Release
