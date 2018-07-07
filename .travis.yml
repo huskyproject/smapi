@@ -3,6 +3,9 @@ language: c
 os:
   - linux
   - osx
+branches:
+  only:
+    - master
 compiler:
   - gcc
   - clang
@@ -21,5 +24,5 @@ script:
   - mkdir build
   - cd build
   - cmake ..
-  - cmake --build .
+  - cmake --build . -- VERBOSE=1
   - cpack
