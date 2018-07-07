@@ -3,6 +3,8 @@ PROJECT(smapi C)
 set(smapi_VERSION 1.9.0)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+include(CheckFunctionExists)
+
 
   if(CMAKE_BUILD_TYPE MATCHES Debug)
     set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "My multi config types" FORCE)
@@ -24,6 +26,7 @@ if (MSVC)
   endif(CMAKE_BUILD_TYPE MATCHES Debug)
 else ()
   include_directories("smapi")
+  check_function_exists(signal HAVE_SIGNAL)
   ADD_DEFINITIONS(-Wall -DUNIX)
 endif (MSVC)
 
