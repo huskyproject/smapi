@@ -4,6 +4,7 @@ set(smapi_VERSION 1.9.0)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 include(CheckFunctionExists)
+include (CheckSymbolExists)
 
 
   if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -27,6 +28,7 @@ if (MSVC)
 else ()
   include_directories("smapi")
   check_function_exists(signal HAVE_SIGNAL)
+  check_symbol_exists(SIGALRM "signal.h" HAVE_SIGNAL_MACRO)
   ADD_DEFINITIONS(-Wall -DUNIX)
 endif (MSVC)
 
