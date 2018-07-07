@@ -642,8 +642,8 @@ int sopen(const char *name, int oflag, int ishared, int mode);
 #define mysleep(x)
 #endif
 
-extern int waitlock(int, long, long);
-extern int waitlock2(int, long, long, long);
+// extern int waitlock(int, long, long);
+// extern int waitlock2(int, long, long, long);
 
 #endif
 
