@@ -11,15 +11,15 @@ compiler:
   - clang
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y rpm; fi
-  - git clone https://github.com/askovpen/huskylib ~/build/askovpen/huskylib
+  - git clone https://github.com/huskyproject/huskylib ~/build/huskyproject/huskylib
 script:
-  - cd  ~/build/askovpen/huskylib
+  - cd  ~/build/huskyproject/huskylib
   - mkdir build
   - cd build
   - cmake ..
   - cmake --build .
   - sudo make install
-  - cd  ~/build/askovpen/smapi
+  - cd  $TRAVIS_BUILD_DIR
   - mkdir build
   - cd build
   - cmake ..

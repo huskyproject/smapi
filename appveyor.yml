@@ -7,7 +7,7 @@ image:
 platform:
   - Win32
 install:
-  - cmd: git clone https://github.com/askovpen/huskylib  C:\projects\huskylib
+  - cmd: git clone https://github.com/huskyproject/huskylib  C:\projects\huskylib
 build_script:
   - cmd: 
       cd C:\projects\huskylib && mkdir build && cd build && cmake --version &&  cmake .. -G "Visual Studio 15 2017" && cmake --build . -- /P:Configuration=Release &&
