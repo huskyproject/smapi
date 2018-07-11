@@ -5,7 +5,7 @@ husky-common (huskybse) package FIRST!
 Instruction to build smapi
 -----------------------------
 
-1. Put the huskylib package in the directory where the other packages of fido
+1. Put the smapi package in the directory where the other packages of fido
    husky reside:
 
    unix, beos, possible cygwin:
@@ -28,7 +28,7 @@ Instruction to build smapi
                              ...some other
 
 2. Determine which makefile you need to use then compile (and install if need)
-   huskylib using selected makefile, as following examples:
+   smapi using selected makefile, as following examples:
    Example 1 (use common makefile (named 'Makefile'): require huskymak.cfg (see
               huskybse); unixes only):
 	$ make
@@ -38,7 +38,7 @@ Instruction to build smapi
 	$ make -f makefile.lnx
 	$ make -f makefile.lnx install
    dos:
-        d:\husky\huskylib>make -f makefile.djg
+        d:\husky\smapi>make -f makefile.djg
 
 2.1. Compile with cmake:
 
