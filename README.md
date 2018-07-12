@@ -1,4 +1,5 @@
-SMAPI; Modified Squish MSGAPI - version 2.5-current
+# SMAPI - Modified Squish MSGAPI
+[![Build Status](https://travis-ci.org/huskyproject/smapi.svg?branch=master)](https://travis-ci.org/huskyproject/smapi)
 
 This version of the SMAPI library is part of the HUSKY fidosoft project.
 
@@ -87,14 +88,3 @@ PORTING
 If you are currently porting, or wish to port, SMAPI to other compiler
 suites or operating platforms, you may wish to contact Andrew via the
 above channels.
-
-
-OBTAINING SMAPI
-
-Latest version of the Husky Smapi available at the Husky homepage:
-http://husky.sourceforge.net.
-
-The latest release of original SMAPI is available for file request (FREQ) from
-FidoNet node 3:635/728.  It can also be downloaded from Internet site
-ftp.zws.com from the /pub/msged/ directory.  The archive name for SMAPI
-release 1.4 will be named SMAPI14.ZIP, and so on.
