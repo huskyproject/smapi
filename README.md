@@ -1,6 +1,7 @@
 # SMAPI - Modified Squish MSGAPI
 [![Build Status](https://travis-ci.org/huskyproject/smapi.svg?branch=master)](https://travis-ci.org/huskyproject/smapi)
 [![Build status](https://ci.appveyor.com/api/projects/status/hu6cl1cvfi9erx0c/branch/master?svg=true)](https://ci.appveyor.com/project/dukelsky/smapi/branch/master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d7e41619e2b34a3dbd6dfa3f7d413749)](https://www.codacy.com/app/dukelsky/smapi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=huskyproject/smapi&amp;utm_campaign=Badge_Grade)
 
 This version of the SMAPI library is part of the HUSKY fidosoft project.
 
