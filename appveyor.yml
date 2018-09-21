@@ -7,7 +7,7 @@ image:
 environment:
   matrix:
     - generator: Visual Studio 15 2017
-      cf: -DBUILD_SHARED_LIBS=OFF
+      cf: -DBUILD_SHARED_LIBS=OFF -T v141_xp
     - generator: Visual Studio 15 2017
       cf: -DBUILD_SHARED_LIBS=ON
     - generator: Visual Studio 15 2017 Win64
