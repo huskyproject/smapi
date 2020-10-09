@@ -1,97 +1,140 @@
-%define reldate 20190311
+%define ver_major 2
+%define ver_minor 5
+%define reldate 20180225
 %define reltype C
 # may be one of: C (current), R (release), S (stable)
 
-%if %_vendor == "alt"
-%define pkg_group Networking/FTN
-%define mnt_mail gremlin@altlinux.org
-%else
+# release number for Release: header
+%define relnum 3
+
+# on default static library is made but using 'rpmbuild --without static'
+# produces a dynamic library
+%bcond_without static
+
+# if you use 'rpmbuild --with debug' then debug binary is produced
+%bcond_with debug
+
+# for generic build; will override for some distributions
+%define vendor_prefix %nil
+%define vendor_suffix %nil
 %define pkg_group Libraries/FTN
-%define mnt_mail 2:5020/545
+
+# for CentOS, Fedora and RHEL
+%if %_vendor == "redhat"
+%define vendor_suffix %dist
 %endif
 
-Name: smapi
-Version: 2.5.%{reldate}%{reltype}
-Release: %{_vendor}1
+%if %_vendor == "alt"
+%define vendor_prefix %_vendor
+%define pkg_group Networking/FTN
+%endif
+
+%define main_name smapi
+%if %{with static}
+Name: %main_name-static
+%else
+Name: %main_name
+%endif
+Version: %ver_major.%ver_minor.%reldate%reltype
+Release: %{vendor_prefix}%relnum%{vendor_suffix}
+%if %_vendor != "redhat"
 Group: %pkg_group
-Summary: Squish/Jam API for the Husky Project applications
-URL: https://github.com/huskyproject/huskylib
+%endif
+%if %{with static}
+Summary: Squish/Jam API static library for the Husky Project applications
+%else
+Summary: Squish/Jam API dynamic library for the Husky Project applications
+%endif
+URL: https://github.com/huskyproject/smapi/archive/v%ver_major.%ver_minor.%reldate.tar.gz
 License: GPL
-Source: %{name}.tar.xz
-BuildRoot: %{_tmppath}/%{name}-%{version}-root
-BuildRequires: huskylib-devel-libs-shared huskylib-devel-libs-static
-BuildRequires: glibc-devel-static
+Source: %main_name-%ver_major.%ver_minor.%reldate.tar.gz
+%if %{with static}
+BuildRequires: huskylib-static huskylib-devel
+Requires: huskylib-static
+%else
+BuildRequires: huskylib huskylib-devel
+Requires: huskylib
+%endif
 
 %description
 %summary
 
-%package devel
+%package -n %main_name-devel
+%if %_vendor != "redhat"
 Group: %pkg_group
-Summary: Development headers for %name
+%endif
+Summary: Development headers for %main_name
 BuildArch: noarch
-Requires: %name-devel-libs = %version-%release
-
-%description devel
+%description -n %main_name-devel
 %summary
-
-
-%package devel-libs-shared
-Summary: Shared development libraries for %name
-Group: %pkg_group
-Requires: %name-devel = %version-%release
-Requires: %name = %version-%release
-Provides: %name-devel-libs = %version-%release
-
-%description devel-libs-shared
-%summary
-
-
-%package devel-libs-static
-Summary: Static development libraries for %name
-Group: %pkg_group
-Requires: %name-devel = %version-%release
-Provides: %name-devel-libs = %version-%release
-
-%description devel-libs-static
-%summary
-
-
 
 %prep
-%setup -q -n %{name}
-date '+char cvs_date[]="%%F";' > cvsdate.h
+%setup -q -n %main_name-%ver_major.%ver_minor.%reldate
 
 %build
-%make DYNLIBS=1
-%make
+# parallel build appears to be broken in CentOS, Fedora and RHEL
+%if %_vendor == "redhat"
+    %if %{with static}
+        %if %{with debug}
+            make DEBUG:=1
+        %else
+            make
+        %endif
+    %else
+        %if %{with debug}
+            make DYNLIBS:=1 DEBUG:=1
+        %else
+            make DYNLIBS:=1
+        %endif
+    %endif
+%else
+    %if %{with static}
+        %if %{with debug}
+            %make DEBUG:=1
+        %else
+            %make
+        %endif
+    %else
+        %if %{with debug}
+            %make DYNLIBS:=1 DEBUG:=1
+        %else
+            %make DYNLIBS:=1
+        %endif
+    %endif
+%endif
+echo Install-name1:%_rpmdir/%_arch/%name-%version-%release.%_arch.rpm > /dev/null
+echo Install-name2:%_rpmdir/noarch/%main_name-devel-%version-%release.noarch.rpm > /dev/null
 
-
-%install
-rm -rf -- %buildroot
+# macro 'install' is omitted for debug build because it strips the library
+%if ! %{with debug}
+    %install
+%endif
 umask 022
-make DESTDIR=%buildroot DYNLIBS=1 install
-make DESTDIR=%buildroot install
+%if %{with static}
+    make DESTDIR=%buildroot install
+%else
+    make DESTDIR=%buildroot DYNLIBS=1 install
+%endif
 chmod -R a+rX,u+w,go-w %buildroot
 
-
+%if %_vendor != "redhat"
 %clean
 rm -rf -- %buildroot
+%endif
 
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root)
-%_libdir/*.so.*
+%if %{with static}
+    %_libdir/*.a
+%else
+    %exclude %_libdir/*.a
+    %_libdir/*.so.*
+    %_libdir/*.so
+%endif
 
-%files devel
-%dir %_includedir/%name
-%_includedir/%name/*
-
-%files devel-libs-shared
-%_libdir/*.so
-
-%files devel-libs-static
-%_libdir/*.a
-
-%changelog
-* Mon Mar 11 2019 Gremlin from Kremlin <%{mnt_mail}> 2.5.20190311C-%{_vendor}1
-- rewrite .spec from scratch, split to subpackages
+%files -n %main_name-devel
+%dir %_includedir/%main_name
+%_includedir/%main_name/*
