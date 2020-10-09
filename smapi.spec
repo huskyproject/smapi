@@ -1,6 +1,6 @@
 %define ver_major 2
 %define ver_minor 5
-%define reldate 20180225
+%define reldate 20201009
 %define reltype C
 # may be one of: C (current), R (release), S (stable)
 
