@@ -54,7 +54,7 @@ $(TARGETDLL).$(VER): $(OBJS)
 	$(LD) $(LFLAGS) -o $(TARGETDLL).$(VER) $(OBJS) -L$(LIBDIR) $(LIBS)
   else
 $(TARGETDLL).$(VER): $(OBJS)
-	$(CC) -shared -Wl,-soname,$(TARGETDLL).$(VERH) \
+	$(CC) $(LFLAGS) -shared -Wl,-soname,$(TARGETDLL).$(VERH) \
           -o $(TARGETDLL).$(VER) $(OBJS) -L$(LIBDIR) $(LIBS)
   endif
 
