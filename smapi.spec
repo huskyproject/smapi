@@ -33,12 +33,12 @@
 
 # for CentOS, Fedora and RHEL
 %if %_vendor == "redhat"
-%global vendor_suffix %dist
+    %global vendor_suffix %dist
 %endif
 
 %if %_vendor == "alt"
-%global vendor_prefix %_vendor
-%global pkg_group Networking/FTN
+    %global vendor_prefix %_vendor
+    %global pkg_group Networking/FTN
 %endif
 
 %global main_name smapi
