@@ -61,8 +61,7 @@ URL: https://github.com/huskyproject/smapi/archive/v%ver_major.%ver_minor.%relda
 License: GPL
 Source: %main_name-%ver_major.%ver_minor.%reldate.tar.gz
 %if %{with static}
-BuildRequires: huskylib-static huskylib-devel
-Requires: huskylib-static
+BuildRequires: huskylib-static huskylib-static-devel
 %else
 BuildRequires: huskylib huskylib-devel
 Requires: huskylib
