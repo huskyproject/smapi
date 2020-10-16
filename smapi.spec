@@ -1,7 +1,7 @@
 %global ver_major 2
 %global ver_minor 5
 %global ver_patch 0
-%global reldate 20201015
+%global reldate 20201016
 %global reltype C
 # may be one of: C (current), R (release), S (stable)
 
@@ -58,7 +58,7 @@ Summary: Squish/Jam API static library for the Husky Project applications
 Summary: Squish/Jam API dynamic library for the Husky Project applications
 %endif
 URL: https://github.com/huskyproject/smapi/archive/v%ver_major.%ver_minor.%reldate.tar.gz
-License: GPL
+License: LGPLv2
 Source: %main_name-%ver_major.%ver_minor.%reldate.tar.gz
 %if %{with static}
 BuildRequires: huskylib-static huskylib-static-devel
