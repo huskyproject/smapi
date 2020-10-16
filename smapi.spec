@@ -1,5 +1,6 @@
 %global ver_major 2
 %global ver_minor 5
+%global ver_patch 0
 %global reldate 20201015
 %global reltype C
 # may be one of: C (current), R (release), S (stable)
@@ -131,7 +132,8 @@ rm -rf -- %buildroot
     %_libdir/*.a
 %else
     %exclude %_libdir/*.a
-    %_libdir/*.so.*
+    %_libdir/*.so.%ver_major.%ver_minor.%ver_patch
+    %_libdir/*.so.%ver_major.%ver_minor
     %_libdir/*.so
 %endif
 
