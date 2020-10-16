@@ -1,11 +1,11 @@
-%define ver_major 2
-%define ver_minor 5
-%define reldate 20201009
-%define reltype C
+%global ver_major 2
+%global ver_minor 5
+%global reldate 20201015
+%global reltype C
 # may be one of: C (current), R (release), S (stable)
 
 # release number for Release: header
-%define relnum 3
+%global relnum 3
 
 # on default static library is made but using 'rpmbuild --without static'
 # produces a dynamic library
@@ -15,21 +15,21 @@
 %bcond_with debug
 
 # for generic build; will override for some distributions
-%define vendor_prefix %nil
-%define vendor_suffix %nil
-%define pkg_group Libraries/FTN
+%global vendor_prefix %nil
+%global vendor_suffix %nil
+%global pkg_group Libraries/FTN
 
 # for CentOS, Fedora and RHEL
 %if %_vendor == "redhat"
-%define vendor_suffix %dist
+%global vendor_suffix %dist
 %endif
 
 %if %_vendor == "alt"
-%define vendor_prefix %_vendor
-%define pkg_group Networking/FTN
+%global vendor_prefix %_vendor
+%global pkg_group Networking/FTN
 %endif
 
-%define main_name smapi
+%global main_name smapi
 %if %{with static}
 Name: %main_name-static
 %else
