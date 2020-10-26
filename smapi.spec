@@ -120,7 +120,7 @@ chmod -R a+rX,u+w,go-w %buildroot
     %_libdir/*.a
 %else
     %exclude %_libdir/*.a
-    %_libdir/*.so.%ver_major.%ver_minor.%ver_patch
+    %_libdir/*.so.%ver_major.%ver_minor.0
     %_libdir/*.so.%ver_major.%ver_minor
 %endif
 
