@@ -26,44 +26,35 @@
 
 struct _msgh
 {
-    MSGA *sq;
-    dword id;              /* Must always equal MSGH_ID */
-
-    dword bytes_written;
-    dword cur_pos;
-
+    MSGA * sq;
+    dword  id;             /* Must always equal MSGH_ID */
+    dword  bytes_written;
+    dword  cur_pos;
     /* For *.msg only! */
-
     sdword clen;
-    byte *ctrl;
+    byte * ctrl;
     sdword msg_len;
     sdword msgtxt_start;
-    word zplen;
-    int fd;
+    word   zplen;
+    int    fd;
 };
-
 
 /*
  *  This following junk is unique to *.msg!
  *  NO APPLICATIONS SHOULD USE THESE!
  */
-
 struct _sdmdata
 {
-    byte base[80];
-
-    unsigned *msgnum;      /* has to be of type 'int' for qksort() fn */
-    word msgnum_len;
-
-    dword hwm;
-    word hwm_chgd;
-
-    word msgs_open;
+    byte       base[80];
+    unsigned * msgnum;     /* has to be of type 'int' for qksort() fn */
+    word       msgnum_len;
+    dword      hwm;
+    word       hwm_chgd;
+    word       msgs_open;
 };
 
-int _XPENTRY WriteZPInfo(XMSG * msg, void (_stdc * wfunc)(byte * str), byte * kludges);
-
+int _XPENTRY WriteZPInfo(XMSG * msg, void(_stdc * wfunc)(byte * str), byte * kludges);
 int read_omsg(int, struct _omsg *);
 int write_omsg(int, struct _omsg *);
 
-#endif
+#endif // ifndef __API_SDM_H__

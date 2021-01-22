@@ -21,10 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 /*
-#pragma off(unreferenced)
-static char rcs_id[]="$Id$";
-#pragma on(unreferenced)
-*/
+ #pragma off(unreferenced)
+   static char rcs_id[]="$Id$";
+ #pragma on(unreferenced)
+ */
 
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
@@ -48,7 +48,6 @@ static char rcs_id[]="$Id$";
 #endif
 
 #include <huskylib/huskylib.h>
-
 /* Swith for build DLL */
 #define DLLEXPORT
 #include <huskylib/huskyext.h>
@@ -61,14 +60,13 @@ static char rcs_id[]="$Id$";
 
 dword _XPENTRY apiSquishGetHash(HAREA ha, dword dwMsg)
 {
-  SQIDX sqi;
+    SQIDX sqi;
 
-  if (!SidxGet(Sqd->hix, dwMsg, &sqi))
-  {
-    return (dword)0L;
-  }
+    if(!SidxGet(Sqd->hix, dwMsg, &sqi))
+    {
+        return (dword)0L;
+    }
 
-  msgapierr=MERR_NONE;
-  return sqi.hash;
+    msgapierr = MERR_NONE;
+    return sqi.hash;
 }
-

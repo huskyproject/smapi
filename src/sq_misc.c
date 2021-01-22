@@ -21,10 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 /*
-#pragma off(unreferenced)
-static char rcs_id[]="$Id$";
-#pragma on(unreferenced)
-*/
+ #pragma off(unreferenced)
+   static char rcs_id[]="$Id$";
+ #pragma on(unreferenced)
+ */
 #define MSGAPI_HANDLERS
 #define MSGAPI_NO_OLD_TYPES
 
@@ -46,7 +46,6 @@ static char rcs_id[]="$Id$";
 #endif
 
 #include <huskylib/huskylib.h>
-
 /* Swith for build DLL */
 #define DLLEXPORT
 #include <huskylib/huskyext.h>
@@ -56,169 +55,172 @@ static char rcs_id[]="$Id$";
 #include "api_sq.h"
 #include "api_sqp.h"
 #include "apidebug.h"
-
 /* Set the "current position" pointer in a message handle */
-
 sword _XPENTRY apiSquishSetCurPos(HMSG hmsg, dword dwOfs)
 {
-  if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
-    return -1;
-
-  hmsg->cur_pos=dwOfs;
-  return 0;
-}
-
-
-
-/* Return the current read position within a message */
-
-dword _XPENTRY apiSquishGetCurPos(HMSG hmsg)
-{
-  if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
-    return (dword)-1;
-
-  return hmsg->cur_pos;
-}
-
-
-/* Return the length of the text body of this message */
-
-dword _XPENTRY apiSquishGetTextLen(HMSG hmsg)
-{
-  if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
-    return (dword)-1L;
-
-  return hmsg->sqhRead.msg_length - XMSG_SIZE - hmsg->sqhRead.clen;
-}
-
-
-
-
-/* Return the length of this message's control information */
-
-dword _XPENTRY apiSquishGetCtrlLen(HMSG hmsg)
-{
-  if (MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
-    return (dword)-1L;
-
-  return hmsg->sqhRead.clen;
-}
-
-
-/* Return the number of the high water marker */
-
-dword _XPENTRY apiSquishGetHighWater(HAREA ha)
-{
-  if (MsgInvalidHarea(ha))
-    return (dword)-1L;
-
-  return apiSquishUidToMsgn(ha, ha->high_water, UID_PREV);
-}
-
-
-
-
-/* Set the high water marker for this area */
-
-sword _XPENTRY apiSquishSetHighWater(HAREA ha, dword dwMsg)
-{
-  if (MsgInvalidHarea(ha))
-    return -1;
-
-  /* Make sure that the message exists */
-
-  if (dwMsg > ha->num_msg)
-  {
-    msgapierr=MERR_NOENT;
-
-    return -1;
-  }
-
-  if (!_SquishExclusiveBegin(ha))
-    return -1;
-
-  ha->high_water=apiSquishMsgnToUid(ha, dwMsg);
-
-
-  if (!_SquishExclusiveEnd(ha))
-  {
-    return -1;
-  }
-
-  return 0;
-}
-
-
-
-/* Function to set the highest/skip message numbers for a *.SQ? base */
-
-void _XPENTRY apiSquishSetMaxMsg(HAREA ha, dword dwMaxMsgs, dword dwSkipMsgs, dword dwMaxDays)
-{
-  if (MsgInvalidHarea(ha))
-    return;
-
-  /* Update base only if max msg settings have changed */
-
-  if ((dwMaxMsgs  != (dword)-1L && dwMaxMsgs  != Sqd->dwMaxMsg) ||
-      (dwSkipMsgs != (dword)-1L && dwSkipMsgs != Sqd->wSkipMsg) ||
-      (dwMaxDays  != (dword)-1L && dwMaxDays  != Sqd->wMaxDays))
-  {
-    if (!_SquishExclusiveBegin(ha))
+    if(MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
     {
-      return;
+        return -1;
     }
 
-    if (dwMaxMsgs != (dword)-1L)
-      Sqd->dwMaxMsg=dwMaxMsgs;
-
-    if (dwSkipMsgs != (dword)-1L)
-      Sqd->wSkipMsg=(word)dwSkipMsgs;
-
-    if (dwMaxDays != (dword)-1L)
-      Sqd->wMaxDays=(word)dwMaxDays;
-
-    (void)_SquishExclusiveEnd(ha);
-  }
-
+    hmsg->cur_pos = dwOfs;
+    return 0;
 }
 
-void _XPENTRY apiSquishGetMaxMsg(HAREA ha, dword *dwMaxMsgs, dword *dwSkipMsgs, dword *dwMaxDays)
+/* Return the current read position within a message */
+dword _XPENTRY apiSquishGetCurPos(HMSG hmsg)
 {
-  if (MsgInvalidHarea(ha))
-    return;
+    if(MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
+    {
+        return (dword) - 1;
+    }
 
-  if (dwMaxMsgs)
-    *dwMaxMsgs = Sqd->dwMaxMsg;
+    return hmsg->cur_pos;
+}
 
-  if (dwSkipMsgs)
-    *dwSkipMsgs = (dword) Sqd->wSkipMsg;
+/* Return the length of the text body of this message */
+dword _XPENTRY apiSquishGetTextLen(HMSG hmsg)
+{
+    if(MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
+    {
+        return (dword) - 1L;
+    }
 
-  if (dwMaxDays)
-    *dwMaxDays = (dword) Sqd->wMaxDays;
+    return hmsg->sqhRead.msg_length - XMSG_SIZE - hmsg->sqhRead.clen;
+}
+
+/* Return the length of this message's control information */
+dword _XPENTRY apiSquishGetCtrlLen(HMSG hmsg)
+{
+    if(MsgInvalidHmsg(hmsg) || !_SquishReadMode(hmsg))
+    {
+        return (dword) - 1L;
+    }
+
+    return hmsg->sqhRead.clen;
+}
+
+/* Return the number of the high water marker */
+dword _XPENTRY apiSquishGetHighWater(HAREA ha)
+{
+    if(MsgInvalidHarea(ha))
+    {
+        return (dword) - 1L;
+    }
+
+    return apiSquishUidToMsgn(ha, ha->high_water, UID_PREV);
+}
+
+/* Set the high water marker for this area */
+sword _XPENTRY apiSquishSetHighWater(HAREA ha, dword dwMsg)
+{
+    if(MsgInvalidHarea(ha))
+    {
+        return -1;
+    }
+
+    /* Make sure that the message exists */
+    if(dwMsg > ha->num_msg)
+    {
+        msgapierr = MERR_NOENT;
+        return -1;
+    }
+
+    if(!_SquishExclusiveBegin(ha))
+    {
+        return -1;
+    }
+
+    ha->high_water = apiSquishMsgnToUid(ha, dwMsg);
+
+    if(!_SquishExclusiveEnd(ha))
+    {
+        return -1;
+    }
+
+    return 0;
+} /* apiSquishSetHighWater */
+
+/* Function to set the highest/skip message numbers for a *.SQ? base */
+void _XPENTRY apiSquishSetMaxMsg(HAREA ha, dword dwMaxMsgs, dword dwSkipMsgs, dword dwMaxDays)
+{
+    if(MsgInvalidHarea(ha))
+    {
+        return;
+    }
+
+    /* Update base only if max msg settings have changed */
+    if((dwMaxMsgs != (dword) - 1L && dwMaxMsgs != Sqd->dwMaxMsg) ||
+       (dwSkipMsgs != (dword) - 1L && dwSkipMsgs != Sqd->wSkipMsg) ||
+       (dwMaxDays != (dword) - 1L && dwMaxDays != Sqd->wMaxDays))
+    {
+        if(!_SquishExclusiveBegin(ha))
+        {
+            return;
+        }
+
+        if(dwMaxMsgs != (dword) - 1L)
+        {
+            Sqd->dwMaxMsg = dwMaxMsgs;
+        }
+
+        if(dwSkipMsgs != (dword) - 1L)
+        {
+            Sqd->wSkipMsg = (word)dwSkipMsgs;
+        }
+
+        if(dwMaxDays != (dword) - 1L)
+        {
+            Sqd->wMaxDays = (word)dwMaxDays;
+        }
+
+        (void)_SquishExclusiveEnd(ha);
+    }
+} /* apiSquishSetMaxMsg */
+
+void _XPENTRY apiSquishGetMaxMsg(HAREA ha, dword * dwMaxMsgs, dword * dwSkipMsgs,
+                                 dword * dwMaxDays)
+{
+    if(MsgInvalidHarea(ha))
+    {
+        return;
+    }
+
+    if(dwMaxMsgs)
+    {
+        *dwMaxMsgs = Sqd->dwMaxMsg;
+    }
+
+    if(dwSkipMsgs)
+    {
+        *dwSkipMsgs = (dword)Sqd->wSkipMsg;
+    }
+
+    if(dwMaxDays)
+    {
+        *dwMaxDays = (dword)Sqd->wMaxDays;
+    }
 }
 
 /* Hash function used for calculating the hashes in the .sqi file */
-
-dword _XPENTRY SquishHash(byte  *f)
+dword _XPENTRY SquishHash(byte * f)
 {
-  dword hash=0, g;
+    dword hash = 0, g;
 
-  while (*f)
-  {
-    hash=(hash << 4) + (dword)tolower(*f);
-
-    g = hash & 0xf0000000L;
-    if (g != 0L)
+    while(*f)
     {
-      hash |= g >> 24;
-      hash |= g;
+        hash = (hash << 4) + (dword)tolower(*f);
+        g    = hash & 0xf0000000L;
+
+        if(g != 0L)
+        {
+            hash |= g >> 24;
+            hash |= g;
+        }
+
+        f++;
     }
-    f++;
-  }
 
-
-  /* Strip off high bit */
-
-  return (hash & 0x7fffffffLu);
+    /* Strip off high bit */
+    return hash & 0x7fffffffLu;
 }
-

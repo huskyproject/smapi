@@ -25,10 +25,23 @@
 #include "msgapi.h"
 
 static sword _XPENTRY SdmCloseArea(MSGA * mh);
-static MSGH *_XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum);
+static MSGH * _XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum);
 static sword _XPENTRY SdmCloseMsg(MSGH * msgh);
-static dword _XPENTRY SdmReadMsg(MSGH * msgh, XMSG * msg, dword offset, dword bytes, byte * text, dword clen, byte * ctxt);
-static sword _XPENTRY SdmWriteMsg(MSGH * msgh, word append, XMSG * msg, byte * text, dword textlen, dword totlen, dword clen, byte * ctxt);
+static dword _XPENTRY SdmReadMsg(MSGH * msgh,
+                                 XMSG * msg,
+                                 dword offset,
+                                 dword bytes,
+                                 byte * text,
+                                 dword clen,
+                                 byte * ctxt);
+static sword _XPENTRY SdmWriteMsg(MSGH * msgh,
+                                  word append,
+                                  XMSG * msg,
+                                  byte * text,
+                                  dword textlen,
+                                  dword totlen,
+                                  dword clen,
+                                  byte * ctxt);
 static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum);
 static sword _XPENTRY SdmLock(MSGA * mh);
 static sword _XPENTRY SdmUnlock(MSGA * mh);
@@ -41,42 +54,26 @@ static sword _XPENTRY SdmSetHighWater(MSGA * mh, dword hwm);
 static dword _XPENTRY SdmGetTextLen(MSGH * msgh);
 static dword _XPENTRY SdmGetCtrlLen(MSGH * msgh);
 static UMSGID _XPENTRY SdmGetNextUid(HAREA ha);
-static dword  _XPENTRY SdmGetHash(HAREA mh, dword msgnum);
+static dword _XPENTRY SdmGetHash(HAREA mh, dword msgnum);
+static void Convert_Fmsg_To_Xmsg(struct _omsg * fmsg, XMSG * msg, word def_zone);
+static void Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg * fmsg);
 
-
-static void Convert_Fmsg_To_Xmsg(struct _omsg *fmsg, XMSG * msg, word def_zone);
-static void Convert_Xmsg_To_Fmsg(XMSG * msg, struct _omsg *fmsg);
 static void Init_Xmsg(XMSG * msg);
 static sword near _SdmRescanArea(MSGA * mh);
 static sword near _Grab_Clen(MSGH * msgh);
 static void _stdc WriteToFd(byte * str);
-static void near Get_Binary_Date(struct _stamp *todate, struct _stamp *fromdate, byte * asciidate);
+static void near Get_Binary_Date(struct _stamp * todate, struct _stamp * fromdate,
+                                 byte * asciidate);
 
 static int statfd;  /* file handle for WriteToFd */
-
-static byte *sd_msg = (byte *) "%s%u.msg";  /* format string for sprintf() */
-typedef unsigned sdm_msgnum_type;           /* type modificator for 4th parameter in sprintf(&s,sd_msg,path,number) */
-
-static struct _apifuncs sdm_funcs =
-{
-    SdmCloseArea,
-    SdmOpenMsg,
-    SdmCloseMsg,
-    SdmReadMsg,
-    SdmWriteMsg,
-    SdmKillMsg,
-    SdmLock,
-    SdmUnlock,
-    SdmSetCurPos,
-    SdmGetCurPos,
-    SdmMsgnToUid,
-    SdmUidToMsgn,
-    SdmGetHighWater,
-    SdmSetHighWater,
-    SdmGetTextLen,
-    SdmGetCtrlLen,
-    SdmGetNextUid,
-    SdmGetHash
+static byte * sd_msg = (byte *)"%s%u.msg";  /* format string for sprintf() */
+typedef unsigned sdm_msgnum_type;           /* type modificator for 4th parameter in
+                                               sprintf(&s,sd_msg,path,number) */
+static struct _apifuncs sdm_funcs = {
+    SdmCloseArea,  SdmOpenMsg,    SdmCloseMsg,    SdmReadMsg,    SdmWriteMsg,     SdmKillMsg,
+    SdmLock,       SdmUnlock,
+    SdmSetCurPos,  SdmGetCurPos,  SdmMsgnToUid,   SdmUidToMsgn,  SdmGetHighWater, SdmSetHighWater,
+    SdmGetTextLen, SdmGetCtrlLen, SdmGetNextUid,  SdmGetHash
 };
 
-#endif
+#endif // ifndef __API_SDMP_H__

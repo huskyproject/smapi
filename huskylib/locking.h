@@ -22,9 +22,10 @@
 
 #include "compiler.h"
 
-#if defined(MSDOS)
+#if defined (MSDOS)
 sword far pascal shareloaded(void);
-#elif defined(OS2) || defined(__NT__) || defined(UNIX)
+
+#elif defined (OS2) || defined (__NT__) || defined (UNIX)
 #define shareloaded() TRUE
 #else
 #define shareloaded() FALSE
@@ -36,6 +37,3 @@ int waitlock(int handle, long ofs, long length);
 int waitlock2(int handle, long ofs, long length, long t);
 
 #endif
-
-
-

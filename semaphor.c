@@ -17,121 +17,123 @@
  *  author.
  */
 
-#if defined(UNIX) || defined(__EMX__)
+#if defined (UNIX) || defined (__EMX__)
 #include <unistd.h>
 #endif
 #include <stdlib.h> /* NULL */
 
 #include "semaphor.h"
 
-#if defined(NOSEMAPHORES)
-
+#if defined (NOSEMAPHORES)
 /* No code for Non-Multitasking Systems */
 
-#elif defined(__BEOS__)
+#elif defined (__BEOS__)
 
-void create_semaphore(SEMAPHORE *sem)
+void create_semaphore(SEMAPHORE * sem)
 {
-  *sem = create_sem(0,0);
-  release_sem(*sem);
+    *sem = create_sem(0, 0);
+    release_sem(*sem);
 }
 
-void delete_semaphore(SEMAPHORE *sem)
+void delete_semaphore(SEMAPHORE * sem)
 {
-  delete_sem(*sem);
+    delete_sem(*sem);
 }
 
-void lock_semaphore(SEMAPHORE *sem)
+void lock_semaphore(SEMAPHORE * sem)
 {
-  if (acquire_sem(*sem) != B_NO_ERROR)
-    snooze(10);
+    if(acquire_sem(*sem) != B_NO_ERROR)
+    {
+        snooze(10);
+    }
 }
 
-void unlock_semaphore(SEMAPHORE *sem)
+void unlock_semaphore(SEMAPHORE * sem)
 {
-  release_sem(*sem);
+    release_sem(*sem);
 }
 
-#elif defined(UNIX)
+#elif defined (UNIX)
 
-#if ((defined(__FreeBSD__) || defined(__GNU_LIBRARY__)) && !defined(_SEM_SEMUN_UNDEFINED)) 
-   /* union semun is defined by including <sys/sem.h> */
+#if ((defined (__FreeBSD__) || defined (__GNU_LIBRARY__)) && !defined (_SEM_SEMUN_UNDEFINED))
+/* union semun is defined by including <sys/sem.h> */
 #else
-   /* according to X/OPEN we have to define it ourselves */
-   union semun 
-   {
-     int val;                    /* value for SETVAL */
-     struct semid_ds *buf;       /* buffer for IPC_STAT, IPC_SET */
-     unsigned short int *array;  /* array for GETALL, SETALL */
-     struct seminfo *__buf;      /* buffer for IPC_INFO */
-   };
-#endif   
-
-void create_semaphore(SEMAPHORE *sem)
+/* according to X/OPEN we have to define it ourselves */
+union semun
 {
-  union semun fl;
-  fl.val = 1;
+    int                  val;    /* value for SETVAL */
+    struct semid_ds *    buf;    /* buffer for IPC_STAT, IPC_SET */
+    unsigned short int * array;  /* array for GETALL, SETALL */
+    struct seminfo *     __buf;  /* buffer for IPC_INFO */
+};
 
-  *sem = semget(IPC_PRIVATE, 1, 0600|IPC_CREAT);
+#endif
 
-  semctl(*sem, 0, SETVAL, fl);
+void create_semaphore(SEMAPHORE * sem)
+{
+    union semun fl;
+
+    fl.val = 1;
+    *sem   = semget(IPC_PRIVATE, 1, 0600 | IPC_CREAT);
+    semctl(*sem, 0, SETVAL, fl);
 }
 
-void delete_semaphore(SEMAPHORE *sem)
+void delete_semaphore(SEMAPHORE * sem)
 {
-  union semun fl;
-  fl.val = 0;
+    union semun fl;
 
-  semctl(*sem, 0, IPC_RMID, fl);
+    fl.val = 0;
+    semctl(*sem, 0, IPC_RMID, fl);
 }
 
-void lock_semaphore(SEMAPHORE *sem)
+void lock_semaphore(SEMAPHORE * sem)
 {
-  struct sembuf sops;
+    struct sembuf sops;
 
-  sops.sem_num = 0;
-  sops.sem_op  = -1;
-  sops.sem_flg = 0;
+    sops.sem_num = 0;
+    sops.sem_op  = -1;
+    sops.sem_flg = 0;
 
-  while (semop(*sem, &sops, 1))
-    usleep(10);
+    while(semop(*sem, &sops, 1))
+    {
+        usleep(10);
+    }
 }
 
-void unlock_semaphore(SEMAPHORE *sem)
+void unlock_semaphore(SEMAPHORE * sem)
 {
-  struct sembuf sops;
+    struct sembuf sops;
 
-  sops.sem_num = 0;
-  sops.sem_op  = 1;
-  sops.sem_flg = 0;
-
-  semop(*sem, &sops, 1);
+    sops.sem_num = 0;
+    sops.sem_op  = 1;
+    sops.sem_flg = 0;
+    semop(*sem, &sops, 1);
 }
 
-#elif defined(OS2)
+#elif defined (OS2)
 
 #define INCL_DOS
 #include <os2.h>
 
 
-void create_semaphore(SEMAPHORE *s)
+void create_semaphore(SEMAPHORE * s)
 {
-  DosCreateMutexSem(NULL, s, DC_SEM_SHARED, 0);
+    DosCreateMutexSem(NULL, s, DC_SEM_SHARED, 0);
 }
 
-void lock_semaphore(SEMAPHORE *s)
+void lock_semaphore(SEMAPHORE * s)
 {
-  DosRequestMutexSem(*s, SEM_INDEFINITE_WAIT);
+    DosRequestMutexSem(*s, SEM_INDEFINITE_WAIT);
 }
 
-void unlock_semaphore(SEMAPHORE *s)
+void unlock_semaphore(SEMAPHORE * s)
 {
-  DosReleaseMutexSem(*s);
+    DosReleaseMutexSem(*s);
 }
 
-void delete_semaphore(SEMAPHORE *s)
+void delete_semaphore(SEMAPHORE * s)
 {
-  DosCloseMutexSem(*s);
+    DosCloseMutexSem(*s);
 }
 
-#endif
+#endif /* if defined (NOSEMAPHORES) */

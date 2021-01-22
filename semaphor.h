@@ -16,52 +16,48 @@
  *  agreement, or such other agreement as you are able to reach with the
  *  author.
  */
- 
+
 #ifndef __SEMAPHORE_H
 #define __SEMAPHORE_H
 
 #include "compiler.h"
-
 /* At the moment cygwin (ver 1.3.12) doesn't support ipc, this will change *
  * in the future. Then NOSEMAPHORES is not longer needed for cygwin.       */
-#if !defined(NOSEMAPHORES) && (defined(__NT__) || defined(__MINGW32__) || defined(__sun__) || defined(__CYGWIN__))
+#if !defined (NOSEMAPHORES) && (defined (__NT__) || defined (__MINGW32__) || defined (__sun__) || \
+    defined (__CYGWIN__))
 #define NOSEMAPHORES
 #endif
-
 /* No semaphores (unsupported or non-multitasking systems) */
-#if defined(NOSEMAPHORES)
+#if defined (NOSEMAPHORES)
 
 #define SEMAPHORE int
 
-#define create_semaphore(s) 
+#define create_semaphore(s)
 #define delete_semaphore(s)
 #define lock_semaphore(s)
 #define unlock_semaphore(s)
-
 /* BeOS */
-#elif defined(__BEOS__)
+#elif defined (__BEOS__)
 
 #include <OS.h>
 
 #define SEMAPHORE sem_id
-
 /* System V semaphores */
-#elif defined(UNIX)
+#elif defined (UNIX)
 
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
 
 #define SEMAPHORE int
-
 /* IBM OS2 semaphores */
-#elif defined(OS2)
+#elif defined (OS2)
 
 #if 0
 /*
-we don't want to pollute our name space with all the fucking stuff from os.h,
-so we simply KNOW that a HMTX is a ULONG.
-*/
+   we don't want to pollute our name space with all the fucking stuff from os.h,
+   so we simply KNOW that a HMTX is a ULONG.
+ */
 #define INCL_DOS
 #include <os2.h>
 #else
@@ -70,25 +66,28 @@ typedef unsigned long HMTX;
 
 #define SEMAPHORE HMTX
 
-#else
+#else // if defined (NOSEMAPHORES)
 
 #error "Don't know how to setup semaphore. Use -DNOSEMAPHORES"
 
-#endif
+#endif // if defined (NOSEMAPHORES)
 
 #ifdef HAS_SEMUN_UNDECL
-union semun {
-     int val;
-     struct semid_ds *buf;
-     ushort *array;
+union semun
+{
+    int               val;
+    struct semid_ds * buf;
+    ushort *          array;
 };
+
 #endif
 
 #ifndef NOSEMAPHORES
-void create_semaphore(SEMAPHORE *sem);
-void delete_semaphore(SEMAPHORE *sem);
-void lock_semaphore(SEMAPHORE *sem);
-void unlock_semaphore(SEMAPHORE *sem);
-#endif
+void create_semaphore(SEMAPHORE * sem);
+void delete_semaphore(SEMAPHORE * sem);
+void lock_semaphore(SEMAPHORE * sem);
+void unlock_semaphore(SEMAPHORE * sem);
 
 #endif
+
+#endif // ifndef __SEMAPHORE_H

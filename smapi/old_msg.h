@@ -24,22 +24,19 @@
 #include <huskylib/cvtdate.h>
 
 #include "msgapi.h"
-
 /* OPUS message header structure */
 struct _omsg
 {
-    byte from[36];
-    byte to[36];
-    byte subj[72];
-    byte date[20];               /* Obsolete/unused ASCII date information */
-    word times;                  /* FIDO<tm>: Number of times read */
+    byte  from[36];
+    byte  to[36];
+    byte  subj[72];
+    byte  date[20];              /* Obsolete/unused ASCII date information */
+    word  times;                 /* FIDO<tm>: Number of times read */
     sword dest;                  /* Destination node */
     sword orig;                  /* Origination node number */
-    word cost;                   /* Unit cost charged to send the message */
-
+    word  cost;                  /* Unit cost charged to send the message */
     sword orig_net;              /* Origination network number */
     sword dest_net;              /* Destination network number */
-
     /*
      *  A timestamp is a 32-bit integer in the UNIX flavor (ie. the number
      *  of seconds since midnight, January 1, 1970).  Timestamps in messages
@@ -48,16 +45,14 @@ struct _omsg
      *  TE 05/27/98: I doubt that the comment above is true. The Opus
      *  timestamps are in the DOS date format, not inthe UNIX stamp format.
      */
-
     struct _stamp date_written;  /* When user wrote the msg */
     struct _stamp date_arrived;  /* When msg arrived on-line */
-
-    word reply;                  /* Current msg is a reply to this msg nr */
-    word attr;                   /* Attribute (behavior) of the message */
-    word up;                     /* Next message in the thread */
+    word          reply;         /* Current msg is a reply to this msg nr */
+    word          attr;          /* Attribute (behavior) of the message */
+    word          up;            /* Next message in the thread */
 };
 
 /* OPUS message header size (on .MSG file) */
 #define OMSG_SIZE 190
 
-#endif
+#endif // ifndef __OLD_MSG_H__

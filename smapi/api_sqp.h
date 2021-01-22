@@ -20,7 +20,6 @@
  *  Canada  K7M 5N3    BBS         1-613-634-3058, V.32bis                 *
  *                                                                         *
  ***************************************************************************/
-
 /* $Id$ */
 
 #ifndef __API_SQP_H_DEFINED
@@ -32,21 +31,33 @@
 
 
 sword _XPENTRY apiSquishCloseArea(HAREA ha);
-HMSG  _XPENTRY apiSquishOpenMsg(HAREA sq,word mode,dword msgnum);
+HMSG _XPENTRY apiSquishOpenMsg(HAREA sq, word mode, dword msgnum);
 sword _XPENTRY apiSquishCloseMsg(HMSG msgh);
-dword _XPENTRY apiSquishReadMsg(HMSG msgh, PXMSG msg, dword offset, dword bytes,
-                              byte  *szText, dword clen, byte  *ctxt);
-sword _XPENTRY apiSquishWriteMsg(HMSG msgh,word append,PXMSG msg,byte  *text,dword textlen,dword totlen,dword clen,byte  *ctxt);
-sword _XPENTRY apiSquishKillMsg(HAREA sq,dword msgnum);
+dword _XPENTRY apiSquishReadMsg(HMSG msgh,
+                                PXMSG msg,
+                                dword offset,
+                                dword bytes,
+                                byte * szText,
+                                dword clen,
+                                byte * ctxt);
+sword _XPENTRY apiSquishWriteMsg(HMSG msgh,
+                                 word append,
+                                 PXMSG msg,
+                                 byte * text,
+                                 dword textlen,
+                                 dword totlen,
+                                 dword clen,
+                                 byte * ctxt);
+sword _XPENTRY apiSquishKillMsg(HAREA sq, dword msgnum);
 sword _XPENTRY apiSquishLock(HAREA sq);
 sword _XPENTRY apiSquishUnlock(HAREA sq);
-sword _XPENTRY apiSquishSetCurPos(HMSG msgh,dword pos);
+sword _XPENTRY apiSquishSetCurPos(HMSG msgh, dword pos);
 dword _XPENTRY apiSquishGetCurPos(HMSG msgh);
-UMSGID _XPENTRY apiSquishMsgnToUid(HAREA sq,dword msgnum);
-dword _XPENTRY apiSquishUidToMsgn(HAREA sq,UMSGID umsgid,word type);
-dword _XPENTRY apiSquishGetHash(HAREA sq,dword msgnum);
+UMSGID _XPENTRY apiSquishMsgnToUid(HAREA sq, dword msgnum);
+dword _XPENTRY apiSquishUidToMsgn(HAREA sq, UMSGID umsgid, word type);
+dword _XPENTRY apiSquishGetHash(HAREA sq, dword msgnum);
 dword _XPENTRY apiSquishGetHighWater(HAREA mh);
-sword _XPENTRY apiSquishSetHighWater(HAREA sq,dword hwm);
+sword _XPENTRY apiSquishSetHighWater(HAREA sq, dword hwm);
 dword _XPENTRY apiSquishGetTextLen(HMSG msgh);
 dword _XPENTRY apiSquishGetCtrlLen(HMSG msgh);
 UMSGID _XPENTRY apiSquishGetNextUid(HAREA ha);
@@ -54,36 +65,40 @@ UMSGID _XPENTRY apiSquishGetNextUid(HAREA ha);
 /* Private functions */
 unsigned _SquishReadMode(HMSG hmsg);
 unsigned _SquishWriteMode(HMSG hmsg);
-unsigned _SquishCopyBaseToData(HAREA ha, SQBASE *psqb);
-unsigned _SquishWriteBaseHeader(HAREA ha, SQBASE *psqb);
-unsigned _SquishReadBaseHeader(HAREA ha, SQBASE *psqb);
+unsigned _SquishCopyBaseToData(HAREA ha, SQBASE * psqb);
+unsigned _SquishWriteBaseHeader(HAREA ha, SQBASE * psqb);
+unsigned _SquishReadBaseHeader(HAREA ha, SQBASE * psqb);
 unsigned _SquishExclusiveBegin(HAREA ha);
 unsigned _SquishExclusiveEnd(HAREA ha);
-unsigned _SquishCopyDataToBase(HAREA ha, SQBASE *psqb);
-unsigned _SquishReadHdr(HAREA ha, FOFS fo, SQHDR *psqh);
-unsigned _SquishWriteHdr(HAREA ha, FOFS fo, SQHDR *psqh);
+unsigned _SquishCopyDataToBase(HAREA ha, SQBASE * psqb);
+unsigned _SquishReadHdr(HAREA ha, FOFS fo, SQHDR * psqh);
+unsigned _SquishWriteHdr(HAREA ha, FOFS fo, SQHDR * psqh);
+
 /*unsigned _SquishReadIndexRecord(HAREA ha, dword dwMsg, SQIDX *psqi);*/
 /*unsigned _SquishWriteIndexRecord(HAREA ha, dword dwMsg, SQIDX *psqi);*/
 FOFS _SquishGetFrameOfs(HAREA ha, dword dwMsg);
+
 /*unsigned _SquishRemoveIndex(HAREA ha, dword dwMsg, SQIDX *psqiOut, SQHDR *psqh);*/
 unsigned _SquishSetFrameNext(HAREA ha, FOFS foModify, FOFS foValue);
 unsigned _SquishSetFramePrev(HAREA ha, FOFS foModify, FOFS foValue);
-unsigned _SquishInsertFreeChain(HAREA ha, FOFS fo, SQHDR *psqh);
+unsigned _SquishInsertFreeChain(HAREA ha, FOFS fo, SQHDR * psqh);
+
 /*SQIDX * _SquishAllocIndex(HAREA ha, dword dwMsg, dword *pdwIdxSize);*/
 /*unsigned _SquishFreeIndex(HAREA ha, dword dwMsg, SQIDX *psqi,
                           dword dwIdxSize, unsigned fWrite);*/
-
 HIDX _SquishOpenIndex(HAREA ha);
 int _SquishBeginBuffer(HIDX hix);
-int SidxGet(HIDX hix, dword dwMsg, SQIDX *psqi);
-int SidxPut(HIDX hix, dword dwMsg, SQIDX *psqi);
-unsigned _SquishRemoveIndexEntry(HIDX hix, dword dwMsg, SQIDX *psqiOut,
-                                 SQHDR *psqh, int fFixPointers);
+int SidxGet(HIDX hix, dword dwMsg, SQIDX * psqi);
+int SidxPut(HIDX hix, dword dwMsg, SQIDX * psqi);
+unsigned _SquishRemoveIndexEntry(HIDX hix,
+                                 dword dwMsg,
+                                 SQIDX * psqiOut,
+                                 SQHDR * psqh,
+                                 int fFixPointers);
 unsigned _SquishCloseIndex(HIDX hix);
 int _SquishEndBuffer(HIDX hix);
 int _SquishFreeBuffer(HIDX hix);
 dword _SquishIndexSize(HIDX hix);
-unsigned _SquishFixMemoryPointers(HAREA ha, dword dwMsg, SQHDR *psqh);
+unsigned _SquishFixMemoryPointers(HAREA ha, dword dwMsg, SQHDR * psqh);
 
 #endif /* __API_SQP_H_DEFINED */
-

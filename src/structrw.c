@@ -16,7 +16,6 @@
  *  agreement, or such other agreement as you are able to reach with the
  *  author.
  */
-
 /*  STRUCTRW.C written 1998 by Tobias Ernst
  *
  *  This file contains routines read and write packed structures like the
@@ -59,7 +58,6 @@
 #endif
 
 #include <huskylib/huskylib.h>
-
 /* Swith for build DLL */
 #define DLLEXPORT
 #include <huskylib/huskyext.h>
@@ -69,19 +67,23 @@
 #include "old_msg.h"
 #include "api_jam.h"
 
-#define MAXHDRINCORE  (1024l*1024*10) /* Maximum jam hdr size for incore, 10M */
+#define MAXHDRINCORE (1024l * 1024 * 10) /* Maximum jam hdr size for incore, 10M */
 
 #ifdef NEED_trivial_farread
   #ifdef HAS_dos_read
-  /* "Text mode" not implemented !!! */
-  int trivial_farread( int handle, void far *buffer, unsigned len )
-  { unsigned r_len=0;
+/* "Text mode" not implemented !!! */
+int trivial_farread(int handle, void far * buffer, unsigned len)
+{
+    unsigned r_len = 0;
 
-    if(dos_read( handle, buffer, len, &r_len ) )
-      return 0;
+    if(dos_read(handle, buffer, len, &r_len))
+    {
+        return 0;
+    }
 
     return r_len;
-  }
+}
+
   #else
     #error "Can't implement trivial_farread() without dos_read()"
   #endif
@@ -89,281 +91,262 @@
 
 #ifdef NEED_trivial_farwrite
   #ifdef HAS_dos_write
-  /* "Text mode" not implemented !!! */
-  int trivial_farwrite( int handle, void far *buffer, unsigned len )
-  { unsigned r_len=0;
+/* "Text mode" not implemented !!! */
+int trivial_farwrite(int handle, void far * buffer, unsigned len)
+{
+    unsigned r_len = 0;
 
-    if(dos_write( handle, buffer, len, &r_len ) )
-      return 0;
+    if(dos_write(handle, buffer, len, &r_len))
+    {
+        return 0;
+    }
 
     return r_len;
-  }
+}
+
   #else
     #error "Can't implement trivial_farwrite() without dos_write()"
   #endif
 #endif
 
 
-
-int read_xmsg(int handle, XMSG *pxmsg)
+int read_xmsg(int handle, XMSG * pxmsg)
 {
-    byte buf[XMSG_SIZE], *pbuf = buf;
+    byte buf[XMSG_SIZE], * pbuf = buf;
     word rawdate, rawtime;
     int i;
 
-    if (farread(handle, (byte far *)buf, XMSG_SIZE) != XMSG_SIZE)
+    if(farread(handle, (byte far *)buf, XMSG_SIZE) != XMSG_SIZE)
     {
         return 0;
     }
 
-                                /* 04 bytes "attr" */
+    /* 04 bytes "attr" */
     pxmsg->attr = get_dword(pbuf);
-    pbuf += 4;
-
-                                /* 36 bytes "from" */
+    pbuf       += 4;
+    /* 36 bytes "from" */
     memmove(pxmsg->from, pbuf, XMSG_FROM_SIZE);
     pbuf += XMSG_FROM_SIZE;
-
-                                /* 36 bytes "to"   */
+    /* 36 bytes "to"   */
     memmove(pxmsg->to, pbuf, XMSG_TO_SIZE);
     pbuf += XMSG_TO_SIZE;
-
-                                /* 72 bytes "subj" */
+    /* 72 bytes "subj" */
     memmove(pxmsg->subj, pbuf, XMSG_SUBJ_SIZE);
     pbuf += XMSG_SUBJ_SIZE;
-
-                                /* 8 bytes "orig"  */
-    pxmsg->orig.zone = get_word(pbuf); pbuf += 2;
-    pxmsg->orig.net  = get_word(pbuf); pbuf += 2;
-    pxmsg->orig.node = get_word(pbuf); pbuf += 2;
-    pxmsg->orig.point= get_word(pbuf); pbuf += 2;
-
-                                /* 8 bytes "dest"  */
-    pxmsg->dest.zone = get_word(pbuf); pbuf += 2;
-    pxmsg->dest.net  = get_word(pbuf); pbuf += 2;
-    pxmsg->dest.node = get_word(pbuf); pbuf += 2;
-    pxmsg->dest.point= get_word(pbuf); pbuf += 2;
-
-                                /* 4 bytes "date_written" */
-    rawdate = get_word(pbuf); pbuf += 2;
-    rawtime = get_word(pbuf); pbuf += 2;
+    /* 8 bytes "orig"  */
+    pxmsg->orig.zone  = get_word(pbuf);
+    pbuf             += 2;
+    pxmsg->orig.net   = get_word(pbuf);
+    pbuf             += 2;
+    pxmsg->orig.node  = get_word(pbuf);
+    pbuf             += 2;
+    pxmsg->orig.point = get_word(pbuf);
+    pbuf             += 2;
+    /* 8 bytes "dest"  */
+    pxmsg->dest.zone  = get_word(pbuf);
+    pbuf             += 2;
+    pxmsg->dest.net   = get_word(pbuf);
+    pbuf             += 2;
+    pxmsg->dest.node  = get_word(pbuf);
+    pbuf             += 2;
+    pxmsg->dest.point = get_word(pbuf);
+    pbuf             += 2;
+    /* 4 bytes "date_written" */
+    rawdate = get_word(pbuf);
+    pbuf   += 2;
+    rawtime = get_word(pbuf);
+    pbuf   += 2;
     pxmsg->date_written.date.da = rawdate & 31;
     pxmsg->date_written.date.mo = (rawdate >> 5) & 15;
     pxmsg->date_written.date.yr = (rawdate >> 9) & 127;
     pxmsg->date_written.time.ss = rawtime & 31;
     pxmsg->date_written.time.mm = (rawtime >> 5) & 63;
     pxmsg->date_written.time.hh = (rawtime >> 11) & 31;
-
-                                /* 4 bytes "date_arrived" */
-    rawdate = get_word(pbuf); pbuf += 2;
-    rawtime = get_word(pbuf); pbuf += 2;
+    /* 4 bytes "date_arrived" */
+    rawdate = get_word(pbuf);
+    pbuf   += 2;
+    rawtime = get_word(pbuf);
+    pbuf   += 2;
     pxmsg->date_arrived.date.da = rawdate & 31;
     pxmsg->date_arrived.date.mo = (rawdate >> 5) & 15;
     pxmsg->date_arrived.date.yr = (rawdate >> 9) & 127;
     pxmsg->date_arrived.time.ss = rawtime & 31;
     pxmsg->date_arrived.time.mm = (rawtime >> 5) & 63;
     pxmsg->date_arrived.time.hh = (rawtime >> 11) & 31;
-
-                                /* 2 byte "utc_ofs" */
+    /* 2 byte "utc_ofs" */
     pxmsg->utc_ofs = get_word(pbuf);
-    pbuf += 2;
-
-                                /* 4 bytes "replyto" */
+    pbuf          += 2;
+    /* 4 bytes "replyto" */
     pxmsg->replyto = get_dword(pbuf);
-    pbuf += 4;
+    pbuf          += 4;
 
-                                /* 10 times 4 bytes "replies" */
-    for (i = 0; i < MAX_REPLY; i++)
+    /* 10 times 4 bytes "replies" */
+    for(i = 0; i < MAX_REPLY; i++)
     {
         pxmsg->replies[i] = get_dword(pbuf);
         pbuf += 4;
     }
-
-                                /* 4 bytes "umsgid" */
+    /* 4 bytes "umsgid" */
     pxmsg->umsgid = get_dword(pbuf);
-    pbuf += 4;
-
-                                /* 20 times FTSC date stamp */
+    pbuf         += 4;
+    /* 20 times FTSC date stamp */
     memmove(pxmsg->__ftsc_date, pbuf, 20);
     pbuf += 20;
-
     assert(pbuf - buf == XMSG_SIZE);
     return 1;
-}
+} /* read_xmsg */
 
-int write_xmsg(int handle, XMSG *pxmsg)
+int write_xmsg(int handle, XMSG * pxmsg)
 {
-    byte buf[XMSG_SIZE], *pbuf = buf;
+    byte buf[XMSG_SIZE], * pbuf = buf;
     word rawdate, rawtime;
     int i;
 
-                                /* 04 bytes "attr" */
+    /* 04 bytes "attr" */
     put_dword(pbuf, pxmsg->attr);
     pbuf += 4;
-
-                                /* 36 bytes "from" */
+    /* 36 bytes "from" */
     memmove(pbuf, pxmsg->from, XMSG_FROM_SIZE);
     pbuf += XMSG_FROM_SIZE;
-
-                                /* 36 bytes "to"   */
+    /* 36 bytes "to"   */
     memmove(pbuf, pxmsg->to, XMSG_TO_SIZE);
     pbuf += XMSG_TO_SIZE;
-
-                                /* 72 bytes "subj" */
+    /* 72 bytes "subj" */
     memmove(pbuf, pxmsg->subj, XMSG_SUBJ_SIZE);
     pbuf += XMSG_SUBJ_SIZE;
-
-                                /* 8 bytes "orig"  */
-    put_word(pbuf, pxmsg->orig.zone);  pbuf += 2;
-    put_word(pbuf, pxmsg->orig.net);   pbuf += 2;
-    put_word(pbuf, pxmsg->orig.node);  pbuf += 2;
-    put_word(pbuf, pxmsg->orig.point); pbuf += 2;
-
-                                    /* 8 bytes "dest"  */
-    put_word(pbuf, pxmsg->dest.zone);  pbuf += 2;
-    put_word(pbuf, pxmsg->dest.net);   pbuf += 2;
-    put_word(pbuf, pxmsg->dest.node);  pbuf += 2;
-    put_word(pbuf, pxmsg->dest.point); pbuf += 2;
-
-
-                                /* 4 bytes "date_written" */
-    rawdate = rawtime = 0;
-
+    /* 8 bytes "orig"  */
+    put_word(pbuf, pxmsg->orig.zone);
+    pbuf += 2;
+    put_word(pbuf, pxmsg->orig.net);
+    pbuf += 2;
+    put_word(pbuf, pxmsg->orig.node);
+    pbuf += 2;
+    put_word(pbuf, pxmsg->orig.point);
+    pbuf += 2;
+    /* 8 bytes "dest"  */
+    put_word(pbuf, pxmsg->dest.zone);
+    pbuf += 2;
+    put_word(pbuf, pxmsg->dest.net);
+    pbuf += 2;
+    put_word(pbuf, pxmsg->dest.node);
+    pbuf += 2;
+    put_word(pbuf, pxmsg->dest.point);
+    pbuf += 2;
+    /* 4 bytes "date_written" */
+    rawdate  = rawtime = 0;
     rawdate |= (((word)pxmsg->date_written.date.da) & 31);
     rawdate |= (((word)pxmsg->date_written.date.mo) & 15) << 5;
     rawdate |= (((word)pxmsg->date_written.date.yr) & 127) << 9;
-
     rawtime |= (((word)pxmsg->date_written.time.ss) & 31);
     rawtime |= (((word)pxmsg->date_written.time.mm) & 63) << 5;
     rawtime |= (((word)pxmsg->date_written.time.hh) & 31) << 11;
-
-    put_word(pbuf, rawdate); pbuf += 2;
-    put_word(pbuf, rawtime); pbuf += 2;
-
-
-                                /* 4 bytes "date_arrvied" */
-    rawdate = rawtime = 0;
-
+    put_word(pbuf, rawdate);
+    pbuf += 2;
+    put_word(pbuf, rawtime);
+    pbuf += 2;
+    /* 4 bytes "date_arrvied" */
+    rawdate  = rawtime = 0;
     rawdate |= (((word)pxmsg->date_arrived.date.da) & 31);
     rawdate |= (((word)pxmsg->date_arrived.date.mo) & 15) << 5;
     rawdate |= (((word)pxmsg->date_arrived.date.yr) & 127) << 9;
-
     rawtime |= (((word)pxmsg->date_arrived.time.ss) & 31);
     rawtime |= (((word)pxmsg->date_arrived.time.mm) & 63) << 5;
     rawtime |= (((word)pxmsg->date_arrived.time.hh) & 31) << 11;
-
-    put_word(pbuf, rawdate); pbuf += 2;
-    put_word(pbuf, rawtime); pbuf += 2;
-
-
-                                /* 2 byte "utc_ofs" */
+    put_word(pbuf, rawdate);
+    pbuf += 2;
+    put_word(pbuf, rawtime);
+    pbuf += 2;
+    /* 2 byte "utc_ofs" */
     put_word(pbuf, pxmsg->utc_ofs);
     pbuf += 2;
-
-                                /* 4 bytes "replyto" */
+    /* 4 bytes "replyto" */
     put_dword(pbuf, pxmsg->replyto);
     pbuf += 4;
 
-                                /* 10 times 4 bytes "replies" */
-    for (i = 0; i < MAX_REPLY; i++)
+    /* 10 times 4 bytes "replies" */
+    for(i = 0; i < MAX_REPLY; i++)
     {
         put_dword(pbuf, pxmsg->replies[i]);
         pbuf += 4;
     }
-                                /* 4 bytes "umsgid" */
+    /* 4 bytes "umsgid" */
     put_dword(pbuf, pxmsg->umsgid);
     pbuf += 4;
-
-
-                                /* 20 times FTSC date stamp */
+    /* 20 times FTSC date stamp */
     memmove(pbuf, pxmsg->__ftsc_date, 20);
     pbuf += 20;
-
     assert(pbuf - buf == XMSG_SIZE);
-    return (farwrite(handle, (byte far *)buf, XMSG_SIZE) == XMSG_SIZE);
-}
+    return farwrite(handle, (byte far *)buf, XMSG_SIZE) == XMSG_SIZE;
+} /* write_xmsg */
 
-int read_sqhdr(int handle, SQHDR *psqhdr)
+int read_sqhdr(int handle, SQHDR * psqhdr)
 {
-    byte buf[SQHDR_SIZE], *pbuf = buf;
+    byte buf[SQHDR_SIZE], * pbuf = buf;
 
-    if (farread(handle, (byte far *)buf, SQHDR_SIZE) != SQHDR_SIZE)
+    if(farread(handle, (byte far *)buf, SQHDR_SIZE) != SQHDR_SIZE)
     {
         return 0;
     }
-                                /* 4 bytes "id" */
-    psqhdr->id = get_dword(pbuf);
-    pbuf += 4;
 
-                                /* 4 bytes "next_frame" */
+    /* 4 bytes "id" */
+    psqhdr->id = get_dword(pbuf);
+    pbuf      += 4;
+    /* 4 bytes "next_frame" */
     psqhdr->next_frame = get_dword(pbuf);
     pbuf += 4;
-
-                                /* 4 bytes "prev_frame" */
+    /* 4 bytes "prev_frame" */
     psqhdr->prev_frame = get_dword(pbuf);
     pbuf += 4;
-
-                                /* 4 bytes "frame_length" */
+    /* 4 bytes "frame_length" */
     psqhdr->frame_length = get_dword(pbuf);
     pbuf += 4;
-
-                                /* 4 bytes "msg_length" */
+    /* 4 bytes "msg_length" */
     psqhdr->msg_length = get_dword(pbuf);
     pbuf += 4;
-                                /* 4 bytes "clen" */
+    /* 4 bytes "clen" */
     psqhdr->clen = get_dword(pbuf);
-    pbuf += 4;
-
-                                /* 2 bytes "frame_type" */
+    pbuf        += 4;
+    /* 2 bytes "frame_type" */
     psqhdr->frame_type = get_word(pbuf);
     pbuf += 2;
-                                /* 4 bytes "rsvd" */
+    /* 4 bytes "rsvd" */
     psqhdr->rsvd = get_word(pbuf);
-    pbuf += 2;
-
+    pbuf        += 2;
     assert(pbuf - buf == SQHDR_SIZE);
-
     return 1;
-}
+} /* read_sqhdr */
 
-int write_sqhdr(int handle, SQHDR *psqhdr)
+int write_sqhdr(int handle, SQHDR * psqhdr)
 {
-    byte buf[SQHDR_SIZE], *pbuf = buf;
+    byte buf[SQHDR_SIZE], * pbuf = buf;
 
-                                /* 4 bytes "id" */
+    /* 4 bytes "id" */
     put_dword(pbuf, psqhdr->id);
     pbuf += 4;
-
-                                /* 4 bytes "next_frame" */
+    /* 4 bytes "next_frame" */
     put_dword(pbuf, psqhdr->next_frame);
     pbuf += 4;
-
-                                /* 4 bytes "prev_frame" */
+    /* 4 bytes "prev_frame" */
     put_dword(pbuf, psqhdr->prev_frame);
     pbuf += 4;
-
-                                /* 4 bytes "frame_length" */
+    /* 4 bytes "frame_length" */
     put_dword(pbuf, psqhdr->frame_length);
     pbuf += 4;
-
-                                /* 4 bytes "msg_length" */
+    /* 4 bytes "msg_length" */
     put_dword(pbuf, psqhdr->msg_length);
     pbuf += 4;
-                                /* 4 bytes "clen" */
+    /* 4 bytes "clen" */
     put_dword(pbuf, psqhdr->clen);
     pbuf += 4;
-
-                                /* 2 bytes "frame_type" */
+    /* 2 bytes "frame_type" */
     put_word(pbuf, psqhdr->frame_type);
     pbuf += 2;
-                                /* 4 bytes "rsvd" */
+    /* 4 bytes "rsvd" */
     put_word(pbuf, psqhdr->rsvd);
     pbuf += 2;
-
     assert(pbuf - buf == SQHDR_SIZE);
-
-    return (farwrite(handle, (byte far *)buf, SQHDR_SIZE) == SQHDR_SIZE);
-}
+    return farwrite(handle, (byte far *)buf, SQHDR_SIZE) == SQHDR_SIZE;
+} /* write_sqhdr */
 
 /*
  * read_sqidx
@@ -380,988 +363,936 @@ int write_sqhdr(int handle, SQHDR *psqhdr)
  * the code between "begin reading in a single structre" and "end reading
  * in a single structure" must be change if the structure layout changes.
  */
-
-int read_sqidx(int handle, SQIDX *psqidx, dword n)
+int read_sqidx(int handle, SQIDX * psqidx, dword n)
 {
-    byte buf[SQIDX_SIZE], *pbuf = NULL;
-    byte *accel_buffer = NULL;
+    byte buf[SQIDX_SIZE], * pbuf = NULL;
+    byte * accel_buffer = NULL;
     dword i, maxbuf = 0, rd;
 
-    if (n > 1)
+    if(n > 1)
     {
         maxbuf = n;
-        if ((dword)SQIDX_SIZE * (dword)n >= 32768L)
+
+        if((dword)SQIDX_SIZE * (dword)n >= 32768L)
         {
             maxbuf = (dword)32768L / SQIDX_SIZE;
         }
+
         accel_buffer = malloc(SQIDX_SIZE * maxbuf);
     }
 
-    for (i = 0; i < n; i++)
+    for(i = 0; i < n; i++)
     {
-        if (accel_buffer == NULL)
+        if(accel_buffer == NULL)
         {
-            if (farread(handle, buf, SQIDX_SIZE) != SQIDX_SIZE)
+            if(farread(handle, buf, SQIDX_SIZE) != SQIDX_SIZE)
             {
                 return 0;
             }
+
             pbuf = buf;
         }
         else
         {
-            if (!(i % maxbuf))
+            if(!(i % maxbuf))
             {
                 rd = (i + maxbuf > n) ? (n - i) : maxbuf;
-                if (farread(handle, accel_buffer, rd * SQIDX_SIZE) !=
-                    (int)(rd * SQIDX_SIZE))
+
+                if(farread(handle, accel_buffer, rd * SQIDX_SIZE) != (int)(rd * SQIDX_SIZE))
                 {
                     free(accel_buffer);
                     return 0;
                 }
+
                 pbuf = accel_buffer;
             }
         }
 
         /* Begin reading in a single structure */
-
-                                /* 4 bytes "ofs" */
+        /* 4 bytes "ofs" */
         psqidx[i].ofs = get_dword(pbuf);
-        pbuf += 4;
-
-                                /* 4 bytes "umsgid" */
+        pbuf         += 4;
+        /* 4 bytes "umsgid" */
         psqidx[i].umsgid = get_dword(pbuf);
-        pbuf += 4;
-
-                                /* 4 bytes "hash" */
+        pbuf            += 4;
+        /* 4 bytes "hash" */
         psqidx[i].hash = get_dword(pbuf);
-        pbuf += 4;
-
+        pbuf          += 4;
         /* Stop reading in a single structure */
     }
 
-    if (accel_buffer != NULL)
+    if(accel_buffer != NULL)
     {
         free(accel_buffer);
     }
 
     return 1;
-}
+} /* read_sqidx */
 
-
-int write_sqidx(int handle, SQIDX *psqidx, dword n)
+int write_sqidx(int handle, SQIDX * psqidx, dword n)
 {
-    byte buf[SQIDX_SIZE], *pbuf = NULL;
-    byte *accel_buffer = NULL;
+    byte buf[SQIDX_SIZE], * pbuf = NULL;
+    byte * accel_buffer = NULL;
     dword i, maxbuf = 0;
-	int wr;
+    int wr;
 
-    if (n > 1)
+    if(n > 1)
     {
         maxbuf = n;
-        if ((dword)SQIDX_SIZE * (dword)n >= 32768L)
+
+        if((dword)SQIDX_SIZE * (dword)n >= 32768L)
         {
             maxbuf = (dword)32768L / SQIDX_SIZE;
         }
+
         accel_buffer = malloc(SQIDX_SIZE * maxbuf);
-        pbuf = accel_buffer;
+        pbuf         = accel_buffer;
     }
 
-    for (i = 0; i < n; i++)
+    for(i = 0; i < n; i++)
     {
-        if (accel_buffer == NULL)
+        if(accel_buffer == NULL)
         {
             pbuf = buf;
         }
 
-                                /* 4 bytes "ofs" */
+        /* 4 bytes "ofs" */
         put_dword(pbuf, psqidx[i].ofs);
         pbuf += 4;
-
-                                /* 4 bytes "umsgid" */
+        /* 4 bytes "umsgid" */
         put_dword(pbuf, psqidx[i].umsgid);
         pbuf += 4;
-
-                                /* 4 bytes "hash" */
+        /* 4 bytes "hash" */
         put_dword(pbuf, psqidx[i].hash);
         pbuf += 4;
 
-        if (accel_buffer == NULL)
+        if(accel_buffer == NULL)
         {
-            if (farwrite(handle, buf, SQIDX_SIZE) != SQIDX_SIZE)
+            if(farwrite(handle, buf, SQIDX_SIZE) != SQIDX_SIZE)
             {
                 return 0;
             }
         }
         else
         {
-            if (i == n - 1 || (!((i + 1) % maxbuf)))
+            if(i == n - 1 || (!((i + 1) % maxbuf)))
             {
                 wr = (!((i + 1) % maxbuf)) ? maxbuf : (n % maxbuf);
 
-                if (farwrite(handle, accel_buffer, wr * SQIDX_SIZE) !=
-                    (wr * SQIDX_SIZE))
+                if(farwrite(handle, accel_buffer, wr * SQIDX_SIZE) != (wr * SQIDX_SIZE))
                 {
                     free(accel_buffer);
                     return 0;
                 }
+
                 pbuf = accel_buffer;
             }
         }
     }
 
-    if (accel_buffer != NULL)
+    if(accel_buffer != NULL)
     {
         free(accel_buffer);
     }
 
     return 1;
-}
+} /* write_sqidx */
 
-int read_sqbase(int handle, struct _sqbase *psqbase)
+int read_sqbase(int handle, struct _sqbase * psqbase)
 {
-    byte buf[SQBASE_SIZE], *pbuf = buf;
+    byte buf[SQBASE_SIZE], * pbuf = buf;
 
-    if (farread(handle, (byte far *)buf, SQBASE_SIZE) != SQBASE_SIZE)
+    if(farread(handle, (byte far *)buf, SQBASE_SIZE) != SQBASE_SIZE)
     {
         return 0;
     }
 
-    psqbase->len = get_word(pbuf);
-    pbuf += 2;
-
-    psqbase->rsvd1 = get_word(pbuf);
-    pbuf += 2;
-
-    psqbase->num_msg = get_dword(pbuf);
-    pbuf += 4;
-
-    psqbase->high_msg = get_dword(pbuf);
-    pbuf += 4;
-
-    psqbase->skip_msg = get_dword(pbuf);
-    pbuf += 4;
-
+    psqbase->len        = get_word(pbuf);
+    pbuf               += 2;
+    psqbase->rsvd1      = get_word(pbuf);
+    pbuf               += 2;
+    psqbase->num_msg    = get_dword(pbuf);
+    pbuf               += 4;
+    psqbase->high_msg   = get_dword(pbuf);
+    pbuf               += 4;
+    psqbase->skip_msg   = get_dword(pbuf);
+    pbuf               += 4;
     psqbase->high_water = get_dword(pbuf);
-    pbuf += 4;
-
-    psqbase->uid = get_dword(pbuf);
-    pbuf += 4;
-
+    pbuf               += 4;
+    psqbase->uid        = get_dword(pbuf);
+    pbuf               += 4;
     memmove(psqbase->base, pbuf, 80);
     pbuf += 80;
-
     psqbase->begin_frame = get_dword(pbuf);
     pbuf += 4;
-
     psqbase->last_frame = get_dword(pbuf);
     pbuf += 4;
-
     psqbase->free_frame = get_dword(pbuf);
     pbuf += 4;
-
     psqbase->last_free_frame = get_dword(pbuf);
     pbuf += 4;
-
     psqbase->end_frame = get_dword(pbuf);
-    pbuf += 4;
-
-    psqbase->max_msg = get_dword(pbuf);
-    pbuf += 4;
-
+    pbuf              += 4;
+    psqbase->max_msg   = get_dword(pbuf);
+    pbuf              += 4;
     psqbase->keep_days = get_word(pbuf);
-    pbuf += 2;
-
-    psqbase->sz_sqhdr = get_word(pbuf);
-    pbuf += 2;
-
+    pbuf              += 2;
+    psqbase->sz_sqhdr  = get_word(pbuf);
+    pbuf              += 2;
     memmove(psqbase->rsvd2, pbuf, 124);
     pbuf += 124;
-
-    assert(pbuf-buf == SQBASE_SIZE);
-
+    assert(pbuf - buf == SQBASE_SIZE);
     return 1;
-}
+} /* read_sqbase */
 
-int write_sqbase(int handle, struct _sqbase *psqbase)
+int write_sqbase(int handle, struct _sqbase * psqbase)
 {
-    byte buf[SQBASE_SIZE], *pbuf = buf;
+    byte buf[SQBASE_SIZE], * pbuf = buf;
 
     put_word(pbuf, psqbase->len);
     pbuf += 2;
-
     put_word(pbuf, psqbase->rsvd1);
     pbuf += 2;
-
     put_dword(pbuf, psqbase->num_msg);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->high_msg);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->skip_msg);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->high_water);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->uid);
     pbuf += 4;
-
     memmove(pbuf, psqbase->base, 80);
     pbuf += 80;
-
     put_dword(pbuf, psqbase->begin_frame);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->last_frame);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->free_frame);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->last_free_frame);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->end_frame);
     pbuf += 4;
-
     put_dword(pbuf, psqbase->max_msg);
     pbuf += 4;
-
     put_word(pbuf, psqbase->keep_days);
     pbuf += 2;
-
     put_word(pbuf, psqbase->sz_sqhdr);
     pbuf += 2;
-
     memmove(pbuf, psqbase->rsvd2, 124);
     pbuf += 124;
-
     assert(pbuf - buf == SQBASE_SIZE);
+    return farwrite(handle, (byte far *)buf, SQBASE_SIZE) == SQBASE_SIZE;
+} /* write_sqbase */
 
-    return (farwrite(handle, (byte far *)buf, SQBASE_SIZE) == SQBASE_SIZE);
-}
-
-int read_omsg(int handle, struct _omsg *pomsg)
+int read_omsg(int handle, struct _omsg * pomsg)
 {
-    byte buf[OMSG_SIZE], *pbuf = buf;
+    byte buf[OMSG_SIZE], * pbuf = buf;
     word rawdate, rawtime;
 
-    if (farread(handle, (byte far *)buf, OMSG_SIZE) != OMSG_SIZE)
+    if(farread(handle, (byte far *)buf, OMSG_SIZE) != OMSG_SIZE)
     {
         return 0;
     }
 
     memmove(pomsg->from, pbuf, 36);
     pbuf += 36;
-
     memmove(pomsg->to, pbuf, 36);
     pbuf += 36;
-
     memmove(pomsg->subj, pbuf, 72);
     pbuf += 72;
-
     memmove(pomsg->date, pbuf, 20);
-    pbuf += 20;
-
-    pomsg->times = get_word(pbuf);
-    pbuf += 2;
-
-    pomsg->dest = get_word(pbuf);
-    pbuf += 2;
-
-    pomsg->orig = get_word(pbuf);
-    pbuf += 2;
-
-    pomsg->cost = get_word(pbuf);
-    pbuf += 2;
-
+    pbuf           += 20;
+    pomsg->times    = get_word(pbuf);
+    pbuf           += 2;
+    pomsg->dest     = get_word(pbuf);
+    pbuf           += 2;
+    pomsg->orig     = get_word(pbuf);
+    pbuf           += 2;
+    pomsg->cost     = get_word(pbuf);
+    pbuf           += 2;
     pomsg->orig_net = get_word(pbuf);
-    pbuf += 2;
-
+    pbuf           += 2;
     pomsg->dest_net = get_word(pbuf);
-    pbuf += 2;
+    pbuf           += 2;
 
-                                /* 4 bytes "date_written" */
-    rawdate = get_word(pbuf); pbuf += 2;
-    rawtime = get_word(pbuf); pbuf += 2;
+    /* 4 bytes "date_written" */
+    rawdate = get_word(pbuf);
+    pbuf   += 2;
+    rawtime = get_word(pbuf);
+    pbuf   += 2;
     pomsg->date_written.date.da = rawdate & 31;
     pomsg->date_written.date.mo = (rawdate >> 5) & 15;
     pomsg->date_written.date.yr = (rawdate >> 9) & 127;
     pomsg->date_written.time.ss = rawtime & 31;
     pomsg->date_written.time.mm = (rawtime >> 5) & 63;
     pomsg->date_written.time.hh = (rawtime >> 11) & 31;
-
-                                /* 4 bytes "date_arrived" */
-    rawdate = get_word(pbuf); pbuf += 2;
-    rawtime = get_word(pbuf); pbuf += 2;
+    /* 4 bytes "date_arrived" */
+    rawdate = get_word(pbuf);
+    pbuf   += 2;
+    rawtime = get_word(pbuf);
+    pbuf   += 2;
     pomsg->date_arrived.date.da = rawdate & 31;
     pomsg->date_arrived.date.mo = (rawdate >> 5) & 15;
     pomsg->date_arrived.date.yr = (rawdate >> 9) & 127;
     pomsg->date_arrived.time.ss = rawtime & 31;
     pomsg->date_arrived.time.mm = (rawtime >> 5) & 63;
     pomsg->date_arrived.time.hh = (rawtime >> 11) & 31;
-
     pomsg->reply = get_word(pbuf);
-    pbuf += 2;
-
-    pomsg->attr = get_word(pbuf);
-    pbuf += 2;
-
-    pomsg->up = get_word(pbuf);
-    pbuf += 2;
-
+    pbuf        += 2;
+    pomsg->attr  = get_word(pbuf);
+    pbuf        += 2;
+    pomsg->up    = get_word(pbuf);
+    pbuf        += 2;
     assert(pbuf - buf == OMSG_SIZE);
-
     return 1;
-}
+} /* read_omsg */
 
-int write_omsg(int handle, struct _omsg *pomsg)
+int write_omsg(int handle, struct _omsg * pomsg)
 {
-    byte buf[OMSG_SIZE], *pbuf = buf;
+    byte buf[OMSG_SIZE], * pbuf = buf;
     word rawdate, rawtime;
 
     memmove(pbuf, pomsg->from, 36);
     pbuf += 36;
-
     memmove(pbuf, pomsg->to, 36);
     pbuf += 36;
-
     memmove(pbuf, pomsg->subj, 72);
     pbuf += 72;
-
     memmove(pbuf, pomsg->date, 20);
     pbuf += 20;
-
     put_word(pbuf, pomsg->times);
     pbuf += 2;
-
     put_word(pbuf, pomsg->dest);
     pbuf += 2;
-
     put_word(pbuf, pomsg->orig);
     pbuf += 2;
-
     put_word(pbuf, pomsg->cost);
     pbuf += 2;
-
     put_word(pbuf, pomsg->orig_net);
     pbuf += 2;
-
     put_word(pbuf, pomsg->dest_net);
     pbuf += 2;
 
-                                /* 4 bytes "date_written" */
-    rawdate = rawtime = 0;
-
+    /* 4 bytes "date_written" */
+    rawdate  = rawtime = 0;
     rawdate |= (((word)pomsg->date_written.date.da) & 31);
     rawdate |= (((word)pomsg->date_written.date.mo) & 15) << 5;
     rawdate |= (((word)pomsg->date_written.date.yr) & 127) << 9;
-
     rawtime |= (((word)pomsg->date_written.time.ss) & 31);
     rawtime |= (((word)pomsg->date_written.time.mm) & 63) << 5;
     rawtime |= (((word)pomsg->date_written.time.hh) & 31) << 11;
-
-    put_word(pbuf, rawdate); pbuf += 2;
-    put_word(pbuf, rawtime); pbuf += 2;
-
-
-                                /* 4 bytes "date_arrvied" */
-    rawdate = rawtime = 0;
-
+    put_word(pbuf, rawdate);
+    pbuf += 2;
+    put_word(pbuf, rawtime);
+    pbuf += 2;
+    /* 4 bytes "date_arrvied" */
+    rawdate  = rawtime = 0;
     rawdate |= (((word)pomsg->date_arrived.date.da) & 31);
     rawdate |= (((word)pomsg->date_arrived.date.mo) & 15) << 5;
     rawdate |= (((word)pomsg->date_arrived.date.yr) & 127) << 9;
-
     rawtime |= (((word)pomsg->date_arrived.time.ss) & 31);
     rawtime |= (((word)pomsg->date_arrived.time.mm) & 63) << 5;
     rawtime |= (((word)pomsg->date_arrived.time.hh) & 31) << 11;
-
-    put_word(pbuf, rawdate); pbuf += 2;
-    put_word(pbuf, rawtime); pbuf += 2;
-
+    put_word(pbuf, rawdate);
+    pbuf += 2;
+    put_word(pbuf, rawtime);
+    pbuf += 2;
     put_word(pbuf, pomsg->reply);
     pbuf += 2;
-
     put_word(pbuf, pomsg->attr);
     pbuf += 2;
-
     put_word(pbuf, pomsg->up);
     pbuf += 2;
-
     assert(pbuf - buf == OMSG_SIZE);
+    return farwrite(handle, (byte far *)buf, OMSG_SIZE) == OMSG_SIZE;
+} /* write_omsg */
 
-    return (farwrite(handle, (byte far *)buf, OMSG_SIZE) == OMSG_SIZE);
+int read_hdrinfo(int handle, JAMHDRINFO * HdrInfo)
+{
+    byte buf[HDRINFO_SIZE], * pbuf = buf;
+
+    if(farread(handle, (byte far *)buf, HDRINFO_SIZE) != HDRINFO_SIZE)
+    {
+        return 0;
+    } /* endif */
+
+    /* 04 bytes Signature */
+    memmove(HdrInfo->Signature, pbuf, (size_t)4);
+    pbuf += 4;
+    /* 04 bytes DateCreated */
+    HdrInfo->DateCreated = get_dword(pbuf);
+    pbuf += 4;
+    /* 04 bytes ModCounter */
+    HdrInfo->ModCounter = get_dword(pbuf);
+    pbuf += 4;
+    /* 04 bytes ActiveMsgs */
+    HdrInfo->ActiveMsgs = get_dword(pbuf);
+    pbuf += 4;
+    /* 04 bytes PasswordCRC */
+    HdrInfo->PasswordCRC = get_dword(pbuf);
+    pbuf += 4;
+    /* 04 bytes BaseMsgNum */
+    HdrInfo->BaseMsgNum = get_dword(pbuf);
+    pbuf += 4;
+    /* 04 bytes highwater */
+    HdrInfo->highwater = get_dword(pbuf);
+    pbuf += 4;
+    /* 996 bytes RSRVD */
+    memmove(HdrInfo->RSRVD, pbuf, (size_t)996);
+    pbuf += 996;
+    assert(pbuf - buf == HDRINFO_SIZE);
+    return 1;
+} /* read_hdrinfo */
+
+int read_idx(int handle, JAMIDXREC * Idx)
+{
+    byte buf[IDX_SIZE], * pbuf = buf;
+
+    if(farread(handle, (byte far *)buf, IDX_SIZE) != IDX_SIZE)
+    {
+        return 0;
+    } /* endif */
+
+    /* 04 bytes UserCRC */
+    Idx->UserCRC = get_dword(pbuf);
+    pbuf        += 4;
+    /* 04 bytes HdrOffset */
+    Idx->HdrOffset = get_dword(pbuf);
+    pbuf          += 4;
+    assert(pbuf - buf == IDX_SIZE);
+    return 1;
 }
 
-int read_hdrinfo(int handle, JAMHDRINFO *HdrInfo)
+static void decode_hdr(byte * pbuf, JAMHDR * Hdr)
 {
-   byte buf[HDRINFO_SIZE], *pbuf = buf;
+    /* 04 bytes Signature */
+    memmove(Hdr->Signature, pbuf, (size_t)4);
+    pbuf += 4;
+    /* 02 bytes Revision */
+    Hdr->Revision = get_word(pbuf);
+    pbuf         += 2;
+    /* 02 bytes ReservedWord */
+    Hdr->ReservedWord = get_word(pbuf);
+    pbuf += 2;
+    /* 04 bytes SubfieldLen */
+    Hdr->SubfieldLen = get_dword(pbuf);
+    pbuf            += 4;
+    /* 04 bytes TimesRead */
+    Hdr->TimesRead = get_dword(pbuf);
+    pbuf          += 4;
+    /* 04 bytes MsgIdCRC */
+    Hdr->MsgIdCRC = get_dword(pbuf);
+    pbuf         += 4;
+    /* 04 bytes ReplyCRC */
+    Hdr->ReplyCRC = get_dword(pbuf);
+    pbuf         += 4;
+    /* 04 bytes ReplyTo */
+    Hdr->ReplyTo = get_dword(pbuf);
+    pbuf        += 4;
+    /* 04 bytes Reply1st */
+    Hdr->Reply1st = get_dword(pbuf);
+    pbuf         += 4;
+    /* 04 bytes ReplyNext */
+    Hdr->ReplyNext = get_dword(pbuf);
+    pbuf          += 4;
+    /* 04 bytes DateWritten */
+    Hdr->DateWritten = get_dword(pbuf);
+    pbuf            += 4;
+    /* 04 bytes DateReceived */
+    Hdr->DateReceived = get_dword(pbuf);
+    pbuf += 4;
+    /* 04 bytes DateProcessed */
+    Hdr->DateProcessed = get_dword(pbuf);
+    pbuf += 4;
+    /* 04 bytes MsgNum */
+    Hdr->MsgNum = get_dword(pbuf);
+    pbuf       += 4;
+    /* 04 bytes Attribute */
+    Hdr->Attribute = get_dword(pbuf);
+    pbuf          += 4;
+    /* 04 bytes Attribute2 */
+    Hdr->Attribute2 = get_dword(pbuf);
+    pbuf           += 4;
+    /* 04 bytes TxtOffset */
+    Hdr->TxtOffset = get_dword(pbuf);
+    pbuf          += 4;
+    /* 04 bytes TxtLen */
+    Hdr->TxtLen = get_dword(pbuf);
+    pbuf       += 4;
+    /* 04 bytes PasswordCRC */
+    Hdr->PasswordCRC = get_dword(pbuf);
+    pbuf            += 4;
+    /* 04 bytes Cost */
+    Hdr->Cost = get_dword(pbuf);
+} /* decode_hdr */
 
-   if (farread(handle, (byte far *)buf, HDRINFO_SIZE) != HDRINFO_SIZE) {
-      return 0;
-   } /* endif */
+int read_hdr(int handle, JAMHDR * Hdr)
+{
+    byte buf[HDR_SIZE];
 
-   /* 04 bytes Signature */
-   memmove(HdrInfo->Signature, pbuf, (size_t)4);
-   pbuf += 4;
+    if(farread(handle, (byte far *)buf, HDR_SIZE) != HDR_SIZE)
+    {
+        return 0;
+    } /* endif */
 
-   /* 04 bytes DateCreated */
-   HdrInfo->DateCreated = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes ModCounter */
-   HdrInfo->ModCounter = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes ActiveMsgs */
-   HdrInfo->ActiveMsgs = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes PasswordCRC */
-   HdrInfo->PasswordCRC = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes BaseMsgNum */
-   HdrInfo->BaseMsgNum = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes highwater */
-   HdrInfo->highwater = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 996 bytes RSRVD */
-   memmove(HdrInfo->RSRVD, pbuf, (size_t)996);
-   pbuf += 996;
-
-   assert(pbuf - buf == HDRINFO_SIZE);
-
-   return 1;
+    decode_hdr(buf, Hdr);
+    return 1;
 }
 
-int read_idx(int handle, JAMIDXREC *Idx)
+int copy_subfield(JAMSUBFIELD2LISTptr * to, JAMSUBFIELD2LISTptr from)
 {
-   byte buf[IDX_SIZE], *pbuf = buf;
+    dword i;
 
-   if (farread(handle, (byte far *)buf, IDX_SIZE) != IDX_SIZE) {
-      return 0;
-   } /* endif */
+    *to = palloc(from->arraySize);
 
-   /* 04 bytes UserCRC */
-   Idx->UserCRC = get_dword(pbuf);
-   pbuf += 4;
+    if(*to == NULL)
+    {
+        return 1;
+    }
 
-   /* 04 bytes HdrOffset */
-   Idx->HdrOffset = get_dword(pbuf);
-   pbuf += 4;
+    memcpy(*to, from, from->arraySize);
 
-   assert(pbuf - buf == IDX_SIZE);
-
-   return 1;
-}
-
-static void decode_hdr(byte *pbuf, JAMHDR *Hdr)
-{
-   /* 04 bytes Signature */
-   memmove(Hdr->Signature, pbuf, (size_t)4);
-   pbuf += 4;
-
-   /* 02 bytes Revision */
-   Hdr->Revision = get_word(pbuf);
-   pbuf += 2;
-
-   /* 02 bytes ReservedWord */
-   Hdr->ReservedWord = get_word(pbuf);
-   pbuf += 2;
-
-   /* 04 bytes SubfieldLen */
-   Hdr->SubfieldLen = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes TimesRead */
-   Hdr->TimesRead = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes MsgIdCRC */
-   Hdr->MsgIdCRC = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes ReplyCRC */
-   Hdr->ReplyCRC = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes ReplyTo */
-   Hdr->ReplyTo = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes Reply1st */
-   Hdr->Reply1st = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes ReplyNext */
-   Hdr->ReplyNext = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes DateWritten */
-   Hdr->DateWritten = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes DateReceived */
-   Hdr->DateReceived = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes DateProcessed */
-   Hdr->DateProcessed = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes MsgNum */
-   Hdr->MsgNum = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes Attribute */
-   Hdr->Attribute = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes Attribute2 */
-   Hdr->Attribute2 = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes TxtOffset */
-   Hdr->TxtOffset = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes TxtLen */
-   Hdr->TxtLen = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes PasswordCRC */
-   Hdr->PasswordCRC = get_dword(pbuf);
-   pbuf += 4;
-
-   /* 04 bytes Cost */
-   Hdr->Cost = get_dword(pbuf);
-}
-
-int read_hdr(int handle, JAMHDR *Hdr)
-{
-   byte buf[HDR_SIZE];
-
-   if (farread(handle, (byte far *)buf, HDR_SIZE) != HDR_SIZE) {
-      return 0;
-   } /* endif */
-
-   decode_hdr(buf, Hdr);
-
-   return 1;
-}
-
-int copy_subfield(JAMSUBFIELD2LISTptr *to, JAMSUBFIELD2LISTptr from)
-{
-   dword i;
-
-   *to = palloc(from->arraySize);
-   if (*to == NULL) return 1;
-   memcpy(*to, from, from->arraySize);
-   for (i=0; i<from->subfieldCount; i++)
-     to[0]->subfield[i].Buffer+=((char *)*to-(char *)from);
-   return 0;
+    for(i = 0; i < from->subfieldCount; i++)
+    {
+        to[0]->subfield[i].Buffer += ((char *)*to - (char *)from);
+    }
+    return 0;
 }
 
 /* Define DEBUG to catch more weirdness in databases */
-static void decode_subfield(byte *buf, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen)
+static void decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * SubfieldLen)
 {
-   JAMSUBFIELD2ptr subfieldNext;
-   dword datlen;
-   unsigned int count, len;
-   byte *pbuf, *limit;
+    JAMSUBFIELD2ptr subfieldNext;
+    dword datlen;
+    unsigned int count, len;
+    byte * pbuf, * limit;
 
-   pbuf = buf;
-   limit = buf + *SubfieldLen;
-   assert(limit >= buf); 
+    pbuf  = buf;
+    limit = buf + *SubfieldLen;
+    assert(limit >= buf);
+    count = 0;
 
-   count = 0;
-   while (pbuf + JAM_SF_HEADER_SIZE <= limit) {
-      dword size;
+    while(pbuf + JAM_SF_HEADER_SIZE <= limit)
+    {
+        dword size;
 #ifdef DEBUG
-	  word loID, hiID;
-	  loID = get_word(pbuf);
-	  hiID = get_word(pbuf+2);
-	  if(!(loID <= JAMSFLD_ENCLINDFILE ||
-		  loID == JAMSFLD_EMBINDAT ||
-		  loID >= JAMSFLD_FTSKLUDGE && loID <= JAMSFLD_TZUTCINFO))
-	  { /* This subfield type is not supported and is most 
-		   probably sign of error in messagebase */
-         printf("SMAPI ERROR: weird subfield type! (%X)\n", (unsigned int)loID); 
-        /* Keep going, these fields won't hurt unless they have improper size too */
-	  }
+        word loID, hiID;
+        loID = get_word(pbuf);
+        hiID = get_word(pbuf + 2);
+
+        if(!(loID <= JAMSFLD_ENCLINDFILE || loID == JAMSFLD_EMBINDAT ||
+             loID >= JAMSFLD_FTSKLUDGE && loID <= JAMSFLD_TZUTCINFO)) /* This subfield type is
+                                                                         not supported and is
+                                                                         most
+                                                                         probably sign of error
+                                                                            in messagebase */
+        {
+            printf("SMAPI ERROR: weird subfield type! (%X)\n", (unsigned int)loID);
+            /* Keep going, these fields won't hurt unless they have improper size too */
+        }
+
 #endif
-	  size = get_dword(pbuf+4);
+        size = get_dword(pbuf + 4);
 #ifdef DEBUG
-	  if(size == 0 && loID != JAMSFLD_SUBJECT) /* While possible, it isn't normal value */
-	  {
-         printf("SMAPI ERROR: subfield of 0 size! (%X)\n", (unsigned int)loID); 
-	  }
+
+        if(size == 0 && loID != JAMSFLD_SUBJECT) /* While possible, it isn't normal value */
+        {
+            printf("SMAPI ERROR: subfield of 0 size! (%X)\n", (unsigned int)loID);
+        }
+
 #endif
-      if(pbuf + JAM_SF_HEADER_SIZE + size > limit)
-		/* it means that subfield claims to be longer 
-		   than header says. can't be. */ 
-	  { /* just break, ideally there shall be a setting for lax treatment of messagebase */
-         printf("SMAPI ERROR: wrongly sized subfield occured!\n"); 
-		 break;
-	  }
-	  if(size >=0xFFFF) /* realistic check: single subfield 
-						   longer than 64k is not realistic */
-	  {
-         printf("SMAPI ERROR: subfield is suspiciously large! (%lu bytes)\n", (unsigned long)size); 
-		 break;
-	  }
-      ++count;
-      pbuf += JAM_SF_HEADER_SIZE + size;
-   }
-   len = sizeof(JAMSUBFIELD2LIST)+count*(sizeof(JAMSUBFIELD2)-JAM_SF_HEADER_SIZE+1)+*SubfieldLen;
-   *subfield = palloc(len);
-   subfield[0]->arraySize = len;
-   subfield[0]->subfieldCount = 0;
-   /* reserve memory for (real count + 1)*JAMSUBFIELD2 */
-   subfield[0]->subfield[0].Buffer = (byte *)&(subfield[0]->subfield[count+1]);
 
-   subfieldNext = subfield[0]->subfield;
-   pbuf = buf;
+        if(pbuf + JAM_SF_HEADER_SIZE + size > limit)
+        /* it means that subfield claims to be longer
+           than header says. can't be. */
+        {
+            /* just break, ideally there shall be a setting for lax treatment of messagebase */
+            printf("SMAPI ERROR: wrongly sized subfield occured!\n");
+            break;
+        }
 
-   while ( subfield[0]->subfieldCount < count && pbuf + JAM_SF_HEADER_SIZE <= limit ) {
-      /* 02 bytes LoID */
-      subfieldNext->LoID = get_word(pbuf);
-      pbuf += 2;
+        if(size >= 0xFFFF) /* realistic check: single subfield
+                              longer than 64k is not realistic */
+        {
+            printf("SMAPI ERROR: subfield is suspiciously large! (%lu bytes)\n",
+                   (unsigned long)size);
+            break;
+        }
 
-      /* 02 bytes HiID */
-      subfieldNext->HiID = get_word(pbuf);
-      pbuf += 2;
+        ++count;
+        pbuf += JAM_SF_HEADER_SIZE + size;
+    }
+    len = sizeof(JAMSUBFIELD2LIST) + count *
+          (sizeof(JAMSUBFIELD2) - JAM_SF_HEADER_SIZE + 1) + *SubfieldLen;
+    *subfield = palloc(len);
+    subfield[0]->arraySize     = len;
+    subfield[0]->subfieldCount = 0;
+    /* reserve memory for (real count + 1)*JAMSUBFIELD2 */
+    subfield[0]->subfield[0].Buffer = (byte *)&(subfield[0]->subfield[count + 1]);
+    subfieldNext = subfield[0]->subfield;
+    pbuf         = buf;
 
-      /* 04 bytes DatLen */
-      subfieldNext->DatLen = 0;
-      subfieldNext->Buffer[0] = '\0';
-      datlen = get_dword(pbuf);
-      pbuf += 4;
+    while(subfield[0]->subfieldCount < count && pbuf + JAM_SF_HEADER_SIZE <= limit)
+    {
+        /* 02 bytes LoID */
+        subfieldNext->LoID = get_word(pbuf);
+        pbuf += 2;
+        /* 02 bytes HiID */
+        subfieldNext->HiID = get_word(pbuf);
+        pbuf += 2;
+        /* 04 bytes DatLen */
+        subfieldNext->DatLen    = 0;
+        subfieldNext->Buffer[0] = '\0';
+        datlen = get_dword(pbuf);
+        pbuf  += 4;
+        subfield[0]->subfieldCount++;
 
-      subfield[0]->subfieldCount++;
+        if(*SubfieldLen - (pbuf - buf) < datlen)
+        {
+            break;
+        }
 
-      if (*SubfieldLen - (pbuf - buf) < datlen)
-          break;
-      /* DatLen bytes Buffer */
-      subfieldNext->DatLen = datlen;
-      memmove(subfieldNext->Buffer, pbuf, datlen);
+        /* DatLen bytes Buffer */
+        subfieldNext->DatLen = datlen;
+        memmove(subfieldNext->Buffer, pbuf, datlen);
+        /* Set up next element */
+        assert((byte *)(subfieldNext + 1) < subfield[0]->subfield[0].Buffer);
+        subfieldNext[1].Buffer = subfieldNext->Buffer + subfieldNext->DatLen + 1;
+        subfieldNext++;
+        assert(subfieldNext->Buffer <= (byte *)*subfield + subfield[0]->arraySize);
+        pbuf += datlen;
+    } /* endwhile */
+    *SubfieldLen = pbuf - buf;
+} /* decode_subfield */
 
-      /* Set up next element */
-      assert((byte *)(subfieldNext + 1) < subfield[0]->subfield[0].Buffer);
-      subfieldNext[1].Buffer = subfieldNext->Buffer + subfieldNext->DatLen + 1;
-      subfieldNext++;
-      assert(subfieldNext->Buffer <= (byte *)*subfield + subfield[0]->arraySize);
-      pbuf += datlen;
-
-   } /* endwhile */
-
-   *SubfieldLen = pbuf - buf;
-}
-
-int read_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword *SubfieldLen)
+int read_subfield(int handle, JAMSUBFIELD2LISTptr * subfield, dword * SubfieldLen)
 {
-   byte *buf;
+    byte * buf;
 
-   buf = (byte*)palloc(*SubfieldLen);
+    buf = (byte *)palloc(*SubfieldLen);
 
-   if ((dword)farread(handle, (byte far *)buf, *SubfieldLen) != *SubfieldLen) {
-      pfree(buf);
-      return 0;
-   } /* endif */
+    if((dword)farread(handle, (byte far *)buf, *SubfieldLen) != *SubfieldLen)
+    {
+        pfree(buf);
+        return 0;
+    } /* endif */
 
-   decode_subfield(buf, subfield, SubfieldLen);
-
-   pfree(buf);
-
-   return 1;
+    decode_subfield(buf, subfield, SubfieldLen);
+    pfree(buf);
+    return 1;
 }
 
 int read_allidx(JAMBASEptr jmb)
 {
-   byte  *buf, *pbuf, *hdrbuf = NULL;
-   JAMACTMSGptr newptr;
-   JAMHDR  hbuf;
-   int   len;
-   dword i, allocated, hlen;
-   dword offset;
+    byte * buf, * pbuf, * hdrbuf = NULL;
+    JAMACTMSGptr newptr;
+    JAMHDR hbuf;
+    int len;
+    dword i, allocated, hlen;
+    dword offset;
 
-   lseek(jmb->IdxHandle, 0, SEEK_END);
-   len = tell(jmb->IdxHandle);
-   lseek(jmb->IdxHandle, 0, SEEK_SET);
+    lseek(jmb->IdxHandle, 0, SEEK_END);
+    len = tell(jmb->IdxHandle);
+    lseek(jmb->IdxHandle, 0, SEEK_SET);
+    buf  = (byte *)palloc(len);
+    pbuf = buf;
 
-   buf = (byte *)palloc(len);
-   pbuf = buf;
+    if(farread(jmb->IdxHandle, (byte far *)buf, len) != len)
+    {
+        pfree(buf);
+        return 0;
+    } /* endif */
 
-   if (farread(jmb->IdxHandle, (byte far *)buf, len) != len) {
-      pfree(buf);
-      return 0;
-   } /* endif */
+    lseek(jmb->HdrHandle, 0, SEEK_END);
+    hlen = tell(jmb->HdrHandle);
+    lseek(jmb->HdrHandle, 0, SEEK_SET);
 
-   lseek(jmb->HdrHandle, 0, SEEK_END);
-   hlen = tell(jmb->HdrHandle);
-   lseek(jmb->HdrHandle, 0, SEEK_SET);
-   if (hlen<MAXHDRINCORE) {
-      /* read all headers in core */
-      hdrbuf = (byte *)palloc(hlen);
+    if(hlen < MAXHDRINCORE)
+    {
+        /* read all headers in core */
+        hdrbuf = (byte *)palloc(hlen);
 
-      if ((dword)farread(jmb->HdrHandle, (byte far *)hdrbuf, hlen) != hlen) {
-         pfree(hdrbuf);
-         pfree(buf);
-         return 0;
-      } /* endif */
-      jmb->actmsg_read = 1;
-   } else
-      jmb->actmsg_read = 2;
-   allocated = jmb->HdrInfo.ActiveMsgs;
-   if (allocated > (dword)len/IDX_SIZE) allocated = (dword)len/IDX_SIZE;
-   if (allocated) {
-      jmb->actmsg = (JAMACTMSGptr)farmalloc(allocated * sizeof(JAMACTMSG));
-      if (jmb->actmsg == NULL) {
-         if (hdrbuf) pfree(hdrbuf);
-         pfree(buf);
-         return 0;
-      }
-   }
+        if((dword)farread(jmb->HdrHandle, (byte far *)hdrbuf, hlen) != hlen)
+        {
+            pfree(hdrbuf);
+            pfree(buf);
+            return 0;
+        } /* endif */
 
-   for (i = 0; (pbuf - buf) < len;) {
-      offset = get_dword(pbuf+4);
-      if (offset != 0xFFFFFFFFUL) {
-         if (offset+HDR_SIZE<=hlen) {
-            if (hdrbuf)
-               decode_hdr(hdrbuf+offset, &hbuf);
-            else {
-               lseek(jmb->HdrHandle, offset, SEEK_SET);
-               read_hdr(jmb->HdrHandle, &hbuf);
+        jmb->actmsg_read = 1;
+    }
+    else
+    {
+        jmb->actmsg_read = 2;
+    }
+
+    allocated = jmb->HdrInfo.ActiveMsgs;
+
+    if(allocated > (dword)len / IDX_SIZE)
+    {
+        allocated = (dword)len / IDX_SIZE;
+    }
+
+    if(allocated)
+    {
+        jmb->actmsg = (JAMACTMSGptr)farmalloc(allocated * sizeof(JAMACTMSG));
+
+        if(jmb->actmsg == NULL)
+        {
+            if(hdrbuf)
+            {
+                pfree(hdrbuf);
             }
-            if (!(hbuf.Attribute & JMSG_DELETED)) {
-               if (i >= allocated) {
-                  newptr = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*(allocated += 16));
-                  if (newptr == NULL) {
-                     pfree(jmb->actmsg);
-                     if (hdrbuf) pfree(hdrbuf);
-                     pfree(buf);
-                     return 0;
-                  }
-                  jmb->actmsg = newptr;
-               }
-               jmb->actmsg[i].IdxOffset = pbuf - buf;
-               jmb->actmsg[i].TrueMsg = offset;
-               jmb->actmsg[i].UserCRC = get_dword(pbuf);
-               memcpy(&(jmb->actmsg[i].hdr), &hbuf, sizeof(hbuf));
-               if (hdrbuf && offset+HDR_SIZE+jmb->actmsg[i].hdr.SubfieldLen<=hlen) {
-                  decode_subfield(hdrbuf+offset+HDR_SIZE, &(jmb->actmsg[i].subfield), &(jmb->actmsg[i].hdr.SubfieldLen));
-                  i++;
-               } else
-                  jmb->actmsg[i++].subfield = NULL;
+
+            pfree(buf);
+            return 0;
+        }
+    }
+
+    for(i = 0; (pbuf - buf) < len; )
+    {
+        offset = get_dword(pbuf + 4);
+
+        if(offset != 0xFFFFFFFFUL)
+        {
+            if(offset + HDR_SIZE <= hlen)
+            {
+                if(hdrbuf)
+                {
+                    decode_hdr(hdrbuf + offset, &hbuf);
+                }
+                else
+                {
+                    lseek(jmb->HdrHandle, offset, SEEK_SET);
+                    read_hdr(jmb->HdrHandle, &hbuf);
+                }
+
+                if(!(hbuf.Attribute & JMSG_DELETED))
+                {
+                    if(i >= allocated)
+                    {
+                        newptr =
+                            (JAMACTMSGptr)farrealloc(jmb->actmsg,
+                                                     sizeof(JAMACTMSG) * (allocated += 16));
+
+                        if(newptr == NULL)
+                        {
+                            pfree(jmb->actmsg);
+
+                            if(hdrbuf)
+                            {
+                                pfree(hdrbuf);
+                            }
+
+                            pfree(buf);
+                            return 0;
+                        }
+
+                        jmb->actmsg = newptr;
+                    }
+
+                    jmb->actmsg[i].IdxOffset = pbuf - buf;
+                    jmb->actmsg[i].TrueMsg   = offset;
+                    jmb->actmsg[i].UserCRC   = get_dword(pbuf);
+                    memcpy(&(jmb->actmsg[i].hdr), &hbuf, sizeof(hbuf));
+
+                    if(hdrbuf && offset + HDR_SIZE + jmb->actmsg[i].hdr.SubfieldLen <= hlen)
+                    {
+                        decode_subfield(hdrbuf + offset + HDR_SIZE, &(jmb->actmsg[i].subfield),
+                                        &(jmb->actmsg[i].hdr.SubfieldLen));
+                        i++;
+                    }
+                    else
+                    {
+                        jmb->actmsg[i++].subfield = NULL;
+                    }
+                } /* endif */
             } /* endif */
-         } /* endif */
-      } /* endif */
-      pbuf += 8;
-   } /* endfor */
+        } /* endif */
 
-   pfree(buf);
-   if (hdrbuf) pfree(hdrbuf);
+        pbuf += 8;
+    } /* endfor */
+    pfree(buf);
 
-   if (i != jmb->HdrInfo.ActiveMsgs) {
-      /* warning: database corrupted! */
-      jmb->HdrInfo.ActiveMsgs = i;
-      jmb->modified = 1;
-      if (i == 0) {
-         if (jmb->actmsg) {
-            pfree(jmb->actmsg);
-            jmb->actmsg = NULL;
-         }
-      } else if (i != allocated) {
-         newptr = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG)*i);
-         if (newptr) jmb->actmsg = newptr;
-      }
-   } /* endif */
+    if(hdrbuf)
+    {
+        pfree(hdrbuf);
+    }
 
-   return 1;
-}
+    if(i != jmb->HdrInfo.ActiveMsgs)
+    {
+        /* warning: database corrupted! */
+        jmb->HdrInfo.ActiveMsgs = i;
+        jmb->modified           = 1;
 
-int write_hdrinfo(int handle, JAMHDRINFO *HdrInfo)
+        if(i == 0)
+        {
+            if(jmb->actmsg)
+            {
+                pfree(jmb->actmsg);
+                jmb->actmsg = NULL;
+            }
+        }
+        else if(i != allocated)
+        {
+            newptr = (JAMACTMSGptr)farrealloc(jmb->actmsg, sizeof(JAMACTMSG) * i);
+
+            if(newptr)
+            {
+                jmb->actmsg = newptr;
+            }
+        }
+    } /* endif */
+
+    return 1;
+} /* read_allidx */
+
+int write_hdrinfo(int handle, JAMHDRINFO * HdrInfo)
 {
-   byte buf[HDRINFO_SIZE], *pbuf = buf;
+    byte buf[HDRINFO_SIZE], * pbuf = buf;
 
-   /* 04 bytes Signature */
-   memmove(pbuf, HdrInfo->Signature, (size_t)4);
-   pbuf += 4;
+    /* 04 bytes Signature */
+    memmove(pbuf, HdrInfo->Signature, (size_t)4);
+    pbuf += 4;
+    /* 04 bytes DateCreated */
+    put_dword(pbuf, HdrInfo->DateCreated);
+    pbuf += 4;
+    /* 04 bytes ModCounter */
+    put_dword(pbuf, HdrInfo->ModCounter);
+    pbuf += 4;
+    /* 04 bytes ActiveMsgs */
+    put_dword(pbuf, HdrInfo->ActiveMsgs);
+    pbuf += 4;
+    /* 04 bytes PasswordCRC */
+    put_dword(pbuf, HdrInfo->PasswordCRC);
+    pbuf += 4;
+    /* 04 bytes BaseMsgNum */
+    put_dword(pbuf, HdrInfo->BaseMsgNum);
+    pbuf += 4;
+    /* 04 bytes highwater */
+    put_dword(pbuf, HdrInfo->highwater);
+    pbuf += 4;
+    /* 996 bytes RSRVD */
+    memmove(pbuf, HdrInfo->RSRVD, (size_t)996);
+    pbuf += 996;
+    assert(pbuf - buf == HDRINFO_SIZE);
+    return farwrite(handle, (byte far *)buf, HDRINFO_SIZE) == HDRINFO_SIZE;
+} /* write_hdrinfo */
 
-   /* 04 bytes DateCreated */
-   put_dword(pbuf, HdrInfo->DateCreated);
-   pbuf += 4;
-
-   /* 04 bytes ModCounter */
-   put_dword(pbuf, HdrInfo->ModCounter);
-   pbuf += 4;
-
-   /* 04 bytes ActiveMsgs */
-   put_dword(pbuf, HdrInfo->ActiveMsgs);
-   pbuf += 4;
-
-   /* 04 bytes PasswordCRC */
-   put_dword(pbuf, HdrInfo->PasswordCRC);
-   pbuf += 4;
-
-   /* 04 bytes BaseMsgNum */
-   put_dword(pbuf, HdrInfo->BaseMsgNum);
-   pbuf += 4;
-
-   /* 04 bytes highwater */
-   put_dword(pbuf, HdrInfo->highwater);
-   pbuf += 4;
-
-   /* 996 bytes RSRVD */
-   memmove(pbuf, HdrInfo->RSRVD, (size_t)996);
-   pbuf += 996;
-
-   assert(pbuf - buf == HDRINFO_SIZE);
-
-   return (farwrite(handle, (byte far *)buf, HDRINFO_SIZE) == HDRINFO_SIZE);
-}
-
-int write_idx(int handle, JAMIDXREC *Idx)
+int write_idx(int handle, JAMIDXREC * Idx)
 {
-   byte buf[IDX_SIZE], *pbuf = buf;
+    byte buf[IDX_SIZE], * pbuf = buf;
 
-   /* 04 bytes UserCRC */
-   put_dword(pbuf, Idx->UserCRC);
-   pbuf += 4;
-
-   /* 04 bytes HdrOffset */
-   put_dword(pbuf, Idx->HdrOffset);
-   pbuf += 4;
-
-   assert(pbuf - buf == IDX_SIZE);
-
-   return (farwrite(handle, (byte far *)buf, IDX_SIZE) == IDX_SIZE);
+    /* 04 bytes UserCRC */
+    put_dword(pbuf, Idx->UserCRC);
+    pbuf += 4;
+    /* 04 bytes HdrOffset */
+    put_dword(pbuf, Idx->HdrOffset);
+    pbuf += 4;
+    assert(pbuf - buf == IDX_SIZE);
+    return farwrite(handle, (byte far *)buf, IDX_SIZE) == IDX_SIZE;
 }
 
-int write_hdr(int handle, JAMHDR *Hdr)
+int write_hdr(int handle, JAMHDR * Hdr)
 {
-   byte buf[HDR_SIZE], *pbuf = buf;
+    byte buf[HDR_SIZE], * pbuf = buf;
 
-   /* 04 bytes Signature */
-   memmove(pbuf, Hdr->Signature, (size_t)4);
-   pbuf += 4;
+    /* 04 bytes Signature */
+    memmove(pbuf, Hdr->Signature, (size_t)4);
+    pbuf += 4;
+    /* 02 bytes Revision */
+    put_word(pbuf, Hdr->Revision);
+    pbuf += 2;
+    /* 02 bytes ReservedWord */
+    put_word(pbuf, Hdr->ReservedWord);
+    pbuf += 2;
+    /* 04 bytes SubfieldLen */
+    put_dword(pbuf, Hdr->SubfieldLen);
+    pbuf += 4;
+    /* 04 bytes TimesRead */
+    put_dword(pbuf, Hdr->TimesRead);
+    pbuf += 4;
+    /* 04 bytes MsgIdCRC */
+    put_dword(pbuf, Hdr->MsgIdCRC);
+    pbuf += 4;
+    /* 04 bytes ReplyCRC */
+    put_dword(pbuf, Hdr->ReplyCRC);
+    pbuf += 4;
+    /* 04 bytes ReplyTo */
+    put_dword(pbuf, Hdr->ReplyTo);
+    pbuf += 4;
+    /* 04 bytes Reply1st */
+    put_dword(pbuf, Hdr->Reply1st);
+    pbuf += 4;
+    /* 04 bytes ReplyNext */
+    put_dword(pbuf, Hdr->ReplyNext);
+    pbuf += 4;
+    /* 04 bytes DateWritten */
+    put_dword(pbuf, Hdr->DateWritten);
+    pbuf += 4;
+    /* 04 bytes DateReceived */
+    put_dword(pbuf, Hdr->DateReceived);
+    pbuf += 4;
+    /* 04 bytes DateProcessed */
+    put_dword(pbuf, Hdr->DateProcessed);
+    pbuf += 4;
+    /* 04 bytes MsgNum */
+    put_dword(pbuf, Hdr->MsgNum);
+    pbuf += 4;
+    /* 04 bytes Attribute */
+    put_dword(pbuf, Hdr->Attribute);
+    pbuf += 4;
+    /* 04 bytes Attribute2 */
+    put_dword(pbuf, Hdr->Attribute2);
+    pbuf += 4;
+    /* 04 bytes TxtOffset */
+    put_dword(pbuf, Hdr->TxtOffset);
+    pbuf += 4;
+    /* 04 bytes TxtLen */
+    put_dword(pbuf, Hdr->TxtLen);
+    pbuf += 4;
+    /* 04 bytes PasswordCRC */
+    put_dword(pbuf, Hdr->PasswordCRC);
+    pbuf += 4;
+    /* 04 bytes Cost */
+    put_dword(pbuf, Hdr->Cost);
+    pbuf += 4;
+    assert(pbuf - buf == HDR_SIZE);
+    return farwrite(handle, (byte far *)buf, HDR_SIZE) == HDR_SIZE;
+} /* write_hdr */
 
-   /* 02 bytes Revision */
-   put_word(pbuf, Hdr->Revision);
-   pbuf += 2;
-
-   /* 02 bytes ReservedWord */
-   put_word(pbuf, Hdr->ReservedWord);
-   pbuf += 2;
-
-   /* 04 bytes SubfieldLen */
-   put_dword(pbuf, Hdr->SubfieldLen);
-   pbuf += 4;
-
-   /* 04 bytes TimesRead */
-   put_dword(pbuf, Hdr->TimesRead);
-   pbuf += 4;
-
-   /* 04 bytes MsgIdCRC */
-   put_dword(pbuf, Hdr->MsgIdCRC);
-   pbuf += 4;
-
-   /* 04 bytes ReplyCRC */
-   put_dword(pbuf, Hdr->ReplyCRC);
-   pbuf += 4;
-
-   /* 04 bytes ReplyTo */
-   put_dword(pbuf, Hdr->ReplyTo);
-   pbuf += 4;
-
-   /* 04 bytes Reply1st */
-   put_dword(pbuf, Hdr->Reply1st);
-   pbuf += 4;
-
-   /* 04 bytes ReplyNext */
-   put_dword(pbuf, Hdr->ReplyNext);
-   pbuf += 4;
-
-   /* 04 bytes DateWritten */
-   put_dword(pbuf, Hdr->DateWritten);
-   pbuf += 4;
-
-   /* 04 bytes DateReceived */
-   put_dword(pbuf, Hdr->DateReceived);
-   pbuf += 4;
-
-   /* 04 bytes DateProcessed */
-   put_dword(pbuf, Hdr->DateProcessed);
-   pbuf += 4;
-
-   /* 04 bytes MsgNum */
-   put_dword(pbuf, Hdr->MsgNum);
-   pbuf += 4;
-
-   /* 04 bytes Attribute */
-   put_dword(pbuf, Hdr->Attribute);
-   pbuf += 4;
-
-   /* 04 bytes Attribute2 */
-   put_dword(pbuf, Hdr->Attribute2);
-   pbuf += 4;
-
-   /* 04 bytes TxtOffset */
-   put_dword(pbuf, Hdr->TxtOffset);
-   pbuf += 4;
-
-   /* 04 bytes TxtLen */
-   put_dword(pbuf, Hdr->TxtLen);
-   pbuf += 4;
-
-   /* 04 bytes PasswordCRC */
-   put_dword(pbuf, Hdr->PasswordCRC);
-   pbuf += 4;
-
-   /* 04 bytes Cost */
-   put_dword(pbuf, Hdr->Cost);
-   pbuf += 4;
-
-   assert(pbuf - buf == HDR_SIZE);
-
-   return (farwrite(handle, (byte far *)buf, HDR_SIZE) == HDR_SIZE);
-}
-
-int write_subfield(int handle, JAMSUBFIELD2LISTptr *subfield, dword SubfieldLen)
+int write_subfield(int handle, JAMSUBFIELD2LISTptr * subfield, dword SubfieldLen)
 {
-   unsigned char *buf, *pbuf;
-   dword datlen;
-   int rc;
-   dword i;
-   JAMSUBFIELD2ptr subfieldNext;
+    unsigned char * buf, * pbuf;
+    dword datlen;
+    int rc;
+    dword i;
+    JAMSUBFIELD2ptr subfieldNext;
 
-   buf = (unsigned char*)palloc(SubfieldLen);
-   pbuf = buf;
-   subfieldNext = &(subfield[0]->subfield[0]);
-   for (i=0; i<subfield[0]->subfieldCount; i++, subfieldNext++) {
-      /* 02 bytes LoID */
-      put_word(pbuf, subfieldNext->LoID);
-      pbuf += 2;
-      /* 02 bytes HiID */
-      put_word(pbuf, subfieldNext->HiID);
-      pbuf += 2;
-      /* 04 bytes DatLen */
-      put_dword(pbuf, subfieldNext->DatLen);
+    buf          = (unsigned char *)palloc(SubfieldLen);
+    pbuf         = buf;
+    subfieldNext = &(subfield[0]->subfield[0]);
 
-      datlen = subfieldNext->DatLen;
-      pbuf += 4;
-      /* DatLen bytes Buffer */
-      memmove(pbuf, subfieldNext->Buffer, datlen);
-      pbuf += datlen;
-   } /* endwhile */
-   rc =((dword)farwrite(handle, (byte far *)buf, SubfieldLen) == SubfieldLen);
-
-   pfree(buf);
-
-   return rc;
-}
+    for(i = 0; i < subfield[0]->subfieldCount; i++, subfieldNext++)
+    {
+        /* 02 bytes LoID */
+        put_word(pbuf, subfieldNext->LoID);
+        pbuf += 2;
+        /* 02 bytes HiID */
+        put_word(pbuf, subfieldNext->HiID);
+        pbuf += 2;
+        /* 04 bytes DatLen */
+        put_dword(pbuf, subfieldNext->DatLen);
+        datlen = subfieldNext->DatLen;
+        pbuf  += 4;
+        /* DatLen bytes Buffer */
+        memmove(pbuf, subfieldNext->Buffer, datlen);
+        pbuf += datlen;
+    } /* endwhile */
+    rc = ((dword)farwrite(handle, (byte far *)buf, SubfieldLen) == SubfieldLen);
+    pfree(buf);
+    return rc;
+} /* write_subfield */
