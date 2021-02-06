@@ -231,6 +231,7 @@ static sword _XPENTRY SdmCloseArea(MSGA * mh)
 
         if(msgh != NULL)
         {
+            dword temp;
             Init_Xmsg(&msg);
             Get_Dos_Date((union stamp_combo *)&msg.date_arrived);
             Get_Dos_Date((union stamp_combo *)&msg.date_written);
@@ -245,8 +246,8 @@ static sword _XPENTRY SdmCloseArea(MSGA * mh)
             msg.orig.zone = msg.dest.zone = mi.def_zone;
             msg.replyto   = mh->high_water;
             msg.attr      = MSGPRIVATE | MSGREAD | MSGLOCAL | MSGSENT;
-            SdmWriteMsg(msgh, FALSE, &msg, msgbody, (dword)strlen((char *)msgbody) + 1,
-                        (dword)strlen((char *)msgbody) + 1, 0L, NULL);
+            temp = (dword)(strlen((char*)msgbody) + 1);
+            SdmWriteMsg(msgh, FALSE, &msg, msgbody, temp, temp, 0L, NULL);
             SdmCloseMsg(msgh);
         }
     }
