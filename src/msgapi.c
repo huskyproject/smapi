@@ -349,7 +349,7 @@ byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned * length)
 
     if(length)
     {
-        *length -= (size_t)(end - txt);
+        *length -= (unsigned int)(end - txt);
     }
 
     if(newtext)
@@ -370,7 +370,7 @@ byte * _XPENTRY GetCtrlToken(byte * where, byte * what)
         return NULL;
     }
 
-    len = strlen((char *)what);
+    len = (unsigned int)strlen((char *)what);
 
     do
     {
@@ -526,7 +526,7 @@ byte * _XPENTRY CvtCtrlToKludge(byte * ctrl)
 void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
 {
     byte * p;
-    unsigned int len = strlen((char *)what);
+    unsigned int len = (unsigned int)strlen((char *)what);
 
     for( ; ; )
     {
@@ -575,9 +575,9 @@ word _XPENTRY NumKludges(char * txt)
 
 /*  Return MSGAPI error text (string constant).
  */
-char * _XPENTRY strmerr(int msgapierr)
+char * _XPENTRY strmerr(int my_msgapierr)
 {
-    switch(msgapierr)
+    switch(my_msgapierr)
     {
         case MERR_NONE:
             return "No error";

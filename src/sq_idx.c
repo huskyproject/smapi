@@ -149,7 +149,7 @@ int _SquishBeginBuffer(HIDX hix)
 
     dwMsgs = hix->ha->num_msg;            /* Read all messages into memory */
     /* Find out how many records are in the file */
-    hix->lAllocatedRecords = lseek(HixSqd->ifd, 0L, SEEK_END);
+    hix->lAllocatedRecords = (long)lseek(HixSqd->ifd, 0L, SEEK_END);
 
     if(hix->lAllocatedRecords < 0)
     {
@@ -612,7 +612,7 @@ int _SquishEndBuffer(HIDX hix)
 
                 if(rc)
                 {
-                    if(write_sqidx(HixSqd->ifd, (hix->pss[i].psqi + j), size) != 1)
+                    if(write_sqidx(HixSqd->ifd, (hix->pss[i].psqi + j), (dword)size) != 1)
                     {
                         msgapierr = MERR_NODS;
                         rc        = FALSE;

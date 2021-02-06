@@ -965,7 +965,7 @@ static void decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * 
         assert(subfieldNext->Buffer <= (byte *)*subfield + subfield[0]->arraySize);
         pbuf += datlen;
     } /* endwhile */
-    *SubfieldLen = pbuf - buf;
+    *SubfieldLen = (dword)(pbuf - buf);
 } /* decode_subfield */
 
 int read_subfield(int handle, JAMSUBFIELD2LISTptr * subfield, dword * SubfieldLen)
@@ -995,7 +995,7 @@ int read_allidx(JAMBASEptr jmb)
     dword offset;
 
     lseek(jmb->IdxHandle, 0, SEEK_END);
-    len = tell(jmb->IdxHandle);
+    len = (int)tell(jmb->IdxHandle);
     lseek(jmb->IdxHandle, 0, SEEK_SET);
     buf  = (byte *)palloc(len);
     pbuf = buf;
@@ -1007,7 +1007,7 @@ int read_allidx(JAMBASEptr jmb)
     } /* endif */
 
     lseek(jmb->HdrHandle, 0, SEEK_END);
-    hlen = tell(jmb->HdrHandle);
+    hlen = (dword)tell(jmb->HdrHandle);
     lseek(jmb->HdrHandle, 0, SEEK_SET);
 
     if(hlen < MAXHDRINCORE)
@@ -1094,7 +1094,7 @@ int read_allidx(JAMBASEptr jmb)
                         jmb->actmsg = newptr;
                     }
 
-                    jmb->actmsg[i].IdxOffset = pbuf - buf;
+                    jmb->actmsg[i].IdxOffset = (dword)(pbuf - buf);
                     jmb->actmsg[i].TrueMsg   = offset;
                     jmb->actmsg[i].UserCRC   = get_dword(pbuf);
                     memcpy(&(jmb->actmsg[i].hdr), &hbuf, sizeof(hbuf));
