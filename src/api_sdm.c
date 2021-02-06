@@ -168,7 +168,7 @@ int SdmDeleteBase(char * name)
         return FALSE;
     }
 
-    temp = malloc(strlen(name) + 6);
+    temp = (char *)malloc(strlen(name) + 6);
 
     if(temp == NULL)
     {
@@ -183,7 +183,7 @@ int SdmDeleteBase(char * name)
     {
         do
         {
-            temp = malloc(strlen(name) + strlen(ff->ff_name) + 1);
+            temp = (char *)malloc(strlen(name) + strlen(ff->ff_name) + 1);
 
             if(temp == NULL)
             {
@@ -199,8 +199,14 @@ int SdmDeleteBase(char * name)
         FFindClose(ff);
     }
 
+    temp = (char*)malloc(strlen(name) + 10);
+    if (temp == NULL)
+    {
+        return FALSE;
+    }
     sprintf(temp, "%slastread", name);
     unlink(temp);
+    free(temp);
     rmdir(name);
     return TRUE; /* rmdir error is ok */
 } /* SdmDeleteBase */
