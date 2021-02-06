@@ -891,17 +891,18 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
 
                 if(Jmd->actmsg_read)
                 {
-                    Jmd->actmsg =
-                        (JAMACTMSGptr)farrealloc(Jmd->actmsg,
-                                                 sizeof(JAMACTMSG) * (jm->num_msg + 1));
-
-                    if(!Jmd->actmsg)
+                    JAMACTMSGptr tmp;
+                    tmp = (JAMACTMSGptr)farrealloc(Jmd->actmsg,
+                              sizeof(JAMACTMSG) * ((size_t)jm->num_msg + 1));
+                    if(!tmp)
                     {
                         freejamsubfield(subfieldNew);
                         free(onlytext);
+                        pfree(Jmd->actmsg);
                         msgapierr = MERR_NOMEM;
                         return -1;
                     }
+                    Jmd->actmsg = tmp;
 
                     Jmd->actmsg[jm->num_msg].IdxOffset = msgh->seek_idx;
                     Jmd->actmsg[jm->num_msg].TrueMsg   = msgh->seek_hdr;
