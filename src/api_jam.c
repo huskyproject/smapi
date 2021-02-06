@@ -1749,7 +1749,7 @@ static MSGH * Jam_OpenMsg(MSGA * jm, word mode, dword msgnum)
             }
             else
             {
-                lseek(Jmd->HdrHandle, Jmd->actmsg[msgnum - 1].TrueMsg + HDR_SIZE, SEEK_SET);
+                lseek(Jmd->HdrHandle, (size_t)(Jmd->actmsg[msgnum - 1].TrueMsg) + HDR_SIZE, SEEK_SET);
                 read_subfield(Jmd->HdrHandle, &(msgh->SubFieldPtr),
                               &(Jmd->actmsg[msgnum - 1].hdr.SubfieldLen));
             }
@@ -1858,7 +1858,7 @@ char * Jam_GetKludge(MSGA * jm, dword msgnum, word what)
 
     if(subf == NULL)
     {
-        lseek(Jmd->HdrHandle, Jmd->actmsg[msgnum - 1].TrueMsg + HDR_SIZE, SEEK_SET);
+        lseek(Jmd->HdrHandle, (size_t)(Jmd->actmsg[msgnum - 1].TrueMsg) + HDR_SIZE, SEEK_SET);
         read_subfield(Jmd->HdrHandle, &subf, &(Jmd->actmsg[msgnum - 1].hdr.SubfieldLen));
     }
 
@@ -1866,7 +1866,7 @@ char * Jam_GetKludge(MSGA * jm, dword msgnum, word what)
     {
         if(subfptr->LoID == what)
         {
-            res = palloc(subfptr->DatLen + 1);
+            res = palloc((size_t)(subfptr->DatLen) + 1);
 
             if(res == NULL)
             {
@@ -2936,8 +2936,8 @@ void DecodeSubf(MSGH * msgh)
         return;
     }
 
-    msgh->ctrl  = (unsigned char *)palloc(msgh->SubFieldPtr->arraySize + 65);
-    msgh->lctrl = (unsigned char *)palloc(msgh->SubFieldPtr->arraySize + 65);
+    msgh->ctrl  = (unsigned char *)palloc((size_t)(msgh->SubFieldPtr->arraySize) + 65);
+    msgh->lctrl = (unsigned char *)palloc((size_t)(msgh->SubFieldPtr->arraySize) + 65);
 
     if(!(msgh->ctrl && msgh->lctrl))
     {
@@ -3099,8 +3099,8 @@ void DecodeSubf(MSGH * msgh)
     msgh->lclen = (dword)(plctrl - (char *)msgh->lctrl);
     assert(msgh->clen < msgh->SubFieldPtr->arraySize + 65);
     assert(msgh->lclen < msgh->SubFieldPtr->arraySize + 65);
-    msgh->ctrl  = (unsigned char *)realloc(msgh->ctrl, msgh->clen + 1);
-    msgh->lctrl = (unsigned char *)realloc(msgh->lctrl, msgh->lclen + 1);
+    msgh->ctrl  = (unsigned char *)realloc(msgh->ctrl, (size_t)(msgh->clen) + 1);
+    msgh->lctrl = (unsigned char *)realloc(msgh->lctrl, (size_t)(msgh->lclen) + 1);
 
     if(!(msgh->ctrl && msgh->lctrl))
     {
