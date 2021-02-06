@@ -1713,6 +1713,7 @@ static MSGH * Jam_OpenMsg(MSGA * jm, word mode, dword msgnum)
         if(msgnum > jm->num_msg)
         {
             msgapierr = MERR_NOENT;
+            pfree(msgh);
             return NULL;
         }
     }
