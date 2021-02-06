@@ -436,16 +436,18 @@ static MSGH * _XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
 
         if((mh->num_msg + 1) >= Mhd->msgnum_len)
         {
+            unsigned int * temp;
             word msgnum_len_new = Mhd->msgnum_len + (word)SDM_BLOCK;
-            Mhd->msgnum = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
-
-            if(!Mhd->msgnum)
+            temp = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
+            if(!temp)
             {
+                pfree(Mhd->msgnum);
                 pfree(msgh);
                 close(handle);
                 msgapierr = MERR_NOMEM;
                 return NULL;
             }
+            Mhd->msgnum = temp;
 
             Mhd->msgnum_len = msgnum_len_new;
         }
