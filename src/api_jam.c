@@ -3293,7 +3293,7 @@ static dword _XPENTRY JamGetHash(HAREA mh, dword msgnum)
 
     if(JamReadMsg(msgh, &xmsg, 0L, 0L, NULL, 0L, NULL) != (dword) - 1)
     {
-        rc = SquishHash(xmsg.to) | (xmsg.attr & MSGREAD) ? 0x80000000l : 0;
+        rc = SquishHash(xmsg.to) | ((xmsg.attr & MSGREAD) ? 0x80000000l : 0);
     }
 
     JamCloseMsg(msgh);
