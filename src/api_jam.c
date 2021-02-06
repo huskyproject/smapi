@@ -72,7 +72,7 @@ static void freejamsubfield(JAMSUBFIELD2LIST * subfield)
 MSGA * MSGAPI JamOpenArea(byte * name, word mode, word type)
 {
     MSGA * jm = NULL;
-    unsigned long len;
+    size_t len;
 
     if(!name || !*name)
     {
@@ -142,7 +142,7 @@ MSGA * MSGAPI JamOpenArea(byte * name, word mode, word type)
 
     if(Jmd->HdrInfo.ActiveMsgs > len / IDX_SIZE)
     {
-        Jmd->HdrInfo.ActiveMsgs = len / IDX_SIZE;
+        Jmd->HdrInfo.ActiveMsgs = (dword)len / IDX_SIZE;
         Jmd->modified           = 1;
     }
 
@@ -610,7 +610,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
                 Jam_OpenTxtFile(MsghJm);
             }
 
-            lseek(MsghJm->TxtHandle, msgh->Hdr.TxtOffset + offset, SEEK_SET);
+            lseek(MsghJm->TxtHandle, (size_t)msgh->Hdr.TxtOffset + offset, SEEK_SET);
 
             if(bytes > msgh->Hdr.TxtLen - offset)
             {
@@ -737,7 +737,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
 
     if(clen && ctxt)
     {
-        x = strlen((char *)ctxt);
+        x = (dword)strlen((char *)ctxt);
 
         if(clen < x)
         {
@@ -821,12 +821,12 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                 lseek(Jmd->IdxHandle, 0, SEEK_END);
                 lseek(Jmd->HdrHandle, 0, SEEK_END);
                 lseek(Jmd->TxtHandle, 0, SEEK_END);
-                jamhdrNew.MsgNum    = Jmd->HdrInfo.BaseMsgNum + (tell(Jmd->IdxHandle) / IDX_SIZE);
-                msgh->seek_idx      = tell(Jmd->IdxHandle);
-                msgh->seek_hdr      = jamidxNew.HdrOffset = tell(Jmd->HdrHandle);
-                jamidxNew.UserCRC   = Jam_Crc32(msg->to, strlen((char *)(msg->to)));
-                jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
-                jamhdrNew.TxtLen    = strlen((char *)onlytext);
+                jamhdrNew.MsgNum    = Jmd->HdrInfo.BaseMsgNum + ((dword)tell(Jmd->IdxHandle) / IDX_SIZE);
+                msgh->seek_idx      = (dword)tell(Jmd->IdxHandle);
+                msgh->seek_hdr      = jamidxNew.HdrOffset = (dword)tell(Jmd->HdrHandle);
+                jamidxNew.UserCRC   = Jam_Crc32(msg->to, (dword)strlen((char *)(msg->to)));
+                jamhdrNew.TxtOffset = (dword)tell(Jmd->TxtHandle);
+                jamhdrNew.TxtLen    = (dword)strlen((char *)onlytext);
                 msgh->bytes_written = (dword)farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
 
                 if(msgh->bytes_written != jamhdrNew.TxtLen)
@@ -837,7 +837,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                     return -1;
                 }
 
-                msgh->cur_pos = tell(Jmd->TxtHandle);
+                msgh->cur_pos = (dword)tell(Jmd->TxtHandle);
 
                 if(!write_hdr(Jmd->HdrHandle, &jamhdrNew))
                 {
@@ -931,15 +931,15 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                 msgh->Hdr.TxtLen     = 0;
                 msgh->Hdr.Attribute |= JMSG_DELETED;
                 lseek(Jmd->HdrHandle, 0, SEEK_END);
-                jamidxNew.HdrOffset = tell(Jmd->HdrHandle);
+                jamidxNew.HdrOffset = (dword)tell(Jmd->HdrHandle);
                 jamhdrNew.MsgNum    = msgh->Hdr.MsgNum;
-                jamidxNew.UserCRC   = Jam_Crc32(msg->to, strlen((char *)(msg->to)));
+                jamidxNew.UserCRC   = Jam_Crc32(msg->to, (dword)strlen((char *)(msg->to)));
                 lseek(Jmd->TxtHandle, 0, SEEK_END);
-                jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
-                jamhdrNew.TxtLen    = strlen((char *)onlytext);
+                jamhdrNew.TxtOffset = (dword)tell(Jmd->TxtHandle);
+                jamhdrNew.TxtLen    = (dword)strlen((char *)onlytext);
                 msgh->bytes_written = (dword)farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
-                msgh->cur_pos       = tell(Jmd->TxtHandle);
-                lseek(Jmd->TxtHandle, jamhdrNew.TxtOffset + totlen - 1, SEEK_SET);
+                msgh->cur_pos       = (dword)tell(Jmd->TxtHandle);
+                lseek(Jmd->TxtHandle, (size_t)jamhdrNew.TxtOffset + totlen - 1, SEEK_SET);
                 farwrite(Jmd->TxtHandle, &ch, 1);
                 write_hdr(Jmd->HdrHandle, &jamhdrNew);
                 write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
@@ -984,7 +984,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
 
         if(msg)
         {
-            jamidxNew.UserCRC = Jam_Crc32(msg->to, strlen((char *)(msg->to)));
+            jamidxNew.UserCRC = Jam_Crc32(msg->to, (dword)strlen((char *)(msg->to)));
         }
         else
         {
@@ -999,8 +999,8 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
             }
 
             lseek(Jmd->TxtHandle, 0, SEEK_END);
-            jamhdrNew.TxtOffset = tell(Jmd->TxtHandle);
-            jamhdrNew.TxtLen    = strlen((char *)onlytext);
+            jamhdrNew.TxtOffset = (dword)tell(Jmd->TxtHandle);
+            jamhdrNew.TxtLen    = (dword)strlen((char *)onlytext);
             farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
         } /* endif */
 
@@ -1011,7 +1011,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
             lseek(Jmd->HdrHandle, msgh->seek_hdr, SEEK_SET);
             write_hdr(Jmd->HdrHandle, &(msgh->Hdr));
             lseek(Jmd->HdrHandle, 0, SEEK_END);
-            msgh->seek_hdr = tell(Jmd->HdrHandle);
+            msgh->seek_hdr = (dword)tell(Jmd->HdrHandle);
         }
 
         jamhdrNew.MsgNum    = msgh->Hdr.MsgNum;
@@ -1494,7 +1494,7 @@ int Jam_OpenFile(JAMBASE * jambase, word * mode, mode_t permissions)
         return 0;
     }
 
-    x   = strlen((char *)(jambase->BaseName)) + 5;
+    x   = (dword)strlen((char *)(jambase->BaseName)) + 5;
     hdr = (char *)palloc(x);
     idx = (char *)palloc(x);
     txt = (char *)palloc(x);
@@ -1525,7 +1525,7 @@ int Jam_OpenFile(JAMBASE * jambase, word * mode, mode_t permissions)
          */jambase->LrdHandle = 0;
         memset(&(jambase->HdrInfo), '\0', sizeof(JAMHDRINFO));
         strcpy((char *)(jambase->HdrInfo.Signature), HEADERSIGNATURE);
-        jambase->HdrInfo.DateCreated = time(NULL) + gettz();
+        jambase->HdrInfo.DateCreated = (dword)(time(NULL) + gettz());
         jambase->HdrInfo.ModCounter  = 1;
         jambase->HdrInfo.PasswordCRC = 0xffffffffUL;
         jambase->HdrInfo.BaseMsgNum  = 1;
@@ -1574,7 +1574,7 @@ int Jam_OpenFile(JAMBASE * jambase, word * mode, mode_t permissions)
 
         memset(&(jambase->HdrInfo), '\0', sizeof(JAMHDRINFO));
         strcpy((char *)(jambase->HdrInfo.Signature), HEADERSIGNATURE);
-        jambase->HdrInfo.DateCreated = time(NULL) + gettz();
+        jambase->HdrInfo.DateCreated = (dword)(time(NULL) + gettz());
         jambase->HdrInfo.ModCounter  = 1;
         jambase->HdrInfo.PasswordCRC = 0xffffffffUL;
         jambase->HdrInfo.BaseMsgNum  = 1;
@@ -2000,7 +2000,7 @@ dword Jam_HighMsg(JAMBASEptr jambase)
 
     msgapierr = MERR_NONE;
     lseek(jambase->IdxHandle, 0, SEEK_END);
-    highmsg = tell(jambase->IdxHandle);
+    highmsg = (dword)tell(jambase->IdxHandle);
     return highmsg / IDX_SIZE;
 }
 
@@ -2432,7 +2432,7 @@ static int StrToSubfield(const unsigned char * str, dword lstr, dword * len, JAM
     } /* switch */
     subf->LoID   = subtypes;
     subf->HiID   = 0;
-    subf->DatLen = lstr - (kludge - str);
+    subf->DatLen = lstr - (dword)(kludge - str);
     memcpy(subf->Buffer, kludge, subf->DatLen);
     subf->Buffer[subf->DatLen] = '\0';
 
@@ -2468,7 +2468,7 @@ static int NETADDRtoSubf(NETADDR addr, dword * len, word opt, JAMSUBFIELD2ptr su
         sprintf((char *)(subf->Buffer), "%d:%d/%d", addr.zone, addr.net, addr.node);
     } /* endif */
 
-    subf->DatLen = strlen((char *)(subf->Buffer));
+    subf->DatLen = (dword)strlen((char *)(subf->Buffer));
 
     if(len)
     {
@@ -2494,7 +2494,7 @@ static int FromToSubjTOSubf(word jamsfld, unsigned char * txt, dword * len, JAMS
 
     if(txt)
     {
-        memmove(subf->Buffer, txt, subf->DatLen = strlen((char *)txt));
+        memmove(subf->Buffer, txt, subf->DatLen = (dword)strlen((char *)txt));
     }
     else
     {
@@ -2563,16 +2563,16 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH * msgh,
         /* save arrived date for sqpack */
         ptm = &stm;
         ptm = DosDate_to_TmDate((SCOMBO *)(&(msg->date_arrived)), ptm);
-        jamhdr->DateProcessed = mktime(ptm) + gettz();
+        jamhdr->DateProcessed = (dword)(mktime(ptm) + gettz());
     }
     else
     {
-        jamhdr->DateProcessed = time(NULL) + gettz();
+        jamhdr->DateProcessed = (dword)(time(NULL) + gettz());
     }
 
     ptm = &stm;
     ptm = DosDate_to_TmDate((SCOMBO *)(&(msg->date_written)), ptm);
-    jamhdr->DateWritten = mktime(ptm) + gettz();
+    jamhdr->DateWritten = (dword)(mktime(ptm) + gettz());
     sublen = 0;
 
     /* From Name */
@@ -2741,7 +2741,7 @@ static void MSGAPI ConvertCtrlToSubf(JAMHDRptr jamhdr,
     {
         if(*ptr == '\0' || len == clen || *ptr == '\001')
         {
-            if(*ctxt && *ctxt != '\001' && StrToSubfield(ctxt, ptr - ctxt, &i, SubField))
+            if(*ctxt && *ctxt != '\001' && StrToSubfield(ctxt, (dword)(ptr - ctxt), &i, SubField))
             {
                 SubField[1].Buffer   = SubField->Buffer + SubField->DatLen + 1;
                 jamhdr->SubfieldLen += i;
@@ -2824,7 +2824,7 @@ unsigned char * DelimText(JAMHDRptr jamhdr,
                 }
 
                 i++;
-                len += (ptr - first);
+                len += (dword)(ptr - first);
             }
         }
         resize_subfields(subfield,
@@ -2842,7 +2842,7 @@ unsigned char * DelimText(JAMHDRptr jamhdr,
                 *ptr = '\0';
             }
 
-            firstlen = ptr ? (dword)(ptr - first) : strlen((char *)first);
+            firstlen = ptr ? (dword)(ptr - first) : (dword)strlen((char *)first);
 
             if((firstlen > 9 && strncmp((char *)first, "SEEN-BY: ", 9) == 0) || *first == '\001')
             {
@@ -3094,8 +3094,8 @@ void DecodeSubf(MSGH * msgh)
         }
     } /* endwhile */
 
-    msgh->clen  = pctrl - (char *)msgh->ctrl;
-    msgh->lclen = plctrl - (char *)msgh->lctrl;
+    msgh->clen  = (dword)(pctrl - (char *)msgh->ctrl);
+    msgh->lclen = (dword)(plctrl - (char *)msgh->lctrl);
     assert(msgh->clen < msgh->SubFieldPtr->arraySize + 65);
     assert(msgh->lclen < msgh->SubFieldPtr->arraySize + 65);
     msgh->ctrl  = (unsigned char *)realloc(msgh->ctrl, msgh->clen + 1);
