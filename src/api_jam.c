@@ -140,7 +140,7 @@ MSGA * MSGAPI JamOpenArea(byte * name, word mode, word type)
     lseek(Jmd->IdxHandle, 0, SEEK_END);
     len = tell(Jmd->IdxHandle);
 
-    if(Jmd->HdrInfo.ActiveMsgs > len / IDX_SIZE)
+    if(Jmd->HdrInfo.ActiveMsgs > len / IDX_SIZE) //-V104
     {
         Jmd->HdrInfo.ActiveMsgs = (dword)len / IDX_SIZE;
         Jmd->modified           = 1;
@@ -536,7 +536,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
 
 /*      } */ /* endif */
         {
-            const time_t c_time = msgh->Hdr.DateWritten;
+            const time_t c_time = msgh->Hdr.DateWritten; //-V101
             s_time = gmtime(&c_time);
         }
         scombo = (SCOMBO *)(&(msg->date_written));
@@ -546,7 +546,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
 
         if(msgh->Hdr.DateProcessed)
         {
-            const time_t c_time = msgh->Hdr.DateProcessed;
+            const time_t c_time = msgh->Hdr.DateProcessed; //-V101
             s_time = gmtime(&c_time);
             scombo = (SCOMBO *)(&(msg->date_arrived));
             scombo = TmDate_to_DosDate(s_time, scombo);
@@ -590,10 +590,6 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
                 if(offset < bytes)
                 {
                     bytesread = bytes - offset;
-                }
-                else
-                {
-                    bytesread = 0;
                 }
 
                 strncpy((char *)text, (char *)(msgh->lctrl + offset), bytesread);
