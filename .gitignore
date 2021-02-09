@@ -7,4 +7,5 @@ libsmapi.so.2.?.*
 *.o
 *.obj
 *.dsw
-
+*.bak
+*.vcxproj.user
