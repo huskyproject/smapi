@@ -472,8 +472,8 @@ static MSGH * _XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
              */
             if((dword)Mhd->msgnum[msgnum - 1] != msguid)
             {
-                memmove(Mhd->msgnum + msgnum, Mhd->msgnum + msgnum - 1,
-                        ((size_t)mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
+                memmove(Mhd->msgnum + msgnum, Mhd->msgnum + msgnum - 1, //-V104
+                        ((size_t)mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0])); //-V104
                 Mhd->msgnum[msgnum - 1] = (word)msguid;
                 mh->num_msg++;
             }
@@ -581,7 +581,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh,
      *  header, read a block anyway.  We need to scan for kludge lines,
      *  to pick out the appropriate zone/point info.)
      */
-    if(msgh->ctrl == NULL && ((msg || ctxt || text) || (msg || ctxt || text) == 0))
+    if(msgh->ctrl == NULL && ((msg || ctxt || text) || (msg || ctxt || text) == 0)) //-V560
     {
         need_ctrl = TRUE;
     }
