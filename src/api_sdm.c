@@ -866,6 +866,7 @@ static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum)
     return 0;
 } /* SdmKillMsg */
 
+/* This function is never used */
 static sword _XPENTRY SdmLock(MSGA * mh)
 {
     if(InvalidMh(mh))
@@ -877,7 +878,8 @@ static sword _XPENTRY SdmLock(MSGA * mh)
     return 0;
 }
 
-static sword _XPENTRY SdmUnlock(MSGA * mh)
+/* This function is never used */
+static sword _XPENTRY SdmUnlock(MSGA * mh) //-V524
 {
     if(InvalidMh(mh))
     {
