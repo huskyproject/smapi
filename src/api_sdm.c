@@ -823,8 +823,8 @@ static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum)
     msguid = SdmMsgnToUid(mh, msgnum);
 
     /* Remove the message number from our private index */
-    memmove(Mhd->msgnum + msgnum - 1, Mhd->msgnum + msgnum,
-            (int)(mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
+    memmove(Mhd->msgnum + msgnum - 1, Mhd->msgnum + msgnum, //-V104
+            (size_t)(mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
     /* If we couldn't find it, return an error message */
     sprintf((char *)temp, (char *)sd_msg, Mhd->base, (unsigned int)msguid);
 
@@ -1190,17 +1190,17 @@ static sword near _SdmRescanArea(MSGA * mh)
 
             if(mn >= Mhd->msgnum_len)
             {
-                unsigned int * temp;
+                unsigned int * tmp;
                 word msgnum_len_new = Mhd->msgnum_len + (word)SDM_BLOCK;
-                temp = (unsigned int *)realloc(Mhd->msgnum,
+                tmp = (unsigned int *)realloc(Mhd->msgnum,
                                                msgnum_len_new * sizeof(unsigned));
-                if(!temp)
+                if(!tmp)
                 {
                     pfree(Mhd->msgnum);
                     msgapierr = MERR_NOMEM;
                     return FALSE;
                 }
-                Mhd->msgnum = temp;
+                Mhd->msgnum = tmp;
 
                 Mhd->msgnum_len = msgnum_len_new;
             }
