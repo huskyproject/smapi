@@ -1188,14 +1188,17 @@ static sword near _SdmRescanArea(MSGA * mh)
 
             if(mn >= Mhd->msgnum_len)
             {
+                unsigned int * temp;
                 word msgnum_len_new = Mhd->msgnum_len + (word)SDM_BLOCK;
-                Mhd->msgnum = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
-
-                if(!Mhd->msgnum)
+                temp = (unsigned int *)realloc(Mhd->msgnum,
+                                               msgnum_len_new * sizeof(unsigned));
+                if(!temp)
                 {
+                    pfree(Mhd->msgnum);
                     msgapierr = MERR_NOMEM;
                     return FALSE;
                 }
+                Mhd->msgnum = temp;
 
                 Mhd->msgnum_len = msgnum_len_new;
             }
