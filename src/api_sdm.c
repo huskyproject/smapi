@@ -601,7 +601,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh,
     {
         struct stat st;
         fstat(msgh->fd, &st);
-        text = fake_msgbuf = palloc(st.st_size - OMSG_SIZE + 1);
+        text = fake_msgbuf = (byte *)palloc((size_t)st.st_size - OMSG_SIZE + 1);
 
         if(text == NULL)
         {
@@ -652,7 +652,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh,
             msgh->clen         = (dword)strlen((char *)msgh->ctrl) + 1;
             msgh->msgtxt_start = (dword)(newtext - text);
             /* Shift back the text buffer to counter absence of ^a strings */
-            memmove(text, newtext, (size_t)(bytes - (newtext - text)));
+            memmove(text, newtext, (size_t)((ptrdiff_t)bytes - (newtext - text)));
             got -= (dword)(msgh->clen - 1);
         }
     }
