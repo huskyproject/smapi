@@ -543,7 +543,7 @@ void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
             continue;
         }
 
-        if(strlen((char *)ctrl + 1) < len)
+        if(strlen((char *)ctrl + 1) < (size_t)len)
         {
             return;
         }

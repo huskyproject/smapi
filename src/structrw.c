@@ -950,7 +950,7 @@ static void decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * 
         pbuf  += 4;
         subfield[0]->subfieldCount++;
 
-        if(*SubfieldLen - (pbuf - buf) < datlen)
+        if((size_t)*SubfieldLen - (pbuf - buf) < (size_t)datlen)
         {
             break;
         }

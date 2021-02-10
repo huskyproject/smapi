@@ -140,7 +140,7 @@ MSGA * MSGAPI JamOpenArea(byte * name, word mode, word type)
     lseek(Jmd->IdxHandle, 0, SEEK_END);
     len = tell(Jmd->IdxHandle);
 
-    if(Jmd->HdrInfo.ActiveMsgs > len / IDX_SIZE) //-V104
+    if(Jmd->HdrInfo.ActiveMsgs > len / IDX_SIZE)
     {
         Jmd->HdrInfo.ActiveMsgs = (dword)len / IDX_SIZE;
         Jmd->modified           = 1;
@@ -592,7 +592,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
                     bytesread = bytes - offset;
                 }
 
-                strncpy((char *)text, (char *)(msgh->lctrl + offset), bytesread);
+                strncpy((char *)text, (char *)(msgh->lctrl + offset), (size_t)bytesread);
             }
             else
             {} /* endif */
@@ -627,7 +627,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
                     bytes = msgh->lclen;
                 }
 
-                strncpy((char *)(text + bytesread), (char *)(msgh->lctrl), bytes);
+                strncpy((char *)(text + bytesread), (char *)(msgh->lctrl), (size_t)bytes);
                 bytesread += bytes;
             }
             else
@@ -649,7 +649,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
             clen = msgh->clen;
         }
 
-        strncpy((char *)(ctxt), (char *)(msgh->ctrl), clen);
+        strncpy((char *)(ctxt), (char *)(msgh->ctrl), (size_t)clen);
         ctxt[clen] = '\0';
     }
 
@@ -777,13 +777,13 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
 
     if(textlen && text)
     {
-        onlytext = DelimText(&jamhdrNew, &subfieldNew, text, textlen);
+        onlytext = DelimText(&jamhdrNew, &subfieldNew, text, (size_t)textlen);
     }
     else
     {
         if(msgh->mode != MOPEN_CREATE)
         {
-            DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl, msgh->lclen);
+            DelimText(&jamhdrNew, &subfieldNew, msgh->lctrl, (size_t)(msgh->lclen));
             jamhdrNew.TxtOffset = msgh->Hdr.TxtOffset;
             jamhdrNew.TxtLen    = msgh->Hdr.TxtLen;
         }
@@ -936,7 +936,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                 jamhdrNew.TxtLen    = (dword)strlen((char *)onlytext);
                 msgh->bytes_written = (dword)farwrite(Jmd->TxtHandle, onlytext, jamhdrNew.TxtLen);
                 msgh->cur_pos       = (dword)tell(Jmd->TxtHandle);
-                lseek(Jmd->TxtHandle, (size_t)jamhdrNew.TxtOffset + totlen - 1, SEEK_SET);
+                lseek(Jmd->TxtHandle, (size_t)jamhdrNew.TxtOffset + (size_t)(totlen - 1), SEEK_SET);
                 farwrite(Jmd->TxtHandle, &ch, 1);
                 write_hdr(Jmd->HdrHandle, &jamhdrNew);
                 write_subfield(Jmd->HdrHandle, &subfieldNew, jamhdrNew.SubfieldLen);
@@ -1492,9 +1492,9 @@ int Jam_OpenFile(JAMBASE * jambase, word * mode, mode_t permissions)
     }
 
     x   = (dword)strlen((char *)(jambase->BaseName)) + 5;
-    hdr = (char *)palloc(x);
-    idx = (char *)palloc(x);
-    txt = (char *)palloc(x);
+    hdr = (char *)palloc((size_t)x);
+    idx = (char *)palloc((size_t)x);
+    txt = (char *)palloc((size_t)x);
 
 /*   lrd = (char*) palloc(x);*/
     if(!(hdr && idx && txt /*&& lrd*/))
@@ -1551,7 +1551,7 @@ int Jam_OpenFile(JAMBASE * jambase, word * mode, mode_t permissions)
         jambase->HdrHandle = opencreatefilejm(hdr, fop_cpb, permissions);
         jambase->TxtHandle = openfilejm(txt, fop_cpb, permissions);
         jambase->IdxHandle = openfilejm(idx, fop_cpb, permissions);
- 
+
         if(jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1)
         {
             Jam_CloseFile(jambase);
@@ -2671,7 +2671,7 @@ static void resize_subfields(JAMSUBFIELD2LISTptr * sflist, dword newcount, dword
     new_list->arraySize     = len;
     new_list->subfieldCount = old_list->subfieldCount;
     new_buffer      = (byte *)&(new_list->subfield[newcount]);
-    new_buffer_size = new_list->arraySize - (new_buffer - (byte *)new_list);
+    new_buffer_size = (size_t)(new_list->arraySize) - (size_t)(new_buffer - (byte *)new_list);
     assert(new_buffer_size >= old_buffer_size);
 
     if(old_list->subfieldCount > 0)

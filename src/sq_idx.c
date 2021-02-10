@@ -138,7 +138,7 @@ int _SquishBeginBuffer(HIDX hix)
 
     hix->cSeg = (int)(hix->ha->num_msg / SEGMENT_SIZE) + 1;
     /* Allocate memory for the array of segments */
-    hix->pss = palloc(sizeof(SQIDXSEG) * (unsigned)hix->cSeg);
+    hix->pss = palloc(sizeof(SQIDXSEG) * (size_t)hix->cSeg);
 
     if(hix->pss == NULL)
     {
