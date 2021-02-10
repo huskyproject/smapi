@@ -472,8 +472,8 @@ static MSGH * _XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
              */
             if((dword)Mhd->msgnum[msgnum - 1] != msguid)
             {
-                memmove(Mhd->msgnum + msgnum, Mhd->msgnum + msgnum - 1, //-V104
-                        ((size_t)mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0])); //-V104
+                memmove(Mhd->msgnum + msgnum, Mhd->msgnum + msgnum - 1,
+                        ((size_t)mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
                 Mhd->msgnum[msgnum - 1] = (word)msguid;
                 mh->num_msg++;
             }
@@ -823,7 +823,7 @@ static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum)
     msguid = SdmMsgnToUid(mh, msgnum);
 
     /* Remove the message number from our private index */
-    memmove(Mhd->msgnum + msgnum - 1, Mhd->msgnum + msgnum, //-V104
+    memmove(Mhd->msgnum + msgnum - 1, Mhd->msgnum + msgnum,
             (size_t)(mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
     /* If we couldn't find it, return an error message */
     sprintf((char *)temp, (char *)sd_msg, Mhd->base, (unsigned int)msguid);
