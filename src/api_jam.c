@@ -2927,8 +2927,8 @@ void DecodeSubf(MSGH * msgh)
         return;
     }
 
-    msgh->ctrl  = (unsigned char *)palloc((size_t)(msgh->SubFieldPtr->arraySize) + 65);
-    msgh->lctrl = (unsigned char *)palloc((size_t)(msgh->SubFieldPtr->arraySize) + 65);
+    msgh->ctrl  = (byte *)palloc((size_t)(msgh->SubFieldPtr->arraySize) + 65);
+    msgh->lctrl = (byte *)palloc((size_t)(msgh->SubFieldPtr->arraySize) + 65);
 
     if(!(msgh->ctrl && msgh->lctrl))
     {
@@ -3058,8 +3058,8 @@ void DecodeSubf(MSGH * msgh)
         }
         else if(SubField->LoID == JAMSFLD_FTSKLUDGE)
         {
-            if(strncasecmp((char *)(SubField->Buffer), "Via",
-                           3) == 0 || strncasecmp((char *)(SubField->Buffer), "Recd", 4) == 0)
+            if(strncasecmp((char *)(SubField->Buffer), "Via",  3) == 0 ||
+               strncasecmp((char *)(SubField->Buffer), "Recd", 4) == 0)
             {
                 addkludge(&plctrl, "\001", (char *)(SubField->Buffer), "\r", SubField->DatLen);
             }
@@ -3090,13 +3090,26 @@ void DecodeSubf(MSGH * msgh)
     msgh->lclen = (dword)(plctrl - (char *)msgh->lctrl);
     assert(msgh->clen < msgh->SubFieldPtr->arraySize + 65);
     assert(msgh->lclen < msgh->SubFieldPtr->arraySize + 65);
-    msgh->ctrl  = (unsigned char *)realloc(msgh->ctrl, (size_t)(msgh->clen) + 1);
-    msgh->lctrl = (unsigned char *)realloc(msgh->lctrl, (size_t)(msgh->lclen) + 1);
-
-    if(!(msgh->ctrl && msgh->lctrl))
     {
-        msgapierr = MERR_NOMEM;
-        return;
+        byte * tmp1;
+        tmp1 = (byte *)realloc(msgh->ctrl, (size_t)(msgh->clen) + 1);
+        if(!tmp1)
+        {
+            pfree(msgh->ctrl);
+            pfree(msgh->lctrl);
+            msgapierr = MERR_NOMEM;
+            return;
+        }
+        msgh->ctrl = tmp1;
+        tmp1 = (byte *)realloc(msgh->lctrl, (size_t)(msgh->lclen) + 1);
+        if(!tmp1)
+        {
+            pfree(msgh->ctrl);
+            pfree(msgh->lctrl);
+            msgapierr = MERR_NOMEM;
+            return;
+        }
+        msgh->lctrl = tmp1;
     }
 
     msgapierr = MERR_NONE;
