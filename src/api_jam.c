@@ -1512,14 +1512,12 @@ int Jam_OpenFile(JAMBASE * jambase, word * mode, mode_t permissions)
     sprintf(txt, "%s%s", jambase->BaseName, EXT_TXTFILE);
     sprintf(idx, "%s%s", jambase->BaseName, EXT_IDXFILE);
 
-/*   sprintf(lrd, "%s%s", jambase->BaseName, EXT_LRDFILE);*/
     if(*mode == MSGAREA_CREATE)
     {
         jambase->HdrHandle = opencreatefilejm(hdr, fop_wpb, permissions);
         jambase->TxtHandle = openfilejm(txt, fop_wpb, permissions);
         jambase->IdxHandle = openfilejm(idx, fop_wpb, permissions);
-        /* jambase->LrdHandle = openfilejm(lrd, fop_wpb, permissions);
-         */jambase->LrdHandle = 0;
+        jambase->LrdHandle = 0;
         memset(&(jambase->HdrInfo), '\0', sizeof(JAMHDRINFO));
         strcpy((char *)(jambase->HdrInfo.Signature), HEADERSIGNATURE);
         jambase->HdrInfo.DateCreated = (dword)(time(NULL) + gettz());
@@ -1531,11 +1529,9 @@ int Jam_OpenFile(JAMBASE * jambase, word * mode, mode_t permissions)
     else
     {
         jambase->HdrHandle = openfilejm(hdr, fop_rpb, permissions);
-        /* jambase->TxtHandle = openfilejm(txt, fop_rpb, permissions);
-         */jambase->TxtHandle = 0;
+        jambase->TxtHandle = 0;
         jambase->IdxHandle = openfilejm(idx, fop_rpb, permissions);
-        /* jambase->LrdHandle = openfilejm(lrd, fop_rpb, permissions);
-         */jambase->LrdHandle = 0;
+        jambase->LrdHandle = 0;
     } /* endif */
 
     if(jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1)
@@ -1555,9 +1551,7 @@ int Jam_OpenFile(JAMBASE * jambase, word * mode, mode_t permissions)
         jambase->HdrHandle = opencreatefilejm(hdr, fop_cpb, permissions);
         jambase->TxtHandle = openfilejm(txt, fop_cpb, permissions);
         jambase->IdxHandle = openfilejm(idx, fop_cpb, permissions);
-        /* jambase->LrdHandle = openfilejm(lrd, fop_cpb, permissions);
-         */jambase->LrdHandle = 0;
-
+ 
         if(jambase->HdrHandle == -1 || jambase->TxtHandle == -1 || jambase->IdxHandle == -1)
         {
             Jam_CloseFile(jambase);
