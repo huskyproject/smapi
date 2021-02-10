@@ -2864,7 +2864,7 @@ unsigned char * DelimText(JAMHDRptr jamhdr,
             }
             else
             {
-                assert((size_t)((curtext - onlytext) + firstlen + 1) <= textlen);
+                assert((size_t)firstlen + 1 <= textlen);
                 strcpy((char *)curtext, (char *)first);
                 curtext   += firstlen;
                 *curtext++ = '\r';
