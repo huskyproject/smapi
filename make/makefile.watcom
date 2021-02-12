@@ -34,6 +34,7 @@ OBJS=structrw.obj sq_kill.obj sq_idx.obj sq_read.obj msgapi.obj sq_help.obj &
   sq_hash.obj sq_msg.obj sq_uid.obj
 
 {$(SRC_DIR)}.c.obj:
+	@%erase $(TARGET)
 	$(CC) $(CFLAGS) $(INC) -fo=$@ -c $<
 
 $(TARGET): $(OBJS)
