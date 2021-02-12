@@ -163,7 +163,7 @@ static unsigned near _SquishUnlinkBaseFiles(byte * szName)
     char szFile[PATHLEN];
     unsigned rc = TRUE;
 
-    if(!szName || (szName && (strlen((char *)szName) + 5 > PATHLEN)))
+    if(!szName || (strlen((char *)szName) + 5 > PATHLEN))
     {
         return FALSE;
     }
