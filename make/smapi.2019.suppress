@@ -1,0 +1,298 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="SuppressVersion">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CurrentVersion" type="xs:int" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="smapi">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="FileName" type="xs:string" default="" />
+                <xs:element name="ErrorCode" type="xs:string" default="" />
+                <xs:element name="Message" type="xs:string" default="" />
+                <xs:element name="CodePrev" type="xs:unsignedInt" default="0" />
+                <xs:element name="CodeCurrent" type="xs:unsignedInt" default="0" />
+                <xs:element name="CodeNext" type="xs:unsignedInt" default="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+      <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//smapi" />
+        <xs:field xpath="FileName" />
+        <xs:field xpath="ErrorCode" />
+        <xs:field xpath="Message" />
+        <xs:field xpath="CodePrev" />
+        <xs:field xpath="CodeCurrent" />
+        <xs:field xpath="CodeNext" />
+      </xs:unique>
+    </xs:element>
+  </xs:schema>
+  <SuppressVersion>
+    <CurrentVersion>2</CurrentVersion>
+  </SuppressVersion>
+  <smapi>
+    <FileName>compiler.h</FileName>
+    <ErrorCode>V1040</ErrorCode>
+    <Message>Possible typo in the spelling of a pre-defined macro name. The '__Linux__' macro is similar to '__linux__'.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>417106776</CodeCurrent>
+    <CodeNext>621071246</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V813</ErrorCode>
+    <Message>Decreased performance. The 'addr' argument should probably be rendered as a constant pointer.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>4174677066</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V107</ErrorCode>
+    <Message>Implicit type conversion third argument of function 'resize_subfields' to _-bit type.</Message>
+    <CodePrev>125</CodePrev>
+    <CodeCurrent>2823669036</CodeCurrent>
+    <CodeNext>2500637175</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V575</ErrorCode>
+    <Message>The potential null pointer is passed into 'strcpy' function. Inspect the first argument. Check lines: _, _.</Message>
+    <CodePrev>519266911</CodePrev>
+    <CodeCurrent>3736223181</CodeCurrent>
+    <CodeNext>10425139</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V102</ErrorCode>
+    <Message>Usage of non memsize type for pointer arithmetic.</Message>
+    <CodePrev>3736223181</CodePrev>
+    <CodeCurrent>10425139</CodeCurrent>
+    <CodeNext>453069</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V102</ErrorCode>
+    <Message>Usage of non memsize type for pointer arithmetic.</Message>
+    <CodePrev>123</CodePrev>
+    <CodeCurrent>2294579</CodeCurrent>
+    <CodeNext>53355</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V666</ErrorCode>
+    <Message>Consider inspecting third argument of the function 'strncmp'. It is possible that the value does not correspond with the length of a string which was passed with the second argument.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>1089128769</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_sq.h</FileName>
+    <ErrorCode>V802</ErrorCode>
+    <Message>On _-bit platform, structure size can be reduced from _ to _ bytes by rearranging the fields according to their sizes in decreasing order.</Message>
+    <CodePrev>378582</CodePrev>
+    <CodeCurrent>123</CodeCurrent>
+    <CodeNext>32895</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>sq_idx.c</FileName>
+    <ErrorCode>V118</ErrorCode>
+    <Message>malloc() function accepts a dangerous expression in the capacity of an argument.</Message>
+    <CodePrev>191511</CodePrev>
+    <CodeCurrent>654121850</CodeCurrent>
+    <CodeNext>0</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>sq_idx.c</FileName>
+    <ErrorCode>V118</ErrorCode>
+    <Message>malloc() function accepts a dangerous expression in the capacity of an argument.</Message>
+    <CodePrev>3345615661</CodePrev>
+    <CodeCurrent>4181683131</CodeCurrent>
+    <CodeNext>0</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>sq_idx.c</FileName>
+    <ErrorCode>V118</ErrorCode>
+    <Message>malloc() function accepts a dangerous expression in the capacity of an argument.</Message>
+    <CodePrev>1186529034</CodePrev>
+    <CodeCurrent>1499888797</CodeCurrent>
+    <CodeNext>0</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>sq_idx.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>3585344692</CodePrev>
+    <CodeCurrent>1531120189</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>2055360284</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_write' writes '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>1661347871</CodePrev>
+    <CodeCurrent>3714850574</CodeCurrent>
+    <CodeNext>1767663</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>3954256366</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_write' writes '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>3322694553</CodePrev>
+    <CodeCurrent>1946823166</CodeCurrent>
+    <CodeNext>3534963</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V118</ErrorCode>
+    <Message>malloc() function accepts a dangerous expression in the capacity of an argument.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>1762551239</CodeCurrent>
+    <CodeNext>125</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>123</CodePrev>
+    <CodeCurrent>2009269274</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V118</ErrorCode>
+    <Message>malloc() function accepts a dangerous expression in the capacity of an argument.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>1762551239</CodeCurrent>
+    <CodeNext>10665915</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_write' writes '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>123</CodePrev>
+    <CodeCurrent>2011040426</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>2869210212</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_write' writes '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>2350430484</CodePrev>
+    <CodeCurrent>3589024892</CodeCurrent>
+    <CodeNext>7069927</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>2019713308</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_write' writes '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>1661367327</CodePrev>
+    <CodeCurrent>3750506766</CodeCurrent>
+    <CodeNext>1767951</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>72591949</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>3724706960</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_read' reads '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>0</CodePrev>
+    <CodeCurrent>3726542608</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V102</ErrorCode>
+    <Message>Usage of non memsize type for pointer arithmetic.</Message>
+    <CodePrev>1544077306</CodePrev>
+    <CodeCurrent>339443</CodeCurrent>
+    <CodeNext>426719</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_write' writes '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>406049550</CodePrev>
+    <CodeCurrent>4294486646</CodeCurrent>
+    <CodeNext>14144951</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_write' writes '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>830684316</CodePrev>
+    <CodeCurrent>4160313474</CodeCurrent>
+    <CodeNext>125</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V124</ErrorCode>
+    <Message>Function '_write' writes '_' bytes. The alignment rules and type sizes have been changed. Consider reviewing this value.</Message>
+    <CodePrev>830684060</CodePrev>
+    <CodeCurrent>4159003394</CodeCurrent>
+    <CodeNext>884147</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V102</ErrorCode>
+    <Message>Usage of non memsize type for pointer arithmetic.</Message>
+    <CodePrev>384341904</CodePrev>
+    <CodeCurrent>339443</CodeCurrent>
+    <CodeNext>426719</CodeNext>
+  </smapi>
+</NewDataSet>
