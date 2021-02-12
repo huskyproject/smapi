@@ -998,6 +998,10 @@ int read_allidx(JAMBASEptr jmb)
     len = (int)tell(jmb->IdxHandle);
     lseek(jmb->IdxHandle, 0, SEEK_SET);
     buf  = (byte *)palloc(len);
+    if(!buf)
+    {
+        return 0;
+    }
     pbuf = buf;
 
     if(farread(jmb->IdxHandle, (byte far *)buf, len) != len)
@@ -1273,6 +1277,10 @@ int write_subfield(int handle, JAMSUBFIELD2LISTptr * subfield, dword SubfieldLen
     JAMSUBFIELD2ptr subfieldNext;
 
     buf          = (unsigned char *)palloc(SubfieldLen);
+    if(!buf)
+    {
+        return 0;
+    }
     pbuf         = buf;
     subfieldNext = &(subfield[0]->subfield[0]);
 
