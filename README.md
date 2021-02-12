@@ -5,6 +5,9 @@
 
 This version of the SMAPI library is part of the HUSKY fidosoft project.
 
+
+## OPEN WATCOM 2.0 FORK
+
 This fork allows cross-compilation from Linux to Windows NT & OS/2 using Open Watcom 2.0:
 ```console
 $ git clone https://github.com/zoomosis/smapi
@@ -20,6 +23,8 @@ $ wmake -f makefile.watcom OS2=1
 ```
 Where 'wmake' is Open Watcom 2.0's WMAKE.
 
+
+## COPYRIGHT
 
 Squish MSGAPI0 is copyright 1991 by Scott J. Dudley. The terms of use are
 those of the GNU LESSER GENERAL PUBLIC LICENSE (LGPL). In 2003 Scott has
