@@ -2519,8 +2519,8 @@ static void MSGAPI ConvertXmsgToJamHdr(MSGH * msgh,
     }
 
     clen   = msgh->sq->isecho ? 3 : 5;
-    sublen = sizeof(JAMSUBFIELD2LIST) + sizeof(JAMSUBFIELD2) * clen + 37 + 37 + 73 +
-             (msgh->sq->isecho ? 0 : 30 * 2);
+    sublen = offsetof(JAMSUBFIELD2LIST, subfield) + sizeof(JAMSUBFIELD2) * clen + 37 + 37 + 73 +
+        (msgh->sq->isecho ? 0 : 30 * 2);
     *subfield = palloc(sublen);
 
     if(*subfield == NULL)
