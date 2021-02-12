@@ -334,9 +334,9 @@ byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned * length)
     clen = _CopyToBuf(txt, NULL, NULL);
     /* Allocate memory for it */
 
-    #define SAFE_CLEN 20
+    #define SAFE_CLEN 5
 
-    cbuf = palloc(clen + SAFE_CLEN);
+    cbuf = palloc(clen + SAFE_CLEN * sizeof(byte *));
 
     if(cbuf == NULL)
     {
