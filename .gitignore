@@ -9,3 +9,5 @@ libsmapi.so.2.?.*
 *.dsw
 *.bak
 *.vcxproj.user
+.vs/
+out/
