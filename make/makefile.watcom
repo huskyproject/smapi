@@ -17,7 +17,7 @@ SEP=\
 !endif
 
 CC=wcl386
-WLIB=wlib -b
+WLIB=wlib -q -b
 
 CFLAGS=-zq -bt=nt -l=nt
 SRC_DIR=..$(SEP)src
@@ -37,7 +37,7 @@ OBJS=structrw.obj sq_kill.obj sq_idx.obj sq_read.obj msgapi.obj sq_help.obj &
 	$(CC) $(CFLAGS) $(INC) -fo=$@ -c $<
 
 $(TARGET): $(OBJS)
-	for %i in ($(OBJS)) do $(WLIB) -q $(TARGET) +-%i
+	$(WLIB) $(TARGET) $(OBJS)
 
 .IGNORE
 clean:
