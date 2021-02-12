@@ -22,13 +22,12 @@ WLIB=wlib
 CFLAGS=-zq -bt=nt -l=nt
 SRC_DIR=..$(SEP)src
 TARGET=smapiwcw.lib
+INC=-I..$(SEP)..$(SEP)huskylib -I..$(SEP)smapi
 
 !ifdef OS2
 CFLAGS=-zq -bt=os2v2 -l=os2v2
 TARGET=smapiwco.lib
 !endif
-
-INC=-I..$(SEP)..$(SEP)huskylib -I..$(SEP)smapi
 
 OBJS=structrw.obj sq_kill.obj sq_idx.obj sq_read.obj msgapi.obj sq_help.obj &
   api_jam.obj sq_write.obj sq_area.obj api_sdm.obj sq_lock.obj sq_misc.obj &
