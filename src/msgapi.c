@@ -78,9 +78,6 @@ static void alrm(int x)
 
 sword _XPENTRY MsgOpenApi(struct _minf * minf)
 {
-#ifdef HAS_SIGNAL_H /* old: #ifdef __UNIX__ */
-    struct sigaction alrmact;
-#endif
 /*    unused(copyright);*/
     mi.req_version = minf->req_version;
     mi.def_zone    = minf->def_zone;
@@ -98,10 +95,13 @@ sword _XPENTRY MsgOpenApi(struct _minf * minf)
     /*
      * Set the dummy alarm-fcnt to supress stupid messages.
      */
-#ifdef HAS_SIGNAL_H /* old: #ifdef __UNIX__ */
-    memset(&alrmact, 0, sizeof(alrmact));
-    alrmact.sa_handler = alrm;
-    sigaction(SIGALRM, &alrmact, 0);
+#if defined(HAS_SIGNAL_H) && !defined(__WATCOMC__)
+    {
+        struct sigaction alrmact;
+        memset(&alrmact, 0, sizeof(alrmact));
+        alrmact.sa_handler = alrm;
+        sigaction(SIGALRM, &alrmact, 0);
+    }
 #endif
 
     return 0;

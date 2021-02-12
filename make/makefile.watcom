@@ -1,0 +1,46 @@
+#
+#  SMAPI makefile for Open Watcom 2.0.
+#
+#  Use Watcom Make:
+#
+#  wmake -f makefile.watcom NT=1
+#
+#    or
+#
+#  wmake -f makefile.watcom OS2=1
+#
+
+!ifdef __LINUX__
+SEP=/
+!else
+SEP=\
+!endif
+
+CC=wcl386
+WLIB=wlib
+
+CFLAGS=-zq -bt=nt -l=nt
+SRC_DIR=..$(SEP)src
+TARGET=smapiwcw.lib
+
+!ifdef OS2
+CFLAGS=-zq -bt=os2v2 -l=os2v2
+TARGET=smapiwco.lib
+!endif
+
+INC=-I..$(SEP)..$(SEP)huskylib -I..$(SEP)smapi
+
+OBJS=structrw.obj sq_kill.obj sq_idx.obj sq_read.obj msgapi.obj sq_help.obj &
+  api_jam.obj sq_write.obj sq_area.obj api_sdm.obj sq_lock.obj sq_misc.obj &
+  sq_hash.obj sq_msg.obj sq_uid.obj
+
+{$(SRC_DIR)}.c.obj:
+	$(CC) $(CFLAGS) $(INC) -fo=$@ -c $<
+	$(WLIB) -q $(TARGET) +-$@
+
+$(TARGET): $(OBJS)
+
+.IGNORE
+clean:
+	rm $(OBJS)
+	rm $(TARGET)
