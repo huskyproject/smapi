@@ -879,7 +879,7 @@ static sword _XPENTRY SdmLock(MSGA * mh)
 }
 
 /* This function is never used */
-static sword _XPENTRY SdmUnlock(MSGA * mh) //-V524
+static sword _XPENTRY SdmUnlock(MSGA * mh)
 {
     if(InvalidMh(mh))
     {

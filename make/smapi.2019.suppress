@@ -295,4 +295,28 @@
     <CodeCurrent>339443</CodeCurrent>
     <CodeNext>426719</CodeNext>
   </smapi>
+  <smapi>
+    <FileName>api_sdm.c</FileName>
+    <ErrorCode>V524</ErrorCode>
+    <Message>It is odd that the body of 'SdmUnlock' function is fully equivalent to the body of 'SdmLock' function.</Message>
+    <CodePrev>2563025235</CodePrev>
+    <CodeCurrent>2161963295</CodeCurrent>
+    <CodeNext>123</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V101</ErrorCode>
+    <Message>Implicit assignment type conversion to memsize type.</Message>
+    <CodePrev>123</CodePrev>
+    <CodeCurrent>1386124514</CodeCurrent>
+    <CodeNext>306804421</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V101</ErrorCode>
+    <Message>Implicit assignment type conversion to memsize type.</Message>
+    <CodePrev>123</CodePrev>
+    <CodeCurrent>1249532266</CodeCurrent>
+    <CodeNext>306804421</CodeNext>
+  </smapi>
 </NewDataSet>

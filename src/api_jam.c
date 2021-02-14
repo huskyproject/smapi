@@ -460,7 +460,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
     if(msgh->Hdr.Attribute & JMSG_DELETED)
     {
         return (dword) - 1L;
-    } /* endif */
+    }
 
     if(msg)
     {
@@ -479,7 +479,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
         {
             strncpy((char *)(msg->from), (char *)(SubField->Buffer),
                     min(SubField->DatLen, sizeof(msg->from) - 1));
-        } /* endif */
+        }
 
         /* get "to name" line */
         SubPos   = 0;
@@ -489,7 +489,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
         {
             strncpy((char *)(msg->to), (char *)(SubField->Buffer),
                     min(SubField->DatLen, sizeof(msg->to) - 1));
-        } /* endif */
+        }
 
         /* get "subj" line */
         SubPos   = 0;
@@ -499,10 +499,9 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
         {
             strncpy((char *)(msg->subj), (char *)(SubField->Buffer),
                     min(SubField->DatLen, sizeof(msg->subj) - 1));
-        } /* endif */
+        }
 
         /* try to fetch orig/dest addresses even for echomail */
-/*      if (!msgh->sq->isecho) { */
         /* get "orig address" line */
         SubPos   = 0;
         SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_OADDRESS);
@@ -510,7 +509,7 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
         if(SubField != NULL)
         {
             parseFtnAddrS((char *)SubField->Buffer, &(msg->orig), SubField->DatLen);
-        }   /* endif */
+        }
 
         /* get "dest address" line */
         SubPos   = 0;
@@ -519,9 +518,8 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
         if(SubField != NULL)
         {
             parseFtnAddrS((char *)SubField->Buffer, &(msg->dest), SubField->DatLen);
-        }   /* endif */
+        }
 
-/*      } else { */
         /* get "orig address" from MSGID */
         SubPos   = 0;
         SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_MSGID);
@@ -534,19 +532,17 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
             }
         }
 
-/*      } */ /* endif */
         {
-            const time_t c_time = msgh->Hdr.DateWritten; //-V101
+            const time_t c_time = msgh->Hdr.DateWritten;
             s_time = gmtime(&c_time);
         }
         scombo = (SCOMBO *)(&(msg->date_written));
         scombo = TmDate_to_DosDate(s_time, scombo);
-        /* ftsdate = msg->__ftsc_date; */
         ftsdate = (unsigned char *)sc_time(scombo, (char *)(msg->__ftsc_date));
 
         if(msgh->Hdr.DateProcessed)
         {
-            const time_t c_time = msgh->Hdr.DateProcessed; //-V101
+            const time_t c_time = msgh->Hdr.DateProcessed;
             s_time = gmtime(&c_time);
             scombo = (SCOMBO *)(&(msg->date_arrived));
             scombo = TmDate_to_DosDate(s_time, scombo);
