@@ -486,11 +486,7 @@ int write_sqidx(int handle, SQIDX * psqidx, dword n)
         }
     }
 
-    if(accel_buffer != NULL)
-    {
-        free(accel_buffer);
-    }
-
+    free(accel_buffer);
     return 1;
 } /* write_sqidx */
 
