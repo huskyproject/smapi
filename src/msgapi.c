@@ -363,18 +363,18 @@ byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned * length)
 byte * _XPENTRY GetCtrlToken(byte * where, byte * what)
 {
     byte * end, * out;
-    unsigned int len;
+    size_t len;
 
     if(where == NULL || what == NULL)
     {
         return NULL;
     }
 
-    len = (unsigned int)strlen((char *)what);
+    len = strlen((const char *)what);
 
     do
     {
-        where = (byte *)strchr((char *)where, '\001');
+        where = (byte *)strchr((const char *)where, '\001');
 
         if(where == NULL)
         {
@@ -383,23 +383,23 @@ byte * _XPENTRY GetCtrlToken(byte * where, byte * what)
 
         where++;
     }
-    while(strncmp((char *)where, (char *)what, len));
+    while(strncmp((const char *)where, (const char *)what, len));
 
-    if(where == NULL || strlen((char *)where) < len)
+    if(where == NULL || strlen((const char *)where) < len)
     {
         return NULL;
     }
 
-    end = (byte *)strchr((char *)where, '\r');
+    end = (byte *)strchr((const char *)where, '\r');
 
     if(end == NULL)
     {
-        end = (byte *)strchr((char *)where, '\001');
+        end = (byte *)strchr((const char *)where, '\001');
     }
 
     if(end == NULL)
     {
-        end = where + strlen((char *)where);
+        end = where + strlen((const char *)where);
     }
 
     out = palloc((size_t)(end - where) + 1);
@@ -526,30 +526,30 @@ byte * _XPENTRY CvtCtrlToKludge(byte * ctrl)
 void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
 {
     byte * p;
-    unsigned int len = (unsigned int)strlen((char *)what);
+    size_t len = strlen((char *)what);
 
     for( ; ; )
     {
-        ctrl = (unsigned char *)strchr((char *)ctrl, '\001');
+        ctrl = (byte *)strchr((const char *)ctrl, '\001');
 
         if(ctrl == NULL)
         {
             return;
         }
 
-        if(strncmp((char *)ctrl + 1, (char *)what, len))
+        if(strncmp((const char *)ctrl + 1, (const char *)what, len))
         {
             ctrl++;
             continue;
         }
 
-        if(strlen((char *)ctrl + 1) < (size_t)len)
+        if(strlen((const char *)ctrl + 1) < len)
         {
             return;
         }
 
         /* found */
-        p = (unsigned char *)strchr((char *)ctrl + 1, '\001');
+        p = (byte *)strchr((const char *)ctrl + 1, '\001');
 
         if(p == NULL)
         {
@@ -557,7 +557,7 @@ void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what)
             return;
         }
 
-        strocpy((char *)ctrl, (char *)p);
+        strocpy((char *)ctrl, (const char *)p);
     }
 } /* RemoveFromCtrl */
 
