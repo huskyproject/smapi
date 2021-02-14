@@ -11,3 +11,4 @@ libsmapi.so.2.?.*
 *.vcxproj.user
 .vs/
 out/
+build/
