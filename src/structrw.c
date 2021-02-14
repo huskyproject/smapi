@@ -1024,13 +1024,18 @@ int read_allidx(JAMBASEptr jmb)
     {
         /* read all headers in core */
         hdrbuf = (byte *)palloc(hlen);
+        if(hdrbuf == NULL)
+        {
+            pfree(buf);
+            return 0;
+        }
 
         if((dword)farread(jmb->HdrHandle, (byte far *)hdrbuf, hlen) != hlen)
         {
             pfree(hdrbuf);
             pfree(buf);
             return 0;
-        } /* endif */
+        }
 
         jmb->actmsg_read = 1;
     }
