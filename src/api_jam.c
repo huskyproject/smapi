@@ -825,6 +825,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                 {
                     setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                     freejamsubfield(subfieldNew);
+                    pfree(onlytext);
                     msgapierr = MERR_NODS;
                     return -1;
                 }
@@ -836,8 +837,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                     setfsize(Jmd->HdrHandle, msgh->seek_hdr);
                     setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                     freejamsubfield(subfieldNew);
-                    free(onlytext);
-                    onlytext  = NULL;
+                    pfree(onlytext);
                     msgapierr = MERR_NODS;
                     return -1;
                 }
