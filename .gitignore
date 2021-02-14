@@ -12,3 +12,4 @@ libsmapi.so.2.?.*
 .vs/
 out/
 build/
+strace_out
