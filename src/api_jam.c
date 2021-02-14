@@ -2667,8 +2667,12 @@ static void resize_subfields(JAMSUBFIELD2LISTptr * sflist, dword newcount, dword
     new_list->arraySize     = len;
     new_list->subfieldCount = old_list->subfieldCount;
     new_buffer      = (byte *)&(new_list->subfield[newcount]);
-    new_buffer_size = (size_t)(new_list->arraySize) - (size_t)(new_buffer - (byte *)new_list);
-    assert(new_buffer_size >= old_buffer_size);
+    new_buffer_size = (size_t)new_list->arraySize - (size_t)(new_buffer - (byte *)new_list);
+    if(new_buffer_size < old_buffer_size)
+    {
+        msgapierr = MERR_INTERN;
+        return;
+    }
 
     if(old_list->subfieldCount > 0)
     {

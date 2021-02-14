@@ -624,6 +624,9 @@ char * _XPENTRY strmerr(int my_msgapierr)
         case MERR_LIMIT:
             return "Messagebase limit is reached";
 
+        case MERR_INTERN:
+            return "Internal progran error";
+
         default:
             break;
     } /* switch */
