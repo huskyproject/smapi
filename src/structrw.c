@@ -855,11 +855,11 @@ int copy_subfield(JAMSUBFIELD2LISTptr * to, JAMSUBFIELD2LISTptr from)
 }
 
 /* Define DEBUG to catch more weirdness in databases */
-static void decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * SubfieldLen)
+static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * SubfieldLen)
 {
     JAMSUBFIELD2ptr subfieldNext;
     dword datlen;
-    unsigned int count, len;
+    size_t count, len;
     byte * pbuf, * limit;
 
     pbuf  = buf;
@@ -906,7 +906,7 @@ static void decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * 
             break;
         }
 
-        if(size >= 0xFFFF) /* realistic check: single subfield
+        if(size >= 0xFFFF) /* reality check: single subfield
                               longer than 64k is not realistic */
         {
             printf("SMAPI ERROR: subfield is suspiciously large! (%lu bytes)\n",
@@ -917,17 +917,21 @@ static void decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * 
         ++count;
         pbuf += JAM_SF_HEADER_SIZE + size;
     }
-    len = sizeof(JAMSUBFIELD2LIST) + count *
-          (sizeof(JAMSUBFIELD2) - JAM_SF_HEADER_SIZE + 1) + *SubfieldLen;
+    len = offsetof(JAMSUBFIELD2LIST, subfield) + count *
+          (sizeof(JAMSUBFIELD2) - JAM_SF_HEADER_SIZE + 1) + (size_t)*SubfieldLen;
     *subfield = palloc(len);
-    subfield[0]->arraySize     = len;
+    if(*subfield == NULL)
+    {
+        return 0;
+    }
+    subfield[0]->arraySize     = (dword)len;
     subfield[0]->subfieldCount = 0;
     /* reserve memory for (real count + 1)*JAMSUBFIELD2 */
     subfield[0]->subfield[0].Buffer = (byte *)&(subfield[0]->subfield[count + 1]);
     subfieldNext = subfield[0]->subfield;
     pbuf         = buf;
 
-    while(subfield[0]->subfieldCount < count && pbuf + JAM_SF_HEADER_SIZE <= limit)
+    while((size_t)subfield[0]->subfieldCount < count && pbuf + JAM_SF_HEADER_SIZE <= limit)
     {
         /* 02 bytes LoID */
         subfieldNext->LoID = get_word(pbuf);
@@ -958,13 +962,19 @@ static void decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * 
         pbuf += datlen;
     } /* endwhile */
     *SubfieldLen = (dword)(pbuf - buf);
+    return 1;
 } /* decode_subfield */
 
 int read_subfield(int handle, JAMSUBFIELD2LISTptr * subfield, dword * SubfieldLen)
 {
     byte * buf;
+    int enough_memory;
 
     buf = (byte *)palloc(*SubfieldLen);
+    if(buf == NULL)
+    {
+        return 0;
+    }
 
     if((dword)farread(handle, (byte far *)buf, *SubfieldLen) != *SubfieldLen)
     {
@@ -972,8 +982,12 @@ int read_subfield(int handle, JAMSUBFIELD2LISTptr * subfield, dword * SubfieldLe
         return 0;
     } /* endif */
 
-    decode_subfield(buf, subfield, SubfieldLen);
+    enough_memory = decode_subfield(buf, subfield, SubfieldLen);
     pfree(buf);
+    if(!enough_memory)
+    {
+        return 0;
+    }
     return 1;
 }
 
@@ -1000,7 +1014,7 @@ int read_allidx(JAMBASEptr jmb)
     {
         pfree(buf);
         return 0;
-    } /* endif */
+    }
 
     lseek(jmb->HdrHandle, 0, SEEK_END);
     hlen = (dword)tell(jmb->HdrHandle);
@@ -1097,8 +1111,15 @@ int read_allidx(JAMBASEptr jmb)
 
                     if(hdrbuf && offset + HDR_SIZE + jmb->actmsg[i].hdr.SubfieldLen <= hlen)
                     {
-                        decode_subfield(hdrbuf + offset + HDR_SIZE, &(jmb->actmsg[i].subfield),
-                                        &(jmb->actmsg[i].hdr.SubfieldLen));
+                        if(!decode_subfield(hdrbuf + offset + HDR_SIZE,
+                                            &(jmb->actmsg[i].subfield),
+                                            &(jmb->actmsg[i].hdr.SubfieldLen)))
+                        {
+                            pfree(buf);
+                            pfree(pbuf);
+                            pfree(hdrbuf);
+                            return 0;
+                        }
                         i++;
                     }
                     else
@@ -1112,11 +1133,7 @@ int read_allidx(JAMBASEptr jmb)
         pbuf += 8;
     } /* endfor */
     pfree(buf);
-
-    if(hdrbuf)
-    {
-        pfree(hdrbuf);
-    }
+    pfree(hdrbuf);
 
     if(i != jmb->HdrInfo.ActiveMsgs)
     {
