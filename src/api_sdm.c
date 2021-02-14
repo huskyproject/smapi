@@ -515,7 +515,6 @@ static sword _XPENTRY SdmCloseMsg(MSGH * msgh)
     if(msgh->ctrl)
     {
         pfree(msgh->ctrl);
-        msgh->ctrl = NULL;
     }
 
     close(msgh->fd);
