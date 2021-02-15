@@ -580,7 +580,12 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh,
      *  header, read a block anyway.  We need to scan for kludge lines,
      *  to pick out the appropriate zone/point info.)
      */
-    if(msgh->ctrl == NULL && ((msg || ctxt || text) || (msg || ctxt || text) == 0)) //-V560
+    if(msgh->ctrl == NULL
+#if 0
+       /* the following is always true */
+       && ((msg || ctxt || text) || (msg || ctxt || text) == 0)
+#endif
+      )
     {
         need_ctrl = TRUE;
     }
