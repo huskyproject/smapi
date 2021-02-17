@@ -41,6 +41,6 @@ $(TARGET): $(OBJS)
 	$(WLIB) $(TARGET) $(OBJS)
 
 .IGNORE
-clean:
+clean: .SYMBOLIC
 	rm $(OBJS)
 	rm $(TARGET)
