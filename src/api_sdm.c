@@ -172,7 +172,7 @@ int SdmDeleteBase(char * name)
         return FALSE;
     }
 
-    temp = malloc(strlen(name) + 6);
+    temp = (char *)malloc(strlen(name) + 6);
 
     if(temp == NULL)
     {
@@ -187,7 +187,7 @@ int SdmDeleteBase(char * name)
     {
         do
         {
-            temp = malloc(strlen(name) + strlen(ff->ff_name) + 1);
+            temp = (char *)malloc(strlen(name) + strlen(ff->ff_name) + 1);
 
             if(temp == NULL)
             {
@@ -203,8 +203,14 @@ int SdmDeleteBase(char * name)
         FFindClose(ff);
     }
 
+    temp = (char*)malloc(strlen(name) + 10);
+    if (temp == NULL)
+    {
+        return FALSE;
+    }
     sprintf(temp, "%slastread", name);
     unlink(temp);
+    free(temp);
     rmdir(name);
     return TRUE; /* rmdir error is ok */
 } /* SdmDeleteBase */
@@ -229,6 +235,7 @@ static sword _XPENTRY SdmCloseArea(MSGA * mh)
 
         if(msgh != NULL)
         {
+            dword temp;
             Init_Xmsg(&msg);
             Get_Dos_Date((union stamp_combo *)&msg.date_arrived);
             Get_Dos_Date((union stamp_combo *)&msg.date_written);
@@ -243,8 +250,8 @@ static sword _XPENTRY SdmCloseArea(MSGA * mh)
             msg.orig.zone = msg.dest.zone = mi.def_zone;
             msg.replyto   = mh->high_water;
             msg.attr      = MSGPRIVATE | MSGREAD | MSGLOCAL | MSGSENT;
-            SdmWriteMsg(msgh, FALSE, &msg, msgbody, strlen((char *)msgbody) + 1,
-                        strlen((char *)msgbody) + 1, 0L, NULL);
+            temp = (dword)(strlen((char*)msgbody) + 1);
+            SdmWriteMsg(msgh, FALSE, &msg, msgbody, temp, temp, 0L, NULL);
             SdmCloseMsg(msgh);
         }
     }
@@ -433,16 +440,18 @@ static MSGH * _XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
 
         if((mh->num_msg + 1) >= Mhd->msgnum_len)
         {
+            unsigned int * temp;
             word msgnum_len_new = Mhd->msgnum_len + (word)SDM_BLOCK;
-            Mhd->msgnum = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
-
-            if(!Mhd->msgnum)
+            temp = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
+            if(!temp)
             {
+                pfree(Mhd->msgnum);
                 pfree(msgh);
                 close(handle);
                 msgapierr = MERR_NOMEM;
                 return NULL;
             }
+            Mhd->msgnum = temp;
 
             Mhd->msgnum_len = msgnum_len_new;
         }
@@ -510,7 +519,6 @@ static sword _XPENTRY SdmCloseMsg(MSGH * msgh)
     if(msgh->ctrl)
     {
         pfree(msgh->ctrl);
-        msgh->ctrl = NULL;
     }
 
     close(msgh->fd);
@@ -576,7 +584,12 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh,
      *  header, read a block anyway.  We need to scan for kludge lines,
      *  to pick out the appropriate zone/point info.)
      */
-    if(msgh->ctrl == NULL && ((msg || ctxt || text) || (msg || ctxt || text) == 0))
+    if(msgh->ctrl == NULL
+#if 0
+       /* the following is always true */
+       && ((msg || ctxt || text) || (msg || ctxt || text) == 0)
+#endif
+      )
     {
         need_ctrl = TRUE;
     }
@@ -596,7 +609,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh,
     {
         struct stat st;
         fstat(msgh->fd, &st);
-        text = fake_msgbuf = palloc(st.st_size - OMSG_SIZE + 1);
+        text = fake_msgbuf = (byte *)palloc((size_t)st.st_size - OMSG_SIZE + 1);
 
         if(text == NULL)
         {
@@ -645,9 +658,9 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh,
         if(msgh->ctrl != NULL)
         {
             msgh->clen         = (dword)strlen((char *)msgh->ctrl) + 1;
-            msgh->msgtxt_start = newtext - text;
+            msgh->msgtxt_start = (dword)(newtext - text);
             /* Shift back the text buffer to counter absence of ^a strings */
-            memmove(text, newtext, (size_t)(bytes - (newtext - text)));
+            memmove(text, newtext, (size_t)((ptrdiff_t)bytes - (newtext - text)));
             got -= (dword)(msgh->clen - 1);
         }
     }
@@ -819,7 +832,7 @@ static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum)
 
     /* Remove the message number from our private index */
     memmove(Mhd->msgnum + msgnum - 1, Mhd->msgnum + msgnum,
-            (int)(mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
+            (size_t)(mh->num_msg - msgnum) * sizeof(Mhd->msgnum[0]));
     /* If we couldn't find it, return an error message */
     sprintf((char *)temp, (char *)sd_msg, Mhd->base, (unsigned int)msguid);
 
@@ -861,6 +874,7 @@ static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum)
     return 0;
 } /* SdmKillMsg */
 
+/* This function is never used */
 static sword _XPENTRY SdmLock(MSGA * mh)
 {
     if(InvalidMh(mh))
@@ -872,6 +886,7 @@ static sword _XPENTRY SdmLock(MSGA * mh)
     return 0;
 }
 
+/* This function is never used */
 static sword _XPENTRY SdmUnlock(MSGA * mh)
 {
     if(InvalidMh(mh))
@@ -1067,7 +1082,7 @@ static dword _XPENTRY SdmGetTextLen(MSGH * msgh)
     if(msgh->msg_len == -1)
     {
         pos = (dword)tell(msgh->fd);
-        end = lseek(msgh->fd, 0L, SEEK_END);
+        end = (dword)lseek(msgh->fd, 0L, SEEK_END);
 
         if(end < OMSG_SIZE)
         {
@@ -1183,14 +1198,17 @@ static sword near _SdmRescanArea(MSGA * mh)
 
             if(mn >= Mhd->msgnum_len)
             {
+                unsigned int * tmp;
                 word msgnum_len_new = Mhd->msgnum_len + (word)SDM_BLOCK;
-                Mhd->msgnum = realloc(Mhd->msgnum, msgnum_len_new * sizeof(unsigned));
-
-                if(!Mhd->msgnum)
+                tmp = (unsigned int *)realloc(Mhd->msgnum,
+                                               msgnum_len_new * sizeof(unsigned));
+                if(!tmp)
                 {
+                    pfree(Mhd->msgnum);
                     msgapierr = MERR_NOMEM;
                     return FALSE;
                 }
+                Mhd->msgnum = tmp;
 
                 Mhd->msgnum_len = msgnum_len_new;
             }
@@ -1367,21 +1385,21 @@ int _XPENTRY WriteZPInfo(XMSG * msg, void(_stdc * wfunc)(byte * str), byte * klu
                 msg->orig.net,
                 msg->orig.node);
         (*wfunc)(temp);
-        bytes += strlen((char *)temp);
+        bytes += (int)strlen((char *)temp);
     }
 
     if(msg->orig.point && !strstr((char *)kludges, "\001" "FMPT"))
     {
         sprintf((char *)temp, "\001" "FMPT %hu\r", msg->orig.point);
         (*wfunc)(temp);
-        bytes += strlen((char *)temp);
+        bytes += (int)strlen((char *)temp);
     }
 
     if(msg->dest.point && !strstr((char *)kludges, "\001" "TOPT"))
     {
         sprintf((char *)temp, "\001" "TOPT %hu\r", msg->dest.point);
         (*wfunc)(temp);
-        bytes += strlen((char *)temp);
+        bytes += (int)strlen((char *)temp);
     }
 
     return bytes;
@@ -1391,7 +1409,7 @@ static void _stdc WriteToFd(byte * str)
 {
     if(str && *str)
     {
-        if(0 > farwrite(statfd, str, strlen((char *)str)))
+        if(0 > farwrite(statfd, str, (unsigned int)strlen((char *)str)))
         {
             msgapierr = MERR_BADF;
         }

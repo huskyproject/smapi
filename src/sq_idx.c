@@ -138,7 +138,7 @@ int _SquishBeginBuffer(HIDX hix)
 
     hix->cSeg = (int)(hix->ha->num_msg / SEGMENT_SIZE) + 1;
     /* Allocate memory for the array of segments */
-    hix->pss = palloc(sizeof(SQIDXSEG) * (unsigned)hix->cSeg);
+    hix->pss = palloc(sizeof(SQIDXSEG) * (size_t)hix->cSeg);
 
     if(hix->pss == NULL)
     {
@@ -149,7 +149,7 @@ int _SquishBeginBuffer(HIDX hix)
 
     dwMsgs = hix->ha->num_msg;            /* Read all messages into memory */
     /* Find out how many records are in the file */
-    hix->lAllocatedRecords = lseek(HixSqd->ifd, 0L, SEEK_END);
+    hix->lAllocatedRecords = (long)lseek(HixSqd->ifd, 0L, SEEK_END);
 
     if(hix->lAllocatedRecords < 0)
     {
@@ -332,7 +332,7 @@ static int near _SquishAppendIndexRecord(HIDX hix, SQIDX * psqi)
     /* If we arrived here, we either have no segments, or all of our          *
      * existing segments are full.  To handle this, we need to reallocate     *
      * the array of pointers to segments and add a new one.                   */
-    pss = palloc(sizeof(SQIDXSEG) * (size_t)(hix->cSeg + 1));
+    pss = palloc(sizeof(SQIDXSEG) * ((size_t)(hix->cSeg) + 1));
 
     if(pss == NULL)
     {
@@ -601,7 +601,7 @@ int _SquishEndBuffer(HIDX hix)
 
                 if((long)dwStart + (long)hix->pss[i].dwUsed > hix->lDeltaHi)
                 {
-                    size = (size_t)(hix->lDeltaHi - (long)dwStart + 1L);
+                    size = (size_t)(hix->lDeltaHi) - (size_t)dwStart + 1L;
                 }
                 else
                 {
@@ -612,7 +612,7 @@ int _SquishEndBuffer(HIDX hix)
 
                 if(rc)
                 {
-                    if(write_sqidx(HixSqd->ifd, (hix->pss[i].psqi + j), size) != 1)
+                    if(write_sqidx(HixSqd->ifd, (hix->pss[i].psqi + j), (dword)size) != 1)
                     {
                         msgapierr = MERR_NODS;
                         rc        = FALSE;

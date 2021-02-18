@@ -163,7 +163,7 @@ static unsigned near _SquishUnlinkBaseFiles(byte * szName)
     char szFile[PATHLEN];
     unsigned rc = TRUE;
 
-    if(!szName || (szName && (strlen((char *)szName) + 5 > PATHLEN)))
+    if(!szName || (strlen((char *)szName) + 5 > PATHLEN))
     {
         return FALSE;
     }
@@ -260,7 +260,7 @@ unsigned _SquishCopyDataToBase(HAREA ha, SQBASE * psqb)
     psqb->skip_msg        = Sqd->wSkipMsg;
     psqb->max_msg         = Sqd->dwMaxMsg;
     psqb->keep_days       = Sqd->wMaxDays;
-    psqb->high_water      = Sqd->dwHighWater;
+ /*   psqb->high_water      = Sqd->dwHighWater; */
     psqb->uid             = Sqd->uidNext;
     psqb->begin_frame     = Sqd->foFirst;
     psqb->last_frame      = Sqd->foLast;

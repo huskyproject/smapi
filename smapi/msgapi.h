@@ -85,7 +85,7 @@ typedef dword            UMSGID;
 
 #define MSGAPI_VERSION 2
 #define MSGAPI_SUBVERSION 0x250
-#define SMAPI_VERSION "2.5.1"
+#define SMAPI_VERSION "2.5.2"
 
 struct _minf
 {
@@ -268,21 +268,22 @@ extern struct _minf _stdc mi;
 #define UID_PREV 0x02
 /* Values for 'msgapierr', above. */
 
-#define MERR_NONE 0       /* No error  */
-#define MERR_BADH 1       /* Invalid handle passed to function */
-#define MERR_BADF 2       /* Invalid or corrupted file */
-#define MERR_NOMEM 3      /* Not enough memory for specified operation */
-#define MERR_NODS 4       /* Maybe not enough disk space for operation */
-#define MERR_NOENT 5      /* File/message does not exist */
-#define MERR_BADA 6       /* Bad argument passed to msgapi function */
-#define MERR_EOPEN 7      /* Couldn't close - messages still open */
-#define MERR_NOLOCK 8     /* Base needs to be locked to perform operation   */
-#define MERR_SHARE 9      /* Resource in use by other process               */
-#define MERR_EACCES 10    /* Access denied (can't write to read-only, etc)  */
-#define MERR_BADMSG 11    /* Bad message frame (Squish)                     */
-#define MERR_TOOBIG 12    /* Too much text/ctrlinfo to fit in frame (Squish)*/
+#define MERR_NONE     0   /* No error  */
+#define MERR_BADH     1   /* Invalid handle passed to function */
+#define MERR_BADF     2   /* Invalid or corrupted file */
+#define MERR_NOMEM    3   /* Not enough memory for specified operation */
+#define MERR_NODS     4   /* Maybe not enough disk space for operation */
+#define MERR_NOENT    5   /* File/message does not exist */
+#define MERR_BADA     6   /* Bad argument passed to msgapi function */
+#define MERR_EOPEN    7   /* Couldn't close - messages still open */
+#define MERR_NOLOCK   8   /* Base needs to be locked to perform operation   */
+#define MERR_SHARE    9   /* Resource in use by other process               */
+#define MERR_EACCES  10   /* Access denied (can't write to read-only, etc)  */
+#define MERR_BADMSG  11   /* Bad message frame (Squish)                     */
+#define MERR_TOOBIG  12   /* Too much text/ctrlinfo to fit in frame (Squish)*/
 #define MERR_BADNAME 13   /* Bad area name or file name */
-#define MERR_LIMIT 14     /* Messagebase limit is reached */
+#define MERR_LIMIT   14   /* Messagebase limit is reached */
+#define MERR_INTERN  15   /* Internal progran error */
 /*
  *  Now, a set of macros, which call the specified API function.  These
  *  will map calls for 'MsgOpenMsg()' into 'SquishOpenMsg()', 'SdmOpenMsg()',

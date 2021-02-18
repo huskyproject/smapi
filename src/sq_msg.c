@@ -578,7 +578,6 @@ HMSG _XPENTRY apiSquishOpenMsg(HAREA ha, word wMode, dword dwMsg)
     {
         /* Otherwise, free memory and get out */
         pfree(hmsg);
-        hmsg = NULL;
     }
 
     return hmsg;

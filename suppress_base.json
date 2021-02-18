@@ -1,0 +1,221 @@
+{
+    "version": 1,
+    "warnings": [
+        {
+            "CodeCurrent": 2673925691,
+            "CodeNext": 125,
+            "CodePrev": 123,
+            "ErrorCode": "V522",
+            "FileName": "api_jam.c",
+            "Message": "There might be dereferencing of a potential null pointer 'jbptr'."
+        },
+        {
+            "CodeCurrent": 3736223181,
+            "CodeNext": 10425139,
+            "CodePrev": 519049823,
+            "ErrorCode": "V575",
+            "FileName": "api_jam.c",
+            "Message": "The potential null pointer is passed into 'strcpy' function. Inspect the first argument. Check lines: _, _."
+        },
+        {
+            "CodeCurrent": 1089127763,
+            "CodeNext": 123,
+            "CodePrev": 0,
+            "ErrorCode": "V666",
+            "FileName": "api_jam.c",
+            "Message": "Consider inspecting third argument of the function 'strncmp'. It is possible that the value does not correspond with the length of a string which was passed with the second argument."
+        },
+        {
+            "CodeCurrent": 765239717,
+            "CodeNext": 772983996,
+            "CodePrev": 1054278890,
+            "ErrorCode": "V1004",
+            "FileName": "api_sdm.c",
+            "Message": "The 'text' pointer was used unsafely after it was verified against nullptr. Check lines: _, _."
+        },
+        {
+            "CodeCurrent": 3158565502,
+            "CodeNext": 88709520,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the third actual argument of the 'sprintf' function. The SIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 3158565502,
+            "CodeNext": 88709520,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the sixth actual argument of the 'sprintf' function. The SIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 3158565502,
+            "CodeNext": 88709520,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the seventh actual argument of the 'sprintf' function. The SIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 3158565502,
+            "CodeNext": 88709520,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the eighth actual argument of the 'sprintf' function. The SIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 49352368,
+            "CodeNext": 2267965125,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the third actual argument of the 'sprintf' function. The UNSIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 49352368,
+            "CodeNext": 2267965125,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the fourth actual argument of the 'sprintf' function. The UNSIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 49352368,
+            "CodeNext": 2267965125,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the fifth actual argument of the 'sprintf' function. The UNSIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 49352368,
+            "CodeNext": 2267965125,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the sixth actual argument of the 'sprintf' function. The UNSIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 49352368,
+            "CodeNext": 2267965125,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the seventh actual argument of the 'sprintf' function. The UNSIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 49352368,
+            "CodeNext": 2267965125,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the eighth actual argument of the 'sprintf' function. The UNSIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 1426791111,
+            "CodeNext": 688017,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the third actual argument of the 'sprintf' function. The UNSIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 3440064967,
+            "CodeNext": 688017,
+            "CodePrev": 123,
+            "ErrorCode": "V576",
+            "FileName": "api_sdm.c",
+            "Message": "Incorrect format. Consider checking the third actual argument of the 'sprintf' function. The UNSIGNED integer type argument is expected."
+        },
+        {
+            "CodeCurrent": 2161963295,
+            "CodeNext": 123,
+            "CodePrev": 2563025235,
+            "ErrorCode": "V524",
+            "FileName": "api_sdm.c",
+            "Message": "It is odd that the body of 'SdmUnlock' function is fully equivalent to the body of 'SdmLock' function."
+        },
+        {
+            "CodeCurrent": 77357193,
+            "CodeNext": 77362145,
+            "CodePrev": 3565821,
+            "ErrorCode": "V1027",
+            "FileName": "api_sdm.c",
+            "Message": "Pointer to an object of the '_stamp' class is cast to unrelated 'stamp_combo' class."
+        },
+        {
+            "CodeCurrent": 77362145,
+            "CodeNext": 116,
+            "CodePrev": 77357193,
+            "ErrorCode": "V1027",
+            "FileName": "api_sdm.c",
+            "Message": "Pointer to an object of the '_stamp' class is cast to unrelated 'stamp_combo' class."
+        },
+        {
+            "CodeCurrent": 2002609991,
+            "CodeNext": 125,
+            "CodePrev": 123,
+            "ErrorCode": "V1027",
+            "FileName": "api_sdm.c",
+            "Message": "Pointer to an object of the '_stamp' class is cast to unrelated 'stamp_combo' class."
+        },
+        {
+            "CodeCurrent": 2234465907,
+            "CodeNext": 0,
+            "CodePrev": 125,
+            "ErrorCode": "V526",
+            "FileName": "msgapi.c",
+            "Message": "The 'strncmp' function returns _ if corresponding strings are equal. Consider examining the condition for mistakes."
+        },
+        {
+            "CodeCurrent": 740252724,
+            "CodeNext": 123,
+            "CodePrev": 0,
+            "ErrorCode": "V526",
+            "FileName": "msgapi.c",
+            "Message": "The 'strncmp' function returns _ if corresponding strings are equal. Consider examining the condition for mistakes."
+        },
+        {
+            "CodeCurrent": 1404220133,
+            "CodeNext": 125,
+            "CodePrev": 123,
+            "ErrorCode": "V526",
+            "FileName": "msgapi.c",
+            "Message": "The 'strcmp' function returns _ if corresponding strings are equal. Consider examining the condition for mistakes."
+        },
+        {
+            "CodeCurrent": 12114357,
+            "CodeNext": 123,
+            "CodePrev": 0,
+            "ErrorCode": "V1051",
+            "FileName": "sq_msg.c",
+            "Message": "Consider checking for misprints. It's possible that the 'pfoFirst' should be checked here."
+        },
+        {
+            "CodeCurrent": 2056691641,
+            "CodeNext": 173622601,
+            "CodePrev": 123,
+            "ErrorCode": "V1027",
+            "FileName": "sq_write.c",
+            "Message": "Pointer to an object of the '_stamp' class is cast to unrelated 'stamp_combo' class."
+        },
+        {
+            "CodeCurrent": 10601,
+            "CodeNext": 4822755,
+            "CodePrev": 344269166,
+            "ErrorCode": "V769",
+            "FileName": "structrw.c",
+            "Message": "The 'pbuf' pointer in the 'pbuf += _' expression could be nullptr. In such case, resulting value will be senseless and it should not be used."
+        },
+        {
+            "CodeCurrent": 4219195,
+            "CodeNext": 125,
+            "CodePrev": 22333053,
+            "ErrorCode": "V1048",
+            "FileName": "structrw.c",
+            "Message": "The 'jmb->actmsg' variable was assigned the same value."
+        }
+    ]
+}
