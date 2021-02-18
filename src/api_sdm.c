@@ -28,6 +28,10 @@
 
 #include <huskylib/compiler.h>
 
+#ifdef __WATCOMC__
+#include <unistd.h>
+#endif
+
 #ifdef HAS_IO_H
 #include <io.h>
 #endif
