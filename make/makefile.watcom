@@ -10,19 +10,18 @@
 #  wmake -f makefile.watcom OS2=1
 #
 
-!ifdef __LINUX__
-SEP=/
-!else
-SEP=\
-!endif
-
 CC=wcl386
 WLIB=wlib -q -b
 
+#  wcl386 in Windows & OS/2 will not accept forward slashes as path
+#  separators with the -I parameter unless you put the path in
+#  double quotes:
+
+INC=-I"../../huskylib" -I"../smapi"
+
 CFLAGS=-zq -bt=nt -l=nt
-SRC_DIR=..$(SEP)src
+SRC_DIR=../src
 TARGET=smapiwcw.lib
-INC=-I..$(SEP)..$(SEP)huskylib -I..$(SEP)smapi
 
 !ifdef OS2
 CFLAGS=-zq -bt=os2v2 -l=os2v2
