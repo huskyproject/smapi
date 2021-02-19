@@ -3,8 +3,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/hu6cl1cvfi9erx0c/branch/master?svg=true)](https://ci.appveyor.com/project/dukelsky/smapi/branch/master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d7e41619e2b34a3dbd6dfa3f7d413749)](https://www.codacy.com/app/dukelsky/smapi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=huskyproject/smapi&amp;utm_campaign=Badge_Grade)
 
-This version of the SMAPI library is part of the HUSKY fidosoft project.
+This version of the SMAPI library is part of the HUSKY Fidosoft project.
 
+
+## COPYRIGHT
 
 Squish MSGAPI0 is copyright 1991 by Scott J. Dudley. The terms of use are
 those of the GNU LESSER GENERAL PUBLIC LICENSE (LGPL). In 2003 Scott has
@@ -22,6 +24,8 @@ Edwards and David Begley to produce the MSGAPI3x series of archives
 fix.  The objective of SMAPI was to rationalise MSGAPI38 and to avoid
 future confusion in version numbering standards.
 
+JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner,
+Mats Birch, Mats Wallin. ALL RIGHTS RESERVED.
 
 ## TRADEMARKS
 
@@ -67,6 +71,7 @@ The following makefiles can be used to compile this release of SMAPI:
 | makefile.wco    | smapiwco.lib   | WATCOM C/C++ 10.x for 32-bit OS/2              |
 | makefile.wcw    | smapiwcw.lib   | WATCOM C/C++ 10.x for 32-bit Windows NT        |
 | makefile.wcx    | smapiwcx.lib   | WATCOM C/C++ 10.x for 32-bit DOS               |
+| makefile.watcom | smapiwco.lib   | Open WATCOM 2.0                                |
 
 Use GNU version of make (gmake on many platforms) if don't specified other.
 
