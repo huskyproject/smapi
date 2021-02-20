@@ -917,8 +917,8 @@ static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * S
         ++count;
         pbuf += JAM_SF_HEADER_SIZE + size;
     }
-    len = offsetof(JAMSUBFIELD2LIST, subfield) + count *
-          (sizeof(JAMSUBFIELD2) - JAM_SF_HEADER_SIZE + 1) + (size_t)*SubfieldLen;
+    len = sizeof(JAMSUBFIELD2LIST) + count *
+          (sizeof(JAMSUBFIELD2) - JAM_SF_HEADER_SIZE + 1) + *SubfieldLen;
     *subfield = palloc(len);
     if(*subfield == NULL)
     {
