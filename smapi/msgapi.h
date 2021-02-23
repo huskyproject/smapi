@@ -32,40 +32,41 @@ extern "C" {
 #include <OS.h>
 #endif
 
-#define MSGAREA_NORMAL 0x00
-#define MSGAREA_CREATE 0x01
-#define MSGAREA_CRIFNEC 0x02
+#define MSGAREA_NORMAL      0x00
+#define MSGAREA_CREATE      0x01
+#define MSGAREA_CRIFNEC     0x02
 /* Message & messagebase types (FIDO/OPUS, jam, squish, passthrough, ...) */
 /*  - types by storage type */
-#define MSGTYPE_STORAGES 0x0F    /* MSGTYPE_SDM | MSGTYPE_SQUISH | MSGTYPE_PASSTHROUGH |
-                                    MSGTYPE_JAM */
-#define MSGTYPE_SDM 0x01
-#define MSGTYPE_SQUISH 0x02
+#define MSGTYPE_STORAGES    0x0F /* MSGTYPE_SDM | MSGTYPE_SQUISH |
+                                    MSGTYPE_PASSTHROUGH | MSGTYPE_JAM */
+#define MSGTYPE_SDM         0x01
+#define MSGTYPE_SQUISH      0x02
 #define MSGTYPE_PASSTHROUGH 0x04
-#define MSGTYPE_JAM 0x08
+#define MSGTYPE_JAM         0x08
 /*  - types by area type (echo, net, ...) */
-#define MSGTYPE_AREAS 0x1C0        /* MSGTYPE_ECHO | ... */
-#define MSGTYPE_ECHO 0x80
-#define MSGTYPE_NOTH 0x0100        /* What is it ?... unknown... */
+#define MSGTYPE_AREAS       0x1C0   /* MSGTYPE_ECHO | ... */
+#define MSGTYPE_ECHO        0x80
+#define MSGTYPE_NOTH        0x0100  /* What is it ?... unknown... */
 /* Special message number values */
-#define MSGNUM_CUR ((dword) - 1L)
+#define MSGNUM_CUR  ((dword) - 1L)
 #define MSGNUM_PREV ((dword) - 2L)
 #define MSGNUM_NEXT ((dword) - 3L)
 
-#define MSGNUM_current MSGNUM_CUR
+#define MSGNUM_current  MSGNUM_CUR
 #define MSGNUM_previous MSGNUM_PREV
-#define MSGNUM_next MSGNUM_NEXT
+#define MSGNUM_next     MSGNUM_NEXT
 
 #define MOPEN_CREATE 0
-#define MOPEN_READ 1
-#define MOPEN_WRITE 2
-#define MOPEN_RW 3
+#define MOPEN_READ   1
+#define MOPEN_WRITE  2
+#define MOPEN_RW     3
 
 #ifdef __UNIX__
 #define FILEMODE_NETMAIL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
-#define FILEMODE_ECHOMAIL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
+#define FILEMODE_ECHOMAIL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | \
+                           S_IROTH | S_IWOTH)
 #else
-#define FILEMODE_NETMAIL (S_IREAD | S_IWRITE)
+#define FILEMODE_NETMAIL  (S_IREAD | S_IWRITE)
 #define FILEMODE_ECHOMAIL (S_IREAD | S_IWRITE)
 #endif
 #define FILEMODE(a) ((a) ? FILEMODE_ECHOMAIL : FILEMODE_NETMAIL)
@@ -107,30 +108,32 @@ typedef struct _xmsg
     /* Bitmasks for 'attr' */
 
     #define MSGPRIVATE 0x0001
-    #define MSGCRASH 0x0002
-    #define MSGREAD 0x0004
-    #define MSGSENT 0x0008
-    #define MSGFILE 0x0010
-    #define MSGFWD 0x0020     /* is also called intransit flag */
-    #define MSGORPHAN 0x0040
-    #define MSGKILL 0x0080
-    #define MSGLOCAL 0x0100
-    #define MSGHOLD 0x0200
-    #define MSGXX2 0x0400     /* you can use this flag as "Direct" attribute */
-    #define MSGFRQ 0x0800
-    #define MSGRRQ 0x1000
-    #define MSGCPT 0x2000
-    #define MSGARQ 0x4000
-    #define MSGURQ 0x8000
+    #define MSGCRASH   0x0002
+    #define MSGREAD    0x0004
+    #define MSGSENT    0x0008
+    #define MSGFILE    0x0010
+    #define MSGFWD     0x0020  /* is also called intransit flag */
+    #define MSGORPHAN  0x0040
+    #define MSGKILL    0x0080
+    #define MSGLOCAL   0x0100
+    #define MSGHOLD    0x0200
+    #define MSGXX2     0x0400  /* you can use this flag as "Direct"
+                                  attribute */
+    #define MSGFRQ     0x0800
+    #define MSGRRQ     0x1000
+    #define MSGCPT     0x2000
+    #define MSGARQ     0x4000
+    #define MSGURQ     0x8000
     #define MSGSCANNED 0x00010000L
-    #define MSGUID 0x00020000L /* xmsg.uid field contains umsgid of msg */
-    #define MSGIMM 0x00040000L /* Use only if msgtype == MSGTYPE_JAM !
-                                  Used to map the Jam "immediate" attribute. */
-    #define MSGLOCKED 0x40000000L /* this seems to be a feature of golded  */
+    #define MSGUID     0x00020000L /* xmsg.uid field contains umsgid of msg */
+    #define MSGIMM     0x00040000L /* Use only if msgtype == MSGTYPE_JAM !
+                                      Used to map the Jam "immediate"
+                                      attribute. */
+    #define MSGLOCKED  0x40000000L /* this seems to be a feature of golded  */
     #define MSGREADTMR 0x80000000L /* Taimyr */
     dword attr;
     #define XMSG_FROM_SIZE 36
-    #define XMSG_TO_SIZE 36
+    #define XMSG_TO_SIZE   36
     #define XMSG_SUBJ_SIZE 72
 
     byte          from[XMSG_FROM_SIZE];
@@ -149,7 +152,9 @@ typedef struct _xmsg
     dword  umsgid;             /* UMSGID of this message, if (attr&MSGUID) */
                                /* This field is only stored on disk -- it  *
                                 * is not read into memory.                 */
-    byte __ftsc_date[20];      /* Obsolete date information.  If it weren't
+    #define FTSC_DATE_SIZE 20
+    byte __ftsc_date[FTSC_DATE_SIZE];
+                               /* Obsolete date information.  If it weren't
                                 * for the fact that FTSC standards say that
                                 * one cannot modify an in-transit message,
                                 * I'd be VERY tempted to axe this field
