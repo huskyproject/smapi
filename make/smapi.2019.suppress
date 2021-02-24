@@ -319,4 +319,20 @@
     <CodeCurrent>1249532266</CodeCurrent>
     <CodeNext>306804421</CodeNext>
   </smapi>
+  <smapi>
+    <FileName>api_jam.c</FileName>
+    <ErrorCode>V119</ErrorCode>
+    <Message>More than one sizeof() operator is used in one expression.</Message>
+    <CodePrev>2156315569</CodePrev>
+    <CodeCurrent>2041958838</CodeCurrent>
+    <CodeNext>309082897</CodeNext>
+  </smapi>
+  <smapi>
+    <FileName>structrw.c</FileName>
+    <ErrorCode>V648</ErrorCode>
+    <Message>Priority of the '&amp;&amp;' operation is higher than that of the '||' operation.</Message>
+    <CodePrev>2869821752</CodePrev>
+    <CodeCurrent>3930294381</CodeCurrent>
+    <CodeNext>5207953</CodeNext>
+  </smapi>
 </NewDataSet>
