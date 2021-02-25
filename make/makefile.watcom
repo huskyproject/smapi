@@ -9,6 +9,8 @@
 #
 #  wmake -f makefile.watcom OS2=1
 #
+#  Add DEBUG=1 to enable debugging.
+#
 
 CC=wcl386
 WLIB=wlib -q -b
@@ -26,6 +28,10 @@ TARGET=smapiwcw.lib
 !ifdef OS2
 CFLAGS=-zq -bt=os2v2 -l=os2v2
 TARGET=smapiwco.lib
+!endif
+
+!ifdef DEBUG
+CFLAGS+= -d2
 !endif
 
 OBJS=structrw.obj sq_kill.obj sq_idx.obj sq_read.obj msgapi.obj sq_help.obj &
