@@ -1213,7 +1213,7 @@ static UMSGID _XPENTRY JamMsgnToUid(MSGA * jm, dword msgnum)
         return (UMSGID)-1;
     }
 
-    if(msgnum <= 0)
+    if(msgnum == 0)
     {
         return (UMSGID)0;
     }
@@ -1243,7 +1243,7 @@ static dword _XPENTRY JamUidToMsgn(MSGA * jm, UMSGID umsgid, word type)
 
     msgnum = umsgid - Jmd->HdrInfo.BaseMsgNum + 1;
 
-    if(msgnum <= 0)
+    if(msgnum == 0)
     {
         return 0;
     }
