@@ -6,18 +6,18 @@
 # may be one of: C (current), R (release), S (stable)
 
 # release number for Release: header
-%global relnum 4
+%global relnum 5
 
 # on default static library is made but using 'rpmbuild --without static'
 # produces a dynamic library
-%if %_vendor == "alt"
+%if "%_vendor" == "alt"
     %def_with static
 %else
     %bcond_without static
 %endif
 
 # if you use 'rpmbuild --with debug' then debug binary is produced
-%if %_vendor == "alt"
+%if "%_vendor" == "alt"
     %def_without debug
 %else
     %bcond_with debug
@@ -31,11 +31,11 @@
 %global pkg_group Applications/Communications
 
 # for CentOS, Fedora and RHEL
-%if %_vendor == "redhat"
+%if "%_vendor" == "redhat"
     %global vendor_suffix %dist
 %endif
 
-%if %_vendor == "alt"
+%if "%_vendor" == "alt"
     %global vendor_prefix %_vendor
     %global pkg_group Networking/FTN
 %endif
@@ -48,7 +48,7 @@ Name: %main_name
 %endif
 Version: %ver_major.%ver_minor.%reldate%reltype
 Release: %{vendor_prefix}%relnum%{vendor_suffix}
-%if %_vendor != "redhat"
+%if "%_vendor" != "redhat"
 Group: %pkg_group
 %endif
 %if %{with static}
@@ -71,7 +71,7 @@ Requires: huskylib
 %summary
 
 %package devel
-%if %_vendor != "redhat"
+%if "%_vendor" != "redhat"
 Group: %pkg_group
 %endif
 Summary: Development headers for %main_name
