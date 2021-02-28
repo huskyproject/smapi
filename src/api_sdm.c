@@ -318,7 +318,7 @@ static MSGH * _XPENTRY SdmOpenMsg(MSGA * mh, word mode, dword msgnum)
          *  If we're not creating, make sure that the specified msg# can
          *  be found.
          */
-        if(msgnum <= 0 || msgnum > mh->num_msg)
+        if(msgnum == 0 || msgnum > mh->num_msg)
         {
             msgapierr = MERR_NOENT;
             return NULL;
@@ -822,7 +822,7 @@ static sword _XPENTRY SdmKillMsg(MSGA * mh, dword msgnum)
         return -1;
     }
 
-    if(msgnum > mh->num_msg || msgnum <= 0)
+    if(msgnum > mh->num_msg || msgnum == 0)
     {
         msgapierr = MERR_NOENT;
         return -1;
@@ -941,7 +941,7 @@ static UMSGID _XPENTRY SdmMsgnToUid(MSGA * mh, dword msgnum)
         return (UMSGID)-1;
     }
 
-    if(msgnum <= 0)
+    if(msgnum == 0)
     {
         return 0;
     }
@@ -959,7 +959,7 @@ static dword _XPENTRY SdmUidToMsgn(MSGA * mh, UMSGID umsgid, word type)
         return (dword) - 1L;
     }
 
-    if(umsgid <= 0)
+    if(umsgid == 0)
     {
         return 0;
     }
