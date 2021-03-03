@@ -464,13 +464,12 @@ static dword _XPENTRY JamReadMsg(MSGH * msgh,
 
     if(msg)
     {
+        /* zero all fields */
+        memset(msg, 0, sizeof *msg);
+
         /* make msg */
         msg->attr = Jam_JamAttrToMsg(msgh);
-        memset(msg->from, '\0', XMSG_FROM_SIZE);
-        memset(msg->to, '\0', XMSG_TO_SIZE);
-        memset(msg->subj, '\0', XMSG_SUBJ_SIZE);
-        memset(&(msg->orig), 0, sizeof(msg->orig));
-        memset(&(msg->dest), 0, sizeof(msg->dest));
+
         /* get "from name" line */
         SubPos   = 0;
         SubField = Jam_GetSubField(msgh, &SubPos, JAMSFLD_SENDERNAME);
