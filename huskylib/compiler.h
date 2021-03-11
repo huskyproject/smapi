@@ -178,8 +178,6 @@
 #define _veccast _intcast
 #define _fast pascal
 #define _loadds
-/* #include <conio.h> */
-#define mysleep(x) delay(x);
 
 #ifndef _XPENTRY
 #define _XPENTRY
@@ -225,7 +223,6 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 #define _XPENTRY pascal far
-#define mysleep(x) DosSleep(1000L * (x))
 #endif
 
 #elif defined (__WATCOMC__) && (defined (__OS2__) || defined (OS2))
@@ -244,7 +241,6 @@ int lock(int handle, long ofs, long length);
 #define strncasecmp strnicmp
 
 #define _XPENTRY _System
-#define mysleep(x) sleep(x)
 #define mode_t int
 
 
@@ -281,8 +277,6 @@ int lock(int handle, long ofs, long length);
 #define farread read
 #define farwrite write
 
-#define mysleep(x) DosSlep(1000L * (x))
-
 #define unlock(a, b, c) unused(a)
 #define lock(a, b, c) 0
 #error "Don't know how to implement record locking."
@@ -318,7 +312,6 @@ int lock(int handle, long ofs, long length);
 #define open _open
 #define lseek _lseek
 #define tell _tell
-#define sleep _sleep
 
 #define stricmp _strcmpi
 #define strcmpi _strcmpi
@@ -428,7 +421,6 @@ int lock(int handle, long ofs, long length);
 #ifndef _XPENTRY
 #define _XPENTRY __syscall
 #endif
-#define mysleep(x) sleep(x);
 
 #include <io.h>
 #include <dos.h>
@@ -453,7 +445,6 @@ int lock(int handle, long ofs, long length);
 
 #define farread read
 #define farwrite write
-#define mysleep(x) DosSleep(1000L * (x))
 
 #define _XPENTRY pascal far
 
@@ -505,13 +496,6 @@ int sopen(const char * name, int oflag, int ishared, int mode);
 #define SH_DENYALL 1
 
 #define _XPENTRY
-/* Other OS's may sleep with other functions */
-
-#ifdef __BEOS__
-#define mysleep(x) snooze(x * 1000000l)
-#elif defined (__linux__) || defined (__sun__)
-#define mysleep(x) usleep(x * 1000000l)
-#endif
 
 #elif defined (__DJGPP__)
 /* DJGPP for MS-DOS */
@@ -538,7 +522,6 @@ int sopen(const char * name, int oflag, int ishared, int mode);
 
 #include <unistd.h>
 #include <io.h>
-#define mysleep(x) sleep(x)
 
 #elif defined (SASC)
 /* SAS C for AmigaDOS */
@@ -561,7 +544,6 @@ int sopen(const char * name, int oflag, int ishared, int mode);
 
 #define unlock(a, b, c) unused(a)
 #define lock(a, b, c) 0
-#define mysleep(x) unused(x)
 
 #error "Don't know how to implement record locking."
 /* Using an executable that does no support record locking is
@@ -588,7 +570,6 @@ int sopen(const char * name, int oflag, int ishared, int mode);
 #define near
 #define _XPENTRY
 #define strncasecmp strnicmp
-#define sleep(x) Sleep(1000L * (x))
 #define farread read
 #define farwrite write
 #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
@@ -611,9 +592,6 @@ int sopen(const char * name, int oflag, int ishared, int mode);
  * performed.
  * waitlock2 works like a timed waitlock.
  */
-#ifndef mysleep
-#define mysleep(x)
-#endif
 // extern int waitlock(int, long, long);
 // extern int waitlock2(int, long, long, long);
 
