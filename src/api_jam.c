@@ -845,7 +845,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                     setfsize(Jmd->HdrHandle, msgh->seek_hdr);
                     setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                     freejamsubfield(subfieldNew);
-                    free(onlytext);
+                    nfree(onlytext);
                     msgapierr = MERR_NODS;
                     return -1;
                 }
@@ -856,7 +856,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                     setfsize(Jmd->HdrHandle, msgh->seek_hdr);
                     setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                     freejamsubfield(subfieldNew);
-                    free(onlytext);
+                    nfree(onlytext);
                     msgapierr = MERR_NODS;
                     return -1;
                 }
@@ -871,7 +871,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                     setfsize(Jmd->IdxHandle, msgh->seek_idx);
                     setfsize(Jmd->TxtHandle, jamhdrNew.TxtOffset);
                     freejamsubfield(subfieldNew);
-                    free(onlytext);
+                    nfree(onlytext);
                     msgapierr = MERR_NODS;
                     return -1;
                 }
@@ -887,7 +887,7 @@ static sword _XPENTRY JamWriteMsg(MSGH * msgh,
                     if(!tmp)
                     {
                         freejamsubfield(subfieldNew);
-                        free(onlytext);
+                        nfree(onlytext);
                         pfree(Jmd->actmsg);
                         msgapierr = MERR_NOMEM;
                         return -1;

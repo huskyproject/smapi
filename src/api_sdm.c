@@ -181,7 +181,7 @@ int SdmDeleteBase(char * name)
 
     sprintf(temp, "%s*.msg", name);
     ff = FFindOpen(temp, 0);
-    free(temp);
+    nfree(temp);
 
     if(ff != 0)
     {
@@ -197,7 +197,7 @@ int SdmDeleteBase(char * name)
 
             sprintf(temp, "%s%s", name, ff->ff_name);
             unlink(temp);
-            free(temp);
+            nfree(temp);
         }
         while(FFindNext(ff) == 0);
         FFindClose(ff);
@@ -210,7 +210,7 @@ int SdmDeleteBase(char * name)
     }
     sprintf(temp, "%slastread", name);
     unlink(temp);
-    free(temp);
+    nfree(temp);
     rmdir(name);
     return TRUE; /* rmdir error is ok */
 } /* SdmDeleteBase */
@@ -1167,7 +1167,7 @@ static sword near _SdmRescanArea(MSGA * mh)
 
     sprintf((char *)temp, "%s*.msg", Mhd->base);
     ff = FFindOpen((char *)temp, 0);
-    free(temp);
+    nfree(temp);
 
     if(ff != 0)
     {
