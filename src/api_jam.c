@@ -240,22 +240,21 @@ int JamCloseOpenAreas()
 
     while(jbOpen)
     {
-        if(-1 == JamCloseArea(jbOpen->jm)) /* avoid infinite loop possibility in case of error
-                                              in JamCloseArea */
-                                           /* not closed bases are stored in the broken list */
+        /* avoid infinite loop possibility in case of error in JamCloseArea */
+        /* not closed bases are stored in the broken list */
+        if(-1 == JamCloseArea(jbOpen->jm))
         {
-            printf("SMAPI ERROR: can't close '%s' properly!\n", jbOpen->BaseName); /* at least
-                                                                                      we must
-                                                                                      say
-                                                                                      something
-                                                                                      */
+            /* at least we must say something */
+            w_log(LL_ERROR, "SMAPI ERROR: can't close '%s' properly!",
+                  jbOpen->BaseName);
             *current = jbOpen;
             current  = &jbOpen->jbNext;
             jbOpen   = jbOpen->jbNext;
             *current = NULL;
         }
     }
-    /* TODO: implement 'forced close' mode to do as much cleanup work as possible */
+    /* TODO: implement 'forced close' mode to do as much cleanup work
+             as possible */
     jbOpen = (JAMBASE *)broken;
 
 /*

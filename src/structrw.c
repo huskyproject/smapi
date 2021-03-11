@@ -882,17 +882,21 @@ static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * S
                                                                          probably sign of error
                                                                             in messagebase */
         {
-            printf("SMAPI ERROR: weird subfield type! (%X)\n", (unsigned int)loID);
-            /* Keep going, these fields won't hurt unless they have improper size too */
+            w_log(LL_ERROR, "SMAPI ERROR: weird subfield type! (%X)",
+                  (unsigned int)loID);
+            /* Keep going, these fields won't hurt unless they have improper
+               size too */
         }
 
 #endif
         size = get_dword(pbuf + 4);
 #ifdef DEBUG
 
-        if(size == 0 && loID != JAMSFLD_SUBJECT) /* While possible, it isn't normal value */
+        if(size == 0 && loID != JAMSFLD_SUBJECT)
         {
-            printf("SMAPI ERROR: subfield of 0 size! (%X)\n", (unsigned int)loID);
+            /* While possible, it isn't normal value */
+            w_log(LL_ERROR, "SMAPI ERROR: subfield of 0 size! (%X)",
+                  (unsigned int)loID);
         }
 
 #endif
@@ -901,16 +905,18 @@ static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * S
         /* it means that subfield claims to be longer
            than header says. can't be. */
         {
-            /* just break, ideally there shall be a setting for lax treatment of messagebase */
-            printf("SMAPI ERROR: wrongly sized subfield occured!\n");
+            /* just break, ideally there shall be a setting for lax
+               treatment of messagebase */
+            w_log(LL_ERROR, "SMAPI ERROR: wrongly sized subfield occured!");
             break;
         }
 
-        if(size >= 0xFFFF) /* reality check: single subfield
-                              longer than 64k is not realistic */
+        /* reality check: single subfield longer than 64k is not realistic */
+        if(size >= 0xFFFF) 
         {
-            printf("SMAPI ERROR: subfield is suspiciously large! (%lu bytes)\n",
-                   (unsigned long)size);
+            w_log(LL_ERROR, 
+                  "SMAPI ERROR: subfield is suspiciously large! (%lu bytes)",
+                  (unsigned long)size);
             break;
         }
 
