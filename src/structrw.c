@@ -400,7 +400,7 @@ int read_sqidx(int handle, SQIDX * psqidx, dword n)
 
                 if(farread(handle, accel_buffer, rd * SQIDX_SIZE) != (int)(rd * SQIDX_SIZE))
                 {
-                    free(accel_buffer);
+                    nfree(accel_buffer);
                     return 0;
                 }
 
@@ -421,7 +421,7 @@ int read_sqidx(int handle, SQIDX * psqidx, dword n)
         /* Stop reading in a single structure */
     }
 
-    free(accel_buffer);
+    nfree(accel_buffer);
     return 1;
 } /* read_sqidx */
 
@@ -477,7 +477,7 @@ int write_sqidx(int handle, SQIDX * psqidx, dword n)
 
                 if(farwrite(handle, accel_buffer, wr * SQIDX_SIZE) != (wr * SQIDX_SIZE))
                 {
-                    free(accel_buffer);
+                    nfree(accel_buffer);
                     return 0;
                 }
 
@@ -486,7 +486,7 @@ int write_sqidx(int handle, SQIDX * psqidx, dword n)
         }
     }
 
-    free(accel_buffer);
+    nfree(accel_buffer);
     return 1;
 } /* write_sqidx */
 
