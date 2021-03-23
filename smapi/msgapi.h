@@ -347,7 +347,7 @@ extern struct _minf _stdc mi;
 
 #define MsgCvtFTSCDateToBinary(a, b) ASCII_Date_To_Binary(a, b)
 
-HUSKYEXT const char * _XPENTRY smapi_cvs_date();
+HUSKYEXT const char * _XPENTRY smapi_cvs_date(void);
 HUSKYEXT sword _XPENTRY MsgOpenApi(struct _minf * minf);
 HUSKYEXT sword _XPENTRY MsgCloseApi(void);
 HUSKYEXT MSGA * _XPENTRY MsgOpenArea(byte * name, word mode, word type);
@@ -369,7 +369,7 @@ int SquishDeleteBase(char * name);
 MSGA * MSGAPI JamOpenArea(byte * name, word mode, word type);
 sword MSGAPI JamValidate(byte * name);
 int JamDeleteBase(char * name);
-int JamCloseOpenAreas();
+int JamCloseOpenAreas(void);
 HUSKYEXT byte * _XPENTRY CvtCtrlToKludge(byte * ctrl);
 HUSKYEXT byte * _XPENTRY GetCtrlToken(byte * where, byte * what);
 HUSKYEXT byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned * length);
