@@ -232,7 +232,7 @@ static sword _XPENTRY JamCloseArea(MSGA * jm)
     return 0;
 } /* JamCloseArea */
 
-int JamCloseOpenAreas()
+int JamCloseOpenAreas(void)
 {
     void * broken, ** current = &broken; /* JAMBASE* and JAMBASE** */
 

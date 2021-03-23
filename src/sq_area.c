@@ -604,10 +604,10 @@ sword MSGAPI SquishValidate(byte * szName)
     return TRUE;
 }
 
-void _SquishInit()
+void _SquishInit(void)
 {}
 
-void _SquishDeInit()
+void _SquishDeInit(void)
 {
     _SquishCloseOpenAreas();
 }

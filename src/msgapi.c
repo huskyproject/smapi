@@ -48,7 +48,7 @@ static byte * area_colon = (byte *)"AREA:";
 /* Global error value for message API routines */
 word _stdc msgapierr = 0;
 struct _minf _stdc mi = {0};
-const char * _XPENTRY smapi_cvs_date()
+const char * _XPENTRY smapi_cvs_date(void)
 {
     static
 #include "../cvsdate.h"
