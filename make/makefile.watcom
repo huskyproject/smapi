@@ -45,6 +45,8 @@ OBJS=structrw.obj sq_kill.obj sq_idx.obj sq_read.obj msgapi.obj sq_help.obj &
 $(TARGET): $(OBJS)
 	$(WLIB) $(TARGET) $(OBJS)
 
+all: $(TARGET)
+
 .IGNORE
 clean: .SYMBOLIC
 	rm $(OBJS)
