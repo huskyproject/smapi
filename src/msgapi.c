@@ -325,7 +325,7 @@ static dword near _CopyToBuf(byte * p, byte * out, byte ** end)
     return len;
 } /* _CopyToBuf */
 
-byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned * length)
+byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, size_t * length)
 {
     byte * cbuf, * end;
     dword clen;
@@ -349,7 +349,7 @@ byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned * length)
 
     if(length)
     {
-        *length -= (unsigned int)(end - txt);
+        *length -= (size_t)(end - txt);
     }
 
     if(newtext)

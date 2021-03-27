@@ -536,7 +536,7 @@ static dword _XPENTRY SdmReadMsg(MSGH * msgh,
                                  dword clen,
                                  byte * ctxt)
 {
-    unsigned len;
+    size_t len;
     dword realbytes, got;
     struct _omsg fmsg;
     word need_ctrl;

@@ -372,7 +372,7 @@ int JamDeleteBase(char * name);
 int JamCloseOpenAreas(void);
 HUSKYEXT byte * _XPENTRY CvtCtrlToKludge(byte * ctrl);
 HUSKYEXT byte * _XPENTRY GetCtrlToken(byte * where, byte * what);
-HUSKYEXT byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, unsigned * length);
+HUSKYEXT byte * _XPENTRY CopyToControlBuf(byte * txt, byte ** newtext, size_t * length);
 void _XPENTRY ConvertControlInfo(byte * ctrl, NETADDR * orig, NETADDR * dest);
 word _XPENTRY NumKludges(char * txt);
 HUSKYEXT void _XPENTRY RemoveFromCtrl(byte * ctrl, byte * what);
