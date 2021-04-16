@@ -1,52 +1,47 @@
+os: linux
+dist: bionic
 language: c
 
 jobs:
-  fast_finish: true
   include:
     - os: linux
       language: c
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
       env:
         - CF=-DBUILD_SHARED_LIBS=OFF
     - os: linux
       language: c
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
       env:
         - CF=-DBUILD_SHARED_LIBS=ON
-    - os: osx
-      language: c
-      env:
-        - MATRIX_EVAL="CC=clang" CF=-DBUILD_SHARED_LIBS=ON
+
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y rpm; fi
+  - sudo apt-get install -y rpm
   - git clone https://github.com/huskyproject/huskylib ~/build/huskyproject/huskylib
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget -q -O - https://files.viva64.com/etc/pubkey.txt | sudo apt-key add - ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo wget -O /etc/apt/sources.list.d/viva64.list https://files.viva64.com/etc/viva64.list; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; sudo apt-get install -y pvs-studio; fi
+  - wget -q -O - https://files.viva64.com/etc/pubkey.txt | sudo apt-key add -
+  - sudo wget -O /etc/apt/sources.list.d/viva64.list https://files.viva64.com/etc/viva64.list
+  - sudo apt-get update; sudo apt-get install -y pvs-studio
+
 script:
+  - echo TRAVIS_BRANCH=$TRAVIS_BRANCH
+  - echo TRAVIS_TAG=$TRAVIS_TAG
+  - if [[ "$TRAVIS_BRANCH" != "$TRAVIS_TAG" && "$TRAVIS_BRANCH" != "master" ]]; then CURR_BRANCH="$TRAVIS_BRANCH"; fi
+  - echo CURR_BRANCH=$CURR_BRANCH
   - eval "${MATRIX_EVAL}"
   - cd  ~/build/huskyproject/huskylib
+  - if [[ -n "$CURR_BRANCH" ]]; then git checkout "$CURR_BRANCH"; true; fi
+  - git branch
   - mkdir build
   - cd build
   - cmake .. "${CF}"
   - cmake --build .
   - sudo make install
   - cd  $TRAVIS_BUILD_DIR
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pvs-studio-analyzer credentials -o $TRAVIS_BUILD_DIR/PVS-Studio.lic $PVS_USERNAME $PVS_KEY; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake . -Bbuild "${CF}" -DCMAKE_EXPORT_COMPILE_COMMANDS=On; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pvs-studio-analyzer trace -- cmake --build build; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then pvs-studio-analyzer analyze -l $TRAVIS_BUILD_DIR/PVS-Studio.lic -s ./suppress_base.json -o build/pvs.log; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then plog-converter -a 'GA:1,2;64:1,2;OP:1,2' -t tasklist -o build/pvs.tasks build/pvs.log; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cat build/pvs.tasks; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ! grep -vP '\serr\s+Help:' build/pvs.tasks | grep -P '\serr\s'; fi
-  - if [[ "$TRAVIS_OS_NAME" != "linux" ]]; then mkdir build; fi
-  - if [[ "$TRAVIS_OS_NAME" != "linux" ]]; then cmake . -Bbuild "${CF}"; fi
-  - if [[ "$TRAVIS_OS_NAME" != "linux" ]]; then cmake --build build; fi
+  - if [[ -n "$PVS_USERNAME" ]]; then pvs-studio-analyzer credentials -o $TRAVIS_BUILD_DIR/PVS-Studio.lic $PVS_USERNAME $PVS_KEY; fi
+  - if [[ -n "$PVS_USERNAME" ]]; then cmake . -Bbuild "${CF}" -DCMAKE_EXPORT_COMPILE_COMMANDS=On -DCPACK_DEBIAN_PACKAGE_MAINTAINER=travis-ci; fi
+  - if [[ -z "$PVS_USERNAME" ]]; then cmake . -Bbuild "${CF}" -DCPACK_DEBIAN_PACKAGE_MAINTAINER=travis-ci; fi
+  - if [[ -n "$PVS_USERNAME" ]]; then pvs-studio-analyzer trace -- cmake --build build; else cmake --build build; fi
+  - if [[ -n "$PVS_USERNAME" ]]; then pvs-studio-analyzer analyze -l $TRAVIS_BUILD_DIR/PVS-Studio.lic -s $TRAVIS_BUILD_DIR/suppress_base.json -o build/pvs.log; fi
+  - if [[ -n "$PVS_USERNAME" ]]; then plog-converter -a 'GA:1,2;64:1,2;OP:1,2' -t tasklist -o build/pvs.tasks build/pvs.log; fi
+  - if [[ -n "$PVS_USERNAME" ]]; then cat build/pvs.tasks; fi
+  - if [[ -n "$PVS_USERNAME" ]]; then ! grep -vP '\serr\s+Help:' build/pvs.tasks | grep -P '\serr\s'; fi
   - cd build
   - cpack
