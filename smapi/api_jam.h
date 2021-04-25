@@ -54,7 +54,8 @@ typedef struct
     byte  RSRVD[996];   /* Reserved space */
 } JAMHDRINFO, *JAMHDRINFOptr;
 
-#define HDRINFO_SIZE (1000 + (4 * 6))
+/* 1024 or 0x400 */
+#define HDRINFO_SIZE sizeof(JAMHDRINFO)
 /*
 **  Message status bits
 */
@@ -115,7 +116,8 @@ typedef struct
     dword Cost;                       /* Cost of message */
 } JAMHDR, *JAMHDRptr;
 
-#define HDR_SIZE (8 + (4 * 17))
+/* 76 or 0x4C */
+#define HDR_SIZE sizeof(JAMHDR)
 /*
 **  Message header subfield types
 */
@@ -179,7 +181,8 @@ typedef struct
     dword HdrOffset;                  /* Offset of header in .JHR file */
 } JAMIDXREC, *JAMIDXRECptr;
 
-#define IDX_SIZE 8
+/* 8 */
+#define IDX_SIZE sizeof(JAMIDXREC)
 /*
 **  Lastread structure, one per user
 */
