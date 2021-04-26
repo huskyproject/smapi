@@ -171,7 +171,9 @@ typedef struct
     word  HiID;                      /* Reserved for future use */
     dword DatLen;                    /* Length of buffer that follows */
 } JAMBINSUBFIELD, *JAMBINSUBFIELDptr;
-#define JAM_SF_HEADER_SIZE 8
+
+/* 8 */
+#define JAM_SF_HEADER_SIZE sizeof(JAMBINSUBFIELD)
 /*
 **  Message index record
 */
