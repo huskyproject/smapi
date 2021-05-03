@@ -961,10 +961,18 @@ static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * S
         subfieldNext->DatLen = datlen;
         memmove(subfieldNext->Buffer, pbuf, datlen);
         /* Set up next element */
-        assert((byte *)(subfieldNext + 1) < subfield[0]->subfield[0].Buffer);
+        if((byte*)(subfieldNext + 1) >= subfield[0]->subfield[0].Buffer)
+        {
+            w_log(LL_CRIT, "ERROR: Corrupted JAM message base");
+            abort();
+        }
         subfieldNext[1].Buffer = subfieldNext->Buffer + subfieldNext->DatLen + 1;
         subfieldNext++;
-        assert(subfieldNext->Buffer <= (byte *)*subfield + subfield[0]->arraySize);
+        if(subfieldNext->Buffer > (byte *)*subfield + subfield[0]->arraySize)
+        {
+            w_log(LL_CRIT, "ERROR: Corrupted JAM message base");
+            abort();
+        }
         pbuf += datlen;
     } /* endwhile */
     *SubfieldLen = (dword)(pbuf - buf);
