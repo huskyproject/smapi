@@ -876,13 +876,11 @@ static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * S
         hiID = get_word(pbuf + 2);
 
         if(!(loID <= JAMSFLD_ENCLINDFILE || loID == JAMSFLD_EMBINDAT ||
-             loID >= JAMSFLD_FTSKLUDGE && loID <= JAMSFLD_TZUTCINFO)) /* This subfield type is
-                                                                         not supported and is
-                                                                         most
-                                                                         probably sign of error
-                                                                            in messagebase */
+             loID >= JAMSFLD_FTSKLUDGE && loID <= JAMSFLD_TZUTCINFO))
         {
-            w_log(LL_ERROR, "SMAPI ERROR: weird subfield type! (%X)",
+            /* This subfield type is not supported and is most probably the
+               sign of an error in the message base */
+            w_log(LL_ERROR, "JAM ERROR: weird subfield type! (%X)",
                   (unsigned int)loID);
             /* Keep going, these fields won't hurt unless they have improper
                size too */
@@ -894,8 +892,8 @@ static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * S
 
         if(size == 0 && loID != JAMSFLD_SUBJECT)
         {
-            /* While possible, it isn't normal value */
-            w_log(LL_ERROR, "SMAPI ERROR: subfield of 0 size! (%X)",
+            /* While possible, it isn't a normal value */
+            w_log(LL_ERROR, "JAM ERROR: subfield of 0 size! (%X)",
                   (unsigned int)loID);
         }
 
@@ -905,17 +903,18 @@ static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * S
         /* it means that subfield claims to be longer
            than header says. can't be. */
         {
-            /* just break, ideally there shall be a setting for lax
-               treatment of messagebase */
-            w_log(LL_ERROR, "SMAPI ERROR: wrongly sized subfield occured!");
+            /* Just break, ideally there shall be a setting for a lax
+               treatment of the message base */
+            w_log(LL_ERROR, "JAM ERROR: wrongly sized subfield occured!");
             break;
         }
 
-        /* reality check: single subfield longer than 64k is not realistic */
+        /* A reality check: a single subfield longer than 64k
+           is not realistic */
         if(size >= 0xFFFF) 
         {
             w_log(LL_ERROR, 
-                  "SMAPI ERROR: subfield is suspiciously large! (%lu bytes)",
+                  "JAM ERROR: subfield is suspiciously large! (%lu bytes)",
                   (unsigned long)size);
             break;
         }
@@ -963,15 +962,13 @@ static int decode_subfield(byte * buf, JAMSUBFIELD2LISTptr * subfield, dword * S
         /* Set up next element */
         if((byte*)(subfieldNext + 1) >= subfield[0]->subfield[0].Buffer)
         {
-            w_log(LL_CRIT, "ERROR: Corrupted JAM message base");
-            abort();
+            w_log(LL_ERROR, "ERROR: Possibly corrupted JAM message base");
         }
         subfieldNext[1].Buffer = subfieldNext->Buffer + subfieldNext->DatLen + 1;
         subfieldNext++;
         if(subfieldNext->Buffer > (byte *)*subfield + subfield[0]->arraySize)
         {
-            w_log(LL_CRIT, "ERROR: Corrupted JAM message base");
-            abort();
+            w_log(LL_ERROR, "ERROR: Possibly corrupted JAM message base");
         }
         pbuf += datlen;
     } /* endwhile */
