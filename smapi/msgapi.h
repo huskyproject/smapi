@@ -86,9 +86,9 @@ typedef dword            UMSGID;
 
 #define MSGAPI_VERSION 2
 #define MSGAPI_SUBVERSION 0x250
-#define VER_MAJOR 2
-#define VER_MINOR 5
-#define VER_PATCH 2
+#define SMAPI_VER_MAJOR 2
+#define SMAPI_VER_MINOR 5
+#define SMAPI_VER_PATCH 2
 
 struct _minf
 {
