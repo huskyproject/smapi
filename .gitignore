@@ -12,4 +12,6 @@ libsmapi.so.2.?.*
 .vs/
 out/
 build/
+Build/
 strace_out
+cvsdate.h
