@@ -16,10 +16,11 @@ environment:
       cf: -DBUILD_SHARED_LIBS=ON
 install:
   - cmd: git clone https://github.com/huskyproject/huskylib  C:\projects\huskylib
-build_script:
+before_build:
   - ps:
       cd C:\projects\huskylib; $huskylib_mdate=git log -1 --date=short --format=format:"%cd" huskylib/*.h src/*.c; echo "char cvs_date[]=""$huskylib_mdate"";" > cvsdate.h;
-      cd C:\projects\smapi; $smapi_mdate=git log -1 --date=short --format=format:"%cd" smapi/*.h src/*.c; echo "char cvs_date[]=""$smapi_mdate"";" > cvsdate.h
+      cd C:\projects\smapi; $smapi_mdate=git log -1 --date=short --format=format:"%cd" smapi/*.h src/*.c; if($huskylib_mdate -gt $smapi_mdate) {$smapi_mdate=$huskylib_mdate}; echo "char cvs_date[]=""$smapi_mdate"";" > cvsdate.h
+build_script:
   - cmd: 
       cd C:\projects\huskylib && mkdir build && cd build && cmake --version &&  cmake .. -G "%GENERATOR%" %CF% && cmake --build . -- /P:Configuration=Release &&
       cd C:\projects\smapi && mkdir build && cd build && cmake --version &&  cmake .. -G "%GENERATOR%" %CF% && cmake --build . -- /P:Configuration=Release
