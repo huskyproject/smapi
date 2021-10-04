@@ -150,6 +150,7 @@ else
 endif
 
 # Depend
+ifeq ($(MAKECMDGOALS),depend)
 smapi_depend: $(smapi_DEPS) ;
 
 # Build dependency makefiles for every source file
@@ -161,6 +162,7 @@ $(smapi_DEPS): $(smapi_DEPDIR)%$(_DEP): $(smapi_SRCDIR)%.c | $(smapi_DEPDIR)
 
 $(smapi_DEPDIR): | do_not_run_depend_as_root $(smapi_BUILDDIR)
 	[ -d $@ ] || $(MKDIR) $(MKDIROPT) $@
+endif
 
 $(smapi_BUILDDIR):
 	[ -d $@ ] || $(MKDIR) $(MKDIROPT) $@
