@@ -53,6 +53,7 @@ smapi_TARGET_DST = $(LIBDIR_DST)$(smapi_TARGET)
 
 smapi_CDEFS := $(CDEFS) -I$(smapi_ROOTDIR)$(smapi_H_DIR) -I$(huskylib_ROOTDIR)
 
+smapi_LIBS := $(huskylib_TARGET_BLD)
 
 .PHONY: smapi_all smapi_install smapi_install-dynlib smapi_uninstall \
 	smapi_clean smapi_distclean smapi_depend smapi_rm_OBJS smapi_rm_BLD \
@@ -77,12 +78,12 @@ ifdef RANLIB
 	cd $(smapi_OBJDIR); $(RANLIB) $(smapi_TARGETLIB)
 endif
 
-$(smapi_OBJDIR)$(smapi_TARGETDLL).$(smapi_VER): $(smapi_OBJS) | do_not_run_make_as_root
+$(smapi_OBJDIR)$(smapi_TARGETDLL).$(smapi_VER): $(smapi_OBJS) $(smapi_LIBS) | do_not_run_make_as_root
 ifeq (~$(MKSHARED)~,~ld~)
-	$(LD) $(LFLAGS) -o $(smapi_OBJDIR)$(smapi_TARGETDLL).$(smapi_VER) $(smapi_OBJS)
+	$(LD) $(LFLAGS) -o $@ $^
 else
 	$(CC) $(LFLAGS) -shared -Wl,-soname,$(smapi_TARGETDLL).$(smapi_VER) \
-	-o $(smapi_OBJDIR)$(smapi_TARGETDLL).$(smapi_VER) $(smapi_OBJS)
+	-o $@ $(smapi_OBJS)
 endif
 
 $(smapi_OBJS): $(smapi_OBJDIR)%$(_OBJ): $(smapi_SRCDIR)%.c | $(smapi_OBJDIR)
