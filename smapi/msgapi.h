@@ -26,7 +26,7 @@ extern "C" {
 
 #include <huskylib/compiler.h>
 #include <huskylib/huskylib.h>
-
+#include "version.h"
 
 #ifdef __BEOS__
 #include <OS.h>
@@ -85,10 +85,7 @@ typedef NETADDR *        PNETADDR;
 typedef dword            UMSGID;
 
 #define MSGAPI_VERSION 2
-#define MSGAPI_SUBVERSION 0x250
-#define SMAPI_VER_MAJOR 2
-#define SMAPI_VER_MINOR 5
-#define SMAPI_VER_PATCH 2
+#define MSGAPI_SUBVERSION 0x252
 
 struct _minf
 {

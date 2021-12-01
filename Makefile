@@ -6,9 +6,9 @@
 #
 
 # Version
-smapi_g1:=$(GREP) -Po 'define\s+SMAPI_VER_MAJOR\s+\K\d+'
-smapi_g2:=$(GREP) -Po 'define\s+SMAPI_VER_MINOR\s+\K\d+'
-smapi_g3:=$(GREP) -Po 'define\s+SMAPI_VER_PATCH\s+\K\d+'
+smapi_g1:=$(GREP) -Po 'define\s+smapi_VER_MAJOR\s+\K\d+'
+smapi_g2:=$(GREP) -Po 'define\s+smapi_VER_MINOR\s+\K\d+'
+smapi_g3:=$(GREP) -Po 'define\s+smapi_VER_PATCH\s+\K\d+'
 smapi_g4:=$(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+'
 smapi_VERMAJOR := $(shell $(smapi_g1) $(smapi_ROOTDIR)$(smapi_H_DIR)msgapi.h)
 smapi_VERMINOR := $(shell $(smapi_g2) $(smapi_ROOTDIR)$(smapi_H_DIR)msgapi.h)
