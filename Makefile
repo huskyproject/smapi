@@ -5,20 +5,7 @@
 # Requires: husky enviroment
 #
 
-# Version
-smapi_g1:=$(GREP) -Po 'define\s+smapi_VER_MAJOR\s+\K\d+'
-smapi_g2:=$(GREP) -Po 'define\s+smapi_VER_MINOR\s+\K\d+'
-smapi_g3:=$(GREP) -Po 'define\s+smapi_VER_PATCH\s+\K\d+'
-smapi_g4:=$(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+'
-smapi_VERMAJOR := $(shell $(smapi_g1) $(smapi_ROOTDIR)$(smapi_H_DIR)msgapi.h)
-smapi_VERMINOR := $(shell $(smapi_g2) $(smapi_ROOTDIR)$(smapi_H_DIR)msgapi.h)
-smapi_VERPATCH := $(shell $(smapi_g3) $(smapi_ROOTDIR)$(smapi_H_DIR)msgapi.h)
-smapi_VERH     := $(smapi_VERMAJOR).$(smapi_VERMINOR)
-smapi_cvsdate  := $(shell $(smapi_g4) $(smapi_ROOTDIR)cvsdate.h)
-smapi_reldate  := $(subst -,,$(smapi_cvsdate))
-smapi_VER      := $(smapi_VERH).$(smapi_reldate)
-
-# Object files of the library
+# The library object files
 # Please sort the list to make checking it by human easy
 smapi_OBJFILES = $(O)api_jam$(_OBJ) $(O)api_sdm$(_OBJ) $(O)msgapi$(_OBJ) \
 	$(O)sq_area$(_OBJ) $(O)sq_hash$(_OBJ) $(O)sq_help$(_OBJ) $(O)sq_idx$(_OBJ) \
