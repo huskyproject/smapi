@@ -42,11 +42,11 @@ smapi_CDEFS := $(CDEFS) -I$(smapi_ROOTDIR)$(smapi_H_DIR) -I$(huskylib_ROOTDIR)
 
 smapi_LIBS := $(huskylib_TARGET_BLD)
 
-.PHONY: smapi_all smapi_install smapi_install-dynlib smapi_uninstall \
+.PHONY: smapi_build smapi_install smapi_install-dynlib smapi_uninstall \
 	smapi_clean smapi_distclean smapi_depend smapi_rm_OBJS smapi_rm_BLD \
 	smapi_rm_DEP smapi_rm_DEPS
 
-smapi_all: $(smapi_TARGET_BLD)
+smapi_build: $(smapi_TARGET_BLD)
 
 ifneq ($(MAKECMDGOALS), depend)
 ifneq ($(MAKECMDGOALS), distclean)
