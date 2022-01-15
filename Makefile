@@ -120,7 +120,8 @@ smapi_distclean: smapi_clean smapi_rm_BLD
 	-[ -d "$(smapi_BUILDDIR)" ] && $(RMDIR) $(smapi_BUILDDIR) || true
 
 smapi_rm_BLD: smapi_rm_DEP
-	-$(RM) $(RMOPT) $(smapi_BUILDDIR)$(smapi_TARGET)
+	-$(RM) $(RMOPT) $(smapi_BUILDDIR)$(smapi_TARGETLIB)
+	-$(RM) $(RMOPT) $(smapi_BUILDDIR)$(smapi_TARGETDLL)*
 
 smapi_rm_DEP: smapi_rm_DEPS
 	-[ -d "$(smapi_DEPDIR)" ] && $(RMDIR) $(smapi_DEPDIR) || true
