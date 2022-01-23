@@ -33,7 +33,7 @@ struct _sqhdr;
 struct _sqidx;
 typedef struct _sqidx SQIDX;
 typedef struct _sqhdr SQHDR;
-typedef hSINT32       FOFS;
+typedef hUINT32       FOFS;
 /* Try to access a locked Squish base up to five times */
 
 #define SQUISH_LOCK_RETRY 5
