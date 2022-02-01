@@ -29,8 +29,12 @@ smapi_DEPS := $(addprefix $(smapi_DEPDIR),$(smapi_DEPS))
 smapi_TARGETLIB := $(L)$(LIBPREFIX)$(smapi_LIBNAME)$(LIBSUFFIX)$(_LIB)
 smapi_TARGETDLL := $(B)$(DLLPREFIX)$(smapi_LIBNAME)$(DLLSUFFIX)$(_DLL)
 
-ifeq ($(DYNLIBS), 1)
-    smapi_TARGET = $(smapi_TARGETDLL).$(smapi_VER)
+ifeq ($(DYNLIBS),1)
+    ifeq ($(findstring Windows,$(OS)),)
+        smapi_TARGET = $(smapi_TARGETDLL).$(smapi_VER)
+    else
+        smapi_TARGET = $(smapi_TARGETDLL)
+    endif
 else
     smapi_TARGET = $(smapi_TARGETLIB)
 endif
@@ -65,12 +69,13 @@ ifdef RANLIB
 	cd $(smapi_OBJDIR); $(RANLIB) $(smapi_TARGETLIB)
 endif
 
-$(smapi_OBJDIR)$(smapi_TARGETDLL).$(smapi_VER): $(smapi_OBJS) $(smapi_LIBS) | do_not_run_make_as_root
-ifeq (~$(MKSHARED)~,~ld~)
-	$(LD) $(LFLAGS) -o $@ $^
-else
-	$(CC) $(LFLAGS) -shared -Wl,-soname,$(smapi_TARGETDLL).$(smapi_VER) \
-	-o $@ $(smapi_OBJS)
+ifeq ($(DYNLIBS),1)
+$(smapi_OBJDIR)$(smapi_TARGET): $(smapi_OBJS) $(smapi_LIBS) | do_not_run_make_as_root
+    ifeq ($(findstring gcc,$(MKSHARED)),)
+		$(LD) $(LFLAGS) -o $@ $^
+    else
+		$(CC) $(LFLAGS) -shared -Wl,-soname,$(smapi_TARGET) -o $@ $^
+    endif
 endif
 
 $(smapi_OBJS): $(smapi_OBJDIR)%$(_OBJ): $(smapi_SRCDIR)%.c | $(smapi_OBJDIR)
