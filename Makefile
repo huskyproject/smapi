@@ -146,7 +146,7 @@ smapi_depend: $(smapi_DEPS) ;
 $(smapi_DEPS): $(smapi_DEPDIR)%$(_DEP): $(smapi_SRCDIR)%.c | $(smapi_DEPDIR)
 	@set -e; rm -f $@; \
 	$(CC) -MM $(CFLAGS) $(smapi_CDEFS) $< > $@.$$$$; \
-	sed 's,\($*\)$(_OBJ)[ :]*,$(smapi_OBJDIR)\1$(_OBJ) $@ : ,g' < $@.$$$$ > $@; \
+	sed 's,\($*\)$(__OBJ)[ :]*,$(smapi_OBJDIR)\1$(_OBJ) $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
 $(smapi_DEPDIR): | do_not_run_depend_as_root $(smapi_BUILDDIR)
