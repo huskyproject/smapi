@@ -71,7 +71,7 @@ endif
 
 ifeq ($(DYNLIBS),1)
 $(smapi_OBJDIR)$(smapi_TARGET): $(smapi_OBJS) $(smapi_LIBS) | do_not_run_make_as_root
-    ifeq ($(findstring gcc,$(MKSHARED)),)
+    ifeq ($(filter gcc clang,$(MKSHARED)),)
 		$(LD) $(LFLAGS) -o $@ $^
     else
 		$(CC) $(LFLAGS) -shared -Wl,-soname,$(smapi_TARGET) -o $@ $^
