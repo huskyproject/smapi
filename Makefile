@@ -7,23 +7,6 @@
 
 # The library object files
 # Please sort the list to make checking it by human easy
-smapi_OBJFILES = $(O)api_jam$(_OBJ) $(O)api_sdm$(_OBJ) $(O)msgapi$(_OBJ) \
-	$(O)sq_area$(_OBJ) $(O)sq_hash$(_OBJ) $(O)sq_help$(_OBJ) $(O)sq_idx$(_OBJ) \
-	$(O)sq_kill$(_OBJ) $(O)sq_lock$(_OBJ) $(O)sq_misc$(_OBJ) $(O)sq_msg$(_OBJ) \
-	$(O)sq_read$(_OBJ) $(O)sq_uid$(_OBJ) $(O)sq_write$(_OBJ) $(O)structrw$(_OBJ)
-
-smapi_OBJS := $(addprefix $(smapi_OBJDIR),$(smapi_OBJFILES))
-
-smapi_DEPS := $(smapi_OBJFILES)
-ifdef O
-    smapi_DEPS := $(smapi_DEPS:$(O)=)
-endif
-ifdef _OBJ
-    smapi_DEPS := $(smapi_DEPS:$(_OBJ)=$(_DEP))
-else
-    smapi_DEPS := $(addsuffix $(_DEP),$(smapi_DEPS))
-endif
-smapi_DEPS := $(addprefix $(smapi_DEPDIR),$(smapi_DEPS))
 
 # Static and dynamic target libraries
 smapi_TARGETLIB := $(L)$(LIBPREFIX)$(smapi_LIBNAME)$(LIBSUFFIX)$(_LIB)
@@ -63,14 +46,14 @@ endif
 $(smapi_TARGET_BLD): $(smapi_OBJDIR)$(smapi_TARGET)
 	$(LN) $(LNHOPT) $< $(smapi_BUILDDIR)
 
-$(smapi_OBJDIR)$(smapi_TARGETLIB): $(smapi_OBJS) | do_not_run_make_as_root
+$(smapi_OBJDIR)$(smapi_TARGETLIB): $(smapi_ALL_OBJS) | do_not_run_make_as_root
 	cd $(smapi_OBJDIR); $(AR) $(AR_R) $(smapi_TARGETLIB) $(^F)
 ifdef RANLIB
 	cd $(smapi_OBJDIR); $(RANLIB) $(smapi_TARGETLIB)
 endif
 
 ifeq ($(DYNLIBS),1)
-$(smapi_OBJDIR)$(smapi_TARGET): $(smapi_OBJS) $(smapi_LIBS) | do_not_run_make_as_root
+$(smapi_OBJDIR)$(smapi_TARGET): $(smapi_ALL_OBJS) $(smapi_LIBS) | do_not_run_make_as_root
     ifeq ($(filter gcc clang,$(MKSHARED)),)
 		$(LD) $(LFLAGS) -o $@ $^
     else
@@ -78,7 +61,7 @@ $(smapi_OBJDIR)$(smapi_TARGET): $(smapi_OBJS) $(smapi_LIBS) | do_not_run_make_as
     endif
 endif
 
-$(smapi_OBJS): $(smapi_OBJDIR)%$(_OBJ): $(smapi_SRCDIR)%.c | $(smapi_OBJDIR)
+$(smapi_ALL_OBJS): $(smapi_OBJDIR)%$(_OBJ): $(smapi_SRCDIR)%.c | $(smapi_OBJDIR)
 	$(CC) $(CFLAGS) $(smapi_CDEFS) -o $(smapi_OBJDIR)$*$(_OBJ) $(smapi_SRCDIR)$*.c
 
 $(smapi_OBJDIR): | do_not_run_make_as_root $(smapi_BUILDDIR)
@@ -142,21 +125,3 @@ ifeq ($(DYNLIBS), 1)
 else
     smapi_uninstall: ;
 endif
-
-# Depend
-ifeq ($(MAKECMDGOALS),depend)
-smapi_depend: $(smapi_DEPS) ;
-
-# Build dependency makefiles for every source file
-$(smapi_DEPS): $(smapi_DEPDIR)%$(_DEP): $(smapi_SRCDIR)%.c | $(smapi_DEPDIR)
-	@set -e; rm -f $@; \
-	$(CC) -MM $(CFLAGS) $(smapi_CDEFS) $< > $@.$$$$; \
-	sed 's,\($*\)$(__OBJ)[ :]*,$(smapi_OBJDIR)\1$(_OBJ) $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
-
-$(smapi_DEPDIR): | do_not_run_depend_as_root $(smapi_BUILDDIR)
-	[ -d $@ ] || $(MKDIR) $(MKDIROPT) $@
-endif
-
-$(smapi_BUILDDIR):
-	[ -d $@ ] || $(MKDIR) $(MKDIROPT) $@
